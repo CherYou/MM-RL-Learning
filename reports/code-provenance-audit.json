@@ -364,7 +364,7 @@
     },
     {
       "file": "scripts/audit_tutorials.py",
-      "sha256": "deed37c0e4e6612a17f79878f4ddbaf48e9219e05c04aaf3c2e45bb4e63d174a",
+      "sha256": "f4bfd65254a425a705388e9a4553d631c76855372050369c067472990ce4e8aa",
       "language": ".py",
       "historical_port": false
     },
@@ -376,7 +376,7 @@
     },
     {
       "file": "scripts/check_markdown_math.py",
-      "sha256": "e892045bd2c6abb5140181965ecb5d0357f84ecf7b111fcc864b7c94413f65b4",
+      "sha256": "48fc3eab85eaea50879491d30fe3337adaceaa18e329d902c37a66a9d0bbd39e",
       "language": ".py",
       "historical_port": false
     },

@@ -12,10 +12,12 @@
 
 语言模型的概率同时依赖权重与上下文：
 
-$$p_S(y_t)=\pi_\theta(y_t\mid x,y_{1:t-1}),\qquad
-p_T(y_t)=\pi_{\theta_0}(y_t\mid x,z,y_{1:t-1}),$$
+```math
+p_S(y_t)=\pi_\theta(y_t\mid x,y_{1:t-1}),\qquad
+p_T(y_t)=\pi_{\theta_0}(y_t\mid x,z,y_{1:t-1}),
+```
 
-z 是参考 solution，$\theta_0$ 是开训时的固定权重。即使开始时 $\theta=\theta_0$，只要上下文不同，两份分布就可能不同。
+z 是参考 solution，$`\theta_0`$ 是开训时的固定权重。即使开始时 $`\theta=\theta_0`$，只要上下文不同，两份分布就可能不同。
 
 例如题目是“17×23 等于多少”。学生生成到“17×20=340，17×3=51，所以总共”时，教师已经看到参考推导，更可能支持正确的后续 token。教师评分的是学生真实写下的路径，而不是要求学生逐字复制 solution。
 
@@ -23,12 +25,16 @@ z 是参考 solution，$\theta_0$ 是开训时的固定权重。即使开始时 
 
 在学生采到的 token 上：
 
-$$d_{i,t}=\operatorname{sg}\left[
+```math
+d_{i,t}=\mathrm{sg}\left[
 \log\pi_{old}(y_{i,t}\mid x_i,y_{i,1:t-1})-
-\log\pi_{\theta_0}(y_{i,t}\mid x_i,z_i,y_{i,1:t-1})\right],$$
+\log\pi_{\theta_0}(y_{i,t}\mid x_i,z_i,y_{i,1:t-1})\right],
+```
 
-$$L_{OPSD}=\frac{\sum_{i,t}m_{i,t}
-e^{\ell_{i,t}-\ell^{old}_{i,t}}d_{i,t}}{\sum_{i,t}m_{i,t}}.$$
+```math
+L_{OPSD}=\frac{\sum_{i,t}m_{i,t}
+e^{\ell_{i,t}-\ell^{old}_{i,t}}d_{i,t}}{\sum_{i,t}m_{i,t}}.
+```
 
 假设学生对某 token 给 0.25、看过解答的教师给 0.5，则 d≈−0.6931，初始 ratio=1 时推动学生提高该 token 概率。若去掉解答后两模型分布完全相同，初始 d=0；这提供了检查信息差是否真的接入的对照。
 

@@ -33,11 +33,15 @@ Medical 章节包含 SFT、Medical OPD、SAR-OPD、IDT-OPD；preliminary 损失�
 
 例如历史是“2+3=”，模型给“5”分配 0.6，给“6”分配 0.1，其余 token 合计 0.3。采样到“5”只说明这次选择了它，不代表其它选项的概率为零。
 
-对一个回答 $y=(y_1,\ldots,y_T)$：
+对一个回答 $`y=(y_1,\ldots,y_T)`$：
 
-$$\pi_\theta(y\mid x)=\prod_{t=1}^{T}\pi_\theta(y_t\mid x,y_{1:t-1}).$$
+```math
+\pi_\theta(y\mid x)=\prod_{t=1}^{T}\pi_\theta(y_t\mid x,y_{1:t-1}).
+```
 
-$$\log\pi_\theta(y\mid x)=\sum_{t=1}^{T}\log\pi_\theta(y_t\mid x,y_{1:t-1}).$$
+```math
+\log\pi_\theta(y\mid x)=\sum_{t=1}^{T}\log\pi_\theta(y_t\mid x,y_{1:t-1}).
+```
 
 乘很多小数容易下溢，所以代码常保存 `logprob`。`exp(logp - old_logp)` 就是“现在的概率 / 采样时的概率”。整段的概率与单个 token 的概率不能混用。
 
@@ -45,23 +49,23 @@ $$\log\pi_\theta(y\mid x)=\sum_{t=1}^{T}\log\pi_\theta(y_t\mid x,y_{1:t-1}).$$
 
 | 符号 | 读法与用途 | 常见代码名 |
 | --- | --- | --- |
-| $x$、$h_t$ | 问题；到第 t 步为止的全部历史 | `prompt`、`tokens` |
-| $y_i$、$y_{i,t}$ | 第 i 个回答；它的第 t 个 token | `Sample.tokens` |
-| $\pi_\theta$ | 正在训练、参数可变化的策略 | `policy`、`actor` |
-| $\pi_{old}$ | 生成这一批数据时的行为策略 | `old_log_probs` |
-| $\pi_{ref}$ | 通常固定的参考策略，控制偏离 | `ref_log_prob` |
-| $\pi_T$ | 给学生 token 打分的教师 | `teacher_log_probs` |
-| $R_i$、$A_i$ | 回答得分；相对基准的好坏信号 | `reward`、`advantages` |
-| $m_{i,t}\in\{0,1\}$ | 该位置是否直接参与训练 | `response_mask` |
-| $r_{i,t}$ | 当前/行为策略的 token 概率比 | `ratio` |
-| $\operatorname{sg}$ | 当常数使用，停止沿该分支求导 | `.detach()` |
-| $\epsilon$、$\beta$ | 裁剪幅度；正则强度，含义依章节而定 | `clip_low/high`、`beta` |
+| $`x`$、$`h_t`$ | 问题；到第 t 步为止的全部历史 | `prompt`、`tokens` |
+| $`y_i`$、$`y_{i,t}`$ | 第 i 个回答；它的第 t 个 token | `Sample.tokens` |
+| $`\pi_\theta`$ | 正在训练、参数可变化的策略 | `policy`、`actor` |
+| $`\pi_{old}`$ | 生成这一批数据时的行为策略 | `old_log_probs` |
+| $`\pi_{ref}`$ | 通常固定的参考策略，控制偏离 | `ref_log_prob` |
+| $`\pi_T`$ | 给学生 token 打分的教师 | `teacher_log_probs` |
+| $`R_i`$、$`A_i`$ | 回答得分；相对基准的好坏信号 | `reward`、`advantages` |
+| $`m_{i,t}\in\{0,1\}`$ | 该位置是否直接参与训练 | `response_mask` |
+| $`r_{i,t}`$ | 当前/行为策略的 token 概率比 | `ratio` |
+| $`\mathrm{sg}`$ | 当常数使用，停止沿该分支求导 | `.detach()` |
+| $`\epsilon`$、$`\beta`$ | 裁剪幅度；正则强度，含义依章节而定 | `clip_low/high`、`beta` |
 
 “old”和“reference”可能初始化相同，但职责不同。Old 跟随采样批次更新；reference 常从训练开始固定。Teacher 也不等于 critic：teacher 给 token 概率，critic 估计未来回报。
 
 ## loss 为什么常带负号
 
-优化器通常执行 $\theta\leftarrow\theta-\eta\nabla_\theta L$，也就是减小 loss。若我们想增加一个好回答的概率，可以取 $L=-A\log\pi_\theta(y)$，其中 $A>0$。这时对 logprob 的导数是负数，沿梯度下降会推动它增大。$A<0$ 时方向相反。
+优化器通常执行 $`\theta\leftarrow\theta-\eta\nabla_\theta L`$，也就是减小 loss。若我们想增加一个好回答的概率，可以取 $`L=-A\log\pi_\theta(y)`$，其中 $`A\gt 0`$。这时对 logprob 的导数是负数，沿梯度下降会推动它增大。$`A\lt 0`$ 时方向相反。
 
 这只是理解局部方向的办法。模型参数是共享的，增加一个 token 概率会通过 softmax 和网络牵动其它概率；不能把每个 token 想成互不相干的独立旋钮。
 

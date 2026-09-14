@@ -44,9 +44,20 @@ def main():
         checks[prefix + "entry_link"] = "TUTORIAL.md" in (folder / "README.md").read_text(
             encoding="utf-8"
         )
+        math_fence_starts = len(
+            re.findall(r"^```math[ \t]*$", text, re.IGNORECASE | re.MULTILINE)
+        )
+        math_fence_blocks = len(
+            re.findall(
+                r"^```math[ \t]*\n.*?^```[ \t]*$",
+                text,
+                re.DOTALL | re.IGNORECASE | re.MULTILINE,
+            )
+        )
         checks[prefix + "math_and_code"] = (
-            text.count("$$") >= 2
-            and text.count("$$") % 2 == 0
+            math_fence_starts >= 1
+            and math_fence_starts == math_fence_blocks
+            and "$$" not in text
             and "```" in text
             and text.count("```") % 2 == 0
         )

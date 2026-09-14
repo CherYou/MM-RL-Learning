@@ -12,49 +12,61 @@
 
 SAC 在“获得任务奖励”之外，给“保留动作分布的多样性”一个明确价值。它不是让机器人无目的地乱动，而是让动作质量与确定性一起接受优化。
 
-$$J(\pi)=\mathbb E\left[\sum_t\gamma^t\{r_t+\alpha\mathcal H(\pi(\cdot\mid s_t))\}\right],\qquad
-\mathcal H(\pi)=\mathbb E_{a\sim\pi}[-\log\pi(a)].$$
+```math
+J(\pi)=\mathbb{E}\left[\sum_t\gamma^t\{r_t+\alpha\mathcal H(\pi(\cdot\mid s_t))\}\right],\qquad
+\mathcal H(\pi)=\mathbb{E}_{a\sim\pi}[-\log\pi(a)].
+```
 
-$\gamma$ 是折扣；$\alpha>0$ 决定熵的相对重要性；$\pi_\theta$ 是 actor。连续动作的熵是微分熵，可能为负，不能用“负熵一定是 bug”判断。
+$`\gamma`$ 是折扣；$`\alpha\gt 0`$ 决定熵的相对重要性；$`\pi_\theta`$ 是 actor。连续动作的熵是微分熵，可能为负，不能用“负熵一定是 bug”判断。
 
 ## 2. 一次训练更新到底使用什么数据
 
-环境返回 $(s,a,r,s',d)$，其中 $d$ 只指真正的任务终止。旧交互存进 replay buffer，之后随机抽一个 batch；所以 SAC 不要求每个更新都用刚生成的动作。**critic 拟合记录动作 $a$，actor 则在记录状态 $s$ 上重新采一个动作。** 两者不要混淆。
+环境返回 $`(s,a,r,s',d)`$，其中 $`d`$ 只指真正的任务终止。旧交互存进 replay buffer，之后随机抽一个 batch；所以 SAC 不要求每个更新都用刚生成的动作。**critic 拟合记录动作 $`a`$，actor 则在记录状态 $`s`$ 上重新采一个动作。** 两者不要混淆。
 
-两个 critic $Q_{\phi_1},Q_{\phi_2}$ 各自预测动作价值；慢速目标副本记作 $\bar\phi_1,\bar\phi_2$。对下一状态采样 $a'\sim\pi_\theta(\cdot\mid s')$，构造：
+两个 critic $`Q_{\phi_1},Q_{\phi_2}`$ 各自预测动作价值；慢速目标副本记作 $`\bar\phi_1,\bar\phi_2`$。对下一状态采样 $`a'\sim\pi_\theta(\cdot\mid s')`$，构造：
 
-$$y=r+\gamma(1-d)\left[\min_{j=1,2}Q_{\bar\phi_j}(s',a')-\alpha\log\pi_\theta(a'\mid s')\right].$$
+```math
+y=r+\gamma(1-d)\left[\min_{j=1,2}Q_{\bar\phi_j}(s',a')-\alpha\log\pi_\theta(a'\mid s')\right].
+```
 
-$$L_Q=\mathbb E_{\mathcal B}\left[(Q_{\phi_1}(s,a)-y)^2+(Q_{\phi_2}(s,a)-y)^2\right].$$
+```math
+L_Q=\mathbb{E}_{\mathcal B}\left[(Q_{\phi_1}(s,a)-y)^2+(Q_{\phi_2}(s,a)-y)^2\right].
+```
 
-取较小 Q 是抑制高估的设计，不保证这个最小值就是真实值。本次 $y$ 全部停止梯度。我们的 `truncated` 只切断 episode，不在上式关闭 bootstrap。
+取较小 Q 是抑制高估的设计，不保证这个最小值就是真实值。本次 $`y`$ 全部停止梯度。我们的 `truncated` 只切断 episode，不在上式关闭 bootstrap。
 
 ## 3. Actor loss、动作变换与温度 loss
 
-固定 critic 权重，在状态 $s$ 上用可求导采样得到 $\tilde a$：
+固定 critic 权重，在状态 $`s`$ 上用可求导采样得到 $`\tilde a`$：
 
-$$L_\pi=\mathbb E_{s\sim\mathcal B,\tilde a\sim\pi_\theta}
-\left[\alpha\log\pi_\theta(\tilde a\mid s)-\min_j Q_{\phi_j}(s,\tilde a)\right].$$
+```math
+L_\pi=\mathbb{E}_{s\sim\mathcal B,\tilde a\sim\pi_\theta}
+\left[\alpha\log\pi_\theta(\tilde a\mid s)-\min_j Q_{\phi_j}(s,\tilde a)\right].
+```
 
-最小化它，一方面希望 Q 高，另一方面希望熵高。这里的动作通过重参数化 $u=\mu+\sigma\epsilon,\tilde a=\tanh u$ 产生，梯度能沿 $Q\to a\to\theta$ 回传。`rsample()` 与普通 `sample()` 的差别在这里有实际作用。
+最小化它，一方面希望 Q 高，另一方面希望熵高。这里的动作通过重参数化 $`u=\mu+\sigma\epsilon,\tilde a=\tanh u`$ 产生，梯度能沿 $`Q\to a\to\theta`$ 回传。`rsample()` 与普通 `sample()` 的差别在这里有实际作用。
 
-`SquashedPolicy.corrected_log_prob` 计算高斯密度并减去 tanh 的 log-Jacobian。否则熵项和梯度都会错。动作已经归一化到 $[-1,1]^4$，没有额外的缩放 Jacobian；迁移到别的执行范围时需要重新处理。
+`SquashedPolicy.corrected_log_prob` 计算高斯密度并减去 tanh 的 log-Jacobian。否则熵项和梯度都会错。动作已经归一化到 $`[-1,1]^4`$，没有额外的缩放 Jacobian；迁移到别的执行范围时需要重新处理。
 
-温度用 $\ell=\log\alpha$ 参数化，本地实现采用常用的 log-temperature surrogate：
+温度用 $`\ell=\log\alpha`$ 参数化，本地实现采用常用的 log-temperature surrogate：
 
-$$L_\alpha=-\mathbb E\left[\ell\;\operatorname{stopgrad}(\log\pi(\tilde a\mid s)+\mathcal H_{\rm target})\right].$$
+```math
+L_\alpha=-\mathbb{E}\left[\ell\;\mathrm{stopgrad}(\log\pi(\tilde a\mid s)+\mathcal H_{\mathrm{target}})\right].
+```
 
-默认 $\mathcal H_{\rm target}=-4$，对应动作维数的启发式选择。它不是成功率目标，也不保证每个状态的熵精确相等。`learn_alpha: false` 可固定温度。
+默认 $`\mathcal H_{\mathrm{target}}=-4`$，对应动作维数的启发式选择。它不是成功率目标，也不保证每个状态的熵精确相等。`learn_alpha: false` 可固定温度。
 
 ## 4. 手算一条 transition
 
-设 $r=-1,\gamma=0.98,d=0$，下一动作的两个目标 Q 是 2 和 3，$\log\pi(a'\mid s')=-1,\alpha=0.2$。则：
+设 $`r=-1,\gamma=0.98,d=0`$，下一动作的两个目标 Q 是 2 和 3，$`\log\pi(a'\mid s')=-1,\alpha=0.2`$。则：
 
-$$y=-1+0.98(2-0.2\times(-1))=1.156.$$
+```math
+y=-1+0.98(2-0.2\times(-1))=1.156.
+```
 
-假设 actor 当前采样动作的最小 Q 为 1.5、log density 为 -0.7，那么这一样本的 actor loss 是 $0.2(-0.7)-1.5=-1.64$。loss 为负完全合理；我们关心梯度推动了什么。
+假设 actor 当前采样动作的最小 Q 为 1.5、log density 为 -0.7，那么这一样本的 actor loss 是 $`0.2(-0.7)-1.5=-1.64`$。loss 为负完全合理；我们关心梯度推动了什么。
 
-再看温度：如果平均 log density 是 5，目标熵为 -4，括号是 1，梯度下降会增大 $\ell$、增大熵权重；如果平均 log density 是 3，方向相反。这样可直接检查温度更新符号。
+再看温度：如果平均 log density 是 5，目标熵为 -4，括号是 1，梯度下降会增大 $`\ell`$、增大熵权重；如果平均 log density 是 3，方向相反。这样可直接检查温度更新符号。
 
 ## 5. 按数据流读本仓库代码
 
@@ -94,7 +106,7 @@ actor_loss = (alpha * log_prob - self.critic.minimum(states, proposed)).mean()
 
 ## 练习与答案
 
-1. 上面手算若 $d=1$，target 是多少？**-1，未来 Q 和熵都不再进入。**
+1. 上面手算若 $`d=1`$，target 是多少？**-1，未来 Q 和熵都不再进入。**
 2. Actor 更新时把 critic 前向放进 `no_grad()` 行吗？**不行；这会切断 Q 对动作的梯度。应只冻结 critic 参数。**
 3. SAC 的双 Q 应该取平均还是最小值？**本章目标和 actor 用最小值；平均是不同的设计。**
 4. 回放数据来自旧策略，是否需要在这里直接加 PPO ratio？**不需要；这不是 PPO 的重要性采样 surrogate。**

@@ -4,13 +4,15 @@
 
 ## 1. 先把一次交互说完整：MDP 与部分可观察环境
 
-强化学习中，学习者是 **agent**，可调参数的决策规则是 **policy**。时刻 $t$，环境处于状态 $s_t$，策略选动作 $a_t$，环境返回奖励 $r_t$ 和下一状态 $s_{t+1}$。MDP 的核心假设是：给定当前状态和动作，预测下一步不再需要更久的历史。
+强化学习中，学习者是 **agent**，可调参数的决策规则是 **policy**。时刻 $`t`$，环境处于状态 $`s_t`$，策略选动作 $`a_t`$，环境返回奖励 $`r_t`$ 和下一状态 $`s_{t+1}`$。MDP 的核心假设是：给定当前状态和动作，预测下一步不再需要更久的历史。
 
-$$s_{t+1}\sim P(\cdot\mid s_t,a_t),\qquad a_t\sim\pi_\theta(\cdot\mid s_t).$$
+```math
+s_{t+1}\sim P(\cdot\mid s_t,a_t),\qquad a_t\sim\pi_\theta(\cdot\mid s_t).
+```
 
-这里 $P$ 是环境动力学，$\theta$ 是神经网络权重。机器人发出移动命令后实际移动多少由物理环境决定，不能由训练脚本直接写成“成功”。
+这里 $`P`$ 是环境动力学，$`\theta`$ 是神经网络权重。机器人发出移动命令后实际移动多少由物理环境决定，不能由训练脚本直接写成“成功”。
 
-**观察 $o_t$ 不一定等于完整状态 $s_t$。** ALFWorld 只告诉你当前可见的物品；柜子里有没有杯子可能需要打开才能知道。此时决策依据应是历史 $h_t=(o_0,a_0,\ldots,o_t)$、记忆或循环网络，而不是假装单条观察包含所有信息。语言模型把历史串在上下文中，是处理部分可观察性的一种办法，不保证历史不会被截断。
+**观察 $`o_t`$ 不一定等于完整状态 $`s_t`$。** ALFWorld 只告诉你当前可见的物品；柜子里有没有杯子可能需要打开才能知道。此时决策依据应是历史 $`h_t=(o_0,a_0,\ldots,o_t)`$、记忆或循环网络，而不是假装单条观察包含所有信息。语言模型把历史串在上下文中，是处理部分可观察性的一种办法，不保证历史不会被截断。
 
 | 概念 | 语言模型章节 | 连续控制章节 |
 |---|---|---|
@@ -22,30 +24,38 @@ $$s_{t+1}\sim P(\cdot\mid s_t,a_t),\qquad a_t\sim\pi_\theta(\cdot\mid s_t).$$
 
 ## 2. 奖励不等于回报，回报不等于价值
 
-奖励 $r_t$ 是这一步给的分；折扣回报 $G_t$ 是从现在往后的总账：
+奖励 $`r_t`$ 是这一步给的分；折扣回报 $`G_t`$ 是从现在往后的总账：
 
-$$G_t=\sum_{k=0}^{T-t-1}\gamma^k r_{t+k},\quad 0\le\gamma\le1.$$
+```math
+G_t=\sum_{k=0}^{T-t-1}\gamma^k r_{t+k},\quad 0\le\gamma\le1.
+```
 
-假设奖励依次是 $[-1,-1,0]$，$\gamma=0.9$，那么 $G_0=-1-0.9=-1.9$。不能把最后的零分理解为“整条轨迹没有损失”；前两步仍然花了时间。
+假设奖励依次是 $`[-1,-1,0]`$，$`\gamma=0.9`$，那么 $`G_0=-1-0.9=-1.9`$。不能把最后的零分理解为“整条轨迹没有损失”；前两步仍然花了时间。
 
 价值是对未知未来的**预测平均值**：
 
-$$V^\pi(s)=\mathbb E_\pi[G_t\mid s_t=s],\qquad
-Q^\pi(s,a)=\mathbb E_\pi[G_t\mid s_t=s,a_t=a].$$
+```math
+V^\pi(s)=\mathbb{E}_\pi[G_t\mid s_t=s],\qquad
+Q^\pi(s,a)=\mathbb{E}_\pi[G_t\mid s_t=s,a_t=a].
+```
 
-$V$ 回答“站在这里一般怎么样”，$Q$ 回答“站在这里先做这个动作怎么样”。优势 $A^\pi(s,a)=Q^\pi(s,a)-V^\pi(s)$ 比较动作与该状态的通常水平。它与正确/错误标签不是同一种量：在很差的状态里，一个最终仍失败但相对更好的动作也可能有正优势。
+$`V`$ 回答“站在这里一般怎么样”，$`Q`$ 回答“站在这里先做这个动作怎么样”。优势 $`A^\pi(s,a)=Q^\pi(s,a)-V^\pi(s)`$ 比较动作与该状态的通常水平。它与正确/错误标签不是同一种量：在很差的状态里，一个最终仍失败但相对更好的动作也可能有正优势。
 
 ## 3. Bellman 方程：把长问题拆成一步
 
-$$Q^\pi(s,a)=\mathbb E\left[r+\gamma\mathbb E_{a'\sim\pi(\cdot\mid s')}Q^\pi(s',a')\right].$$
+```math
+Q^\pi(s,a)=\mathbb{E}\left[r+\gamma\mathbb{E}_{a'\sim\pi(\cdot\mid s')}Q^\pi(s',a')\right].
+```
 
-外层平均包括环境的随机性。这是一条价值的一致性关系，不是“拿一个模型当前的猜测当真理”。代码通常拿下一步预测构造临时标签 $y$，再拟合 $(Q_\theta-y)^2$，不断减少不一致。这个借助自己预测的过程叫 **bootstrap**，会传播信息，也会传播错误。
+外层平均包括环境的随机性。这是一条价值的一致性关系，不是“拿一个模型当前的猜测当真理”。代码通常拿下一步预测构造临时标签 $`y`$，再拟合 $`(Q_\theta-y)^2`$，不断减少不一致。这个借助自己预测的过程叫 **bootstrap**，会传播信息，也会传播错误。
 
-用 `target.detach()` 或 `torch.no_grad()` 固定本次标签，避免优化器同时通过标签一侧把问题改掉。目标网络 $\bar\theta$ 则进一步让标签变化慢一点：
+用 `target.detach()` 或 `torch.no_grad()` 固定本次标签，避免优化器同时通过标签一侧把问题改掉。目标网络 $`\bar\theta`$ 则进一步让标签变化慢一点：
 
-$$\bar\theta\leftarrow(1-\tau)\bar\theta+\tau\theta.$$
+```math
+\bar\theta\leftarrow(1-\tau)\bar\theta+\tau\theta.
+```
 
-本仓库 $\tau=0.005$ 表示每次只混入 0.5% 新参数。有些资料把同一个系数写成“保留旧参数的比例”0.995，读代码时必须看它乘在哪边。
+本仓库 $`\tau=0.005`$ 表示每次只混入 0.5% 新参数。有些资料把同一个系数写成“保留旧参数的比例”0.995，读代码时必须看它乘在哪边。
 
 ## 4. `terminated` 和 `truncated` 为什么要分开
 
@@ -53,29 +63,35 @@ $$\bar\theta\leftarrow(1-\tau)\bar\theta+\tau\theta.$$
 
 对把时间上限视为采样边界的持续任务，本仓库使用：
 
-$$y=r+\gamma(1-\text{terminated})V(s').$$
+```math
+y=r+\gamma(1-\text{terminated})V(s').
+```
 
-手算：$r=-1,V(s')=5,\gamma=0.9$。真正结束时 $y=-1$；只是时间到了时 $y=3.5$。把两种标记 OR 起来会把后一种也变成 -1。
+手算：$`r=-1,V(s')=5,\gamma=0.9`$。真正结束时 $`y=-1`$；只是时间到了时 $`y=3.5`$。把两种标记 OR 起来会把后一种也变成 -1。
 
 如果研究的是“必须在剩余 10 秒内完成”的有限时域任务，则时间本身应进入状态，最终时刻不再 bootstrap。不要把一种实现习惯搬到所有任务。FetchReach 中到达目标通常不会立刻结束 episode，所以还要分别记录“曾经到达”和“最后仍在目标内”。相关接口语义见 [Gymnasium 的时间上限说明](https://gymnasium.farama.org/tutorials/gymnasium_basics/handling_time_limits/)。
 
 ## 5. 概率、对数概率与连续动作密度
 
-离散策略对所有 token 的概率之和为 1。实际选到 token $y$ 后，训练经常需要 $\log\pi_\theta(y\mid h)$；它不是模型给整个词表的 logits。
+离散策略对所有 token 的概率之和为 1。实际选到 token $`y`$ 后，训练经常需要 $`\log\pi_\theta(y\mid h)`$；它不是模型给整个词表的 logits。
 
-$$\log\pi(y)=z_y-\log\sum_j\exp z_j.$$
+```math
+\log\pi(y)=z_y-\log\sum_j\exp z_j.
+```
 
 连续动作则用**概率密度**。精确采到某个实数点的概率为零，要讨论一个小区间的概率才有意义。密度可以大于 1，所以连续策略的 log density 可以为正，微分熵也可能为负。
 
-机器人执行范围有限时，SAC/IQL 使用 $u\sim\mathcal N(\mu,\sigma^2)$、$a=\tanh u$。变换后不能继续把高斯密度当动作密度：
+机器人执行范围有限时，SAC/IQL 使用 $`u\sim\mathcal N(\mu,\sigma^2)`$、$`a=\tanh u`$。变换后不能继续把高斯密度当动作密度：
 
-$$\log\pi(a\mid s)=\sum_j\left[\log\mathcal N(u_j;\mu_j,\sigma_j^2)-\log(1-\tanh^2u_j)\right].$$
+```math
+\log\pi(a\mid s)=\sum_j\left[\log\mathcal N(u_j;\mu_j,\sigma_j^2)-\log(1-\tanh^2u_j)\right].
+```
 
 第二项是变量变换的 Jacobian 修正。代码在 [networks.py](../src/agentic_rl/embodied/networks.py) 中用稳定等价式计算，避免动作接近边界时出现 `log(0)`。
 
 ## 6. 梯度下降、采样与 `detach`
 
-参数更新是 $\theta\leftarrow\theta-\eta\nabla_\theta L$。如果希望增大一个量 $J$，常令 $L=-J$；看负号比看 loss 是否为负更重要。
+参数更新是 $`\theta\leftarrow\theta-\eta\nabla_\theta L`$。如果希望增大一个量 $`J`$，常令 $`L=-J`$；看负号比看 loss 是否为负更重要。
 
 下面可以直接运行，观察“允许梯度流过动作”与“冻结目标”的差别：
 
@@ -91,13 +107,15 @@ print(loss.item(), theta.grad.item())  # 9.0, 18.0
 
 如果去掉 `detach()`，数值仍是 9，但梯度变成 12。这不是精度误差，是定义了不同的优化问题。
 
-SAC 用 $u=\mu_\theta(s)+\sigma_\theta(s)\epsilon$、$\epsilon\sim\mathcal N(0,I)$ 实现重参数化：随机性留给 $\epsilon$，动作对参数仍可求导。TD3 的 actor 更新也要经过 $Q(s,\mu_\theta(s))$ 对动作的导数。冻结 critic 参数与把整个 critic 放进 `no_grad()` 不等价：后者会一起切断 actor 所需的梯度。
+SAC 用 $`u=\mu_\theta(s)+\sigma_\theta(s)\epsilon`$、$`\epsilon\sim\mathcal N(0,I)`$ 实现重参数化：随机性留给 $`\epsilon`$，动作对参数仍可求导。TD3 的 actor 更新也要经过 $`Q(s,\mu_\theta(s))`$ 对动作的导数。冻结 critic 参数与把整个 critic 放进 `no_grad()` 不等价：后者会一起切断 actor 所需的梯度。
 
 ## 7. Mask、平均方式与样本究竟是谁
 
-语言模型训练里，prompt、padding、工具返回往往不属于要优化的动作。令 $m_{i,t}\in\{0,1\}$ 表示本次有效位置，token 平均是：
+语言模型训练里，prompt、padding、工具返回往往不属于要优化的动作。令 $`m_{i,t}\in\{0,1\}`$ 表示本次有效位置，token 平均是：
 
-$$\frac{\sum_{i,t}m_{i,t}\ell_{i,t}}{\sum_{i,t}m_{i,t}}.$$
+```math
+\frac{\sum_{i,t}m_{i,t}\ell_{i,t}}{\sum_{i,t}m_{i,t}}.
+```
 
 先对每条回答平均、再对回答平均，会让短回答和长回答总权重相同；直接把所有 token 平均，会让长回答贡献更多位置。这是目标定义的区别，见 [DAPO](../06-dapo/TUTORIAL.md)。
 
@@ -127,8 +145,8 @@ VLA 指视觉、语言和动作的联合建模。本仓库新增机械臂课使�
 
 ## 自测与参考答案
 
-1. 奖励 $[2,0,4]$、$\gamma=0.5$ 的初始回报是多少？**3**。
-2. $Q(s,a)=3,V(s)=5$，这个动作绝对回报为正，优势也为正吗？**不是，优势为 -2**。
+1. 奖励 $`[2,0,4]`$、$`\gamma=0.5`$ 的初始回报是多少？**3**。
+2. $`Q(s,a)=3,V(s)=5`$，这个动作绝对回报为正，优势也为正吗？**不是，优势为 -2**。
 3. 一条失败轨迹换成事后达到的目标，能否把原动作改成最短路径？**不能；HER 只改目标和相应标签，动作历史必须保真**。
 4. IQL 的训练数据没有某类抓取姿态，较高的训练权重能否保证学会它？**不能；权重不能创造缺失的覆盖**。
 5. `critic.requires_grad_(False)` 后，还能训练输入动作来自的 actor 吗？**能，只要前向图仍保留；冻结参数不等于关闭整个计算图**。

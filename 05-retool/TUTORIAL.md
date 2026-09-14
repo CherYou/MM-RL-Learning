@@ -10,7 +10,7 @@
 
 ## 一次具体的工具交互
 
-假设需要求 $1+2+\cdots+100$。模型可以输出：
+假设需要求 $`1+2+\cdots+100`$。模型可以输出：
 
 ```text
 <python>print(sum(range(1, 101)))</python>
@@ -22,14 +22,16 @@
 
 ## 关键公式与 loss
 
-一条轨迹写成 $\tau=(y_1,o_1,y_2,o_2,\ldots,y_K)$，$y_k$ 是模型生成段，$o_k$ 是执行结果。环境转换可以是离散、不可微的程序。Policy gradient 不要求对 Python 执行器求导。
+一条轨迹写成 $`\tau=(y_1,o_1,y_2,o_2,\ldots,y_K)`$，$`y_k`$ 是模型生成段，$`o_k`$ 是执行结果。环境转换可以是离散、不可微的程序。Policy gradient 不要求对 Python 执行器求导。
 
-本地对完整轨迹判分，组内计算 $A_i=(R_i-\bar R)/(\sigma+10^{-4})$，再优化：
+本地对完整轨迹判分，组内计算 $`A_i=(R_i-\bar R)/(\sigma+10^{-4})`$，再优化：
 
-$$L=-\frac1B\sum_i\frac1{\sum_tm_{i,t}}\sum_tm_{i,t}
-\min\{r_{i,t}A_i,\operatorname{clip}(r_{i,t},1-\epsilon_l,1+\epsilon_h)A_i\}.$$
+```math
+L=-\frac1B\sum_i\frac1{\sum_tm_{i,t}}\sum_tm_{i,t}
+\min\{r_{i,t}A_i,\mathrm{clip}(r_{i,t},1-\epsilon_l,1+\epsilon_h)A_i\}.
+```
 
-其中 $m=1$ 覆盖模型的代码、推理和回答；$m=0$ 覆盖题目及工具 observation。$r$ 比较当前与行为策略对相同已生成 token 的概率。Reward 并不直接进入代码执行器的梯度，而是重新加权生成这些 token 的概率。
+其中 $`m=1`$ 覆盖模型的代码、推理和回答；$`m=0`$ 覆盖题目及工具 observation。$`r`$ 比较当前与行为策略对相同已生成 token 的概率。Reward 并不直接进入代码执行器的梯度，而是重新加权生成这些 token 的概率。
 
 例子：一组两条轨迹，一条代码计算正确最终答对，另一条虽然代码运行成功但抄错最终答案，奖励为 `[1,0]`。优势近似 `[1,-1]`，第二条不会仅因工具没有报错就得到正向终局信号。
 

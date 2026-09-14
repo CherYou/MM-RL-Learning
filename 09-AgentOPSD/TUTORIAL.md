@@ -16,37 +16,47 @@ Student 正常与环境交互；Teacher 只复评这些实际动作 token。无�
 
 ## 第一步：把 token gap 累计为轮次证据
 
-对第 k 轮生成 token 集合 $\mathcal T_k$：
+对第 k 轮生成 token 集合 $`\mathcal T_k`$：
 
-$$e_k=\sum_{t\in\mathcal T_k}\left(\ell^T_t-\ell^{old}_t\right).$$
+```math
+e_k=\sum_{t\in\mathcal T_k}\left(\ell^T_t-\ell^{old}_t\right).
+```
 
 这里使用求和，不是每轮平均。教师在 Skill 条件下更支持这轮实际生成内容时，e 通常偏正；反之偏负。它是两份条件分布的对比，不是环境给出的真实成功概率。
 
 ## 第二步：递推一个有记忆的 belief
 
-以同题组平均成功率为初始 $b_0$，先夹到 $(\varepsilon,1-\varepsilon)$，避免取无穷 logit。设累计证据 $u_0=0$：
+以同题组平均成功率为初始 $`b_0`$，先夹到 $`(\varepsilon,1-\varepsilon)`$，避免取无穷 logit。设累计证据 $`u_0=0`$：
 
-$$u_k=\gamma u_{k-1}+e_k,\qquad
-b_k=\sigma\left(\log\frac{b_0}{1-b_0}+u_k\right),\quad \Delta b_k=b_k-b_{k-1}.$$
+```math
+u_k=\gamma u_{k-1}+e_k,\qquad
+b_k=\sigma\left(\log\frac{b_0}{1-b_0}+u_k\right),\quad \Delta b_k=b_k-b_{k-1}.
+```
 
-本地默认 $\gamma=0.95$。它是证据记忆衰减，不是这里的环境奖励折扣。即使某轮 e=0，旧证据也可能因为衰减而改变 belief；因此“本轮没新证据”不必意味着 $\Delta b=0$。
+本地默认 $`\gamma=0.95`$。它是证据记忆衰减，不是这里的环境奖励折扣。即使某轮 e=0，旧证据也可能因为衰减而改变 belief；因此“本轮没新证据”不必意味着 $`\Delta b=0`$。
 
-例子：$b_0=0.5,e_1=\log3\approx1.0986$，则 $b_1=0.75$，变化为 0.25。若下一轮 $e_2=0$，则 $u_2\approx1.0437,b_2\approx0.7396$，变化约 -0.0104。这种递推显式依赖历史。
+例子：$`b_0=0.5,e_1=\log3\approx1.0986`$，则 $`b_1=0.75`$，变化为 0.25。若下一轮 $`e_2=0`$，则 $`u_2\approx1.0437,b_2\approx0.7396`$，变化约 -0.0104。这种递推显式依赖历史。
 
 ## 第三步：改变力度，保持终局方向
 
-设轨迹的 GRPO 优势为 $A$。先按结果方向定义 $c_k=\operatorname{sign}(A)\Delta b_k$，对这条轨迹的轮次 c 做标准化得 $z_k$，再构造：
+设轨迹的 GRPO 优势为 $`A`$。先按结果方向定义 $`c_k=\mathrm{sign}(A)\Delta b_k`$，对这条轨迹的轮次 c 做标准化得 $`z_k`$，再构造：
 
-$$w_k=\operatorname{clip}(1+\rho z_k,1-\rho,1+\rho),$$
+```math
+w_k=\mathrm{clip}(1+\rho z_k,1-\rho,1+\rho),
+```
 
-$$\widetilde A_k=A[(1-\lambda)+\lambda w_k].$$
+```math
+\widetilde A_k=A[(1-\lambda)+\lambda w_k].
+```
 
-本地 $\rho=0.2,\lambda=0.5$，所以乘数落在 `[0.9,1.1]`。若 A=2，每轮优势在 `[1.8,2.2]`；若 A=−2，则在 `[−2.2,−1.8]`。A=0 的退化组仍为零，不能被 Skill 凭空变成正负监督。
+本地 $`\rho=0.2,\lambda=0.5`$，所以乘数落在 `[0.9,1.1]`。若 A=2，每轮优势在 `[1.8,2.2]`；若 A=−2，则在 `[−2.2,−1.8]`。A=0 的退化组仍为零，不能被 Skill 凭空变成正负监督。
 
-**Loss 仍是裁剪 policy loss**，只是把每个 token 的 $A_i$ 替换为所属轮次的 $\widetilde A_{i,k(t)}$：
+**Loss 仍是裁剪 policy loss**，只是把每个 token 的 $`A_i`$ 替换为所属轮次的 $`\widetilde A_{i,k(t)}`$：
 
-$$L=-\frac1B\sum_i\frac1{T_i}\sum_tm_{i,t}
-\min(r_{i,t}\widetilde A_{i,k(t)},\operatorname{clip}(r_{i,t},1-\epsilon_l,1+\epsilon_h)\widetilde A_{i,k(t)}).$$
+```math
+L=-\frac1B\sum_i\frac1{T_i}\sum_tm_{i,t}
+\min(r_{i,t}\widetilde A_{i,k(t)},\mathrm{clip}(r_{i,t},1-\epsilon_l,1+\epsilon_h)\widetilde A_{i,k(t)}).
+```
 
 ## 从代码到数组
 

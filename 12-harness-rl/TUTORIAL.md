@@ -24,27 +24,35 @@
 
 ## 先看优势，再看两个 loss
 
-本地终局奖励是有效 Summary artifact 指示乘答案 token-F1。同题轨迹的终局奖励先组内标准化为 $A_i^{out}$。对相同调用轮次的候选，过程奖励再标准化为 $A_{i,k}^{proc}$：
+本地终局奖励是有效 Summary artifact 指示乘答案 token-F1。同题轨迹的终局奖励先组内标准化为 $`A_i^{out}`$。对相同调用轮次的候选，过程奖励再标准化为 $`A_{i,k}^{proc}`$：
 
-$$A_{i,k}=A_i^{out}+c_pA_{i,k}^{proc}.$$
+```math
+A_{i,k}=A_i^{out}+c_pA_{i,k}^{proc}.
+```
 
-当前过程奖励标记成功检索/数值调用，不是对推理质量的全能裁判。$c_p$ 默认 0.1。只有一条候选的轮次、或过程奖励全相同，过程标准化项为零。
+当前过程奖励标记成功检索/数值调用，不是对推理质量的全能裁判。$`c_p`$ 默认 0.1。只有一条候选的轮次、或过程奖励全相同，过程标准化项为零。
 
-令 $m^a,m^g$ 分别为 action 与 args mask，定义共同的 clipped surrogate $C_{i,t}=\min(rA,\operatorname{clip}(r)A)$：
+令 $`m^a,m^g`$ 分别为 action 与 args mask，定义共同的 clipped surrogate $`C_{i,t}=\min(rA,\mathrm{clip}(r)A)`$：
 
-$$L_a=-\frac{\sum m^aC}{\sum m^a},\qquad L_g=-\frac{\sum m^gC}{\sum m^g}.$$
+```math
+L_a=-\frac{\sum m^aC}{\sum m^a},\qquad L_g=-\frac{\sum m^gC}{\sum m^g}.
+```
 
 两类各自用全局有效字段 token 数作分母。然后 CAPO 将梯度投影：
 
-$$g=M_a\odot\nabla_\theta L_a+M_g\odot\nabla_\theta L_g.$$
+```math
+g=M_a\odot\nabla_\theta L_a+M_g\odot\nabla_\theta L_g.
+```
 
 这是先分别反传、再按参数选择，不是把 action/args 两个 loss 相加后随便屏蔽一次。
 
 ## 一个四参数手算例子
 
-设 $g_a=[1,2,3,4],g_g=[10,20,30,40]$，$M_a=[1,1,0,0]$，$M_g=[0,1,1,0]$，则合成梯度：
+设 $`g_a=[1,2,3,4],g_g=[10,20,30,40]`$，$`M_a=[1,1,0,0]`$，$`M_g=[0,1,1,0]`$，则合成梯度：
 
-$$g=[1,22,30,0].$$
+```math
+g=[1,22,30,0].
+```
 
 第二个参数属于交集，收到 2+20；第四个参数两个 mask 都为零，因此不更新。Token mask 不重叠与这里的参数交集没有冲突。
 

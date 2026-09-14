@@ -10,41 +10,51 @@
 
 想象你要选末端向右移动多少。critic 在 0.42 附近因为样本少，错误地预测了一座“高分尖峰”。actor 的工作恰好是寻找让 critic 评分最高的动作，于是会积极钻进这个误差。下次 bootstrap 又使用这个高分，错误可能继续传播。
 
-TD3 不依赖熵项，而是从预测和更新节奏上减少这样的反馈。它是确定性策略：$a=\mu_\theta(s)$。训练采集数据时另外加探索噪声；评估时直接用 $\mu_\theta(s)$。
+TD3 不依赖熵项，而是从预测和更新节奏上减少这样的反馈。它是确定性策略：$`a=\mu_\theta(s)`$。训练采集数据时另外加探索噪声；评估时直接用 $`\mu_\theta(s)`$。
 
 ## 2. 三个改动怎样写成公式
 
 **目标动作平滑**先产生一个附近的动作：
 
-$$\epsilon\sim\mathcal N(0,\sigma^2I),\quad
-\tilde a'=\operatorname{clip}\big(\mu_{\bar\theta}(s')+
-\operatorname{clip}(\epsilon,-c,c),-1,1\big).$$
+```math
+\epsilon\sim\mathcal N(0,\sigma^2I),\quad
+\tilde a'=\mathrm{clip}\big(\mu_{\bar\theta}(s')+
+\mathrm{clip}(\epsilon,-c,c),-1,1\big).
+```
 
-这里是慢速目标 actor $\bar\theta$；$\sigma$ 控制扰动大小，$c$ 限制极端噪声。每次取一个随机扰动，通过重复抽样近似在邻域中平滑价值，不是一次前向遍历所有附近动作。
+这里是慢速目标 actor $`\bar\theta`$；$`\sigma`$ 控制扰动大小，$`c`$ 限制极端噪声。每次取一个随机扰动，通过重复抽样近似在邻域中平滑价值，不是一次前向遍历所有附近动作。
 
 **双 critic 取小**构造 bootstrap 标签：
 
-$$y=r+\gamma(1-d)\min\{Q_{\bar\phi_1}(s',\tilde a'),Q_{\bar\phi_2}(s',\tilde a')\},$$
+```math
+y=r+\gamma(1-d)\min\{Q_{\bar\phi_1}(s',\tilde a'),Q_{\bar\phi_2}(s',\tilde a')\},
+```
 
-$$L_Q=\mathbb E[(Q_{\phi_1}(s,a)-y)^2+(Q_{\phi_2}(s,a)-y)^2].$$
+```math
+L_Q=\mathbb{E}[(Q_{\phi_1}(s,a)-y)^2+(Q_{\phi_2}(s,a)-y)^2].
+```
 
-$d$ 是真正终止，$\bar\phi$ 是目标网络参数。两个 critic 的结构相同但初始化独立、权重独立；如果只是同一网络调用两次，就没有双估计的意义。
+$`d`$ 是真正终止，$`\bar\phi`$ 是目标网络参数。两个 critic 的结构相同但初始化独立、权重独立；如果只是同一网络调用两次，就没有双估计的意义。
 
-**延迟 actor 更新**：每 $K$ 次 critic 更新后，最小化
+**延迟 actor 更新**：每 $`K`$ 次 critic 更新后，最小化
 
-$$L_\pi=-\mathbb E_{s\sim\mathcal B}[Q_{\phi_1}(s,\mu_\theta(s))].$$
+```math
+L_\pi=-\mathbb{E}_{s\sim\mathcal B}[Q_{\phi_1}(s,\mu_\theta(s))].
+```
 
-注意 actor 使用第一个 critic，target 使用两个 critic 的最小值。每次 actor 更新后，才将 actor 和双 critic 的慢速副本向当前参数移动：$\bar\theta\leftarrow(1-\tau)\bar\theta+\tau\theta$，critic 同理。
+注意 actor 使用第一个 critic，target 使用两个 critic 的最小值。每次 actor 更新后，才将 actor 和双 critic 的慢速副本向当前参数移动：$`\bar\theta\leftarrow(1-\tau)\bar\theta+\tau\theta`$，critic 同理。
 
 ## 3. 手算：同一动作的两个分数
 
-令 $r=-1,\gamma=0.9,d=0$，平滑后的目标动作得到两项 Q：5 和 8。
+令 $`r=-1,\gamma=0.9,d=0`$，平滑后的目标动作得到两项 Q：5 和 8。
 
-$$y=-1+0.9\min(5,8)=3.5.$$
+```math
+y=-1+0.9\min(5,8)=3.5.
+```
 
 如果直接采用较高的 8，标签变成 6.2，误差已经多出 2.7。取小的目标也可能偏低，所以 TD3 不是消灭一切误差，而是控制 actor 最容易利用的高估方向。
 
-再看平滑：目标 actor 输出 0.9，采到噪声 0.4、$c=0.2$。先把噪声截成 0.2，再把动作 $0.9+0.2$ 截成 1。不要先截动作、后无界地加噪声。
+再看平滑：目标 actor 输出 0.9，采到噪声 0.4、$`c=0.2`$。先把噪声截成 0.2，再把动作 $`0.9+0.2`$ 截成 1。不要先截动作、后无界地加噪声。
 
 ## 4. 两种噪声和两种时间轴
 
@@ -96,7 +106,7 @@ SAC 学随机策略并显式优化熵；TD3 学确定性策略，在交互时外
 
 ## 练习与答案
 
-1. $K=2$，第 5 次 critic 更新是否更新 actor？**不更新，第 6 次才更新。**
+1. $`K=2`$，第 5 次 critic 更新是否更新 actor？**不更新，第 6 次才更新。**
 2. actor loss 用双 Q 的平均值吗？**本实现用第一个 Q；不要从 target 的写法推断 actor 的写法。**
 3. 评估动作是否添加 target smoothing noise？**不添加，目标平滑属于训练标签计算。**
 4. 一个 episode 超时，是否要将该 transition 的 bootstrap 清零？**本 FetchReach 约定不清零，只在 terminated 时清零。**

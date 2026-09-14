@@ -20,12 +20,16 @@
 
 ## 手算一组优势
 
-设四个回答的奖励是 $R=[1,1,0,0]$：
+设四个回答的奖励是 $`R=[1,1,0,0]`$：
 
-$$\bar R=\frac1G\sum_iR_i=0.5,\quad
-\sigma=\sqrt{\frac1G\sum_i(R_i-\bar R)^2}=0.5,$$
+```math
+\bar R=\frac1G\sum_iR_i=0.5,\quad
+\sigma=\sqrt{\frac1G\sum_i(R_i-\bar R)^2}=0.5,
+```
 
-$$A_i=\frac{R_i-\bar R}{\sigma+10^{-4}}\approx[1,1,-1,-1].$$
+```math
+A_i=\frac{R_i-\bar R}{\sigma+10^{-4}}\approx[1,1,-1,-1].
+```
 
 这份仓库用总体标准差，代码中的 `correction=0` 对应分母 G，而非 G−1。不能和使用样本标准差的其它实现直接比数值。
 
@@ -35,17 +39,23 @@ $$A_i=\frac{R_i-\bar R}{\sigma+10^{-4}}\approx[1,1,-1,-1].$$
 
 对于回答 i 的有效生成 token t，设：
 
-$$r_{i,t}=\exp(\ell_{i,t}-\ell^{old}_{i,t}),\quad
-c_{i,t}=\min\!\left(r_{i,t}A_i,\operatorname{clip}(r_{i,t},1-\epsilon_l,1+\epsilon_h)A_i\right).$$
+```math
+r_{i,t}=\exp(\ell_{i,t}-\ell^{old}_{i,t}),\quad
+c_{i,t}=\min\!\left(r_{i,t}A_i,\mathrm{clip}(r_{i,t},1-\epsilon_l,1+\epsilon_h)A_i\right).
+```
 
-该回答所有生成 token 共用 $A_i$。本地 GRPO 的序列归一化目标为：
+该回答所有生成 token 共用 $`A_i`$。本地 GRPO 的序列归一化目标为：
 
-$$L=-\frac1B\sum_{i=1}^B\frac1{T_i}\sum_t m_{i,t}c_{i,t}
-+\beta\frac1B\sum_{i=1}^B\frac1{T_i}\sum_t m_{i,t}k_{i,t},\qquad T_i=\sum_tm_{i,t}.$$
+```math
+L=-\frac1B\sum_{i=1}^B\frac1{T_i}\sum_t m_{i,t}c_{i,t}
++\beta\frac1B\sum_{i=1}^B\frac1{T_i}\sum_t m_{i,t}k_{i,t},\qquad T_i=\sum_tm_{i,t}.
+```
 
 B 是本次更新有效回答数，题目数乘 G；空 mask 的回答排除。第一项鼓励相对更好的回答，第二项限制偏离固定 reference。仓库用的逐样本 KL 形式为：
 
-$$d=\ell^{ref}-\ell,\qquad k=e^d-d-1.$$
+```math
+d=\ell^{ref}-\ell,\qquad k=e^d-d-1.
+```
 
 它是 KL 的采样估计形式，不是“将整个词表的 KL 精确求和”。本次 GPU 检查设置 `beta=0`，未启用此正则。
 
@@ -92,7 +102,7 @@ optimizer.step()
 .venv/bin/arl train 01-grpo/verl.yaml --smoke --verl-workers 2
 ```
 
-手算题：G=4，奖励 `[1,0,0,0]`，优势近似是多少？答案：均值 0.25，标准差 $\sqrt{0.1875}\approx0.4330$，正确项约 1.7317，错误项各约 -0.5772，已包含 $10^{-4}$。这说明“一次成功”在罕见成功组中的标准化幅度更大。
+手算题：G=4，奖励 `[1,0,0,0]`，优势近似是多少？答案：均值 0.25，标准差 $`\sqrt{0.1875}\approx0.4330`$，正确项约 1.7317，错误项各约 -0.5772，已包含 $`10^{-4}`$。这说明“一次成功”在罕见成功组中的标准化幅度更大。
 
 我的判断：调 GRPO 时，先检查每道题能否产生有差异的回答，再调整 loss 超参数。没有差异时，把学习率调大只会放大其它噪声或正则；增加 G、调整题目难度和改善奖励可观测性才更直接。这个判断来自上面的梯度结构，不是本仓库已经测得的性能结论。
 

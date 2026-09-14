@@ -10,9 +10,11 @@ ALFWorld 是环境，不是一个独立的 loss 名称。模型收到家庭任�
 
 ## 从 MDP 到部分可观测历史
 
-环境真实状态 s 包括物体位置、容器状态等；模型通常只看到观察 o。打开柜子之前，不一定知道里面有什么。因此策略依据的是历史 $h_k=(o_0,a_0,o_1,\ldots,o_k)$：
+环境真实状态 s 包括物体位置、容器状态等；模型通常只看到观察 o。打开柜子之前，不一定知道里面有什么。因此策略依据的是历史 $`h_k=(o_0,a_0,o_1,\ldots,o_k)`$：
 
-$$a_k\sim\pi_\theta(\cdot\mid h_k),\quad s_{k+1}\sim P(\cdot\mid s_k,a_k),\quad o_{k+1}\sim O(\cdot\mid s_{k+1}).$$
+```math
+a_k\sim\pi_\theta(\cdot\mid h_k),\quad s_{k+1}\sim P(\cdot\mid s_k,a_k),\quad o_{k+1}\sim O(\cdot\mid s_{k+1}).
+```
 
 MDP/POMDP 的基础定义见 [preliminary](../preliminary/FOUNDATIONS.md)。本章把一个动作编码成一段文字，例如 `<action>open cabinet 1</action>`，不是直接输出电机控制量。
 
@@ -29,10 +31,12 @@ MDP/POMDP 的基础定义见 [preliminary](../preliminary/FOUNDATIONS.md)。本�
 
 ## 本章的 GRPO 更新
 
-从同一任务初始化 G 份独立环境，得到完整轨迹奖励 $R_i$。计算 $A_i=(R_i-\bar R)/(\sigma_R+10^{-4})$，动作生成 token 共用轨迹优势：
+从同一任务初始化 G 份独立环境，得到完整轨迹奖励 $`R_i`$。计算 $`A_i=(R_i-\bar R)/(\sigma_R+10^{-4})`$，动作生成 token 共用轨迹优势：
 
-$$L=-\frac1B\sum_i\frac1{T_i}\sum_tm_{i,t}
-\min(r_{i,t}A_i,\operatorname{clip}(r_{i,t},1-\epsilon_l,1+\epsilon_h)A_i).$$
+```math
+L=-\frac1B\sum_i\frac1{T_i}\sum_tm_{i,t}
+\min(r_{i,t}A_i,\mathrm{clip}(r_{i,t},1-\epsilon_l,1+\epsilon_h)A_i).
+```
 
 每轮环境观察和 admissible actions 是输入条件，mask=0；模型生成的动作文本 mask=1。环境不给梯度，训练只重新计算已生成动作文字的概率。
 

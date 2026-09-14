@@ -132,160 +132,160 @@
   "tutorials": [
     {
       "chapter": "preliminary",
-      "tutorial_sha256": "aba8d6d8b958c14ba1f261f9b8889ac256438e60dcb23b28a21ba65806700b19",
-      "characters": 3128,
+      "tutorial_sha256": "70c0bd360490b0a825b7b8dfe3e1a4842c9680daca1b834ad535c760b8b64de1",
+      "characters": 3190,
       "image": [
         "../docs/assets/algorithms/loss.png"
       ]
     },
     {
       "chapter": "001-ppo",
-      "tutorial_sha256": "a5e08c2d0032ab74824a1a03ab8e6f8495b328f3460f020c515375233b552ed5",
-      "characters": 3609,
+      "tutorial_sha256": "4e8ef052439c233fb79ac0b4e00155d711de32bc87040266451c144143726554",
+      "characters": 3682,
       "image": [
         "../docs/assets/algorithms/ppo.png"
       ]
     },
     {
       "chapter": "002-dpo",
-      "tutorial_sha256": "f697c5f926691704f5a5367a0c77b0440acf6042c68340339121b1969b3f0c63",
-      "characters": 3493,
+      "tutorial_sha256": "ee7ecf3c9a3252e1c4c173a42bb3a8ff4da3608e389e9d075202dc4178f1c7da",
+      "characters": 3548,
       "image": [
         "../docs/assets/algorithms/dpo.png"
       ]
     },
     {
       "chapter": "01-grpo",
-      "tutorial_sha256": "4cbc17fc15b59b3f39c2cc75cb5e7607e9cafd8cf20fa3352bf007ed2bb658b7",
-      "characters": 3820,
+      "tutorial_sha256": "e4a96f029c1a724af2cb7457fbe6505983f997178c5b0feddae01964fabff917",
+      "characters": 3862,
       "image": [
         "../docs/assets/algorithms/grpo.png"
       ]
     },
     {
       "chapter": "02-opd",
-      "tutorial_sha256": "a1263d46c8451301b17180f90ae3803df1605ffffd8aed0a814e720d433ca43c",
-      "characters": 3533,
+      "tutorial_sha256": "edd56338599bbc64c9311a3cbc3e0e21032792d2442f71695f147dd19a7b8b2e",
+      "characters": 3560,
       "image": [
         "../docs/assets/algorithms/medical-opd.png"
       ]
     },
     {
       "chapter": "02-opd/general-opd",
-      "tutorial_sha256": "3028af876ddae3974586f5f05ea026c6f3c13dcc88e4f16ce046bcec853cac46",
-      "characters": 3108,
+      "tutorial_sha256": "3ac73631404c78ffa69c8ba95e590550815678f148630e17a8522021a7ce669d",
+      "characters": 3133,
       "image": [
         "../../docs/assets/algorithms/general-opd.png"
       ]
     },
     {
       "chapter": "03-search-r1",
-      "tutorial_sha256": "a63d55aff5d3715665a895d3ef6b4c925979cfd4f8f8de9cac1816f73865b8e8",
-      "characters": 2614,
+      "tutorial_sha256": "4fdb7f718e23203393d5ed4464818857a4a1a0fab1b962d4155ecd9df7a75224",
+      "characters": 2636,
       "image": [
         "../docs/assets/algorithms/search-r1.png"
       ]
     },
     {
       "chapter": "04-opsd",
-      "tutorial_sha256": "0d3b2ccecc838691f6b12ccb9786641e6d99ee02ced2a16e5e71aafebbbc99ca",
-      "characters": 3401,
+      "tutorial_sha256": "6627aee09aed4ad056f93d54b118a8d2ffce0f1295b713c2f0cb66ca4ff3d3eb",
+      "characters": 3423,
       "image": [
         "../docs/assets/algorithms/opsd.png"
       ]
     },
     {
       "chapter": "05-retool",
-      "tutorial_sha256": "ba52c179624f965864095f9aa9b118dcb8518f413bc33f761d87af50a7c32030",
-      "characters": 2567,
+      "tutorial_sha256": "1f910a7c1d786be4b47cabcb3b8cb1b3a633979d4b1e22d16fd35fbcfd32cb54",
+      "characters": 2585,
       "image": [
         "../docs/assets/algorithms/retool.png"
       ]
     },
     {
       "chapter": "06-dapo",
-      "tutorial_sha256": "3f5ad36ac7836df3a362683b006bc75fd24c94eab3c010a21a048e6336d3f033",
-      "characters": 3401,
+      "tutorial_sha256": "0fe3f22c18f73a800d1fd99b6c0b624a12eea53f6e9f468bb41ca465483ea742",
+      "characters": 3419,
       "image": [
         "../docs/assets/algorithms/dapo.png"
       ]
     },
     {
       "chapter": "07-gspo",
-      "tutorial_sha256": "f31a238496711244b914819d8c1178acecf6a57f190bd34d21b90edce3b68519",
-      "characters": 3014,
+      "tutorial_sha256": "7b5273f94a4cb9aba9ad34e2ebcab42dce05d0111977591c43a38699d3831944",
+      "characters": 3054,
       "image": [
         "../docs/assets/algorithms/gspo.png"
       ]
     },
     {
       "chapter": "08-alfworld",
-      "tutorial_sha256": "c928b4c1bfec4f4767bc245e62549dbc7415e801924bfddcd2d4d22415c55dbb",
-      "characters": 2726,
+      "tutorial_sha256": "8bc9c65b42d4c059556d1131c846ffc489874c3e1511ff988ed28ae655d7f7ca",
+      "characters": 2742,
       "image": [
         "../docs/assets/algorithms/alfworld.png"
       ]
     },
     {
       "chapter": "09-AgentOPSD",
-      "tutorial_sha256": "a8bedc420b70aa8da478e5a58feebbe373cadd0d82129d483aca6ad074c15d64",
-      "characters": 3074,
+      "tutorial_sha256": "b6c216152c665a94862b4f066d663aa903bcab397e5f8029980196ca100c6b11",
+      "characters": 3128,
       "image": [
         "../docs/assets/algorithms/agentopsd.png"
       ]
     },
     {
       "chapter": "09-tempo",
-      "tutorial_sha256": "7c282cfece542c6f0930b120d0913e15d5eaa63cef681d8868f690e0415e868f",
-      "characters": 2954,
+      "tutorial_sha256": "c899e17b252e169ef77c0379fe4a0a956d23ef03c84f62757dcf77749927f5d0",
+      "characters": 2986,
       "image": [
         "../docs/assets/algorithms/tempo.png"
       ]
     },
     {
       "chapter": "09-vision-grpo",
-      "tutorial_sha256": "51617bc21b40411bf2621e93ae820aefa48ee735174ab925de48cdf2b5c37e02",
-      "characters": 2731,
+      "tutorial_sha256": "7aae38b1b44facdd67b787a5161079a043087b0098704f4a8f23a8adfaea4d38",
+      "characters": 2753,
       "image": [
         "../docs/assets/algorithms/vision-grpo.png"
       ]
     },
     {
       "chapter": "12-harness-rl",
-      "tutorial_sha256": "75911b83ec32d149e6eeb54dcc2dda37f452e7e34f6d992b7c41e2c65047580a",
-      "characters": 3138,
+      "tutorial_sha256": "2d28134306e47eefa60a3c922a5a3875bbba2468335f2ae69fe185c1f3793152",
+      "characters": 3180,
       "image": [
         "../docs/assets/algorithms/harness-rl.png"
       ]
     },
     {
       "chapter": "13-sac",
-      "tutorial_sha256": "0071402180062f57db90951a468eeeeef77812ab4afa8bf9796864d9941c7354",
-      "characters": 4453,
+      "tutorial_sha256": "0eefb926c1786fb365b67d4b1274ed0ef4855c15437cc521564cfdb6eb15f1e2",
+      "characters": 4559,
       "image": [
         "../docs/assets/algorithms/sac.png"
       ]
     },
     {
       "chapter": "14-td3",
-      "tutorial_sha256": "47c73037a5b6ee07b3cf6b3a672c0e3efb4b7fdbfb1409c2ebef89f529ed6eb7",
-      "characters": 3752,
+      "tutorial_sha256": "8acbc86e50211dd5369abd7ae0b99b47356dc386677c994335e10d6daf11d8f0",
+      "characters": 3808,
       "image": [
         "../docs/assets/algorithms/td3.png"
       ]
     },
     {
       "chapter": "15-her",
-      "tutorial_sha256": "393edbe0b0c9b769cdd457beb52879eca04476205b7f949e66d8784f1378b0b9",
-      "characters": 3878,
+      "tutorial_sha256": "aeeadf791ef08c3bcc1ce1daa17081bcda20c7c10ee9b907e144c4065a22089d",
+      "characters": 3945,
       "image": [
         "../docs/assets/algorithms/her.png"
       ]
     },
     {
       "chapter": "16-iql",
-      "tutorial_sha256": "acad7d40949ffecb7be9d1606685d2470f50b6976d100cb8aa14d887bb88f0b3",
-      "characters": 4279,
+      "tutorial_sha256": "fe6148387cc546961199b0ef42f48ffbc849b5f73b5154fba3a708f3b3cc5a4f",
+      "characters": 4376,
       "image": [
         "../docs/assets/algorithms/iql.png"
       ]

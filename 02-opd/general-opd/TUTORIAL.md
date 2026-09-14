@@ -22,16 +22,22 @@
 
 在固定历史 h 上，学生分布为 p，冻结教师分布为 q。反向 KL 定义为：
 
-$$D_{KL}(p\|q)=\sum_v p(v\mid h)\log\frac{p(v\mid h)}{q(v\mid h)}.$$
+```math
+D_{KL}(p\|q)=\sum_v p(v\mid h)\log\frac{p(v\mid h)}{q(v\mid h)}.
+```
 
 v 遍历词表；这条式子是分布层面的目标。全词表求和很贵，本地实现只记录学生采到的 token：
 
-$$d_t=\operatorname{sg}(\ell^{old}_t-\ell^T_t),\qquad
-r_t=\exp(\ell_t-\operatorname{sg}(\ell^{old}_t)).$$
+```math
+d_t=\mathrm{sg}(\ell^{old}_t-\ell^T_t),\qquad
+r_t=\exp(\ell_t-\mathrm{sg}(\ell^{old}_t)).
+```
 
-固定历史下，KL 的 score-function 梯度中可写出 $\mathbb E_p[(\log p-\log q)\nabla\log p]$；额外的常数 1 项期望梯度为零。由此得到本章采用的局部 token 采样 surrogate：
+固定历史下，KL 的 score-function 梯度中可写出 $`\mathbb{E}_p[(\log p-\log q)\nabla\log p]`$；额外的常数 1 项期望梯度为零。由此得到本章采用的局部 token 采样 surrogate：
 
-$$L_{OPD}=\frac{\sum_t m_t r_t d_t}{\sum_t m_t}.$$
+```math
+L_{OPD}=\frac{\sum_t m_t r_t d_t}{\sum_t m_t}.
+```
 
 这是学生轨迹上的 token 级近似训练目标。长序列中历史分布也会随策略改变，因此不要把这个简式称为任意多轮序列 KL 的完整无偏梯度，更不要与全词表 KL 数值混为一谈。
 
@@ -39,9 +45,11 @@ $$L_{OPD}=\frac{\sum_t m_t r_t d_t}{\sum_t m_t}.$$
 
 学生采到了 token“18”，采样时概率为 0.2，教师在相同历史下给它 0.4：
 
-$$d=\log(0.2)-\log(0.4)=\log(0.5)\approx-0.6931.$$
+```math
+d=\log(0.2)-\log(0.4)=\log(0.5)\approx-0.6931.
+```
 
-刚开始更新时当前策略等于采样策略，r=1，因而 $\partial L/\partial\ell=rd=-0.6931$，梯度下降推动学生提高该 token 的概率。
+刚开始更新时当前策略等于采样策略，r=1，因而 $`\partial L/\partial\ell=rd=-0.6931`$，梯度下降推动学生提高该 token 的概率。
 
 若教师只给 0.1，则 d=+0.6931，方向反转。它反映“学生相对教师是否过度偏好这个 token”，不是直接回答它是否数学正确。
 

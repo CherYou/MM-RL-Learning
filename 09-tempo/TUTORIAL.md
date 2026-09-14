@@ -10,11 +10,13 @@
 
 ## 一段路的回报由两部分组成
 
-从相同起点分出 G 条短轨迹。第 i 条段内得到奖励 $r_i$，若还没结束，估计段末未来价值 $v_i$；真实终局未来价值为零：
+从相同起点分出 G 条短轨迹。第 i 条段内得到奖励 $`r_i`$，若还没结束，估计段末未来价值 $`v_i`$；真实终局未来价值为零：
 
-$$q_i=r_i+(1-d_i)v_i,\qquad G=\frac1n\sum_iq_i,\qquad A_i=q_i-G.$$
+```math
+q_i=r_i+(1-d_i)v_i,\qquad G=\frac1n\sum_iq_i,\qquad A_i=q_i-G.
+```
 
-这里 G 表示共享起点的 TD target，n 是分支数，避免与其他章节的 group size 符号混淆。本地采用不折扣的段内累计/任务成功设定，不额外乘 $\gamma^H$；不要把公式当成所有奖励定义下的通用宏步 return。
+这里 G 表示共享起点的 TD target，n 是分支数，避免与其他章节的 group size 符号混淆。本地采用不折扣的段内累计/任务成功设定，不额外乘 $`\gamma^H`$；不要把公式当成所有奖励定义下的通用宏步 return。
 
 手算：三个分支的段内奖励 `[0,0,1]`，终点 value `[0.2,0.6,0.9]`，第三条已成功终局。有效 return 是 `[0.2,0.6,1.0]`，而不是 `[0.2,0.6,1.9]`；目标 G=0.6，actor 优势为 `[-0.4,0,0.4]`。
 
@@ -22,14 +24,18 @@ $$q_i=r_i+(1-d_i)v_i,\qquad G=\frac1n\sum_iq_i,\qquad A_i=q_i-G.$$
 
 本章不是在模型顶上加一个线性 value head。**同一语言模型**以 critic prompt 生成 `<value>0到1之间的数</value>`，将它解析为成功概率估计。当前起点的多个 critic 回答，对照上面得到的 G 打分：
 
-$$r_j^V=-|v_j-G|,\qquad A_j^V=r_j^V-\overline{r^V}.$$
+```math
+r_j^V=-|v_j-G|,\qquad A_j^V=r_j^V-\overline{r^V}.
+```
 
 例如 G=0.6，两个生成估值为 0.5 与 0.1，奖励为 -0.1 与 -0.5，中心化优势为 +0.2 与 -0.2。随后对生成这些估值的 **token 概率**做裁剪 policy gradient；并不是通过正则表达式解析出的浮点数直接反传 MSE。
 
 最终 batch 合并 actor 轨迹与 critic 生成，沿用序列平均 clipped loss：
 
-$$L=-\frac1B\sum_i\frac1{T_i}\sum_tm_{i,t}
-\min(r_{i,t}A_{i,t},\operatorname{clip}(r_{i,t},1-\epsilon_l,1+\epsilon_h)A_{i,t}).$$
+```math
+L=-\frac1B\sum_i\frac1{T_i}\sum_tm_{i,t}
+\min(r_{i,t}A_{i,t},\mathrm{clip}(r_{i,t},1-\epsilon_l,1+\epsilon_h)A_{i,t}).
+```
 
 actor 与 critic 是两种 prompt 角色，共享参数。`parse_value` 要求恰好一个合法标签；解析失败明确计数，critic 训练奖励取 -1。段末所有估值都解析失败时，本地以 0.5 fallback bootstrap，属于教学实现选择，需要监测而不是当作可靠估值。
 
@@ -45,8 +51,10 @@ warmup 先用完整 episode 得到回报，为 critic 提供起始训练信号�
 
 旧前缀由过去策略生成，而今天的策略已变化。verl 扩展保存历史 assistant token 的行为概率并复评：
 
-$$w_{prefix}=\exp\left(\sum_{t\in\text{历史模型 token}}
-[\ell_t^{current}-\ell_t^{behavior}]\right).$$
+```math
+w_{prefix}=\exp\left(\sum_{t\in\text{历史模型 token}}
+[\ell_t^{current}-\ell_t^{behavior}]\right).
+```
 
 该权重停止梯度后乘到新段 surrogate。用户与环境 token 排除；新段自身的 ratio 仍由对应 token 的 current/old 概率计算。若前缀 log-ratio 总和为 log2，则权重为 2。
 

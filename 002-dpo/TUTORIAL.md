@@ -18,38 +18,46 @@
 
 ## 先算回答概率，再算相对差距
 
-设 $\ell_\theta^+=\log\pi_\theta(y^+\mid x)$，$\ell_\theta^-=\log\pi_\theta(y^-\mid x)$，reference 对应 $\ell_{ref}^+,\ell_{ref}^-$。这些是**整段生成 token 的 logprob 之和**。
+设 $`\ell_\theta^+=\log\pi_\theta(y^+\mid x)`$，$`\ell_\theta^-=\log\pi_\theta(y^-\mid x)`$，reference 对应 $`\ell_{ref}^+,\ell_{ref}^-`$。这些是**整段生成 token 的 logprob 之和**。
 
 定义校正后的 margin：
 
-$$z=\beta\left[(\ell_\theta^+-\ell_\theta^-)-(\ell_{ref}^+-\ell_{ref}^-)\right],$$
+```math
+z=\beta\left[(\ell_\theta^+-\ell_\theta^-)-(\ell_{ref}^+-\ell_{ref}^-)\right],
+```
 
-$$L_{DPO}=-\mathbb E_{(x,y^+,y^-)}\log\sigma(z),\qquad
-\sigma(z)=\frac1{1+e^{-z}}.$$
+```math
+L_{DPO}=-\mathbb{E}_{(x,y^+,y^-)}\log\sigma(z),\qquad
+\sigma(z)=\frac1{1+e^{-z}}.
+```
 
-直观上，$\sigma(z)$ 是偏好模型给“chosen 更好”的概率。我们希望这个概率变大，所以最小化它的负 log。
+直观上，$`\sigma(z)`$ 是偏好模型给“chosen 更好”的概率。我们希望这个概率变大，所以最小化它的负 log。
 
 Reference 校正问的是“相对于原来，你有没有更偏向 chosen”，而不是简单要求 chosen 的原始概率超过 rejected。长短回答的序列概率受长度影响，不能随手把求和改平均后仍称相同的 DPO 目标。
 
 ## 手算 margin 和梯度方向
 
-假设当前模型对两回答的 logprob 是 -2、-4，reference 是 -3、-4，取 $\beta=0.1$：
+假设当前模型对两回答的 logprob 是 -2、-4，reference 是 -3、-4，取 $`\beta=0.1`$：
 
-$$z=0.1[( -2+4)-( -3+4)]=0.1,\qquad L=-\log\sigma(0.1)\approx0.6444.$$
+```math
+z=0.1[( -2+4)-( -3+4)]=0.1,\qquad L=-\log\sigma(0.1)\approx0.6444.
+```
 
 若当前模型等于 reference，则 z=0，loss=log2≈0.6931。但此时梯度不为零：
 
-$$\frac{\partial L}{\partial z}=\sigma(z)-1;\qquad
-\frac{\partial L}{\partial\ell_\theta^+}=\beta(\sigma(z)-1)<0,\quad
-\frac{\partial L}{\partial\ell_\theta^-}=-\beta(\sigma(z)-1)>0.$$
+```math
+\frac{\partial L}{\partial z}=\sigma(z)-1;\qquad
+\frac{\partial L}{\partial\ell_\theta^+}=\beta(\sigma(z)-1)\lt 0,\quad
+\frac{\partial L}{\partial\ell_\theta^-}=-\beta(\sigma(z)-1)\gt 0.
+```
 
 因此梯度下降提高 chosen 的相对偏好、降低 rejected 的相对偏好。并不能保证每步 chosen 的绝对概率一定上涨，因为共享参数还受到其它样本影响。
 
-$\beta$ 在理论推导里与 reference 约束相关，同时在这个 logistic loss 中缩放 margin。不能把“beta 越大”简单解释成“每一步越保守”：局部梯度大小还取决于当前 margin，跨设置比较需要实际评估。
+$`\beta`$ 在理论推导里与 reference 约束相关，同时在这个 logistic loss 中缩放 margin。不能把“beta 越大”简单解释成“每一步越保守”：局部梯度大小还取决于当前 margin，跨设置比较需要实际评估。
 
 ## 为什么可以省去显式奖励模型
 
-简述推导：KL 正则化奖励最优化的理想策略满足 $\pi^*(y\mid x)\propto\pi_{ref}(y\mid x)e^{r(x,y)/\beta}$，所以奖励可改写为 $r=\beta\log(\pi^*/\pi_{ref})$ 加上只依赖问题 x 的常数。同题两个回答相减时，常数抵消，再放入成对偏好概率，就得到上面的 DPO 形式。[原论文](https://arxiv.org/abs/2305.18290)给出完整推导与假设。
+简述推导：KL 正则化奖励最优化的理想策略满足 $`\pi^*(y\mid x)\propto\pi_{ref}(y\mid x)e^{r(x,y)/\beta}`$，所以奖励可改写为 $`r=\beta\log(\pi^*/\pi_{ref})`$ 加上只依赖问题 x 的常数。同题两个回答相减时，常数抵消，再放入成对偏好概率，就得到上面的 DPO 形式。[原论文](https://arxiv.org/abs/2305.18290)给出完整推导与假设。
 
 这个推导不说明“所有奖励问题都可以只靠现成偏好对解决”。DPO 依赖数据中出现了什么回答、偏好标签是否可信，以及 reference 和训练分布是否合适。
 

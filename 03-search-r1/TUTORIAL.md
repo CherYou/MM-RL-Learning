@@ -28,18 +28,24 @@
 
 本章默认按最终答案匹配给任务奖励，同题生成 G 条完整检索轨迹后计算：
 
-$$A_i=\frac{R_i-\bar R}{\sigma_R+10^{-4}}.$$
+```math
+A_i=\frac{R_i-\bar R}{\sigma_R+10^{-4}}.
+```
 
-生成 token 的历史 $h_{i,t}$ 现在包含已经返回的文档。概率比仍为：
+生成 token 的历史 $`h_{i,t}`$ 现在包含已经返回的文档。概率比仍为：
 
-$$r_{i,t}=\frac{\pi_\theta(y_{i,t}\mid h_{i,t})}{\pi_{old}(y_{i,t}\mid h_{i,t})}.$$
+```math
+r_{i,t}=\frac{\pi_\theta(y_{i,t}\mid h_{i,t})}{\pi_{old}(y_{i,t}\mid h_{i,t})}.
+```
 
 本地使用 GRPO 型序列平均裁剪 loss：
 
-$$L=-\frac1B\sum_i\frac1{T_i}\sum_t m_{i,t}
-\min\{r_{i,t}A_i,\operatorname{clip}(r_{i,t},1-\epsilon_l,1+\epsilon_h)A_i\}.$$
+```math
+L=-\frac1B\sum_i\frac1{T_i}\sum_t m_{i,t}
+\min\{r_{i,t}A_i,\mathrm{clip}(r_{i,t},1-\epsilon_l,1+\epsilon_h)A_i\}.
+```
 
-可选 reference KL 见 GRPO 章。这里的 $T_i$ 只统计模型生成 token。奖励没有逐条证明每个查询有用，整条轨迹共享终局优势；这也是多轮信用分配仍然困难的原因。
+可选 reference KL 见 GRPO 章。这里的 $`T_i`$ 只统计模型生成 token。奖励没有逐条证明每个查询有用，整条轨迹共享终局优势；这也是多轮信用分配仍然困难的原因。
 
 ## 最重要的数组是 mask
 

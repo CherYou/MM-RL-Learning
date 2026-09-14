@@ -18,11 +18,13 @@ Student 从 fresh Base 开始，而不是直接继承 Medical Teacher 的 SFT ch
 
 ## 第一步：SFT 怎样得到专科教师
 
-SFT 有固定问题 x 与示范解答 $y^*$，最小化示范生成部分的负对数概率：
+SFT 有固定问题 x 与示范解答 $`y^*`$，最小化示范生成部分的负对数概率：
 
-$$L_{SFT}=-\frac{\sum_{i,t}m_{i,t}\log\pi_\theta(y^*_{i,t}\mid x_i,y^*_{i,1:t-1})}{\sum_{i,t}m_{i,t}}.$$
+```math
+L_{SFT}=-\frac{\sum_{i,t}m_{i,t}\log\pi_\theta(y^*_{i,t}\mid x_i,y^*_{i,1:t-1})}{\sum_{i,t}m_{i,t}}.
+```
 
-如果某个示范 token 当前概率是 0.1，它贡献 $-\log0.1\approx2.3026$；提高到 0.2 后贡献约 1.6094。训练推动模型在这段示范历史后更容易选择示范 token。
+如果某个示范 token 当前概率是 0.1，它贡献 $`-\log0.1\approx2.3026`$；提高到 0.2 后贡献约 1.6094。训练推动模型在这段示范历史后更容易选择示范 token。
 
 [sft.yaml](sft.yaml)走真实 TRL `SFTTrainer`；[trl_backend.py](../src/agentic_rl/trl_backend.py)指定 `completion_only_loss=True`，使题目作为条件而非训练目标。医疗 SFT 数据来源可查 [数据发布页](https://huggingface.co/datasets/FreedomIntelligence/medical-o1-reasoning-SFT)，本地取样与字段见 [数据说明](../docs/DATA.md)。
 
@@ -30,8 +32,10 @@ $$L_{SFT}=-\frac{\sum_{i,t}m_{i,t}\log\pi_\theta(y^*_{i,t}\mid x_i,y^*_{i,1:t-1}
 
 学生自己生成回答，Medical Teacher 对相同 token 复评。对每个有效 token：
 
-$$d_t=\operatorname{sg}(\log\pi_{old}-\log\pi_{T_M}),\qquad
-L_M=\operatorname{mean}_{m=1}\left[e^{\log\pi_\theta-\log\pi_{old}}d_t\right].$$
+```math
+d_t=\mathrm{sg}(\log\pi_{old}-\log\pi_{T_M}),\qquad
+L_M=\mathrm{mean}_{m=1}\left[e^{\log\pi_\theta-\log\pi_{old}}d_t\right].
+```
 
 方向和 [General OPD](general-opd/TUTORIAL.md)一致。这里没有把 MedQA 答案正确率当成每 token 的 OPD 监督；任务评估和蒸馏信号是两条不同的测量渠道。
 
@@ -41,18 +45,21 @@ L_M=\operatorname{mean}_{m=1}\left[e^{\log\pi_\theta-\log\pi_{old}}d_t\right].$$
 
 设更新步编号 k 从 0 开始，边界为 M：
 
-$$L_k=\begin{cases}
-L_{OPD}(D_M,T_M),&k\lt M,\\
-L_{OPD}(D_G,T_B),&k\ge M.
-\end{cases}$$
+```math
+L_k=L_{OPD}(D_M,T_M)\ \text{if } k\lt M;\qquad
+L_k=L_{OPD}(D_G,T_B)\ \text{if } k\ge M.
+```
 
-$D_M,D_G$ 是医疗和通用题目池，$T_M,T_B$ 是医疗与 Base 教师。若总共 6 步、M=3，顺序为 `医 医 医 通 通 通`。后半段同时换数据与教师，不是继续在医疗题上加一项通用 KL。
+$`D_M,D_G`$ 是医疗和通用题目池，$`T_M,T_B`$ 是医疗与 Base 教师。若总共 6 步、M=3，顺序为 `医 医 医 通 通 通`。后半段同时换数据与教师，不是继续在医疗题上加一项通用 KL。
 
 “恢复”是实验意图，不是自动保证。用 Base Teacher 的分布约束学生，可能拉回某些通用行为，也可能抹去刚学到的专科变化，需要评估证明。
 
 ## IDT：把两类更新交错安排
 
-$$L_k=\begin{cases}L_M,&k\text{ 为偶数},\\L_G,&k\text{ 为奇数}.\end{cases}$$
+```math
+k\text{ 为偶数}:\quad L_k=L_M;\qquad
+k\text{ 为奇数}:\quad L_k=L_G.
+```
 
 同样 6 步，顺序变成 `医 通 医 通 医 通`。每一步只用相应的题目和教师；它不是在同一 batch 中把两个教师 logprob 平均。两个日程即使各用三步医疗、三步通用，结果也不必相同，因为后续梯度在已经变化的学生参数上计算。
 

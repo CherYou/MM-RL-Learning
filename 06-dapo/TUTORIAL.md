@@ -21,18 +21,20 @@
 
 ## 关键公式：裁剪边界不必对称
 
-仍使用组内优势 $A_i$ 和 token ratio $r_{i,t}$：
+仍使用组内优势 $`A_i`$ 和 token ratio $`r_{i,t}`$：
 
-$$L_{DAPO}=-\frac{\sum_{i,t}m_{i,t}\min\left(r_{i,t}A_i,
-\operatorname{clip}(r_{i,t},1-\epsilon_l,1+\epsilon_h)A_i\right)}{\sum_{i,t}m_{i,t}}.$$
+```math
+L_{DAPO}=-\frac{\sum_{i,t}m_{i,t}\min\left(r_{i,t}A_i,
+\mathrm{clip}(r_{i,t},1-\epsilon_l,1+\epsilon_h)A_i\right)}{\sum_{i,t}m_{i,t}}.
+```
 
-当前 [配置](config.yaml)为 $\epsilon_l=0.2,\epsilon_h=0.28$。因此区间是 `[0.8,1.28]`，并不是 `[0.2,0.28]`。对正优势样本，允许比对称上界 1.2 更大的概率提升后才截住额外激励。负优势时依然要经过 `min` 判断，不能把越界率直接等同于零梯度比例。
+当前 [配置](config.yaml)为 $`\epsilon_l=0.2,\epsilon_h=0.28`$。因此区间是 `[0.8,1.28]`，并不是 `[0.2,0.28]`。对正优势样本，允许比对称上界 1.2 更大的概率提升后才截住额外激励。负优势时依然要经过 `min` 判断，不能把越界率直接等同于零梯度比例。
 
 分母是所有有效生成 token 数。两条回答分别长 2 和 8 时，每个 token 的权重都是 1/10；若用 GRPO 序列平均，短回答每 token 权重为 1/4，长回答为 1/16。前者让长回答整体贡献更多 token，后者使每个回答整体权重相同。没有一种归一化脱离任务就永远正确。
 
 ## 动态采样的真实顺序
 
-仓库首先按原始任务奖励判断退化组：$\max_iR_i=\min_iR_i$ 则丢弃整组并尝试新题。保留组之后才施加长度 shaping，然后重新计算用于学习的组优势。
+仓库首先按原始任务奖励判断退化组：$`\max_iR_i=\min_iR_i`$ 则丢弃整组并尝试新题。保留组之后才施加长度 shaping，然后重新计算用于学习的组优势。
 
 为什么不能反过来？若四个答案都错，只因长度不同就得到不同 shaping 分数，提前 shaping 会把“任务奖励无差异”伪装成可学习组。当前顺序明确区分任务成功差异和长度偏好。
 
@@ -55,11 +57,13 @@ for attempt in range(max_resample_batches):
 
 ## 长度惩罚怎么手算
 
-设软上限 $L_s$、硬上限 $L_h$，长度为 T：
+设软上限 $`L_s`$、硬上限 $`L_h`$，长度为 T：
 
-$$P(T)=-\operatorname{clip}\left(\frac{T-L_s}{L_h-L_s},0,1\right),\qquad R'_i=R_i+P(T_i).$$
+```math
+P(T)=-\mathrm{clip}\left(\frac{T-L_s}{L_h-L_s},0,1\right),\qquad R'_i=R_i+P(T_i).
+```
 
-本章配置 $L_s=192,L_h=256$。长度 160 的惩罚是 0；224 是 -0.5；256 是 -1。若一个正确回答长 224，其 shaped reward 为 0.5，而不是原来的 1。
+本章配置 $`L_s=192,L_h=256`$。长度 160 的惩罚是 0；224 是 -0.5；256 是 -1。若一个正确回答长 224，其 shaped reward 为 0.5，而不是原来的 1。
 
 `mask_truncated: true` 还会把被标记为截断的回答的训练 mask 清零。这是另外一项操作：改变 reward 与决定是否让该回答参与 loss 不能混为一谈。原始奖励非退化，也不保证清 mask 后还有足够的有效梯度。
 
