@@ -1,0 +1,51 @@
+{
+  "repo": "PeterJinGo/nq_hotpotqa_train",
+  "revision": "b7d80abfee334a7a91cb377544f09180d58b34f6",
+  "config": null,
+  "seed": 42,
+  "requested_limit": 1024,
+  "license": "See source dataset card",
+  "url": "https://huggingface.co/datasets/PeterJinGo/nq_hotpotqa_train/tree/b7d80abfee334a7a91cb377544f09180d58b34f6",
+  "source_train_rows_read": 1024,
+  "source_test_rows_read": 1024,
+  "conflicting_questions_removed": 0,
+  "scope": "bounded source prefix; learning subset, not full benchmark",
+  "files": {
+    "corpus.jsonl": {
+      "sha256": "35b3c7b16a6e39a6e2fee4b9a7103a2effa7b6243c326a7a82f706dd232e4e6a",
+      "bytes": 3053098,
+      "rows": 5038
+    },
+    "eval.jsonl": {
+      "sha256": "283417f85d81122f690c5dcfa1665263b78870799518528297bd6eafd5209885",
+      "bytes": 197235,
+      "rows": 1024
+    },
+    "train.jsonl": {
+      "sha256": "7812bad2522dc2e06556fa5240ae977fa3434de68c8b9f620216631537b2bc88",
+      "bytes": 182953,
+      "rows": 1024
+    }
+  },
+  "corpus_source": {
+    "repo": "hotpotqa/hotpot_qa",
+    "revision": "1908d6afbbead072334abe2965f91bd2709910ab",
+    "config": "distractor",
+    "queries_per_split": 256,
+    "corpus": "Union of accompanying public distractor passages; no answer annotations",
+    "license": "CC-BY-SA-4.0 (dataset card)",
+    "scope": "Small local retrieval experiment; not full Wikipedia Search-R1 benchmark",
+    "files": {
+      "eval.jsonl": {
+        "sha256": "8f83e887da52ceb3e927d593223f8ba3cbd9500d38ae6f6e0eaea1a469c95019",
+        "bytes": 67158,
+        "rows": 256
+      },
+      "train.jsonl": {
+        "sha256": "c307e3fbfa8cfcf2f27a2ee22b64e626b8354f3c4c55585c4e0d3eeb9a7fde36",
+        "bytes": 68876,
+        "rows": 256
+      }
+    }
+  }
+}

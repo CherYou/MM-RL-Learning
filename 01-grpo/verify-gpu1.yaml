@@ -1,0 +1,29 @@
+# Functional GPU validation on physical GPU 1. Launch with CUDA_DEVICE_ORDER=PCI_BUS_ID
+# CUDA_VISIBLE_DEVICES=1. vLLM 0.12 requires numeric indices; the worker checks UUID.
+algorithm: grpo
+backend: verl
+model: /data/xionglei-extract/agentic-rl-lab/models/Qwen--Qwen2.5-0.5B-Instruct
+device: cuda
+expected_gpu_uuid: GPU-c063cb89-5e7c-1228-b9d4-6bef4945b171
+dataset: data/gsm8k/train.jsonl
+eval_dataset: data/gsm8k/eval.jsonl
+reward: math
+steps: 3
+batch_size: 2
+group_size: 8
+max_new_tokens: 512
+max_context_tokens: 2048
+max_turns: 1
+learning_rate: 5.0e-6
+beta: 0.0
+seed: 42
+cpu_threads: 4
+verl_workers: 1
+verl_nodes: 1
+micro_batch_size: 1
+ppo_epochs: 1
+rollout_engine: vllm
+rollout_tensor_parallel_size: 1
+rollout_gpu_memory_utilization: 0.35
+gradient_checkpointing: false
+save_every: 10

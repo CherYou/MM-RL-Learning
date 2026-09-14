@@ -1,0 +1,2 @@
+ppo {'passed': True, 'exit_code': 0, 'seconds': 7.08, 'run': 'runs/cpu-audit-20260911-144051/ppo', 'log': 'reports/cpu-audit-20260911-144051-ppo.log'}
+dpo {'passed': True, 'exit_code': 0, 'seconds': 6.18, 'run': 'runs/cpu-audit-20260911-144051/dpo', 'log': 'reports/cpu-audit-20260911-144051-dpo.log'}

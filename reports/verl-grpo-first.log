@@ -1,0 +1,17 @@
+2026-09-10 12:17:41,262	ERROR services.py:1357 -- Failed to start the dashboard 
+2026-09-10 12:17:41,263	ERROR services.py:1382 -- Error should be written to 'dashboard.log' or 'dashboard.err'. We are printing the last 20 lines for you. See 'https://docs.ray.io/en/master/ray-observability/user-guides/configure-logging.html#logging-directory-structure' to find where the log file is.
+2026-09-10 12:17:41,263	ERROR services.py:1426 -- 
+The last 20 lines of /tmp/arl-verl-687951e7/session_2026-09-10_12-17-19_493027_1731965/logs/dashboard.log (it contains the error message from the dashboard): 
+2026-09-10 12:17:21,846	INFO utils.py:338 -- Available modules: [<class 'ray.dashboard.modules.usage_stats.usage_stats_head.UsageStatsHead'>]
+2026-09-10 12:17:21,847	INFO head.py:235 -- DashboardHeadModules to load: {'UsageStatsHead'}.
+2026-09-10 12:17:21,847	INFO head.py:238 -- Loading DashboardHeadModule: <class 'ray.dashboard.modules.usage_stats.usage_stats_head.UsageStatsHead'>.
+2026-09-10 12:17:21,847	INFO head.py:242 -- Loaded 1 dashboard head modules: [<ray.dashboard.modules.usage_stats.usage_stats_head.UsageStatsHead object at 0x789cb47862a0>].
+2026-09-10 12:17:21,847	INFO utils.py:305 -- Get all modules by type: SubprocessModule
+2026-09-10 12:17:21,849	INFO utils.py:338 -- Available modules: [<class 'ray.dashboard.modules.metrics.metrics_head.MetricsHead'>, <class 'ray.dashboard.modules.data.data_head.DataHead'>, <class 'ray.dashboard.modules.event.event_head.EventHead'>, <class 'ray.dashboard.modules.job.job_head.JobHead'>, <class 'ray.dashboard.modules.node.node_head.NodeHead'>, <class 'ray.dashboard.modules.reporter.reporter_head.ReportHead'>, <class 'ray.dashboard.modules.serve.serve_head.ServeHead'>, <class 'ray.dashboard.modules.state.state_head.StateHead'>, <class 'ray.dashboard.modules.train.train_head.TrainHead'>]
+2026-09-10 12:17:21,849	INFO head.py:296 -- Loaded 0 subprocess modules: [].
+2026-09-10 12:17:21,853	INFO head.py:311 -- Starting dashboard metrics server on port 44227
+
+2026-09-10 12:17:42,455	INFO worker.py:1951 -- Started a local Ray instance.
+{"step": 0, "elapsed_seconds": 51.10876571480185, "sampling/attempts": 1.0, "sampling/degenerate_groups": 0.0, "reward/mean": 1.25, "policy/ratio": 1.0, "policy/clip_fraction": 0.0, "policy/kl": 0.0, "update/grad_norm": 2.909270763397217, "update/skipped": 0.0, "loss/total": 8.568167686462402e-08, "tokens/trainable": 39.0, "verl/optimizer_steps": 1.0, "verl/policy_version": 1.0, "time/elapsed_seconds": 51.10874501708895}
+{"step": 1, "elapsed_seconds": 51.26101238839328, "sampling/attempts": 1.0, "sampling/degenerate_groups": 0.0, "reward/mean": 2.5, "policy/ratio": 1.0, "policy/clip_fraction": 0.0, "policy/kl": 0.0, "update/grad_norm": 2.5744926929473877, "update/skipped": 0.0, "loss/total": 0.0, "tokens/trainable": 48.0, "verl/optimizer_steps": 1.0, "verl/policy_version": 2.0, "time/elapsed_seconds": 51.261003070510924}
+Saved run: /data/xionglei-extract/agentic-rl-lab/runs/verl-grpo-first

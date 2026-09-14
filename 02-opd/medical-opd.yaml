@@ -1,0 +1,17 @@
+algorithm: opd
+backend: verl
+model: Qwen/Qwen2.5-0.5B-Instruct
+device: cpu
+dataset: data/medical/train.jsonl
+eval_dataset: data/medqa/eval.jsonl
+steps: 20
+batch_size: 1
+group_size: 4
+max_new_tokens: 256
+max_turns: 8
+learning_rate: 5.0e-06
+beta: 0.0
+seed: 42
+cpu_threads: 2
+teacher_model: medical_sft
+general_dataset: data/ceval/train.jsonl

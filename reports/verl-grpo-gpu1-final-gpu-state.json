@@ -1,0 +1,61 @@
+{
+  "checked_at_utc": "2026-09-10T05:58:52.198764+00:00",
+  "gpus": [
+    {
+      "index": "0",
+      "uuid": "GPU-a8308201-be42-373a-1d98-dfb583a0c9ef",
+      "name": "NVIDIA A100-SXM4-40GB",
+      "memory.used [MiB]": "0",
+      "utilization.gpu [%]": "0"
+    },
+    {
+      "index": "1",
+      "uuid": "GPU-c063cb89-5e7c-1228-b9d4-6bef4945b171",
+      "name": "NVIDIA A100-SXM4-40GB",
+      "memory.used [MiB]": "0",
+      "utilization.gpu [%]": "0"
+    },
+    {
+      "index": "2",
+      "uuid": "GPU-f22ca02e-5a26-647c-a2fb-aec2eabffea0",
+      "name": "NVIDIA A100-SXM4-40GB",
+      "memory.used [MiB]": "35944",
+      "utilization.gpu [%]": "100"
+    },
+    {
+      "index": "3",
+      "uuid": "GPU-a02b5b6f-8c22-7964-d89c-187c3a448ee4",
+      "name": "NVIDIA A100-SXM4-40GB",
+      "memory.used [MiB]": "34770",
+      "utilization.gpu [%]": "100"
+    },
+    {
+      "index": "4",
+      "uuid": "GPU-59e4845c-8547-d77f-70a4-9fe6776a000f",
+      "name": "NVIDIA A100-SXM4-40GB",
+      "memory.used [MiB]": "34788",
+      "utilization.gpu [%]": "0"
+    },
+    {
+      "index": "5",
+      "uuid": "GPU-c163ddd6-ea84-bd87-51b8-6a2ec1ecbbc4",
+      "name": "NVIDIA A100-SXM4-40GB",
+      "memory.used [MiB]": "34788",
+      "utilization.gpu [%]": "0"
+    },
+    {
+      "index": "6",
+      "uuid": "GPU-0d523810-af55-ff8c-535a-b8381ec0efa8",
+      "name": "NVIDIA A100-SXM4-40GB",
+      "memory.used [MiB]": "34746",
+      "utilization.gpu [%]": "0"
+    },
+    {
+      "index": "7",
+      "uuid": "GPU-35e29de0-cce4-9836-90dc-bbd55079dbf1",
+      "name": "NVIDIA A100-SXM4-40GB",
+      "memory.used [MiB]": "34746",
+      "utilization.gpu [%]": "0"
+    }
+  ]
+}

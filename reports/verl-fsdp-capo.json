@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "device": "cpu",
+  "ranks": 2,
+  "sharding": "FULL_SHARD",
+  "actor_base": "verl.workers.actor.dp_actor.DataParallelPPOActor",
+  "parameters_changed": 28380,
+  "unselected_parameters_changed": 0,
+  "rank_parameters_equal": true,
+  "fsdp_inference_reshard": true,
+  "official_checkpoint_restore_equal": true,
+  "metrics": {
+    "policy/ratio": 1.0,
+    "policy/clip_fraction": 0.0,
+    "policy/kl": 0.0,
+    "capo/routed_parameters": 28380,
+    "update/grad_norm": 2.165670394897461,
+    "update/skipped": 0.0,
+    "loss/total": -2.9711538553237915,
+    "tokens/trainable": 81.0,
+    "verl/optimizer_steps": 1
+  }
+}

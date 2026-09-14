@@ -1,0 +1,76 @@
+{
+  "device": "cpu",
+  "passed": true,
+  "commands": [
+    {
+      "command": [
+        "/data/xionglei-extract/agentic-rl-lab/.venv/bin/arl",
+        "train",
+        "09-tempo/config.yaml",
+        "--smoke",
+        "--verl-workers",
+        "2",
+        "--output",
+        "runs/verl-resume-20260910-124603-tempo"
+      ],
+      "log": "reports/verl-resume-20260910-124603-tempo.log",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "/data/xionglei-extract/agentic-rl-lab/.venv/bin/arl",
+        "train",
+        "09-tempo/config.yaml",
+        "--smoke",
+        "--verl-workers",
+        "2",
+        "--resume",
+        "runs/verl-resume-20260910-124603-tempo/checkpoint-final",
+        "--steps",
+        "4",
+        "--output",
+        "runs/verl-resume-20260910-124603-tempo-continued"
+      ],
+      "log": "reports/verl-resume-20260910-124603-continue.log",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "/data/xionglei-extract/agentic-rl-lab/.venv/bin/arl",
+        "eval",
+        "09-tempo/config.yaml",
+        "--smoke",
+        "--checkpoint",
+        "runs/verl-resume-20260910-124603-tempo-continued/checkpoint-final",
+        "--limit",
+        "1"
+      ],
+      "log": "reports/verl-resume-20260910-124603-evaluate.log",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "/data/xionglei-extract/agentic-rl-lab/.venv/bin/arl",
+        "train",
+        "02-opd/config.yaml",
+        "--smoke",
+        "--teacher-model",
+        "medical_sft",
+        "--verl-workers",
+        "2",
+        "--output",
+        "runs/verl-resume-20260910-124603-medical"
+      ],
+      "log": "reports/verl-resume-20260910-124603-medical.log",
+      "exit_code": 0
+    }
+  ],
+  "initial_run": "runs/verl-resume-20260910-124603-tempo",
+  "resumed_run": "runs/verl-resume-20260910-124603-tempo-continued",
+  "medical_run": "runs/verl-resume-20260910-124603-medical",
+  "restored_weights_equal": true,
+  "resumed_next_step": 3,
+  "resumed_policy_version": 4,
+  "evaluation_checkpoint_loaded": true,
+  "medical_sft_to_verl": true
+}

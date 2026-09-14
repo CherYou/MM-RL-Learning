@@ -1,0 +1,12 @@
+[
+  {
+    "id": "dapo",
+    "path": "/home/codex-agent-xionglei/.codex/generated_images/01a084fd-3b48-70d2-ab94-82f586f69874/exec-258207a8-130c-4b8a-a1f7-7792d263feac.png",
+    "prompt": "Correct the FILTER upper-left panel only: the faded box labelled All Correct must contain only GREEN CHECKMARK answer cards (not orange crosses). Keep it faded to mean the entire all-correct group is discarded. The middle Mixed Correctness group must retain both green checks and orange crosses; the right All Wrong group retains only orange crosses. Preserve all other panels, layout, colors and text unchanged."
+  },
+  {
+    "id": "opsd",
+    "path": "/home/codex-agent-xionglei/.codex/generated_images/01a084fd-3b48-70d2-ab94-82f586f69874/exec-ecc79589-60a7-4446-bb40-e3c7fdd9672f.png",
+    "prompt": "Correct one educational detail only. There are FOUR token tiles written by the student on the left. The frozen teacher on the right must inspect the EXACT SAME FOUR connected token tiles, not only three. Add the missing fourth tile to the teacher's strip, keeping identical simple dot markings in order. Preserve the two robots, solution booklet, divider, arrows, labels, style and all other composition."
+  }
+]

@@ -1,0 +1,297 @@
+{
+  "passed": true,
+  "checks": {
+    "twenty_chapters": true,
+    "intro_ppo_dpo_order": true,
+    "retired_directories_absent": true,
+    "twenty_generated_assets": true,
+    "thanks_at_start": true,
+    "worklogs_removed": true,
+    "preliminary/entry_link": true,
+    "preliminary/math_and_code": true,
+    "preliminary/exercise": true,
+    "preliminary/generated_image": true,
+    "preliminary/repo_links_consolidated": true,
+    "001-ppo/entry_link": true,
+    "001-ppo/math_and_code": true,
+    "001-ppo/exercise": true,
+    "001-ppo/generated_image": true,
+    "001-ppo/repo_links_consolidated": true,
+    "002-dpo/entry_link": true,
+    "002-dpo/math_and_code": true,
+    "002-dpo/exercise": true,
+    "002-dpo/generated_image": true,
+    "002-dpo/repo_links_consolidated": true,
+    "01-grpo/entry_link": true,
+    "01-grpo/math_and_code": true,
+    "01-grpo/exercise": true,
+    "01-grpo/generated_image": true,
+    "01-grpo/repo_links_consolidated": true,
+    "02-opd/entry_link": true,
+    "02-opd/math_and_code": true,
+    "02-opd/exercise": true,
+    "02-opd/generated_image": true,
+    "02-opd/repo_links_consolidated": true,
+    "02-opd/general-opd/entry_link": true,
+    "02-opd/general-opd/math_and_code": true,
+    "02-opd/general-opd/exercise": true,
+    "02-opd/general-opd/generated_image": true,
+    "02-opd/general-opd/repo_links_consolidated": true,
+    "03-search-r1/entry_link": true,
+    "03-search-r1/math_and_code": true,
+    "03-search-r1/exercise": true,
+    "03-search-r1/generated_image": true,
+    "03-search-r1/repo_links_consolidated": true,
+    "04-opsd/entry_link": true,
+    "04-opsd/math_and_code": true,
+    "04-opsd/exercise": true,
+    "04-opsd/generated_image": true,
+    "04-opsd/repo_links_consolidated": true,
+    "05-retool/entry_link": true,
+    "05-retool/math_and_code": true,
+    "05-retool/exercise": true,
+    "05-retool/generated_image": true,
+    "05-retool/repo_links_consolidated": true,
+    "06-dapo/entry_link": true,
+    "06-dapo/math_and_code": true,
+    "06-dapo/exercise": true,
+    "06-dapo/generated_image": true,
+    "06-dapo/repo_links_consolidated": true,
+    "07-gspo/entry_link": true,
+    "07-gspo/math_and_code": true,
+    "07-gspo/exercise": true,
+    "07-gspo/generated_image": true,
+    "07-gspo/repo_links_consolidated": true,
+    "08-alfworld/entry_link": true,
+    "08-alfworld/math_and_code": true,
+    "08-alfworld/exercise": true,
+    "08-alfworld/generated_image": true,
+    "08-alfworld/repo_links_consolidated": true,
+    "09-AgentOPSD/entry_link": true,
+    "09-AgentOPSD/math_and_code": true,
+    "09-AgentOPSD/exercise": true,
+    "09-AgentOPSD/generated_image": true,
+    "09-AgentOPSD/repo_links_consolidated": true,
+    "09-tempo/entry_link": true,
+    "09-tempo/math_and_code": true,
+    "09-tempo/exercise": true,
+    "09-tempo/generated_image": true,
+    "09-tempo/repo_links_consolidated": true,
+    "09-vision-grpo/entry_link": true,
+    "09-vision-grpo/math_and_code": true,
+    "09-vision-grpo/exercise": true,
+    "09-vision-grpo/generated_image": true,
+    "09-vision-grpo/repo_links_consolidated": true,
+    "12-harness-rl/entry_link": true,
+    "12-harness-rl/math_and_code": true,
+    "12-harness-rl/exercise": true,
+    "12-harness-rl/generated_image": true,
+    "12-harness-rl/repo_links_consolidated": true,
+    "13-sac/entry_link": true,
+    "13-sac/math_and_code": true,
+    "13-sac/exercise": true,
+    "13-sac/generated_image": true,
+    "13-sac/repo_links_consolidated": true,
+    "14-td3/entry_link": true,
+    "14-td3/math_and_code": true,
+    "14-td3/exercise": true,
+    "14-td3/generated_image": true,
+    "14-td3/repo_links_consolidated": true,
+    "15-her/entry_link": true,
+    "15-her/math_and_code": true,
+    "15-her/exercise": true,
+    "15-her/generated_image": true,
+    "15-her/repo_links_consolidated": true,
+    "16-iql/entry_link": true,
+    "16-iql/math_and_code": true,
+    "16-iql/exercise": true,
+    "16-iql/generated_image": true,
+    "16-iql/repo_links_consolidated": true,
+    "local_links_resolve": true,
+    "image/loss": true,
+    "image/grpo": true,
+    "image/medical-opd": true,
+    "image/general-opd": true,
+    "image/search-r1": true,
+    "image/opsd": true,
+    "image/retool": true,
+    "image/dapo": true,
+    "image/gspo": true,
+    "image/alfworld": true,
+    "image/agentopsd": true,
+    "image/tempo": true,
+    "image/vision-grpo": true,
+    "image/ppo": true,
+    "image/dpo": true,
+    "image/harness-rl": true,
+    "image/sac": true,
+    "image/td3": true,
+    "image/her": true,
+    "image/iql": true
+  },
+  "tutorials": [
+    {
+      "chapter": "preliminary",
+      "tutorial_sha256": "aba8d6d8b958c14ba1f261f9b8889ac256438e60dcb23b28a21ba65806700b19",
+      "characters": 3128,
+      "image": [
+        "../docs/assets/algorithms/loss.png"
+      ]
+    },
+    {
+      "chapter": "001-ppo",
+      "tutorial_sha256": "a5e08c2d0032ab74824a1a03ab8e6f8495b328f3460f020c515375233b552ed5",
+      "characters": 3609,
+      "image": [
+        "../docs/assets/algorithms/ppo.png"
+      ]
+    },
+    {
+      "chapter": "002-dpo",
+      "tutorial_sha256": "f697c5f926691704f5a5367a0c77b0440acf6042c68340339121b1969b3f0c63",
+      "characters": 3493,
+      "image": [
+        "../docs/assets/algorithms/dpo.png"
+      ]
+    },
+    {
+      "chapter": "01-grpo",
+      "tutorial_sha256": "edcbb0afff7b62650a7f73e6d9468e97eecfc9be32b67565f5299ebc31ec971a",
+      "characters": 3822,
+      "image": [
+        "../docs/assets/algorithms/grpo.png"
+      ]
+    },
+    {
+      "chapter": "02-opd",
+      "tutorial_sha256": "661068c5f8b76cde37b04ae098613e214f13bf2044682ba8624a0bbfeb8c4355",
+      "characters": 3527,
+      "image": [
+        "../docs/assets/algorithms/medical-opd.png"
+      ]
+    },
+    {
+      "chapter": "02-opd/general-opd",
+      "tutorial_sha256": "3028af876ddae3974586f5f05ea026c6f3c13dcc88e4f16ce046bcec853cac46",
+      "characters": 3108,
+      "image": [
+        "../../docs/assets/algorithms/general-opd.png"
+      ]
+    },
+    {
+      "chapter": "03-search-r1",
+      "tutorial_sha256": "a63d55aff5d3715665a895d3ef6b4c925979cfd4f8f8de9cac1816f73865b8e8",
+      "characters": 2614,
+      "image": [
+        "../docs/assets/algorithms/search-r1.png"
+      ]
+    },
+    {
+      "chapter": "04-opsd",
+      "tutorial_sha256": "cfe8a062b450357c3e0ff0a7011cc788d24fefd652da871f181660f66cb92817",
+      "characters": 3389,
+      "image": [
+        "../docs/assets/algorithms/opsd.png"
+      ]
+    },
+    {
+      "chapter": "05-retool",
+      "tutorial_sha256": "ba52c179624f965864095f9aa9b118dcb8518f413bc33f761d87af50a7c32030",
+      "characters": 2567,
+      "image": [
+        "../docs/assets/algorithms/retool.png"
+      ]
+    },
+    {
+      "chapter": "06-dapo",
+      "tutorial_sha256": "3f5ad36ac7836df3a362683b006bc75fd24c94eab3c010a21a048e6336d3f033",
+      "characters": 3401,
+      "image": [
+        "../docs/assets/algorithms/dapo.png"
+      ]
+    },
+    {
+      "chapter": "07-gspo",
+      "tutorial_sha256": "f31a238496711244b914819d8c1178acecf6a57f190bd34d21b90edce3b68519",
+      "characters": 3014,
+      "image": [
+        "../docs/assets/algorithms/gspo.png"
+      ]
+    },
+    {
+      "chapter": "08-alfworld",
+      "tutorial_sha256": "c928b4c1bfec4f4767bc245e62549dbc7415e801924bfddcd2d4d22415c55dbb",
+      "characters": 2726,
+      "image": [
+        "../docs/assets/algorithms/alfworld.png"
+      ]
+    },
+    {
+      "chapter": "09-AgentOPSD",
+      "tutorial_sha256": "a8bedc420b70aa8da478e5a58feebbe373cadd0d82129d483aca6ad074c15d64",
+      "characters": 3074,
+      "image": [
+        "../docs/assets/algorithms/agentopsd.png"
+      ]
+    },
+    {
+      "chapter": "09-tempo",
+      "tutorial_sha256": "7c282cfece542c6f0930b120d0913e15d5eaa63cef681d8868f690e0415e868f",
+      "characters": 2954,
+      "image": [
+        "../docs/assets/algorithms/tempo.png"
+      ]
+    },
+    {
+      "chapter": "09-vision-grpo",
+      "tutorial_sha256": "e4baa4affa8710fa1b13d05eab77c5b8361153bd8c692110802e31d54e476f2a",
+      "characters": 2722,
+      "image": [
+        "../docs/assets/algorithms/vision-grpo.png"
+      ]
+    },
+    {
+      "chapter": "12-harness-rl",
+      "tutorial_sha256": "75911b83ec32d149e6eeb54dcc2dda37f452e7e34f6d992b7c41e2c65047580a",
+      "characters": 3138,
+      "image": [
+        "../docs/assets/algorithms/harness-rl.png"
+      ]
+    },
+    {
+      "chapter": "13-sac",
+      "tutorial_sha256": "0071402180062f57db90951a468eeeeef77812ab4afa8bf9796864d9941c7354",
+      "characters": 4453,
+      "image": [
+        "../docs/assets/algorithms/sac.png"
+      ]
+    },
+    {
+      "chapter": "14-td3",
+      "tutorial_sha256": "5fcde64fbca363ce371e3385c2bf0b3a66bf7bc85196e8bb2a9d755c99a55166",
+      "characters": 3751,
+      "image": [
+        "../docs/assets/algorithms/td3.png"
+      ]
+    },
+    {
+      "chapter": "15-her",
+      "tutorial_sha256": "393edbe0b0c9b769cdd457beb52879eca04476205b7f949e66d8784f1378b0b9",
+      "characters": 3878,
+      "image": [
+        "../docs/assets/algorithms/her.png"
+      ]
+    },
+    {
+      "chapter": "16-iql",
+      "tutorial_sha256": "b903750009e52b33426019912c2c8837d0b0e685928bdb195df1e5e31dbc1748",
+      "characters": 4272,
+      "image": [
+        "../docs/assets/algorithms/iql.png"
+      ]
+    }
+  ],
+  "documents_checked": 53,
+  "broken_links": [],
+  "review_scope": "Structure/link/hash checks complement formula/code and visual review; they do not prove theoretical correctness"
+}

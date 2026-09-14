@@ -1,0 +1,11 @@
+{
+  "source": "local verified seed probes",
+  "purpose": "initialize CAPO unit masks; replace with successful collected trajectories for paper experiments",
+  "files": {
+    "probes.jsonl": {
+      "sha256": "03364d796604815f37c6f0195a0da3e31b7f4fb0c6491ffd83fd61e98a2a8e30",
+      "bytes": 410,
+      "rows": 2
+    }
+  }
+}

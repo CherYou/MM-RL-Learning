@@ -1,0 +1,15 @@
+algorithm: vision-grpo
+backend: verl
+model: Qwen/Qwen2.5-VL-3B-Instruct
+device: cpu
+dataset: data/geoqa/train.jsonl
+eval_dataset: data/geoqa/eval.jsonl
+steps: 20
+batch_size: 1
+group_size: 4
+max_new_tokens: 256
+max_turns: 8
+learning_rate: 5.0e-06
+beta: 0.0
+seed: 42
+cpu_threads: 2

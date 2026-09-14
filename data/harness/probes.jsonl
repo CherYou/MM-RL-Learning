@@ -1,0 +1,2 @@
+{"prompt": "Calculate 2 + 3.", "response": "{\"action\": \"Calculate\", \"args\": \"print(2 + 3)\"}", "reward": 1.0, "provenance": "seed probe, manually specified and tool-verified; not an on-policy training trajectory"}
+{"prompt": "Calculate 2 + 3. Tool returned 5.", "response": "{\"action\": \"Summary\", \"args\": \"5\"}", "reward": 1.0, "provenance": "seed probe, manually specified; successful outcome"}

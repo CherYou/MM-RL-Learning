@@ -1,0 +1,106 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "common": "Use case: scientific-educational. Create an original landscape teaching illustration for a Chinese beginner textbook on language-model reinforcement learning. Warm off-white paper, crisp hand-drawn editorial illustration, restrained teal/orange/purple accents, generous negative space, clear directional arrows. Use friendly non-human robot learners and tangible cards, not corporate logos. Each panel should illustrate the specified causal mechanism accurately. Do not draw equations or tiny text. Only render the short English labels explicitly requested. No watermark. This is a conceptual illustration, not an experimental chart. Wide 3:2 composition.",
+  "assets": [
+    {
+      "id": "loss",
+      "file": "loss.png",
+      "prompt": "Three side-by-side laboratory benches compare update controls. Title LOSS. Left IS: a robot pulls an elastic handle with no stop. Middle PPO: a mechanical safety stop prevents further pulling in one beneficial-update direction. Right CISPO: a capped weight on a pulley still transmits force to a handle. Convey clipping a learning incentive versus clipping a weight while retaining a gradient. Labels only IS, PPO, CISPO. No numeric axes."
+    },
+    {
+      "id": "grpo",
+      "file": "grpo.png",
+      "prompt": "Title GRPO. One question card goes to a single robot learner producing four answer cards in a group. Two cards bear green checkmarks, two orange crosses. A central comparison balance compares all four together. Green arrows encourage checked answers and orange arrows discourage crossed answers, looping back to the same learner. No separate judge robot or critic neural network. Labels only GRPO, SAMPLE, COMPARE, UPDATE."
+    },
+    {
+      "id": "medical-opd",
+      "file": "medical-opd.png",
+      "prompt": "Title TWO TEACHERS. A learner writes its own answer card. A frozen medical teacher robot with a closed padlock and a medical textbook, and a frozen general teacher with a closed padlock and broad subject books, inspect that same learner-written card. Lower two horizontal timelines: SAR has teal blocks followed by purple blocks; IDT alternates teal and purple. No patients or treatment advice. Labels only TWO TEACHERS, STUDENT, MEDICAL, GENERAL, SAR, IDT."
+    },
+    {
+      "id": "general-opd",
+      "file": "general-opd.png",
+      "prompt": "Title OPD. Three panels: STUDENT shows a small learner robot writing an answer on connected token tiles; TEACHER shows a larger frozen teacher with padlock inspecting those exact same tiles with a magnifier; UPDATE shows colored per-token encouragement signals returning to the student. The teacher does not write a separate answer. Labels only OPD, STUDENT, TEACHER, UPDATE."
+    },
+    {
+      "id": "search-r1",
+      "file": "search-r1.png",
+      "prompt": "Title SEARCH-R1. A robot learner first writes a search query card; arrow to a small library lookup desk; arrow from desk returns a gray document card; learner reads it then writes a final answer. A lower tape shows teal model-written tiles, gray retrieved tiles, then teal model-written tiles. Tiny pencil icons only under teal segments indicate the learning positions. Labels only SEARCH-R1, QUERY, DOCUMENT, ANSWER."
+    },
+    {
+      "id": "opsd",
+      "file": "opsd.png",
+      "prompt": "Title OPSD. Two otherwise identical robot twins: left STUDENT sees only a question card and writes token tiles; right TEACHER has a padlock and sees the same question plus a privileged solution booklet. The teacher inspects the student's same token tiles, returning feedback arrows. A visible divider prevents the solution booklet reaching the student. Labels only OPSD, STUDENT, TEACHER, SOLUTION."
+    },
+    {
+      "id": "retool",
+      "file": "retool.png",
+      "prompt": "Title RETOOL. A robot learner works on a math notebook, writes a small code card, sends it into a transparent calculator-like Python tool, receives a gray numeric result card, then returns to reasoning and writes a final answer. Circular arrows show reasoning to tool to observation to reasoning. The tool output is distinct from the learner's colored writing. Labels only RETOOL, THINK, CODE, RESULT, ANSWER."
+    },
+    {
+      "id": "dapo",
+      "file": "dapo.png",
+      "prompt": "Title DAPO. Four-panel educational cartoon. FILTER: three groups of answer cards, all-correct and all-wrong groups faded, mixed-correctness group retained. RESAMPLE: new question cards replenish the batch. TOKENS: short and long answer strips composed of equal-size equally weighted tiles. LENGTH: an answer ribbon enters a gradual orange warning zone near its length limit. Labels only DAPO, FILTER, RESAMPLE, TOKENS, LENGTH. No implication that wrong answers alone are discarded."
+    },
+    {
+      "id": "gspo",
+      "file": "gspo.png",
+      "prompt": "Title GSPO. Contrast two magnifying views of the same answer strip. TOKEN view shows separate small gauges above individual tiles, some spike differently. SEQUENCE view gathers the complete strip into one tray with one shared gauge attached to the entire answer. A single safety gate controls the entire tray. Labels only GSPO, TOKEN, SEQUENCE. No plots with fabricated numerical data."
+    },
+    {
+      "id": "alfworld",
+      "file": "alfworld.png",
+      "prompt": "Title ALFWORLD. Three panels of a friendly robot in a simple kitchen: it reads a textual observation card while looking at closed cabinets, opens one cabinet to discover a mug, then places the mug on a table. A small loop below links observation card, action card, changed room. A thought cloud with partial missing room details conveys limited observation. Labels only ALFWORLD, OBSERVE, ACT, FEEDBACK."
+    },
+    {
+      "id": "agentopsd",
+      "file": "agentopsd.png",
+      "prompt": "Title AgentOPSD. A long trail of four agent decision cards reaches a successful finish flag. A frozen-context mentor view with a SKILL booklet inspects each decision, using larger or smaller magnifier circles to indicate unequal influence. Feedback badges along the successful trail are all green but different sizes: reweight good outcome credit without reversing its sign. Labels only AgentOPSD, SKILL, TURN, OUTCOME. Do not depict extra rollout branches or a separate critic network."
+    },
+    {
+      "id": "tempo",
+      "file": "tempo.png",
+      "prompt": "Title TEMPO. A long winding task path is divided into short segments. A saved checkpoint gate spawns three short branches ending at boundary markers; at nonterminal markers the same learner robot writes a small value estimate card, while one completed branch ends at a finish flag without a future-value card. A rewind arrow from a saved gate restores the same scene before branching again. Labels only TEMPO, SAVE, BRANCH, VALUE, REPLAY."
+    },
+    {
+      "id": "vision-grpo",
+      "file": "vision-grpo.png",
+      "prompt": "Title VISION-GRPO. A simple geometry drawing card and a question card jointly enter a learner robot. It produces four textual answer strips, some checked and some crossed, and a group comparison sends learning feedback. Keep a visible image ribbon connected through input to learner so visual information is never replaced by just a filename. Labels only VISION-GRPO, IMAGE, QUESTION, ANSWERS, UPDATE."
+    },
+    {
+      "id": "ppo",
+      "file": "ppo.png",
+      "prompt": "Title PPO. Two cooperative robot roles: ACTOR chooses a path step on a board; CRITIC holds a prediction card for expected future outcome. A real outcome token is compared with the prediction on a small balance, and a controlled update arrow returns to actor. A separate feedback arrow adjusts critic's prediction. Include a small padlocked reference book to one side. Labels only PPO, ACTOR, CRITIC, OUTCOME, UPDATE."
+    },
+    {
+      "id": "dpo",
+      "file": "dpo.png",
+      "prompt": "Title DPO. A fixed dataset box contains pairs of answer cards for the same question: a preferred card marked with a star and a less-preferred plain card. Learner compares their relative scores beside a frozen reference robot with a padlock; an update arrow increases the preferred-minus-rejected gap relative to the reference. No online answer sampling loop, no reward-model robot. Labels only DPO, CHOSEN, REJECTED, REFERENCE, UPDATE."
+    },
+    {
+      "id": "harness-rl",
+      "file": "harness-rl.png",
+      "prompt": "Title HARNESS-RL. A central robot orchestrator creates a tool-call card with two colored fields ACTION and ARGS, connected to a branching tree of isolated session folders. Final outcome feedback returns along each branch to the precise originating card. Below, an abstract neural circuit shows two partially overlapping highlighted neuron subsets matching ACTION and ARGS, with colored gradient arrows confined to their own subset; shared neurons visibly receive both colors. Labels only HARNESS-RL, ACTION, ARGS, SESSION, UPDATE. Do not imply all leaf assistants are being jointly trained."
+    },
+    {
+      "id": "sac",
+      "file": "sac.png",
+      "prompt": "Title SAC. Three panels show a small robot arm reaching toward a goal, sampling several slightly different continuous movement arrows. In the middle two critic gauges assess an action, with the lower gauge selected. On the right a balance holds task reward on one side and a fan of diverse action choices on the other, depicting entropy. A replay-data box feeds learning. Labels only SAC, ACTION, TWO CRITICS, REPLAY, ENTROPY. No graphs, no numerical claims."
+    },
+    {
+      "id": "td3",
+      "file": "td3.png",
+      "prompt": "Title TD3. A robot arm and three clear teaching stations: TWO CRITICS shows two judges estimating the same continuous action and selecting the lower estimate; DELAY shows a learning clock with frequent critic ticks and less frequent actor ticks; SMOOTH shows a target action arrow surrounded by several small nearby perturbed arrows. Data comes from a replay box. Labels only TD3, TWO CRITICS, DELAY, SMOOTH, REPLAY."
+    },
+    {
+      "id": "her",
+      "file": "her.png",
+      "prompt": "Title HER. A robot arm was asked to reach an orange goal marker A but its real observed path ended at teal marker B. Two side-by-side copies of the EXACT SAME motion path: left original goal A marked not reached; right relabelled goal B marked reached. The right panel changes only the goal, not the physical path. A replay-data box receives both experiences. Labels only HER, ORIGINAL GOAL, ACHIEVED GOAL, SAME PATH, REPLAY. No invented new successful movement."
+    },
+    {
+      "id": "iql",
+      "file": "iql.png",
+      "prompt": "Title IQL. A sealed fixed dataset box contains past robot-arm state-action transitions. Arrows feed three learning desks Q, V, POLICY. The policy desk imitates recorded action cards with different weights: high-advantage cards larger, others smaller. A robot arm evaluation area is separated by a dotted divider, with no arrow from evaluation back into the training dataset. Labels only IQL, FIXED DATA, Q, V, POLICY, EVALUATION. Depict offline learning using recorded actions, not online exploration."
+    }
+  ]
+}

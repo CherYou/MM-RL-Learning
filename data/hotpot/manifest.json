@@ -1,0 +1,21 @@
+{
+  "repo": "hotpotqa/hotpot_qa",
+  "revision": "1908d6afbbead072334abe2965f91bd2709910ab",
+  "config": "distractor",
+  "queries_per_split": 256,
+  "corpus": "Union of accompanying public distractor passages; no answer annotations",
+  "license": "CC-BY-SA-4.0 (dataset card)",
+  "scope": "Small local retrieval experiment; not full Wikipedia Search-R1 benchmark",
+  "files": {
+    "eval.jsonl": {
+      "sha256": "8f83e887da52ceb3e927d593223f8ba3cbd9500d38ae6f6e0eaea1a469c95019",
+      "bytes": 67158,
+      "rows": 256
+    },
+    "train.jsonl": {
+      "sha256": "c307e3fbfa8cfcf2f27a2ee22b64e626b8354f3c4c55585c4e0d3eeb9a7fde36",
+      "bytes": 68876,
+      "rows": 256
+    }
+  }
+}

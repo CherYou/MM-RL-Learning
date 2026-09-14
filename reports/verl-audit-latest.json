@@ -1,0 +1,322 @@
+{
+  "sar-opd": {
+    "command": [
+      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "train",
+      "02-opd/config.yaml",
+      "--backend",
+      "verl",
+      "--smoke",
+      "--verl-workers",
+      "2",
+      "--output",
+      "runs/verl-audit-20260910-122814-sar-opd"
+    ],
+    "exit_code": 0,
+    "run": "runs/verl-audit-20260910-122814-sar-opd",
+    "log": "reports/verl-audit-20260910-122814-sar-opd.log",
+    "status": "completed",
+    "checkpoint": true,
+    "passed": true
+  },
+  "grpo": {
+    "command": [
+      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "train",
+      "01-grpo/config.yaml",
+      "--backend",
+      "verl",
+      "--smoke",
+      "--verl-workers",
+      "2",
+      "--output",
+      "runs/verl-audit-20260910-122814-grpo"
+    ],
+    "exit_code": 0,
+    "run": "runs/verl-audit-20260910-122814-grpo",
+    "log": "reports/verl-audit-20260910-122814-grpo.log",
+    "status": "completed",
+    "checkpoint": true,
+    "passed": true
+  },
+  "opd": {
+    "command": [
+      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "train",
+      "02-opd/general-opd/config.yaml",
+      "--backend",
+      "verl",
+      "--smoke",
+      "--verl-workers",
+      "2",
+      "--output",
+      "runs/verl-audit-20260910-122814-opd"
+    ],
+    "exit_code": 0,
+    "run": "runs/verl-audit-20260910-122814-opd",
+    "log": "reports/verl-audit-20260910-122814-opd.log",
+    "status": "completed",
+    "checkpoint": true,
+    "passed": true
+  },
+  "medical-opd": {
+    "command": [
+      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "train",
+      "02-opd/medical-opd.yaml",
+      "--backend",
+      "verl",
+      "--smoke",
+      "--verl-workers",
+      "2",
+      "--output",
+      "runs/verl-audit-20260910-122814-medical-opd"
+    ],
+    "exit_code": 0,
+    "run": "runs/verl-audit-20260910-122814-medical-opd",
+    "log": "reports/verl-audit-20260910-122814-medical-opd.log",
+    "status": "completed",
+    "checkpoint": true,
+    "passed": true
+  },
+  "idt-opd": {
+    "command": [
+      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "train",
+      "02-opd/idt-opd.yaml",
+      "--backend",
+      "verl",
+      "--smoke",
+      "--verl-workers",
+      "2",
+      "--output",
+      "runs/verl-audit-20260910-122814-idt-opd"
+    ],
+    "exit_code": 0,
+    "run": "runs/verl-audit-20260910-122814-idt-opd",
+    "log": "reports/verl-audit-20260910-122814-idt-opd.log",
+    "status": "completed",
+    "checkpoint": true,
+    "passed": true
+  },
+  "search-r1": {
+    "command": [
+      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "train",
+      "03-search-r1/config.yaml",
+      "--backend",
+      "verl",
+      "--smoke",
+      "--verl-workers",
+      "2",
+      "--output",
+      "runs/verl-audit-20260910-122814-search-r1"
+    ],
+    "exit_code": 0,
+    "run": "runs/verl-audit-20260910-122814-search-r1",
+    "log": "reports/verl-audit-20260910-122814-search-r1.log",
+    "status": "completed",
+    "checkpoint": true,
+    "passed": true
+  },
+  "opsd": {
+    "command": [
+      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "train",
+      "04-opsd/config.yaml",
+      "--backend",
+      "verl",
+      "--smoke",
+      "--verl-workers",
+      "2",
+      "--output",
+      "runs/verl-audit-20260910-122814-opsd"
+    ],
+    "exit_code": 0,
+    "run": "runs/verl-audit-20260910-122814-opsd",
+    "log": "reports/verl-audit-20260910-122814-opsd.log",
+    "status": "completed",
+    "checkpoint": true,
+    "passed": true
+  },
+  "retool": {
+    "command": [
+      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "train",
+      "05-retool/config.yaml",
+      "--backend",
+      "verl",
+      "--smoke",
+      "--verl-workers",
+      "2",
+      "--output",
+      "runs/verl-audit-20260910-122814-retool"
+    ],
+    "exit_code": 0,
+    "run": "runs/verl-audit-20260910-122814-retool",
+    "log": "reports/verl-audit-20260910-122814-retool.log",
+    "status": "completed",
+    "checkpoint": true,
+    "passed": true
+  },
+  "dapo": {
+    "command": [
+      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "train",
+      "06-dapo/config.yaml",
+      "--backend",
+      "verl",
+      "--smoke",
+      "--verl-workers",
+      "2",
+      "--output",
+      "runs/verl-audit-20260910-122814-dapo"
+    ],
+    "exit_code": 0,
+    "run": "runs/verl-audit-20260910-122814-dapo",
+    "log": "reports/verl-audit-20260910-122814-dapo.log",
+    "status": "completed",
+    "checkpoint": true,
+    "passed": true
+  },
+  "gspo": {
+    "command": [
+      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "train",
+      "07-gspo/config.yaml",
+      "--backend",
+      "verl",
+      "--smoke",
+      "--verl-workers",
+      "2",
+      "--output",
+      "runs/verl-audit-20260910-122814-gspo"
+    ],
+    "exit_code": 0,
+    "run": "runs/verl-audit-20260910-122814-gspo",
+    "log": "reports/verl-audit-20260910-122814-gspo.log",
+    "status": "completed",
+    "checkpoint": true,
+    "passed": true
+  },
+  "alfworld": {
+    "command": [
+      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "train",
+      "08-alfworld/config.yaml",
+      "--backend",
+      "verl",
+      "--smoke",
+      "--verl-workers",
+      "2",
+      "--output",
+      "runs/verl-audit-20260910-122814-alfworld"
+    ],
+    "exit_code": 0,
+    "run": "runs/verl-audit-20260910-122814-alfworld",
+    "log": "reports/verl-audit-20260910-122814-alfworld.log",
+    "status": "completed",
+    "checkpoint": true,
+    "passed": true
+  },
+  "agentopsd": {
+    "command": [
+      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "train",
+      "09-AgentOPSD/config.yaml",
+      "--backend",
+      "verl",
+      "--smoke",
+      "--verl-workers",
+      "2",
+      "--output",
+      "runs/verl-audit-20260910-122814-agentopsd"
+    ],
+    "exit_code": 0,
+    "run": "runs/verl-audit-20260910-122814-agentopsd",
+    "log": "reports/verl-audit-20260910-122814-agentopsd.log",
+    "status": "completed",
+    "checkpoint": true,
+    "passed": true
+  },
+  "tempo": {
+    "command": [
+      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "train",
+      "09-tempo/config.yaml",
+      "--backend",
+      "verl",
+      "--smoke",
+      "--verl-workers",
+      "2",
+      "--output",
+      "runs/verl-audit-20260910-122814-tempo"
+    ],
+    "exit_code": 0,
+    "run": "runs/verl-audit-20260910-122814-tempo",
+    "log": "reports/verl-audit-20260910-122814-tempo.log",
+    "status": "completed",
+    "checkpoint": true,
+    "passed": true
+  },
+  "vision-grpo": {
+    "command": [
+      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "train",
+      "09-vision-grpo/config.yaml",
+      "--backend",
+      "verl",
+      "--smoke",
+      "--verl-workers",
+      "2",
+      "--output",
+      "runs/verl-audit-20260910-122814-vision-grpo"
+    ],
+    "exit_code": 0,
+    "run": "runs/verl-audit-20260910-122814-vision-grpo",
+    "log": "reports/verl-audit-20260910-122814-vision-grpo.log",
+    "status": "completed",
+    "checkpoint": true,
+    "passed": true
+  },
+  "ppo": {
+    "command": [
+      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "train",
+      "10-ppo/config.yaml",
+      "--backend",
+      "verl",
+      "--smoke",
+      "--verl-workers",
+      "2",
+      "--output",
+      "runs/verl-audit-20260910-122814-ppo"
+    ],
+    "exit_code": 0,
+    "run": "runs/verl-audit-20260910-122814-ppo",
+    "log": "reports/verl-audit-20260910-122814-ppo.log",
+    "status": "completed",
+    "checkpoint": true,
+    "passed": true
+  },
+  "harness-rl": {
+    "command": [
+      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "train",
+      "12-harness-rl/config.yaml",
+      "--backend",
+      "verl",
+      "--smoke",
+      "--verl-workers",
+      "2",
+      "--output",
+      "runs/verl-audit-20260910-122814-harness-rl"
+    ],
+    "exit_code": 0,
+    "run": "runs/verl-audit-20260910-122814-harness-rl",
+    "log": "reports/verl-audit-20260910-122814-harness-rl.log",
+    "status": "completed",
+    "checkpoint": true,
+    "passed": true
+  }
+}

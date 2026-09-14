@@ -1,0 +1,35 @@
+[project]
+name = "agentic-rl-verl-gpu"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "agentic-rl-lab-local",
+  "verl==0.7.1",
+  "vllm==0.12.0",
+  "torch==2.9.0+cu129",
+  "torchvision==0.24.0+cu129",
+  "torchaudio==2.9.0+cu129",
+  "numpy==1.26.4",
+  "spacy==3.7.5",
+  "ray[default]==2.49.2",
+  "tensordict==0.10.0",
+  "hydra-core==1.3.2",
+  "torchdata==0.11.0",
+  "qwen-vl-utils==0.0.14",
+  "pytest==9.0.2",
+]
+
+[tool.uv]
+environments = ["sys_platform == 'linux' and platform_machine == 'x86_64'"]
+
+[tool.uv.sources]
+agentic-rl-lab-local = { path = "../..", editable = true }
+verl = { path = "../../references/verl", editable = true }
+torch = { index = "pytorch-cu129" }
+torchvision = { index = "pytorch-cu129" }
+torchaudio = { index = "pytorch-cu129" }
+
+[[tool.uv.index]]
+name = "pytorch-cu129"
+url = "https://download.pytorch.org/whl/cu129"
+explicit = true

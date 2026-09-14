@@ -1,0 +1,24 @@
+{
+  "repo": "zwhe99/DeepMath-103K",
+  "revision": "5cf055d1fe3d7a2eb19719ac020211469736ae44",
+  "config": null,
+  "seed": 42,
+  "requested_limit": 1024,
+  "license": "mit",
+  "url": "https://huggingface.co/datasets/zwhe99/DeepMath-103K/tree/5cf055d1fe3d7a2eb19719ac020211469736ae44",
+  "source_train_rows_read": 1024,
+  "conflicting_questions_removed": 0,
+  "scope": "bounded source prefix; learning subset, not full benchmark",
+  "files": {
+    "eval.jsonl": {
+      "sha256": "f16a81043fc0da9cd8ea0394c0c801bac8aa33d142d1bdd934b65fa91f86a2b4",
+      "bytes": 20774,
+      "rows": 64
+    },
+    "train.jsonl": {
+      "sha256": "be5eb556637cce827addbf691edf21dd764f14cd90bbf9c2c100499fa50c950d",
+      "bytes": 310498,
+      "rows": 960
+    }
+  }
+}

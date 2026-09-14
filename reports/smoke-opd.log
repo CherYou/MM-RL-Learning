@@ -1,0 +1,4 @@
+{"step": 0, "elapsed_seconds": 0.10488306079059839, "sampling/attempts": 1.0, "sampling/degenerate_groups": 0.0, "reward/mean": 2.25, "distill/sampled_reverse_kl": 0.017639020457863808, "loss/total": 0.017639020457863808, "tokens/trainable": 41.0, "update/grad_norm": 0.6255929470062256, "update/skipped": 0.0, "time/elapsed_seconds": 0.10483594052493572}
+{"step": 1, "elapsed_seconds": 0.20306048542261124, "sampling/attempts": 1.0, "sampling/degenerate_groups": 0.0, "reward/mean": 0.75, "distill/sampled_reverse_kl": 0.01826738379895687, "loss/total": 0.01826738379895687, "tokens/trainable": 48.0, "update/grad_norm": 0.5659219622612, "update/skipped": 0.0, "time/elapsed_seconds": 0.2030150480568409}
+Saved run: /data/xionglei-extract/agentic-rl-lab/runs/smoke-opd
+/data/xionglei-extract/agentic-rl-lab/runs/smoke-opd

@@ -1,0 +1,24 @@
+{
+  "repo": "FreedomIntelligence/medical-o1-reasoning-SFT",
+  "revision": "fc2c9e8a37b38f38da6d449564a8c350b244aef4",
+  "config": "zh",
+  "seed": 42,
+  "requested_limit": 1024,
+  "license": "apache-2.0",
+  "url": "https://huggingface.co/datasets/FreedomIntelligence/medical-o1-reasoning-SFT/tree/fc2c9e8a37b38f38da6d449564a8c350b244aef4",
+  "source_train_rows_read": 1024,
+  "conflicting_questions_removed": 0,
+  "scope": "bounded source prefix; learning subset, not full benchmark",
+  "files": {
+    "eval.jsonl": {
+      "sha256": "18f78889dd540eff3191df83f218d59612c47f140e46334c993ce10c7be64319",
+      "bytes": 217366,
+      "rows": 64
+    },
+    "train.jsonl": {
+      "sha256": "2f3c71be1cccc46d54254e0048cc69edd8cfc3b59979667acdf40bede6d12a5f",
+      "bytes": 3031294,
+      "rows": 952
+    }
+  }
+}

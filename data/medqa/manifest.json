@@ -1,0 +1,16 @@
+{
+  "repo": "bigbio/med_qa",
+  "revision": "484a6c066fe8e75c83edea0c88b5169316714fcd",
+  "split": "test",
+  "license": "See source dataset card",
+  "source_rows": 3426,
+  "duplicate_rows": 6,
+  "conflicting_questions": 0,
+  "files": {
+    "eval.jsonl": {
+      "sha256": "d107a6b2d12ee05e75e1b83f2ccf1231dfd167f301d27ec0847e48f81dd503d7",
+      "bytes": 1238885,
+      "rows": 3420
+    }
+  }
+}

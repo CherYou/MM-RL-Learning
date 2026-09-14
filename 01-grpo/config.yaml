@@ -1,0 +1,15 @@
+algorithm: grpo
+backend: trl
+model: Qwen/Qwen2.5-0.5B-Instruct
+device: cpu
+dataset: data/gsm8k/train.jsonl
+eval_dataset: data/gsm8k/eval.jsonl
+steps: 20
+batch_size: 1
+group_size: 4
+max_new_tokens: 256
+max_turns: 8
+learning_rate: 5.0e-06
+beta: 0.0
+seed: 42
+cpu_threads: 2

@@ -1,0 +1,17 @@
+{"dataset": "gsm8k", "revision": "740312add88f781978c0658806c59bc2815b9866", "rows": {"train": 1024, "eval": 1024}}
+FAILED deepmath: RepositoryNotFoundError: 401 Client Error. (Request ID: Root=1-6aa13ead-2e18770145f2b65d180a77a5;6915fd00-6c07-4911-a3a3-45ec224d1d34)
+
+Repository Not Found for url: https://huggingface.co/api/datasets/deepmath/DeepMath-103K.
+Please make sure you specified the correct `repo_id` and `repo_type`.
+If you are trying to access a private or gated repo, make sure you are authenticated. For more details, see https://huggingface.co/docs/huggingface_hub/authentication
+Invalid username or password.
+{"dataset": "opsd", "revision": "1f33e9dc2e8a1c639ca74f8024ad4a9f1f5eae62", "rows": {"train": 960, "eval": 64}}
+{"dataset": "dapo", "revision": "65877096c24ffa7abc4e4fa5edb95cf3413a5674", "rows": {"train": 953, "eval": 64}}
+{"dataset": "aime25", "revision": "6f71d77b0b89b9dabe07ab466c51df33f514df7f", "rows": {"eval": 30}}
+{"dataset": "medical", "revision": "fc2c9e8a37b38f38da6d449564a8c350b244aef4", "rows": {"train": 952, "eval": 64}}
+FAILED search: TypeError: Couldn't cast array of type
+struct<subj: string, prop: string, obj: string, subj_id: int64, prop_id: int64, obj_id: int64, s_aliases: string, o_aliases: string, s_uri: string, o_uri: string, s_wiki_title: string, o_wiki_title: string, s_pop: int64, o_pop: int64, type: string, level: string, supporting_facts: struct<title: list<element: string>, sent_id: list<element: int64>>, context: struct<title: list<element: string>, sentences: list<element: list<element: string>>, content: list<element: list<element: string>>>, answerable: bool, question_decomposition: list<element: struct<id: int64, question: string, answer: string, paragraph_support_idx: int64, support_paragraph: struct<idx: int64, title: string, paragraph_text: string, is_supporting: bool>>>>
+to
+{'type': Value('string'), 'level': Value('string'), 'supporting_facts': {'title': List(Value('string')), 'sent_id': List(Value('int64'))}, 'context': {'title': List(Value('string')), 'sentences': List(List(Value('string')))}}
+FAILED geoqa: ValueError: geoqa: an exported split is empty; increase --limit or check schema
+{"dataset": "ceval", "revision": "617524a00b307ff6f9933702f724131fe12ca7ce", "rows": {"train": 16, "eval": 3}}

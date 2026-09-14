@@ -1,0 +1,14 @@
+Adding EOS to train dataset:   0%|          | 0/32 [00:00<?, ? examples/s]Adding EOS to train dataset: 100%|██████████| 32/32 [00:00<00:00, 10306.21 examples/s]
+Tokenizing train dataset:   0%|          | 0/32 [00:00<?, ? examples/s]Tokenizing train dataset: 100%|██████████| 32/32 [00:00<00:00, 3296.76 examples/s]
+Truncating train dataset:   0%|          | 0/32 [00:00<?, ? examples/s]Truncating train dataset: 100%|██████████| 32/32 [00:00<00:00, 14029.24 examples/s]
+Adding EOS to eval dataset:   0%|          | 0/32 [00:00<?, ? examples/s]Adding EOS to eval dataset: 100%|██████████| 32/32 [00:00<00:00, 13034.64 examples/s]
+Tokenizing eval dataset:   0%|          | 0/32 [00:00<?, ? examples/s]Tokenizing eval dataset: 100%|██████████| 32/32 [00:00<00:00, 4084.78 examples/s]
+Truncating eval dataset:   0%|          | 0/32 [00:00<?, ? examples/s]Truncating eval dataset: 100%|██████████| 32/32 [00:00<00:00, 15358.48 examples/s]
+`loss_type=None` was set in the config but it is unrecognized. Using the default loss: `ForCausalLMLoss`.
+{"step": 1, "elapsed_seconds": 0.3517591804265976, "loss": 5.5976, "grad_norm": 5.011022567749023, "learning_rate": 5e-06, "entropy": 5.545528411865234, "num_tokens": 34.0, "mean_token_accuracy": 0.0, "epoch": 0.03125}
+{'loss': 5.5976, 'grad_norm': 5.011022567749023, 'learning_rate': 5e-06, 'entropy': 5.545528411865234, 'num_tokens': 34.0, 'mean_token_accuracy': 0.0, 'epoch': 0.03125}
+{"step": 2, "elapsed_seconds": 0.36667900439351797, "loss": 5.5854, "grad_norm": 5.317009449005127, "learning_rate": 2.5e-06, "entropy": 5.545654773712158, "num_tokens": 70.0, "mean_token_accuracy": 0.05000000074505806, "epoch": 0.0625}
+{'loss': 5.5854, 'grad_norm': 5.317009449005127, 'learning_rate': 2.5e-06, 'entropy': 5.545654773712158, 'num_tokens': 70.0, 'mean_token_accuracy': 0.05000000074505806, 'epoch': 0.0625}
+{"step": 2, "elapsed_seconds": 0.36800089851021767, "train_runtime": 0.0389, "train_samples_per_second": 51.437, "train_steps_per_second": 51.437, "total_flos": 42040320.0, "train_loss": 5.59150767326355, "epoch": 0.0625}
+{'train_runtime': 0.0389, 'train_samples_per_second': 51.437, 'train_steps_per_second': 51.437, 'train_loss': 5.59150767326355, 'epoch': 0.0625}
+Saved run: /data/xionglei-extract/agentic-rl-lab/runs/cpu-audit-20260909-193056/sft

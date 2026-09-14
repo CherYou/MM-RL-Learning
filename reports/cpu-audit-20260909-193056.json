@@ -1,0 +1,156 @@
+{
+  "grpo": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 6.23,
+    "run": "runs/cpu-audit-20260909-193056/grpo",
+    "log": "reports/cpu-audit-20260909-193056-grpo.log"
+  },
+  "sar-opd": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 5.32,
+    "run": "runs/cpu-audit-20260909-193056/sar-opd",
+    "log": "reports/cpu-audit-20260909-193056-sar-opd.log"
+  },
+  "opd": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 5.02,
+    "run": "runs/cpu-audit-20260909-193056/opd",
+    "log": "reports/cpu-audit-20260909-193056-opd.log"
+  },
+  "search-r1": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 7.58,
+    "run": "runs/cpu-audit-20260909-193056/search-r1",
+    "log": "reports/cpu-audit-20260909-193056-search-r1.log"
+  },
+  "opsd": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 5.08,
+    "run": "runs/cpu-audit-20260909-193056/opsd",
+    "log": "reports/cpu-audit-20260909-193056-opsd.log"
+  },
+  "retool": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 5.38,
+    "run": "runs/cpu-audit-20260909-193056/retool",
+    "log": "reports/cpu-audit-20260909-193056-retool.log"
+  },
+  "dapo": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 5.18,
+    "run": "runs/cpu-audit-20260909-193056/dapo",
+    "log": "reports/cpu-audit-20260909-193056-dapo.log"
+  },
+  "gspo": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 6.48,
+    "run": "runs/cpu-audit-20260909-193056/gspo",
+    "log": "reports/cpu-audit-20260909-193056-gspo.log"
+  },
+  "alfworld": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 5.07,
+    "run": "runs/cpu-audit-20260909-193056/alfworld",
+    "log": "reports/cpu-audit-20260909-193056-alfworld.log"
+  },
+  "agentopsd": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 5.22,
+    "run": "runs/cpu-audit-20260909-193056/agentopsd",
+    "log": "reports/cpu-audit-20260909-193056-agentopsd.log"
+  },
+  "tempo": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 5.48,
+    "run": "runs/cpu-audit-20260909-193056/tempo",
+    "log": "reports/cpu-audit-20260909-193056-tempo.log"
+  },
+  "vision-grpo": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 5.28,
+    "run": "runs/cpu-audit-20260909-193056/vision-grpo",
+    "log": "reports/cpu-audit-20260909-193056-vision-grpo.log"
+  },
+  "ppo": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 6.58,
+    "run": "runs/cpu-audit-20260909-193056/ppo",
+    "log": "reports/cpu-audit-20260909-193056-ppo.log"
+  },
+  "dpo": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 6.33,
+    "run": "runs/cpu-audit-20260909-193056/dpo",
+    "log": "reports/cpu-audit-20260909-193056-dpo.log"
+  },
+  "harness-rl": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 7.78,
+    "run": "runs/cpu-audit-20260909-193056/harness-rl",
+    "log": "reports/cpu-audit-20260909-193056-harness-rl.log"
+  },
+  "sft": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 6.63,
+    "run": "runs/cpu-audit-20260909-193056/sft",
+    "log": "reports/cpu-audit-20260909-193056-sft.log"
+  },
+  "idt-opd": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 5.12,
+    "run": "runs/cpu-audit-20260909-193056/idt-opd",
+    "log": "reports/cpu-audit-20260909-193056-idt-opd.log"
+  },
+  "grpo-native": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 5.22,
+    "run": "runs/cpu-audit-20260909-193056/grpo-native",
+    "log": "reports/cpu-audit-20260909-193056-grpo-native.log"
+  },
+  "gspo-native": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 5.17,
+    "run": "runs/cpu-audit-20260909-193056/gspo-native",
+    "log": "reports/cpu-audit-20260909-193056-gspo-native.log"
+  },
+  "dpo-native": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 4.77,
+    "run": "runs/cpu-audit-20260909-193056/dpo-native",
+    "log": "reports/cpu-audit-20260909-193056-dpo-native.log"
+  },
+  "ppo-native": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 5.27,
+    "run": "runs/cpu-audit-20260909-193056/ppo-native",
+    "log": "reports/cpu-audit-20260909-193056-ppo-native.log"
+  },
+  "dapo-trl-loss": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 6.03,
+    "run": "runs/cpu-audit-20260909-193056/dapo-trl-loss",
+    "log": "reports/cpu-audit-20260909-193056-dapo-trl-loss.log"
+  }
+}

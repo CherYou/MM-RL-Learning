@@ -1,0 +1,10 @@
+{
+  "checkpoint": "/data/xionglei-extract/agentic-rl-lab/runs/cpu-audit-20260909-193056/vision-grpo/checkpoint-final/model",
+  "dataset": "data/fixtures/vision-eval.jsonl",
+  "rows": 2,
+  "score": 0.0,
+  "seed": 42,
+  "device": "cpu",
+  "metric": "task verifier",
+  "scope": "CPU smoke only"
+}

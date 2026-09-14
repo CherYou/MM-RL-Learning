@@ -1,0 +1,24 @@
+{
+  "repo": "BytedTsinghua-SIA/DAPO-Math-17k",
+  "revision": "65877096c24ffa7abc4e4fa5edb95cf3413a5674",
+  "config": null,
+  "seed": 42,
+  "requested_limit": 1024,
+  "license": "apache-2.0",
+  "url": "https://huggingface.co/datasets/BytedTsinghua-SIA/DAPO-Math-17k/tree/65877096c24ffa7abc4e4fa5edb95cf3413a5674",
+  "source_train_rows_read": 1024,
+  "conflicting_questions_removed": 1,
+  "scope": "bounded source prefix; learning subset, not full benchmark",
+  "files": {
+    "eval.jsonl": {
+      "sha256": "cdd8fc81873abba0fd54c07d904a21a4cd0c836c261ce1269d2a3ee872fbe1a3",
+      "bytes": 23435,
+      "rows": 64
+    },
+    "train.jsonl": {
+      "sha256": "001aceb8838d7a7ab6180668c5592b610b48168e7479082ead199619f7ca0be8",
+      "bytes": 352362,
+      "rows": 953
+    }
+  }
+}

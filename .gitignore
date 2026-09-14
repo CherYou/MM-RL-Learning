@@ -1,0 +1,15 @@
+.venv/
+.venv-verl/
+.venv-verl-gpu/
+references/verl/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+data/raw/
+data/cache/
+data/alfworld/
+models/
+runs/
+*.pid
+.env

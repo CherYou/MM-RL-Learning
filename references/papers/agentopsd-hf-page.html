@@ -1,0 +1,686 @@
+Title: AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning
+
+URL Source: https://arxiv.org/html/2608.05987
+
+Markdown Content:
+Zi-Han Wang 1,3,Zhengxi Lu 2, Zhiyuan Yao 2, Jinyang Wu 1, Jie Wu 1, Zhengzhou Cai 3, 
+
+Yueqing Sun 3, Ziang Ye 3, Linji Hao 3, Qi Gu 3,Xunliang Cai 3, Yongliang Shen 2, Yujiu Yang 1 2 2 footnotemark: 2
+
+1 Tsinghua University 2 Zhejiang University 3 Meituan 
+
+zethive0225@gmail.com guqi03@meituan.com
+
+###### Abstract
+
+Reinforcement learning(RL) with verifiable rewards constructs trajectory-level advantage, yet often fails to credit the few pivotal decisions that drive outcomes in long-horizon multi-turn agentic RL. Some recent works introduce privileged self-distillation into credit assignment for RL, offering denser supervision, but it still remains unclear how such a local signal should express _sequential_ credit. We therefore propose AgentOPSD, a critic-free recursive turn-level credit assignment for agentic reinforcement learning. AgentOPSD aggregates token-level teacher-student log-probability gaps into turn-level evidence, recursively updates a Bayesian belief state in log-odds space. This provides a principled reweighting scheme that transforms sparse outcome supervision into turn-level credit signals and identifies pivotal turns by the marginal revision between consecutive states while remaining fully compatible with standard policy optimization, requiring neither additional rollouts. We evaluate AgentOPSD on ALFWorld, WebShop, and Search-QA with two Qwen model scales (3B and 7B). AgentOPSD improves over GRPO and strong self-distillation baselines, reaching 89.1\% success on ALFWorld with Qwen2.5-7B, and ablations attribute the gains to turn-level aggregation and history-dependent recursive belief updates. Our code is available at [https://github.com/ZethWang/AgentOPSD](https://github.com/ZethWang/AgentOPSD).
+
+![Image 1: Refer to caption](https://arxiv.org/html/2608.05987v1/x1.png)
+
+Figure 1: Training dynamics and horizon-robustness of AgentOPSD on Qwen2.5-7B-Instruct / ALFWorld. (a) Validation success rate over training. (b) Sensitivity to task horizon: success points lost per extra turn (OLS slope of per-sub-task success against the measured mean turns of successful episodes). (c) Policy entropy over training.
+
+## 1 Introduction
+
+Agentic post-training has become an important approach to improving the ability of large language models to solve complex tasks(Guo et al., [2025](https://arxiv.org/html/2608.05987#bib.bib22 "Deepseek-r1: incentivizing reasoning capability in llms via reinforcement learning"); Team et al., [2025](https://arxiv.org/html/2608.05987#bib.bib27 "Kimi k2: open agentic intelligence"); Yang et al., [2025](https://arxiv.org/html/2608.05987#bib.bib26 "Qwen3 technical report"); Comanici et al., [2025](https://arxiv.org/html/2608.05987#bib.bib30 "Gemini 2.5: pushing the frontier with advanced reasoning, multimodality, long context, and next generation agentic capabilities"); Team et al., [2026b](https://arxiv.org/html/2608.05987#bib.bib31 "Longcat-flash-thinking-2601 technical report")). Unlike static, single-turn reasoning, agents must continuously interact with partially observable environments, at each turn acting on the current observation and receiving a new one as the environment transitions(Shen et al., [2023](https://arxiv.org/html/2608.05987#bib.bib33 "Hugginggpt: solving ai tasks with chatgpt and its friends in hugging face"); Shi et al., [2025](https://arxiv.org/html/2608.05987#bib.bib29 "Tool learning in the wild: empowering language models as automatic tool agents"); Jimenez et al., [2023](https://arxiv.org/html/2608.05987#bib.bib34 "Swe-bench: can language models resolve real-world github issues?")). However, many interactive environments provide verifiable rewards only after an entire trajectory terminates, forcing training algorithms to infer the contribution of each intermediate decision from a single sparse outcome. The decisions within a trajectory can nevertheless play substantially different roles: even successful trajectories may contain spurious, redundant, or misleading actions, whereas failed trajectories may still include useful reasoning.
+
+Group-relative policy optimization methods such as GRPO(Shao et al., [2024](https://arxiv.org/html/2608.05987#bib.bib23 "Deepseekmath: pushing the limits of mathematical reasoning in open language models"); Yu et al., [2025](https://arxiv.org/html/2608.05987#bib.bib51 "Dapo: an open-source llm reinforcement learning system at scale")) and its agentic variants(Dong et al., [2025](https://arxiv.org/html/2608.05987#bib.bib35 "Agentic reinforced policy optimization"); Feng et al., [2025](https://arxiv.org/html/2608.05987#bib.bib20 "Group-in-group policy optimization for llm agent training")) construct a trajectory-level advantage from outcome rewards and broadcast it uniformly across the trajectory. Such uniform credit cannot distinguish a few pivotal decisions from routine operations. This limitation becomes increasingly pronounced as the interaction horizon grows. Turn-level credit assignment is therefore essential for identifying the decisions that meaningfully influence the outcome and providing more precise supervision throughout long-horizon interactions.
+
+A complementary line of work provides denser, token-level supervision. On-policy distillation(Ye et al., [2026a](https://arxiv.org/html/2608.05987#bib.bib36 "On-policy context distillation for language models"); Yang et al., [2026b](https://arxiv.org/html/2608.05987#bib.bib37 "Learning beyond teacher: generalized on-policy distillation with reward extrapolation"); Team et al., [2026a](https://arxiv.org/html/2608.05987#bib.bib39 "MiMo-v2-flash technical report")) trains a student on its own rollouts under a teacher, while its _self_-distillation variants(Zhao et al., [2026](https://arxiv.org/html/2608.05987#bib.bib24 "Self-distilled reasoner: on-policy self-distillation for large language models"); He et al., [2026](https://arxiv.org/html/2608.05987#bib.bib38 "Self-distillation zero: self-revision turns binary rewards into dense supervision")) remove the need for a separate teacher by conditioning the same policy on privileged information available only during training(Lu et al., [2026c](https://arxiv.org/html/2608.05987#bib.bib6 "SKILL0: in-context agentic reinforcement learning for skill internalization")). Recent studies further incorporate OPSD signals into reinforcement learning as an auxiliary source of supervision(Lu et al., [2026b](https://arxiv.org/html/2608.05987#bib.bib67 "Self-distilled agentic reinforcement learning"); Wang et al., [2026a](https://arxiv.org/html/2608.05987#bib.bib5 "Skill-sd: skill-conditioned self-distillation for multi-turn llm agents")).
+
+However, applying OPSD to agentic reinforcement learning introduces two mismatches. First, OPSD’s token-level signals are not naturally aligned with agentic interaction(Lu et al., [2026b](https://arxiv.org/html/2608.05987#bib.bib67 "Self-distilled agentic reinforcement learning")), where multiple tokens jointly form an action and the environment responds only at turn boundaries. Second, even existing step-aware methods consider each turn in isolation(Zhang et al., [2026](https://arxiv.org/html/2608.05987#bib.bib55 "StepOPSD: step-aware online preference distillation for agent reinforcement learning")), without accounting for the evidence accumulated through preceding interactions. The central challenge is therefore to transform local OPSD signals into history-dependent turn-level credit.
+
+Our key insight is that the credit of a turn should be determined not by its local signal in isolation, but by how much that signal changes the estimated probability of eventual success. To formalize this intuition, we interpret the per-turn self-distillation gap as new evidence that induces a Bayesian belief update(Åström, [1965](https://arxiv.org/html/2608.05987#bib.bib69 "Optimal control of markov processes with incomplete state information i"); Kaelbling et al., [1998](https://arxiv.org/html/2608.05987#bib.bib68 "Planning and acting in partially observable stochastic domains")). We define the corresponding belief state as the probability that the trajectory will ultimately succeed given the interaction history.
+
+Based on this insight, we propose AgentOPSD (Recursive Self-Distillation for Agentic Reinforcement Learning), a turn-level credit-assignment method for long-horizon agents. AgentOPSD aggregates token-level teacher–student log-probability gaps into turn-level evidence. Starting from the average group success rate, it then recursively updates Bayesian belief state at each turn in log-odds space without additional rollouts or a learned critic. The outcome verifier determines the global direction of optimization, while the bayesian belief updates redistribute the trajectory-level learning signal across turns. We evaluate AgentOPSD on three interactive environments—ALFWorld(Shridhar et al., [2020](https://arxiv.org/html/2608.05987#bib.bib11 "Alfworld: aligning text and embodied environments for interactive learning")), WebShop(Yao et al., [2022](https://arxiv.org/html/2608.05987#bib.bib9 "Webshop: towards scalable real-world web interaction with grounded language agents")), and Search-QA(Jin et al., [2025](https://arxiv.org/html/2608.05987#bib.bib12 "Search-r1: training llms to reason and leverage search engines with reinforcement learning"))—and across two model scales. As shown in Figure[1](https://arxiv.org/html/2608.05987#S0.F1 "Figure 1 ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), AgentOPSD consistently outperforms GRPO and strong self-distillation baselines. Further ablations show that gains from aggregating token-level signals at turn boundaries aligned with environment transitions, and transforming an isolated local gap into a recursive revision of belief.
+
+Our contributions are summarized as follows:
+
+*   •
+We formalize turn-level credit as the revision of a success belief induced by each turn. In log-odds space, this connects per-turn evidence to a recursive Bayesian update and reveals that an isolated self-distillation gap is not, by itself, sequential credit.
+
+*   •
+We introduce AgentOPSD, which aggregates token-level teacher–student log-probability gaps into environment-aligned turn-level evidence and recursively propagates this evidence through the trajectory-success belief, without additional rollouts or a learned critic.
+
+*   •
+Experiments and ablations across three interactive environments and two model scales demonstrate that AgentOPSD consistently outperforms GRPO and strong self-distillation baselines. Ablations further verify the complementary benefits of turn-boundary aggregation and recursive belief revision.
+
+![Image 2: Refer to caption](https://arxiv.org/html/2608.05987v1/x2.png)
+
+Figure 2: Overview of AgentOPSD.Left: the agent loop, interacting with the environment over turns 1,\dots,K. Middle:AgentOPSD converts GRPO’s single sequence-level advantage into turn-level reshaped advantages in three steps: (1) aggregate the token-level teacher–student gaps \delta_{k,t} within a turn into a turn-level gap e_{k}; (2) recursively update a belief state B_{k} (initialized from the group success rate) and read off its marginal revision \Delta B_{k}=B_{k}-B_{k-1}; (3) reshape the sequence-level advantage A^{(i)}_{seq} per turn into \tilde{A}^{(i)}_{k}. Right: vanilla GRPO instead broadcasts the same A^{(i)}_{seq} to every token/turn. Each token in turn k inherits \tilde{A}_{k}.
+
+## 2 Methodology
+
+### 2.1 Problem Setup
+
+Given a task x and initial observation o_{0}, the agent starts from s_{1}=(x,o_{0}). At turn k, it samples where \pi_{\theta} is current policy, s_{k} is its visible interaction history, y_{k,t} is the t-th token of action a_{k}, and L_{k} is the action length. After observing o_{k}, the history becomes s_{k+1}=(s_{k},a_{k},o_{k}). A K-turn episode forms \boldsymbol{\tau}=(s_{1},a_{1},o_{1},\ldots,s_{K},a_{K},o_{K}) and receives a binary outcome reward R(\boldsymbol{\tau}).
+
+a_{k}=(y_{k,1},\ldots,y_{k,L_{k}})\sim\pi_{\theta}(\cdot\mid s_{k}),(1)
+
+For each task, group-relative policy optimization samples G trajectories and computes the sequence-level advantage. Here i indexes one of the G sampled trajectories, while \bar{R} and \widehat{\sigma}_{R} are the group reward mean and standard deviation, and \epsilon_{0} is a small positive constant (reused throughout to avoid division by zero or infinite log-odds). GRPO assigns A_{\mathrm{seq}}^{(i)} to every token in trajectory i, leaving turn-level credit unresolved.
+
+A_{\mathrm{seq}}^{(i)}=\frac{R^{(i)}-\bar{R}}{\widehat{\sigma}_{R}+\epsilon_{0}},\qquad\bar{R}=\frac{1}{G}\sum_{j=1}^{G}R^{(j)}.(2)
+
+### 2.2 From Outcome Contribution to Bayesian Turn Evidence
+
+Directly measuring the counterfactual contribution of turn k would require marginalizing the outcome reward over all possible continuations following a_{k}, which is intractable in long-horizon interactions. We therefore adopt a hindsight-based evidential perspective. Let C denote the event that the trajectory eventually succeeds. If a_{k} supports success, it should be more characteristic of successful behavior than of unsuccessful behavior. Bayes’ rule expresses the resulting change in the belief about C as an action-side likelihood ratio(Åström, [1965](https://arxiv.org/html/2608.05987#bib.bib69 "Optimal control of markov processes with incomplete state information i"); Kaelbling et al., [1998](https://arxiv.org/html/2608.05987#bib.bib68 "Planning and acting in partially observable stochastic domains")):
+
+\operatorname{logit}p(C\mid s_{k},a_{k})-\operatorname{logit}p(C\mid s_{k})=\log\frac{p(a_{k}\mid s_{k},C)}{p(a_{k}\mid s_{k},\neg C)}.(3)
+
+Here \operatorname{logit}(u)=\log\frac{u}{1-u}. The right-hand side is the ideal Bayes factor(Kass and Raftery, [1995](https://arxiv.org/html/2608.05987#bib.bib62 "Bayes factors")) between the success-conditional and failure-conditional likelihoods of a_{k}. Its sign indicates whether the action increases or decreases support for eventual success.
+
+Because these outcome-conditional behavioral distributions are not directly available, we estimate this Bayesian evidence retrospectively using a computable per-turn self-distillation contrast between a privileged, success-associated self-teacher and the standard student policy. This contrast provides a tractable proxy for the otherwise inaccessible belief update; we characterize the approximation and its conditions below. The student and teacher share parameters \theta and score the same student-generated action(Zhao et al., [2026](https://arxiv.org/html/2608.05987#bib.bib24 "Self-distilled reasoner: on-policy self-distillation for large language models")). Their token contexts are
+
+h_{k,t}=(s_{k},y_{k,<t}),\qquad h_{k,t}^{+}=(s_{k},c^{+},y_{k,<t}).(4)
+
+where y_{k,<t} is the token prefix within turn k, and c^{+} is a training-only retrieved skill describing useful subgoals and action patterns(Xia et al., [2026](https://arxiv.org/html/2608.05987#bib.bib4 "SkillRL: evolving agents via recursive skill-augmented reinforcement learning")). The skill-conditioned branch approximates success-associated behavior, while the unconditioned branch provides the background likelihood.
+
+For token y_{k,t}, define the detached likelihood contrast
+
+\delta_{k,t}=\log\pi_{\theta}(y_{k,t}\mid h_{k,t}^{+})-\log\pi_{\theta}(y_{k,t}\mid h_{k,t}).(5)
+
+Positive \delta_{k,t} means that c^{+} increases the likelihood of the generated token. Summing over the L_{k} tokens gives the turn-level evidence
+
+e_{k}=\sum_{t=1}^{L_{k}}\delta_{k,t}=\log\frac{\pi_{\theta}(a_{k}\mid s_{k},c^{+})}{\pi_{\theta}(a_{k}\mid s_{k})}.(6)
+
+Accordingly, e_{k} provides a tractable hindsight approximation to the ideal Bayesian turn evidence in Eq.([3](https://arxiv.org/html/2608.05987#S2.E3 "In 2.2 From Outcome Contribution to Bayesian Turn Evidence ‣ 2 Methodology ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")), under the conditions detailed in Appendix[A.1](https://arxiv.org/html/2608.05987#A1.SS1 "A.1 From the Bayes factor to the self-teacher contrast ‣ Appendix A Theoretical Analysis ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). More generally, Bayes’ rule gives
+
+\log\frac{p(a_{k}\mid s_{k},C)}{p(a_{k}\mid s_{k})}=\log\frac{p(C\mid s_{k},a_{k})}{p(C\mid s_{k})}.(7)
+
+Thus, e_{k} can be interpreted as an evidential score whose sign indicates whether a_{k} raises or lowers support for eventual success. This sign-consistent Bayesian evidence is precisely the property that AgentOPSD relies on. We therefore treat e_{k} as a tractable Bayesian-inspired evidence proxy.
+
+### 2.3 Recursive Belief update
+
+The local score e_{k} does not indicate whether the same evidence is pivotal or redundant given earlier turns. We therefore maintain a decaying evidence accumulator and measure each turn by how much it revises the current support state:
+
+\displaystyle B_{0}\displaystyle=\operatorname{clip}(\bar{R},\epsilon_{0},1-\epsilon_{0}),\displaystyle c_{0}\displaystyle=0,(8)
+\displaystyle c_{k}\displaystyle=\gamma\,c_{k-1}+e_{k},\displaystyle\ell_{k}\displaystyle=\operatorname{logit}(B_{0})+c_{k}=\operatorname{logit}(B_{0})+\sum_{j=1}^{k}\gamma^{\,k-j}e_{j},
+
+with B_{k}=\sigma(\ell_{k}) and \sigma(u)=(1+e^{-u})^{-1}. Here \bar{R}=S/G is the fraction of successful trajectories in the group of size G—the standard GRPO group mean (Prop.[7](https://arxiv.org/html/2608.05987#Thmproposition7 "Proposition 7 (𝐵₀ as the Group Success-Rate Estimate). ‣ A.2 Properties of the reshaping ‣ Appendix A Theoretical Analysis ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"))—and B_{0} clips it to [\epsilon_{0},1-\epsilon_{0}] with \epsilon_{0}{=}10^{-4} so its log-odds stay finite for all-correct or all-wrong groups. c_{k} is the accumulated evidence, and \gamma\in(0,1] is a decay factor that down-weights older turns geometrically; only the evidence c_{k} decays, while the prior \operatorname{logit}(B_{0}) is retained at every step. Setting \gamma{=}1 recovers the undiscounted accumulation of a log-likelihood ratio familiar from sequential testing(Wald, [1945](https://arxiv.org/html/2608.05987#bib.bib63 "Sequential tests of statistical hypotheses")); \gamma{<}1 makes the state recency-weighted, so that evidence from many turns ago no longer pins the support level. Since e_{k} is estimated by the self-teacher (§[2.2](https://arxiv.org/html/2608.05987#S2.SS2 "2.2 From Outcome Contribution to Bayesian Turn Evidence ‣ 2 Methodology ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")), B_{k} is treated as relative support rather than a calibrated success probability.
+
+The importance of turn k is its marginal support revision:
+
+\displaystyle\Delta B_{k}\displaystyle=B_{k}-B_{k-1}=\sigma(\ell_{k})-\sigma(\ell_{k-1}),(9)
+\displaystyle\Delta B_{k}\displaystyle\approx B_{k-1}(1-B_{k-1})\big(e_{k}-(1-\gamma)\,c_{k-1}\big).
+
+The increment \ell_{k}-\ell_{k-1}=e_{k}-(1-\gamma)c_{k-1} is the new evidence net of the decayed carry-over, and it is weighted by the current state sensitivity B_{k-1}(1-B_{k-1}): evidence has greatest effect under uncertainty and is suppressed once support saturates. At \gamma{=}1 this reduces to B_{k-1}(1-B_{k-1})\,e_{k}. We update at turn boundaries; a token-level variant is used only as an ablation.
+
+#### Outcome-aligned recursive credit.
+
+We align the revision with the terminal update and read off its magnitude and direction:
+
+q_{k}=\operatorname{sign}(A_{\mathrm{seq}})\,\Delta B_{k}.(10)
+
+The _magnitude_|\Delta B_{k}|=|q_{k}| measures how much support the turn revises, while its _sign_\operatorname{sign}(q_{k}) records whether that revision agrees with the verifier’s outcome signal. After the within-trajectory standardization below, turns with above-average q_{k} are amplified and those below-average are attenuated; since the multiplier stays strictly positive, this never reverses the GRPO update direction.
+
+### 2.4 Bounded Advantage Reshaping
+
+The raw credit q_{k} only modulates the magnitude of the verifier-derived advantage. For trajectory i, we normalize its K_{i} turn credits and apply a bounded multiplier:
+
+\displaystyle\mu_{q}^{(i)}\displaystyle=K_{i}^{-1}\sum_{j=1}^{K_{i}}q_{j}^{(i)},\displaystyle\sigma_{q}^{(i)}\displaystyle=\sqrt{K_{i}^{-1}\sum_{j=1}^{K_{i}}\big(q_{j}^{(i)}-\mu_{q}^{(i)}\big)^{2}},(11)
+\displaystyle z_{k}^{(i)}\displaystyle=\frac{q_{k}^{(i)}-\mu_{q}^{(i)}}{\sigma_{q}^{(i)}+\epsilon_{0}},\displaystyle w_{k}^{(i)}\displaystyle=\operatorname{clip}\!\left(1+bz_{k}^{(i)},\,1-b,\,1+b\right),
+\displaystyle\widetilde{A}_{k}^{(i)}\displaystyle=A_{\mathrm{seq}}^{(i)}\big[(1-\lambda)+\lambda w_{k}^{(i)}\big],\displaystyle b\displaystyle\in(0,1),\quad\lambda\in[0,1].
+
+Here \mu_{q}^{(i)} and \sigma_{q}^{(i)} are the within-trajectory mean and standard deviation, z_{k}^{(i)} is the normalized credit (\epsilon_{0} stabilizes the normalization), b sets w_{k}^{(i)}\in[1-b,1+b], and \lambda controls reshaping strength.
+
+Token t inherits \widetilde{A}_{\kappa_{i}(t)}^{(i)}, yielding
+
+\displaystyle\mathcal{L}_{\text{AgentOPSD}}(\theta)\displaystyle=-\frac{1}{G}\sum_{i=1}^{G}\frac{1}{\sum_{t}M_{i,t}}\sum_{t}M_{i,t}\min\!\Big(r_{i,t}\widetilde{A}_{\kappa_{i}(t)}^{(i)},\operatorname{clip}(r_{i,t},1-\varepsilon,1+\varepsilon)\widetilde{A}_{\kappa_{i}(t)}^{(i)}\Big)+\beta\mathcal{L}_{\mathrm{KL}},(12)
+\displaystyle r_{i,t}\displaystyle=\frac{\pi_{\theta}(y_{i,t}\mid h_{i,t})}{\pi_{\theta_{\mathrm{old}}}(y_{i,t}\mid h_{i,t})}.
+
+Here M_{i,t}\in\{0,1\} masks valid response tokens, \kappa_{i}(t) maps token t to its turn, r_{i,t} is the importance ratio against the rollout policy \pi_{\theta_{\mathrm{old}}}, \varepsilon is the clipping radius, and \beta is its coefficient. No separate distillation loss is introduced; the detached self-teacher signal acts only through \widetilde{A}.
+
+Table 1: Performance on ALFWorld, Search-QA and WebShop. We report success rate (%) on ALFWorld, accuracy (%) on Search-QA, and Score/Acc (%) on WebShop. skills are training-only unless marked with * (validation with skills). AgentOPSD uses no skills at inference. Best and second-best are highlighted. 
+
+## 3 Experiments
+
+### 3.1 Experimental Setup
+
+#### Benchmarks.
+
+We evaluate on three environments. ALFWorld(Shridhar et al., [2020](https://arxiv.org/html/2608.05987#bib.bib11 "Alfworld: aligning text and embodied environments for interactive learning")) is a text embodied benchmark over six household task categories—Pick and Place (Pick), Look at Object in Light (Look), Pick Clean then Place (Clean), Pick Heat then Place (Heat), Pick Cool then Place (Cool), and Pick Two and Place (Pick2). Search-QA follows the Search-R1 setup(Jin et al., [2025](https://arxiv.org/html/2608.05987#bib.bib12 "Search-r1: training llms to reason and leverage search engines with reinforcement learning")) and covers single-hop QA (NQ(Kwiatkowski et al., [2019](https://arxiv.org/html/2608.05987#bib.bib13 "Natural questions: a benchmark for question answering research")), TriviaQA(Joshi et al., [2017](https://arxiv.org/html/2608.05987#bib.bib14 "Triviaqa: a large scale distantly supervised challenge dataset for reading comprehension")), PopQA(Mallen et al., [2023](https://arxiv.org/html/2608.05987#bib.bib15 "When not to trust language models: investigating effectiveness of parametric and non-parametric memories"))) and multi-hop QA (HotpotQA(Yang et al., [2018](https://arxiv.org/html/2608.05987#bib.bib16 "HotpotQA: a dataset for diverse, explainable multi-hop question answering")), 2Wiki(Ho et al., [2020](https://arxiv.org/html/2608.05987#bib.bib17 "Constructing a multi-hop qa dataset for comprehensive evaluation of reasoning steps")), MuSiQue(Trivedi et al., [2022](https://arxiv.org/html/2608.05987#bib.bib18 "MuSiQue: multi-hop questions via single-hop question composition")), Bamboogle(Press et al., [2023](https://arxiv.org/html/2608.05987#bib.bib19 "Measuring and narrowing the compositionality gap in language models"))), with NQ and HotpotQA in-domain and the rest held out; retrieval uses E5(Wang et al., [2022](https://arxiv.org/html/2608.05987#bib.bib21 "Text embeddings by weakly-supervised contrastive pre-training")). WebShop(Yao et al., [2022](https://arxiv.org/html/2608.05987#bib.bib9 "Webshop: towards scalable real-world web interaction with grounded language agents")) is an interactive online-shopping environment; we evaluate on the 128 fixed validation tasks of Feng et al. ([2025](https://arxiv.org/html/2608.05987#bib.bib20 "Group-in-group policy optimization for llm agent training")).
+
+#### Implementation.
+
+We train Qwen2.5-3B/7B-Instruct on 8\times H800 GPUs. The privileged skills are retrieved from the SkillBank of SkillRL(Xia et al., [2026](https://arxiv.org/html/2608.05987#bib.bib4 "SkillRL: evolving agents via recursive skill-augmented reinforcement learning")) by keyword matching and are used only during training; inference uses no external skills. Prior B_{0} set to the fraction of successful trajectories in each GRPO group (the standard group mean \bar{R}). All other optimization settings are shared with the SDAR baseline. Full training and AgentOPSD hyperparameters are listed in Appendix[F](https://arxiv.org/html/2608.05987#A6 "Appendix F Hyperparameters ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning") (Table[3](https://arxiv.org/html/2608.05987#A6.T3 "Table 3 ‣ Appendix F Hyperparameters ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")).
+
+#### Baselines.
+
+We compare against three groups. (1) Training-free:Vanilla (the base model) and Skill-Prompt, which prepends retrieved skills at inference. (2) Group-relative RL:GRPO(Shao et al., [2024](https://arxiv.org/html/2608.05987#bib.bib23 "Deepseekmath: pushing the limits of mathematical reasoning in open language models")) and Skill-GRPO, which injects skills into the training prompt (evaluated with, Skill-GRPO*, or without retrieved skills). (3) Self-distillation RL:OPSD(Zhao et al., [2026](https://arxiv.org/html/2608.05987#bib.bib24 "Self-distilled reasoner: on-policy self-distillation for large language models")), GRPO+OPSD, Skill-SD(Wang et al., [2026a](https://arxiv.org/html/2608.05987#bib.bib5 "Skill-sd: skill-conditioned self-distillation for multi-turn llm agents")), RLSD(Yang et al., [2026a](https://arxiv.org/html/2608.05987#bib.bib2 "Self-distilled rlvr")), SDAR(Lu et al., [2026b](https://arxiv.org/html/2608.05987#bib.bib67 "Self-distilled agentic reinforcement learning")) and StepOPSD(Zhang et al., [2026](https://arxiv.org/html/2608.05987#bib.bib55 "StepOPSD: step-aware online preference distillation for agent reinforcement learning")), all of which use the teacher–student gap but inject it as a gate, magnitude, or auxiliary loss. All methods share the same backbone, data, and budget. Full algorithm details are in Appendix[B](https://arxiv.org/html/2608.05987#A2 "Appendix B Algorithm ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning").
+
+### 3.2 Main Results
+
+#### The gain comes from credit construction, not privileged access.
+
+Under our unified setup, AgentOPSD and the privileged baselines use the same retrieved skills; they differ primarily in how the skill-induced teacher–student discrepancy enters learning. AgentOPSD outperforms GRPO+OPSD, Skill-SD, and RLSD on all eight aggregate comparisons across the two model scales, and exceeds SDAR on six of eight. This controlled-information comparison isolates the benefit of AgentOPSD: a local teacher-student gap is not yet a reliable credit signal. Accumulating that gap into a belief state and assigning credit according to belief revision more effectively identifies the turns that change the predicted outcome.
+
+#### The advantage grows with the interaction horizon.
+
+AgentOPSD is designed for the regime where uniform credit is most harmful, so we also ask how performance degrades as tasks require more turns. Figure[1](https://arxiv.org/html/2608.05987#S0.F1 "Figure 1 ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")(b) regresses per-sub-task success on the measured mean number of turns of successful episodes on ALFWorld (Qwen2.5-7B), reporting the success points lost per additional turn. The uniform-credit methods degrade fastest (-3.59 for RLSD and -2.91 for GRPO points per turn), whereas AgentOPSD is the flattest at -0.54. This is consistent with the motivation for turn-level credit: the longer the trajectory, the more decisions a single broadcast advantage has to cover, and the more a history-dependent revision helps.
+
+### 3.3 Mechanism Ablation
+
+Table[2](https://arxiv.org/html/2608.05987#S3.T2 "Table 2 ‣ 3.3 Mechanism Ablation ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning") evaluates each design choice on ALFWorld with Qwen2.5-7B by removing or replacing one component at a time. The full method achieves a success rate of 89.1.
+
+Component Ablation ALFWorld
+AgentOPSD (full)turn-level, bounded, \lambda{=}0.5 89.1
+Turn-level granularity per-token accumulation 85.9
+Recursive state revision([8](https://arxiv.org/html/2608.05987#S2.E8 "In 2.3 Recursive Belief update ‣ 2 Methodology ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"))raw local gap e_{k} in place of \Delta B_{k}82.8
+Signed direction([10](https://arxiv.org/html/2608.05987#S2.E10 "In Outcome-aligned recursive credit. ‣ 2.3 Recursive Belief update ‣ 2 Methodology ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"))magnitude |\Delta B_{k}| only (drop outcome sign)80.5
+State prior B_{0} anchor drop empirical-rate initialization 78.9
+
+Table 2: Component ablation of AgentOPSD on ALFWorld with Qwen2.5-7B (success rate, %). Each row removes or replaces a single mechanism while holding all other settings fixed. The signed direction and the state prior anchor have the largest impact on performance, while the recursive state revision and turn-level granularity provide smaller but consistent improvements. 
+
+#### Granularity and recursion.
+
+Replacing turn-level belief tracking with per-token accumulation reduces the success rate to 85.9: environment feedback is associated with a complete action rather than an individual token, so token-level accumulation fragments a single decision and weakens the alignment between the gap and outcomes. Replacing the recursive revision \Delta B_{k} with the raw local gap e_{k} further reduces performance to 82.8. A raw e_{k} scores each turn in isolation, whereas \Delta B_{k} measures how that gap revises the belief state accumulated over the preceding history—so the same local gap that is decisive while the outcome is open becomes redundant once the accumulated state already points to an outcome. This controlled comparison isolates the value of the recursion and directly confirms our central principle that a local gap is not sequential credit.
+
+#### Outcome-aligned signed direction.
+
+Keeping only the magnitude |\Delta B_{k}| and dropping the sign (Eq.[10](https://arxiv.org/html/2608.05987#S2.E10 "In Outcome-aligned recursive credit. ‣ 2.3 Recursive Belief update ‣ 2 Methodology ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")), i.e. standardizing |\Delta B_{k}| instead of the signed q_{k}, lowers performance to 80.5. The magnitude identifies where the belief state changes, but cannot determine whether that change agrees with the verifier outcome. For a successful trajectory, an upward belief revision is consistent with the outcome, whereas for a failed trajectory the same revision is inconsistent. The signed direction makes this distinction explicit, allowing outcome-consistent revisions to receive more credit and contradictory revisions to receive less.
+
+#### State-prior anchoring.
+
+Removing the empirical prior B_{0}=\operatorname{clip}(\bar{R},\epsilon_{0},1-\epsilon_{0}) reduces the success rate to 78.9. The group success rate \bar{R} provides a verifier-grounded estimate of task difficulty before the trajectory-specific gap is accumulated. Moreover, B_{0} determines the initial log-odds and thus the operating region of the B(1-B) gate. Without this anchor, trajectories begin from an arbitrary uncertainty level, which can mis-scale early belief revisions and distort which early turns appear pivotal. The ablations therefore separate three roles: belief revision localizes credit, the signed direction aligns it with the final outcome, and prior anchoring stabilizes its reference point.
+
+### 3.4 Hyperparameter Sensitivity
+
+Whereas the mechanism ablation asks whether each component is necessary, we now examine how sensitive AgentOPSD is to its continuous hyperparameters. We sweep one knob at a time while holding the others at the full-AgentOPSD setting (\lambda{=}0.5, \gamma{=}0.95, \epsilon_{\mathrm{high}}{=}0.24; Appendix[F](https://arxiv.org/html/2608.05987#A6 "Appendix F Hyperparameters ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")) across three configurations (Figure[3](https://arxiv.org/html/2608.05987#S3.F3 "Figure 3 ‣ 3.4 Hyperparameter Sensitivity ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")): long-horizon ALFWorld with Qwen2.5-7B (89.1) and Qwen2.5-3B (84.4), and short-horizon Search-QA with Qwen2.5-3B (46.7).
+
+![Image 3: Refer to caption](https://arxiv.org/html/2608.05987v1/x3.png)
+
+Figure 3: Hyperparameter sensitivity of AgentOPSD. Rows: ALFWorld (Qwen2.5-7B), Search-QA (Qwen2.5-3B), and ALFWorld (Qwen2.5-3B). Columns sweep one knob (\lambda, \gamma, \epsilon_{\mathrm{high}}) with the others held at our setting. Curves are rolling means; shaded bands show the local \pm 1 standard deviation.
+
+#### Reshaping weight \lambda.
+
+Sweeping \lambda\in\{0.5,0.25,0.1,0.01\} interpolates between pure GRPO (\lambda{=}0) and full belief reshaping. This is the knob with the clearest effect: \lambda{=}0.5 is best and any smaller value reduces performance (89.1 at \lambda{=}0.5 vs. 84.4/85.9/83.6; Search 46.7 vs. 45.1/40.2/45.4), consistent with a smaller \lambda down-weighting the bounded multiplier and discarding turn-level credit. We use \lambda{=}0.5 throughout.
+
+#### Evidence decay \gamma.
+
+Turn-level evidence is accumulated with a geometric decay c_{k}=\gamma\,c_{k-1}+e_{k} (equivalently \ell_{k}=\operatorname{logit}(B_{0})+\sum_{j\leq k}\gamma^{\,k-j}e_{j}); sweeping \gamma\in\{1.0,0.95,0.9,0.8\} moves the result within a few points (87.5/82.0/85.2; Search 45.1/44.5/45.5) without a monotone trend, so the recursion is not particularly sensitive to how fast old evidence is discounted. We use the mild setting \gamma{=}0.95 for all main results.
+
+#### Policy clipping \epsilon_{\mathrm{high}}.
+
+Fixing \epsilon_{\mathrm{low}}{=}0.2 and varying \epsilon_{\mathrm{high}}\in\{0.2,0.24,0.28\} (clip-higher(Yu et al., [2025](https://arxiv.org/html/2608.05987#bib.bib51 "Dapo: an open-source llm reinforcement learning system at scale"))), AgentOPSD is largely unaffected (88.3 at both 0.2 and 0.28; Search 46.9 and 45.7), indicating that the reshaped objective inherits the trust-region robustness of GRPO. Overall, only \lambda produces a systematic effect, and the spread across all knobs shrinks sharply on the four-turn Search-QA task—the settings that matter on long-horizon ALFWorld are largely inert when little history accumulates, which is again consistent with the method acting where long-horizon credit assignment is needed.
+
+## 4 Related Work
+
+### 4.1 Agentic Post-Training with Verifiable Rewards
+
+Reinforcement learning with verifiable rewards has advanced from single-turn reasoning(Shao et al., [2024](https://arxiv.org/html/2608.05987#bib.bib23 "Deepseekmath: pushing the limits of mathematical reasoning in open language models"); Guo et al., [2025](https://arxiv.org/html/2608.05987#bib.bib22 "Deepseek-r1: incentivizing reasoning capability in llms via reinforcement learning"); Yu et al., [2025](https://arxiv.org/html/2608.05987#bib.bib51 "Dapo: an open-source llm reinforcement learning system at scale"); Lu et al., [2026a](https://arxiv.org/html/2608.05987#bib.bib28 "Ui-r1: enhancing efficient action prediction of gui agents by reinforcement learning")) to long-horizon agents in embodied text worlds, web shopping, and retrieval-augmented question answering(Shridhar et al., [2020](https://arxiv.org/html/2608.05987#bib.bib11 "Alfworld: aligning text and embodied environments for interactive learning"); Yao et al., [2022](https://arxiv.org/html/2608.05987#bib.bib9 "Webshop: towards scalable real-world web interaction with grounded language agents"); Jin et al., [2025](https://arxiv.org/html/2608.05987#bib.bib12 "Search-r1: training llms to reason and leverage search engines with reinforcement learning"); Lu et al., [2025](https://arxiv.org/html/2608.05987#bib.bib77 "Ui-s1: advancing gui automation via semi-online reinforcement learning")). In these interactive settings, sparse terminal rewards make turn-level credit assignment particularly challenging. Standard GRPO broadcasts a trajectory-level advantage uniformly across turns. GiGPO(Feng et al., [2025](https://arxiv.org/html/2608.05987#bib.bib20 "Group-in-group policy optimization for llm agent training")) improves reward-side credit assignment by combining episode-level advantages with step-level advantages estimated from repeated anchor states across trajectories. In contrast, AgentOPSD derives turn-level evidence from privileged teacher–student likelihood gaps and assigns credit through recursive belief revision. GiGPO and AgentOPSD therefore operate on complementary signal sources—environment rewards and self-distillation evidence, respectively.
+
+### 4.2 On-Policy (Self-)Distillation
+
+On-policy distillation trains a policy on its own rollouts under a teacher(Agarwal et al., [2024](https://arxiv.org/html/2608.05987#bib.bib48 "On-policy distillation of language models: learning from self-generated mistakes"); Gu et al., [2026](https://arxiv.org/html/2608.05987#bib.bib49 "MiniLLM: on-policy distillation of large language models"); Wen et al., [2023](https://arxiv.org/html/2608.05987#bib.bib50 "F-divergence minimization for sequence-level knowledge distillation")). Its recent self-distillation variants remove the need for a separate teacher while the teacher branch is conditioned on privileged information available only during training(Zhao et al., [2026](https://arxiv.org/html/2608.05987#bib.bib24 "Self-distilled reasoner: on-policy self-distillation for large language models"); He et al., [2026](https://arxiv.org/html/2608.05987#bib.bib38 "Self-distillation zero: self-revision turns binary rewards into dense supervision"); Lu et al., [2026c](https://arxiv.org/html/2608.05987#bib.bib6 "SKILL0: in-context agentic reinforcement learning for skill internalization")). Recent studies incorporate the resulting teacher–student log-probability gap into RLVR by using it to scale or reshape the advantage(Yang et al., [2026a](https://arxiv.org/html/2608.05987#bib.bib2 "Self-distilled rlvr")), as a detached auxiliary objective(Lu et al., [2026b](https://arxiv.org/html/2608.05987#bib.bib67 "Self-distilled agentic reinforcement learning"); Wang et al., [2026a](https://arxiv.org/html/2608.05987#bib.bib5 "Skill-sd: skill-conditioned self-distillation for multi-turn llm agents")), or as reweighted, scheduled, or reward-densifying local supervision(Xu et al., [2026](https://arxiv.org/html/2608.05987#bib.bib7 "TIP: token importance in on-policy distillation"); Wang et al., [2026b](https://arxiv.org/html/2608.05987#bib.bib1 "TCOD: exploring temporal curriculum in on-policy distillation for multi-turn autonomous agents"); Ye et al., [2026a](https://arxiv.org/html/2608.05987#bib.bib36 "On-policy context distillation for language models"); He et al., [2026](https://arxiv.org/html/2608.05987#bib.bib38 "Self-distillation zero: self-revision turns binary rewards into dense supervision")). Existing methods predominantly treat the distillation gap as a local token-level or step-level signal. Token-level signals are not naturally aligned with action turns, and the contribution of a turn depends on the evidence accumulated through preceding interactions. StepOPSD(Zhang et al., [2026](https://arxiv.org/html/2608.05987#bib.bib55 "StepOPSD: step-aware online preference distillation for agent reinforcement learning")) aggregates the teacher–student signal over action-centered step spans but still scores each span by its local log-ratio. In contrast, AgentOPSD first aggregates token-level gaps within each turn and then recursively accumulates the resulting evidence into a running support state.
+
+### 4.3 Long-Horizon Credit Assignment
+
+Assigning credit across a long horizon is a classical problem. PPO learns a value function and, via GAE, derives a per-step temporal-difference signals(Schulman et al., [2017](https://arxiv.org/html/2608.05987#bib.bib57 "Proximal policy optimization algorithms"); [2016](https://arxiv.org/html/2608.05987#bib.bib58 "High-dimensional continuous control using generalized advantage estimation")). When rewards are sparse and delayed, return-decomposition methods such as RUDDER redistribute a terminal reward to the steps responsible for it(Arjona-Medina et al., [2019](https://arxiv.org/html/2608.05987#bib.bib59 "RUDDER: return decomposition for delayed rewards")), while process reward models and Monte-Carlo credit methods such as VinePPO estimate intermediate value by additional rollouts or a learned scorer(Cui et al., [2025](https://arxiv.org/html/2608.05987#bib.bib61 "Process reinforcement through implicit rewards"); Kazemnejad et al., [2024](https://arxiv.org/html/2608.05987#bib.bib60 "VinePPO: refining credit assignment in rl training of llms")). These approaches recover per-step structure but reintroduce the cost GRPO removed: a trained critic, a reward model, or many extra rollouts. AgentOPSD restores a per-turn value signal in the critic-free group-relative setting, at the cost of a single teacher forward pass. The belief state plays the role of GAE’s value baseline and its per-turn revision the role of the TD signal, but without a learned value network cost.
+
+## 5 Conclusion
+
+We studied credit assignment for long-horizon language agents, where trajectory-level rewards provide limited supervision for distinguishing pivotal decisions from routine or redundant actions. Our key insight is that turn-level credit should depend not only on a local signal, but also on how that signal revises the accumulated belief in eventual trajectory success. Based on this insight, we proposed AgentOPSD, which aggregates token-level self-distillation gaps at environment-aligned turn boundaries and recursively updates a trajectory-success belief in log-odds space. These belief revisions redistribute the trajectory-level advantage across turns without requiring additional rollouts or a learned critic. Experiments across three interactive environments and two model scales show that AgentOPSD consistently outperforms GRPO and strong self-distillation baselines. Ablations further confirm the importance of both turn-level signal aggregation and history-dependent belief revision. Overall, our results suggest that recursive belief updating provides a simple and effective approach to restoring fine-grained temporal credit in critic-free agentic reinforcement learning.
+
+## References
+
+*   R. Agarwal, N. Vieillard, Y. Zhou, P. Stanczyk, S. Ramos, M. Geist, and O. Bachem (2024)On-policy distillation of language models: learning from self-generated mistakes. External Links: 2306.13649, [Link](https://arxiv.org/abs/2306.13649)Cited by: [§4.2](https://arxiv.org/html/2608.05987#S4.SS2.p1.1 "4.2 On-Policy (Self-)Distillation ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   J. A. Arjona-Medina, M. Gillhofer, M. Widrich, T. Unterthiner, J. Brandstetter, and S. Hochreiter (2019)RUDDER: return decomposition for delayed rewards. External Links: 1806.07857, [Link](https://arxiv.org/abs/1806.07857)Cited by: [§4.3](https://arxiv.org/html/2608.05987#S4.SS3.p1.1 "4.3 Long-Horizon Credit Assignment ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   K. J. Åström (1965)Optimal control of markov processes with incomplete state information i. Journal of Mathematical Analysis and Applications 10,  pp.174–205. External Links: [Document](https://dx.doi.org/10.1016/0022-247X%2865%2990154-X)Cited by: [§1](https://arxiv.org/html/2608.05987#S1.p5.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§2.2](https://arxiv.org/html/2608.05987#S2.SS2.p1.5 "2.2 From Outcome Contribution to Bayesian Turn Evidence ‣ 2 Methodology ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   Y. Chen, Z. Cai, X. Ji, W. Zhao, A. Zhang, X. Wang, and T. Chua (2026a)Understanding multilingualism in mixture-of-experts llms: routing mechanism, expert specialization, and layerwise steering. arXiv preprint arXiv:2601.14050. Cited by: [Appendix C](https://arxiv.org/html/2608.05987#A3.SS0.SSS0.Px3.p1.1 "Search-QA ‣ Appendix C Datasets ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   Y. Chen, Y. Wang, Y. Zhang, Z. Ye, Z. Cai, Y. Shi, Q. Gu, H. Su, X. Cai, X. Wang, et al. (2026b)Learning to self-verify makes language models better reasoners. arXiv preprint arXiv:2602.07594. Cited by: [Appendix C](https://arxiv.org/html/2608.05987#A3.SS0.SSS0.Px3.p1.1 "Search-QA ‣ Appendix C Datasets ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   G. Comanici, E. Bieber, M. Schaekermann, I. Pasupat, N. Sachdeva, I. Dhillon, M. Blistein, O. Ram, D. Zhang, E. Rosen, et al. (2025)Gemini 2.5: pushing the frontier with advanced reasoning, multimodality, long context, and next generation agentic capabilities. arXiv preprint arXiv:2507.06261. Cited by: [§1](https://arxiv.org/html/2608.05987#S1.p1.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   G. Cui, L. Yuan, Z. Wang, H. Wang, Y. Zhang, J. Chen, W. Li, B. He, Y. Fan, T. Yu, Q. Xu, W. Chen, J. Yuan, H. Chen, K. Zhang, X. Lv, S. Wang, Y. Yao, X. Han, H. Peng, Y. Cheng, Z. Liu, M. Sun, B. Zhou, and N. Ding (2025)Process reinforcement through implicit rewards. External Links: 2502.01456, [Link](https://arxiv.org/abs/2502.01456)Cited by: [§4.3](https://arxiv.org/html/2608.05987#S4.SS3.p1.1 "4.3 Long-Horizon Credit Assignment ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   G. Dong, H. Mao, K. Ma, L. Bao, Y. Chen, Z. Wang, Z. Chen, J. Du, H. Wang, F. Zhang, et al. (2025)Agentic reinforced policy optimization. arXiv preprint arXiv:2507.19849. Cited by: [§1](https://arxiv.org/html/2608.05987#S1.p2.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   L. Feng, Z. Xue, T. Liu, and B. An (2025)Group-in-group policy optimization for llm agent training. arXiv preprint arXiv:2505.10978. Cited by: [Appendix C](https://arxiv.org/html/2608.05987#A3.SS0.SSS0.Px2.p1.1 "WebShop ‣ Appendix C Datasets ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§1](https://arxiv.org/html/2608.05987#S1.p2.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§3.1](https://arxiv.org/html/2608.05987#S3.SS1.SSS0.Px1.p1.1 "Benchmarks. ‣ 3.1 Experimental Setup ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§4.1](https://arxiv.org/html/2608.05987#S4.SS1.p1.1 "4.1 Agentic Post-Training with Verifiable Rewards ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   Y. Gu, L. Dong, F. Wei, and M. Huang (2026)MiniLLM: on-policy distillation of large language models. External Links: 2306.08543, [Link](https://arxiv.org/abs/2306.08543)Cited by: [§4.2](https://arxiv.org/html/2608.05987#S4.SS2.p1.1 "4.2 On-Policy (Self-)Distillation ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   D. Guo, D. Yang, H. Zhang, J. Song, P. Wang, Q. Zhu, R. Xu, R. Zhang, S. Ma, X. Bi, et al. (2025)Deepseek-r1: incentivizing reasoning capability in llms via reinforcement learning. arXiv preprint arXiv:2501.12948. Cited by: [§1](https://arxiv.org/html/2608.05987#S1.p1.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§4.1](https://arxiv.org/html/2608.05987#S4.SS1.p1.1 "4.1 Agentic Post-Training with Verifiable Rewards ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   Y. He, S. Kaur, A. Bhaskar, Y. Yang, J. Liu, N. Ri, L. Fowl, A. Panigrahi, D. Chen, and S. Arora (2026)Self-distillation zero: self-revision turns binary rewards into dense supervision. External Links: 2604.12002, [Link](https://arxiv.org/abs/2604.12002)Cited by: [§1](https://arxiv.org/html/2608.05987#S1.p3.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§4.2](https://arxiv.org/html/2608.05987#S4.SS2.p1.1 "4.2 On-Policy (Self-)Distillation ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   X. Ho, A. D. Nguyen, S. Sugawara, and A. Aizawa (2020)Constructing a multi-hop qa dataset for comprehensive evaluation of reasoning steps. In Proceedings of the 28th International Conference on Computational Linguistics,  pp.6609–6625. Cited by: [Appendix C](https://arxiv.org/html/2608.05987#A3.SS0.SSS0.Px3.p1.1 "Search-QA ‣ Appendix C Datasets ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§3.1](https://arxiv.org/html/2608.05987#S3.SS1.SSS0.Px1.p1.1 "Benchmarks. ‣ 3.1 Experimental Setup ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   X. Ji, Y. Chen, Z. Cai, X. Wang, A. Zhang, and T. Chua (2026)Tiny brains, giant impact: uncovering the keystone neurons of llm with just a few prompts. arXiv preprint arXiv:2605.24846. Cited by: [Appendix C](https://arxiv.org/html/2608.05987#A3.SS0.SSS0.Px3.p1.1 "Search-QA ‣ Appendix C Datasets ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   C. E. Jimenez, J. Yang, A. Wettig, S. Yao, K. Pei, O. Press, and K. Narasimhan (2023)Swe-bench: can language models resolve real-world github issues?. arXiv preprint arXiv:2310.06770. Cited by: [§1](https://arxiv.org/html/2608.05987#S1.p1.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   B. Jin, H. Zeng, Z. Yue, J. Yoon, S. Arik, D. Wang, H. Zamani, and J. Han (2025)Search-r1: training llms to reason and leverage search engines with reinforcement learning. arXiv preprint arXiv:2503.09516. Cited by: [Appendix C](https://arxiv.org/html/2608.05987#A3.SS0.SSS0.Px3.p1.1 "Search-QA ‣ Appendix C Datasets ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§1](https://arxiv.org/html/2608.05987#S1.p6.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§3.1](https://arxiv.org/html/2608.05987#S3.SS1.SSS0.Px1.p1.1 "Benchmarks. ‣ 3.1 Experimental Setup ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§4.1](https://arxiv.org/html/2608.05987#S4.SS1.p1.1 "4.1 Agentic Post-Training with Verifiable Rewards ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   M. Joshi, E. Choi, D. S. Weld, and L. Zettlemoyer (2017)Triviaqa: a large scale distantly supervised challenge dataset for reading comprehension. In Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers),  pp.1601–1611. Cited by: [Appendix C](https://arxiv.org/html/2608.05987#A3.SS0.SSS0.Px3.p1.1 "Search-QA ‣ Appendix C Datasets ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§3.1](https://arxiv.org/html/2608.05987#S3.SS1.SSS0.Px1.p1.1 "Benchmarks. ‣ 3.1 Experimental Setup ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   L. P. Kaelbling, M. L. Littman, and A. R. Cassandra (1998)Planning and acting in partially observable stochastic domains. Artificial Intelligence 101 (1–2),  pp.99–134. External Links: [Document](https://dx.doi.org/10.1016/S0004-3702%2898%2900023-X)Cited by: [§1](https://arxiv.org/html/2608.05987#S1.p5.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§2.2](https://arxiv.org/html/2608.05987#S2.SS2.p1.5 "2.2 From Outcome Contribution to Bayesian Turn Evidence ‣ 2 Methodology ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   R. E. Kass and A. E. Raftery (1995)Bayes factors. Journal of the American Statistical Association 90 (430),  pp.773–795. External Links: [Document](https://dx.doi.org/10.1080/01621459.1995.10476572)Cited by: [§2.2](https://arxiv.org/html/2608.05987#S2.SS2.p1.7 "2.2 From Outcome Contribution to Bayesian Turn Evidence ‣ 2 Methodology ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   A. Kazemnejad, M. Aghajohari, E. Portelance, A. Sordoni, S. Reddy, A. Courville, and N. L. Roux (2024)VinePPO: refining credit assignment in rl training of llms. External Links: 2410.01679, [Link](https://arxiv.org/abs/2410.01679)Cited by: [§4.3](https://arxiv.org/html/2608.05987#S4.SS3.p1.1 "4.3 Long-Horizon Credit Assignment ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   T. Kwiatkowski, J. Palomaki, O. Redfield, M. Collins, A. Parikh, C. Alberti, D. Epstein, I. Polosukhin, J. Devlin, K. Lee, et al. (2019)Natural questions: a benchmark for question answering research. Transactions of the Association for Computational Linguistics 7,  pp.453–466. Cited by: [Appendix C](https://arxiv.org/html/2608.05987#A3.SS0.SSS0.Px3.p1.1 "Search-QA ‣ Appendix C Datasets ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§3.1](https://arxiv.org/html/2608.05987#S3.SS1.SSS0.Px1.p1.1 "Benchmarks. ‣ 3.1 Experimental Setup ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   Z. Lu, Y. Chai, Y. Guo, X. Yin, L. Liu, H. Wang, H. Xiao, S. Ren, P. Zhao, G. Liu, et al. (2026a)Ui-r1: enhancing efficient action prediction of gui agents by reinforcement learning. In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 40,  pp.17608–17616. Cited by: [§4.1](https://arxiv.org/html/2608.05987#S4.SS1.p1.1 "4.1 Agentic Post-Training with Verifiable Rewards ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   Z. Lu, Z. Yao, Z. Han, Z. Wang, J. Wu, Q. Gu, X. Cai, W. Lu, J. Xiao, Y. Zhuang, et al. (2026b)Self-distilled agentic reinforcement learning. arXiv preprint arXiv:2605.15155. Cited by: [Appendix D](https://arxiv.org/html/2608.05987#A4.SS0.SSS0.Px9.p1.1 "SDAR ‣ Appendix D Baseline Details ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§1](https://arxiv.org/html/2608.05987#S1.p3.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§1](https://arxiv.org/html/2608.05987#S1.p4.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§3.1](https://arxiv.org/html/2608.05987#S3.SS1.SSS0.Px3.p1.1 "Baselines. ‣ 3.1 Experimental Setup ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§4.2](https://arxiv.org/html/2608.05987#S4.SS2.p1.1 "4.2 On-Policy (Self-)Distillation ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   Z. Lu, Z. Yao, J. Wu, C. Han, Q. Gu, X. Cai, W. Lu, J. Xiao, Y. Zhuang, and Y. Shen (2026c)SKILL0: in-context agentic reinforcement learning for skill internalization. External Links: 2604.02268, [Link](https://arxiv.org/abs/2604.02268)Cited by: [§1](https://arxiv.org/html/2608.05987#S1.p3.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§4.2](https://arxiv.org/html/2608.05987#S4.SS2.p1.1 "4.2 On-Policy (Self-)Distillation ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   Z. Lu, J. Ye, F. Tang, Y. Shen, H. Xu, Z. Zheng, W. Lu, M. Yan, F. Huang, J. Xiao, et al. (2025)Ui-s1: advancing gui automation via semi-online reinforcement learning. arXiv preprint arXiv:2509.11543. Cited by: [§4.1](https://arxiv.org/html/2608.05987#S4.SS1.p1.1 "4.1 Agentic Post-Training with Verifiable Rewards ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   A. Mallen, A. Asai, V. Zhong, R. Das, D. Khashabi, and H. Hajishirzi (2023)When not to trust language models: investigating effectiveness of parametric and non-parametric memories. In Proceedings of the 61st annual meeting of the association for computational linguistics (volume 1: Long papers),  pp.9802–9822. Cited by: [Appendix C](https://arxiv.org/html/2608.05987#A3.SS0.SSS0.Px3.p1.1 "Search-QA ‣ Appendix C Datasets ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§3.1](https://arxiv.org/html/2608.05987#S3.SS1.SSS0.Px1.p1.1 "Benchmarks. ‣ 3.1 Experimental Setup ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   O. Press, M. Zhang, S. Min, L. Schmidt, N. A. Smith, and M. Lewis (2023)Measuring and narrowing the compositionality gap in language models. In Findings of the Association for Computational Linguistics: EMNLP 2023,  pp.5687–5711. Cited by: [Appendix C](https://arxiv.org/html/2608.05987#A3.SS0.SSS0.Px3.p1.1 "Search-QA ‣ Appendix C Datasets ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§3.1](https://arxiv.org/html/2608.05987#S3.SS1.SSS0.Px1.p1.1 "Benchmarks. ‣ 3.1 Experimental Setup ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   J. Schulman, P. Moritz, S. Levine, M. Jordan, and P. Abbeel (2016)High-dimensional continuous control using generalized advantage estimation. External Links: 1506.02438, [Link](https://arxiv.org/abs/1506.02438)Cited by: [§4.3](https://arxiv.org/html/2608.05987#S4.SS3.p1.1 "4.3 Long-Horizon Credit Assignment ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   J. Schulman, F. Wolski, P. Dhariwal, A. Radford, and O. Klimov (2017)Proximal policy optimization algorithms. External Links: 1707.06347, [Link](https://arxiv.org/abs/1707.06347)Cited by: [§4.3](https://arxiv.org/html/2608.05987#S4.SS3.p1.1 "4.3 Long-Horizon Credit Assignment ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   Z. Shao, P. Wang, Q. Zhu, R. Xu, J. Song, X. Bi, H. Zhang, M. Zhang, Y. Li, Y. Wu, et al. (2024)Deepseekmath: pushing the limits of mathematical reasoning in open language models. arXiv preprint arXiv:2402.03300. Cited by: [Appendix D](https://arxiv.org/html/2608.05987#A4.SS0.SSS0.Px3.p1.1 "GRPO ‣ Appendix D Baseline Details ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§1](https://arxiv.org/html/2608.05987#S1.p2.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§3.1](https://arxiv.org/html/2608.05987#S3.SS1.SSS0.Px3.p1.1 "Baselines. ‣ 3.1 Experimental Setup ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§4.1](https://arxiv.org/html/2608.05987#S4.SS1.p1.1 "4.1 Agentic Post-Training with Verifiable Rewards ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   Y. Shen, K. Song, X. Tan, D. Li, W. Lu, and Y. Zhuang (2023)Hugginggpt: solving ai tasks with chatgpt and its friends in hugging face. Advances in Neural Information Processing Systems 36,  pp.38154–38180. Cited by: [§1](https://arxiv.org/html/2608.05987#S1.p1.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   Z. Shi, S. Gao, L. Yan, Y. Feng, X. Chen, Z. Chen, D. Yin, S. Verberne, and Z. Ren (2025)Tool learning in the wild: empowering language models as automatic tool agents. In Proceedings of the ACM on Web Conference 2025,  pp.2222–2237. Cited by: [§1](https://arxiv.org/html/2608.05987#S1.p1.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   M. Shridhar, X. Yuan, M. Côté, Y. Bisk, A. Trischler, and M. Hausknecht (2020)Alfworld: aligning text and embodied environments for interactive learning. arXiv preprint arXiv:2010.03768. Cited by: [Appendix C](https://arxiv.org/html/2608.05987#A3.SS0.SSS0.Px1.p1.1 "ALFWorld ‣ Appendix C Datasets ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§1](https://arxiv.org/html/2608.05987#S1.p6.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§3.1](https://arxiv.org/html/2608.05987#S3.SS1.SSS0.Px1.p1.1 "Benchmarks. ‣ 3.1 Experimental Setup ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§4.1](https://arxiv.org/html/2608.05987#S4.SS1.p1.1 "4.1 Agentic Post-Training with Verifiable Rewards ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   C. Team, B. Xiao, B. Xia, B. Yang, B. Gao, B. Shen, C. Zhang, C. He, C. Lou, F. Luo, G. Wang, G. Xie, H. Zhang, H. Lv, H. Li, H. Chen, H. Xu, H. Zhang, H. Liu, J. Duo, J. Wei, J. Xiao, J. Dong, J. Shi, J. Hu, K. Bao, K. Zhou, L. Li, L. Zhao, L. Zhang, P. Li, Q. Chen, S. Liu, S. Yu, S. Cao, S. Chen, S. Yu, S. Liu, T. Zhou, W. Su, W. Wang, W. Ma, X. Deng, B. Mao, B. Ye, C. Cai, C. Wang, C. Zhu, C. Ma, C. Chen, C. Li, D. Zhu, D. Xiao, D. Zhang, D. Zhang, F. Liu, F. Yang, F. Shi, G. Wang, H. Tian, H. Wu, H. Qu, H. Yi, H. An, H. Guan, X. Zhang, Y. Song, Y. Yan, Y. Zhao, Y. Lai, Y. Gao, Y. Cheng, Y. Tian, Y. Wang, Z. Tang, Z. Tang, Z. Wen, Z. Song, Z. Zheng, Z. Jiang, J. Wen, J. Sun, J. Li, J. Xue, J. Xia, K. Fang, M. Zhu, N. Chen, Q. Tu, Q. Zhang, Q. Wang, R. Li, R. Ma, S. Zhang, S. Wang, S. Li, S. Gu, S. Ren, S. Deng, T. Guo, T. Lu, W. Zhuang, W. Zhang, W. Xiong, W. Huang, W. Yang, X. Zhang, X. Yong, X. Wang, X. Xie, Y. Jiang, Y. Yang, Y. He, Y. Tu, Y. Dong, Y. Liu, Y. Ma, Y. Yu, Y. Xiang, Z. Huang, Z. Lin, Z. Xu, Z. Chen, Z. Deng, Z. Zhang, and Z. Yue (2026a)MiMo-v2-flash technical report. External Links: 2601.02780, [Link](https://arxiv.org/abs/2601.02780)Cited by: [§1](https://arxiv.org/html/2608.05987#S1.p3.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   K. Team, Y. Bai, Y. Bao, Y. Charles, C. Chen, G. Chen, H. Chen, H. Chen, J. Chen, N. Chen, et al. (2025)Kimi k2: open agentic intelligence. arXiv preprint arXiv:2507.20534. Cited by: [§1](https://arxiv.org/html/2608.05987#S1.p1.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   M. L. Team, A. Gui, B. Li, B. Tao, B. Zhou, B. Chen, C. Zhang, C. Gao, C. Zhang, C. Han, et al. (2026b)Longcat-flash-thinking-2601 technical report. arXiv preprint arXiv:2601.16725. Cited by: [§1](https://arxiv.org/html/2608.05987#S1.p1.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   H. Trivedi, N. Balasubramanian, T. Khot, and A. Sabharwal (2022)MuSiQue: multi-hop questions via single-hop question composition. Transactions of the Association for Computational Linguistics 10,  pp.539–554. Cited by: [Appendix C](https://arxiv.org/html/2608.05987#A3.SS0.SSS0.Px3.p1.1 "Search-QA ‣ Appendix C Datasets ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§3.1](https://arxiv.org/html/2608.05987#S3.SS1.SSS0.Px1.p1.1 "Benchmarks. ‣ 3.1 Experimental Setup ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   A. Wald (1945)Sequential tests of statistical hypotheses. The Annals of Mathematical Statistics 16 (2),  pp.117–186. External Links: [Document](https://dx.doi.org/10.1214/aoms/1177731118)Cited by: [§2.3](https://arxiv.org/html/2608.05987#S2.SS3.p1.16 "2.3 Recursive Belief update ‣ 2 Methodology ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   H. Wang, G. Wang, H. Xiao, Y. Zhou, Y. Pan, J. Wang, K. Xu, Y. Wen, X. Ruan, X. Chen, and H. Qi (2026a)Skill-sd: skill-conditioned self-distillation for multi-turn llm agents. External Links: 2604.10674, [Link](https://arxiv.org/abs/2604.10674)Cited by: [Appendix D](https://arxiv.org/html/2608.05987#A4.SS0.SSS0.Px7.p1.1 "Skill-SD ‣ Appendix D Baseline Details ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§1](https://arxiv.org/html/2608.05987#S1.p3.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§3.1](https://arxiv.org/html/2608.05987#S3.SS1.SSS0.Px3.p1.1 "Baselines. ‣ 3.1 Experimental Setup ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§4.2](https://arxiv.org/html/2608.05987#S4.SS2.p1.1 "4.2 On-Policy (Self-)Distillation ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   J. Wang, W. Zhang, W. Shi, Y. Li, and J. Cheng (2026b)TCOD: exploring temporal curriculum in on-policy distillation for multi-turn autonomous agents. External Links: 2604.24005, [Link](https://arxiv.org/abs/2604.24005)Cited by: [§4.2](https://arxiv.org/html/2608.05987#S4.SS2.p1.1 "4.2 On-Policy (Self-)Distillation ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   L. Wang, N. Yang, X. Huang, B. Jiao, L. Yang, D. Jiang, R. Majumder, and F. Wei (2022)Text embeddings by weakly-supervised contrastive pre-training. arXiv preprint arXiv:2212.03533. Cited by: [Appendix C](https://arxiv.org/html/2608.05987#A3.SS0.SSS0.Px3.p1.1 "Search-QA ‣ Appendix C Datasets ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§3.1](https://arxiv.org/html/2608.05987#S3.SS1.SSS0.Px1.p1.1 "Benchmarks. ‣ 3.1 Experimental Setup ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   Y. Wen, Z. Li, W. Du, and L. Mou (2023)F-divergence minimization for sequence-level knowledge distillation. External Links: 2307.15190, [Link](https://arxiv.org/abs/2307.15190)Cited by: [§4.2](https://arxiv.org/html/2608.05987#S4.SS2.p1.1 "4.2 On-Policy (Self-)Distillation ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   P. Xia, J. Chen, H. Wang, J. Liu, K. Zeng, Y. Wang, S. Han, Y. Zhou, X. Zhao, H. Chen, Z. Zheng, C. Xie, and H. Yao (2026)SkillRL: evolving agents via recursive skill-augmented reinforcement learning. External Links: 2602.08234, [Link](https://arxiv.org/abs/2602.08234)Cited by: [§2.2](https://arxiv.org/html/2608.05987#S2.SS2.p2.4 "2.2 From Outcome Contribution to Bayesian Turn Evidence ‣ 2 Methodology ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§3.1](https://arxiv.org/html/2608.05987#S3.SS1.SSS0.Px2.p1.3 "Implementation. ‣ 3.1 Experimental Setup ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   H. Xu, Z. Wang, Z. Zhu, L. Pan, X. Chen, S. Fan, L. Chen, and K. Yu (2025)Alignment for efficient tool calling of large language models. In Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing,  pp.17787–17803. Cited by: [Appendix C](https://arxiv.org/html/2608.05987#A3.SS0.SSS0.Px3.p1.1 "Search-QA ‣ Appendix C Datasets ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   H. Xu, Z. Zhu, L. Pan, Z. Wang, S. Zhu, D. Ma, R. Cao, L. Chen, and K. Yu (2024)Reducing tool hallucination via reliability alignment. arXiv preprint arXiv:2412.04141. Cited by: [Appendix C](https://arxiv.org/html/2608.05987#A3.SS0.SSS0.Px3.p1.1 "Search-QA ‣ Appendix C Datasets ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   Y. Xu, H. Sang, Z. Zhou, R. He, Z. Wang, and A. Geramifard (2026)TIP: token importance in on-policy distillation. External Links: 2604.14084, [Link](https://arxiv.org/abs/2604.14084)Cited by: [§4.2](https://arxiv.org/html/2608.05987#S4.SS2.p1.1 "4.2 On-Policy (Self-)Distillation ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   A. Yang, A. Li, B. Yang, B. Zhang, B. Hui, B. Zheng, B. Yu, C. Gao, C. Huang, C. Lv, et al. (2025)Qwen3 technical report. arXiv preprint arXiv:2505.09388. Cited by: [§1](https://arxiv.org/html/2608.05987#S1.p1.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   C. Yang, C. Qin, Q. Si, M. Chen, N. Gu, D. Yao, Z. Lin, W. Wang, J. Wang, and N. Duan (2026a)Self-distilled rlvr. External Links: 2604.03128, [Link](https://arxiv.org/abs/2604.03128)Cited by: [Appendix D](https://arxiv.org/html/2608.05987#A4.SS0.SSS0.Px8.p1.1 "RLSD ‣ Appendix D Baseline Details ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§3.1](https://arxiv.org/html/2608.05987#S3.SS1.SSS0.Px3.p1.1 "Baselines. ‣ 3.1 Experimental Setup ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§4.2](https://arxiv.org/html/2608.05987#S4.SS2.p1.1 "4.2 On-Policy (Self-)Distillation ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   W. Yang, W. Liu, R. Xie, K. Yang, S. Yang, and Y. Lin (2026b)Learning beyond teacher: generalized on-policy distillation with reward extrapolation. External Links: 2602.12125, [Link](https://arxiv.org/abs/2602.12125)Cited by: [§1](https://arxiv.org/html/2608.05987#S1.p3.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   Z. Yang, P. Qi, S. Zhang, Y. Bengio, W. Cohen, R. Salakhutdinov, and C. D. Manning (2018)HotpotQA: a dataset for diverse, explainable multi-hop question answering. In Proceedings of the 2018 conference on empirical methods in natural language processing,  pp.2369–2380. Cited by: [Appendix C](https://arxiv.org/html/2608.05987#A3.SS0.SSS0.Px3.p1.1 "Search-QA ‣ Appendix C Datasets ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§3.1](https://arxiv.org/html/2608.05987#S3.SS1.SSS0.Px1.p1.1 "Benchmarks. ‣ 3.1 Experimental Setup ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   S. Yao, H. Chen, J. Yang, and K. Narasimhan (2022)Webshop: towards scalable real-world web interaction with grounded language agents. Advances in Neural Information Processing Systems 35,  pp.20744–20757. Cited by: [Appendix C](https://arxiv.org/html/2608.05987#A3.SS0.SSS0.Px2.p1.1 "WebShop ‣ Appendix C Datasets ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§1](https://arxiv.org/html/2608.05987#S1.p6.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§3.1](https://arxiv.org/html/2608.05987#S3.SS1.SSS0.Px1.p1.1 "Benchmarks. ‣ 3.1 Experimental Setup ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§4.1](https://arxiv.org/html/2608.05987#S4.SS1.p1.1 "4.1 Agentic Post-Training with Verifiable Rewards ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   T. Ye, L. Dong, X. Wu, S. Huang, and F. Wei (2026a)On-policy context distillation for language models. External Links: 2602.12275, [Link](https://arxiv.org/abs/2602.12275)Cited by: [§1](https://arxiv.org/html/2608.05987#S1.p3.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§4.2](https://arxiv.org/html/2608.05987#S4.SS2.p1.1 "4.2 On-Policy (Self-)Distillation ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   Z. Ye, W. Shi, Y. Liu, Y. Wang, Z. Cai, Y. Shi, Q. Gu, X. Cai, and F. Feng (2026b)Look before you leap: autonomous exploration for llm agents. arXiv preprint arXiv:2605.16143. Cited by: [Appendix C](https://arxiv.org/html/2608.05987#A3.SS0.SSS0.Px3.p1.1 "Search-QA ‣ Appendix C Datasets ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   Q. Yu, Z. Zhang, R. Zhu, Y. Yuan, X. Zuo, Y. Yue, W. Dai, T. Fan, G. Liu, L. Liu, et al. (2025)Dapo: an open-source llm reinforcement learning system at scale. arXiv preprint arXiv:2503.14476. Cited by: [§1](https://arxiv.org/html/2608.05987#S1.p2.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§3.4](https://arxiv.org/html/2608.05987#S3.SS4.SSS0.Px3.p1.8 "Policy clipping ϵ_high. ‣ 3.4 Hyperparameter Sensitivity ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§4.1](https://arxiv.org/html/2608.05987#S4.SS1.p1.1 "4.1 Agentic Post-Training with Verifiable Rewards ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   Y. Zhang, X. Lin, and C. Wu (2026)StepOPSD: step-aware online preference distillation for agent reinforcement learning. External Links: 2605.27140, [Link](https://arxiv.org/abs/2605.27140)Cited by: [Appendix D](https://arxiv.org/html/2608.05987#A4.SS0.SSS0.Px10.p1.1 "StepOPSD ‣ Appendix D Baseline Details ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§1](https://arxiv.org/html/2608.05987#S1.p4.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§3.1](https://arxiv.org/html/2608.05987#S3.SS1.SSS0.Px3.p1.1 "Baselines. ‣ 3.1 Experimental Setup ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§4.2](https://arxiv.org/html/2608.05987#S4.SS2.p1.1 "4.2 On-Policy (Self-)Distillation ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   S. Zhao, Z. Xie, M. Liu, J. Huang, G. Pang, F. Chen, and A. Grover (2026)Self-distilled reasoner: on-policy self-distillation for large language models. External Links: 2601.18734, [Link](https://arxiv.org/abs/2601.18734)Cited by: [Appendix D](https://arxiv.org/html/2608.05987#A4.SS0.SSS0.Px5.p1.1 "OPSD ‣ Appendix D Baseline Details ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§1](https://arxiv.org/html/2608.05987#S1.p3.1 "1 Introduction ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§2.2](https://arxiv.org/html/2608.05987#S2.SS2.p2.1 "2.2 From Outcome Contribution to Bayesian Turn Evidence ‣ 2 Methodology ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§3.1](https://arxiv.org/html/2608.05987#S3.SS1.SSS0.Px3.p1.1 "Baselines. ‣ 3.1 Experimental Setup ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), [§4.2](https://arxiv.org/html/2608.05987#S4.SS2.p1.1 "4.2 On-Policy (Self-)Distillation ‣ 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+*   H. Zhou, Y. Chen, S. Guo, X. Yan, K. H. Lee, Z. Wang, K. Y. Lee, G. Zhang, K. Shao, L. Yang, et al. (2025)Memento: fine-tuning llm agents without fine-tuning llms. arXiv preprint arXiv:2508.16153. Cited by: [Appendix C](https://arxiv.org/html/2608.05987#A3.SS0.SSS0.Px3.p1.1 "Search-QA ‣ Appendix C Datasets ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). 
+
+###### Table of Contents
+
+1.   [1 Introduction](https://arxiv.org/html/2608.05987#S1 "In AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+2.   [2 Methodology](https://arxiv.org/html/2608.05987#S2 "In AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+    1.   [2.1 Problem Setup](https://arxiv.org/html/2608.05987#S2.SS1 "In 2 Methodology ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+    2.   [2.2 From Outcome Contribution to Bayesian Turn Evidence](https://arxiv.org/html/2608.05987#S2.SS2 "In 2 Methodology ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+    3.   [2.3 Recursive Belief update](https://arxiv.org/html/2608.05987#S2.SS3 "In 2 Methodology ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+    4.   [2.4 Bounded Advantage Reshaping](https://arxiv.org/html/2608.05987#S2.SS4 "In 2 Methodology ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+
+3.   [3 Experiments](https://arxiv.org/html/2608.05987#S3 "In AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+    1.   [3.1 Experimental Setup](https://arxiv.org/html/2608.05987#S3.SS1 "In 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+    2.   [3.2 Main Results](https://arxiv.org/html/2608.05987#S3.SS2 "In 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+    3.   [3.3 Mechanism Ablation](https://arxiv.org/html/2608.05987#S3.SS3 "In 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+    4.   [3.4 Hyperparameter Sensitivity](https://arxiv.org/html/2608.05987#S3.SS4 "In 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+
+4.   [4 Related Work](https://arxiv.org/html/2608.05987#S4 "In AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+    1.   [4.1 Agentic Post-Training with Verifiable Rewards](https://arxiv.org/html/2608.05987#S4.SS1 "In 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+    2.   [4.2 On-Policy (Self-)Distillation](https://arxiv.org/html/2608.05987#S4.SS2 "In 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+    3.   [4.3 Long-Horizon Credit Assignment](https://arxiv.org/html/2608.05987#S4.SS3 "In 4 Related Work ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+
+5.   [5 Conclusion](https://arxiv.org/html/2608.05987#S5 "In AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+6.   [References](https://arxiv.org/html/2608.05987#bib "In AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+7.   [A Theoretical Analysis](https://arxiv.org/html/2608.05987#A1 "In AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+    1.   [A.1 From the Bayes factor to the self-teacher contrast](https://arxiv.org/html/2608.05987#A1.SS1 "In Appendix A Theoretical Analysis ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+    2.   [A.2 Properties of the reshaping](https://arxiv.org/html/2608.05987#A1.SS2 "In Appendix A Theoretical Analysis ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+
+8.   [B Algorithm](https://arxiv.org/html/2608.05987#A2 "In AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+9.   [C Datasets](https://arxiv.org/html/2608.05987#A3 "In AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+10.   [D Baseline Details](https://arxiv.org/html/2608.05987#A4 "In AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+11.   [E Evaluation Metrics](https://arxiv.org/html/2608.05987#A5 "In AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+12.   [F Hyperparameters](https://arxiv.org/html/2608.05987#A6 "In AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+13.   [G Training Dynamics](https://arxiv.org/html/2608.05987#A7 "In AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+14.   [H Prompt](https://arxiv.org/html/2608.05987#A8 "In AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")
+
+## Appendix A Theoretical Analysis
+
+### A.1 From the Bayes factor to the self-teacher contrast
+
+AgentOPSD approximates the ideal per-turn Bayes factor
+
+\mathcal{B}_{k}\;=\;\log\frac{p(a_{k}\mid s_{k},C)}{p(a_{k}\mid s_{k},\neg C)}\;=\;\operatorname{logit}p(C\mid s_{k},a_{k})-\operatorname{logit}p(C\mid s_{k})(13)
+
+by the self-teacher contrast
+
+e_{k}\;=\;\log\frac{\pi_{\theta}(a_{k}\mid s_{k},c^{+})}{\pi_{\theta}(a_{k}\mid s_{k})},(14)
+
+where C denotes eventual success and \rho_{k}=p(C\mid s_{k}). We use two assumptions: (A1) the skill-conditioned branch is success-conditional, \pi_{\theta}(a_{k}\mid s_{k},c^{+})\approx p(a_{k}\mid s_{k},C); (A2) when success is rare (\rho_{k} small) the marginal is failure-dominated, \pi_{\theta}(a_{k}\mid s_{k})\approx p(a_{k}\mid s_{k},\neg C).
+
+The marginal action distribution is the success/failure mixture
+
+\pi_{\theta}(a_{k}\mid s_{k})=\rho_{k}\,p(a_{k}\mid s_{k},C)+(1-\rho_{k})\,p(a_{k}\mid s_{k},\neg C).(15)
+
+Substituting ([15](https://arxiv.org/html/2608.05987#A1.E15 "In A.1 From the Bayes factor to the self-teacher contrast ‣ Appendix A Theoretical Analysis ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")) into ([14](https://arxiv.org/html/2608.05987#A1.E14 "In A.1 From the Bayes factor to the self-teacher contrast ‣ Appendix A Theoretical Analysis ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")) under (A1),
+
+e_{k}\;\approx\;\mathcal{B}_{k}-\log\!\big(1-\rho_{k}+\rho_{k}\,e^{\mathcal{B}_{k}}\big)\;\xrightarrow[\;\rho_{k}\to 0\;]{}\;\mathcal{B}_{k},(16)
+
+so (A2) is the \rho_{k}\to 0 limit in which the contrast recovers the Bayes factor. Under (A1) alone, e_{k} is the pointwise mutual information
+
+e_{k}\;\approx\;\log\frac{p(a_{k}\mid s_{k},C)}{p(a_{k}\mid s_{k})}\;=\;\log\frac{p(C\mid s_{k},a_{k})}{p(C\mid s_{k})},(17)
+
+positive iff a_{k} raises the posterior success probability. The correction in ([16](https://arxiv.org/html/2608.05987#A1.E16 "In A.1 From the Bayes factor to the self-teacher contrast ‣ Appendix A Theoretical Analysis ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")) is monotone in \mathcal{B}_{k}, hence \operatorname{sign}(e_{k})=\operatorname{sign}(\mathcal{B}_{k}) and e_{k} preserves the ranking of turns by evidential strength; AgentOPSD uses e_{k} only through this sign and ranking.
+
+### A.2 Properties of the reshaping
+
+Let A^{(i)} be the group-relative advantage, \Delta B_{k}=B_{k}-B_{k-1} the per-turn belief revision, z_{k} its within-trajectory standardization, m_{k}=\mathrm{clip}\!\big(1+b\,\operatorname{sign}(A^{(i)})z_{k},\,1-b,\,1+b\big) with b\in(0,1), and \tilde{A}_{k}=A^{(i)}\big((1-\lambda)+\lambda m_{k}\big) with \lambda\in[0,1].
+
+###### Proposition 1(Boundedness).
+
+\big|\tilde{A}_{k}-A^{(i)}\big|\leq\lambda b\,|A^{(i)}|, hence (1-\lambda b)|A^{(i)}|\leq|\tilde{A}_{k}|\leq(1+\lambda b)|A^{(i)}|.
+
+###### Proof.
+
+m_{k}\in[1-b,1+b] gives |m_{k}-1|\leq b, and \tilde{A}_{k}-A^{(i)}=A^{(i)}\lambda(m_{k}-1). ∎
+
+###### Proposition 2(Sign Preservation).
+
+\operatorname{sign}(\tilde{A}_{k})=\operatorname{sign}(A^{(i)}) for every turn k.
+
+###### Proof.
+
+(1-\lambda)+\lambda m_{k}\geq 1-\lambda b>0 since \lambda\leq 1,\,b<1; a strictly positive factor preserves sign. ∎
+
+###### Proposition 3(Recovery of GRPO).
+
+At \lambda=0, \tilde{A}_{k}=A^{(i)} for every token and the AgentOPSD gradient equals the GRPO gradient.
+
+###### Proof.
+
+\lambda=0 gives (1-\lambda)+\lambda m_{k}=1, so \tilde{A}_{k}=A^{(i)} identically, independent of the belief signal. ∎
+
+###### Proposition 4(First-Order Decomposition of the Belief Revision).
+
+For c_{k}=\gamma c_{k-1}+e_{k}, \ell_{k}=\operatorname{logit}(B_{0})+c_{k}, and \Delta\ell_{k}=e_{k}-(1-\gamma)c_{k-1},
+
+\Delta B_{k}=B_{k-1}(1-B_{k-1})\,\Delta\ell_{k}+O\!\big((\Delta\ell_{k})^{2}\big).(18)
+
+###### Proof.
+
+B_{k}=\sigma(\ell_{k}) with \sigma^{\prime}=\sigma(1-\sigma); a first-order expansion around \ell_{k-1} gives B_{k}=B_{k-1}+B_{k-1}(1-B_{k-1})\Delta\ell_{k}+O((\Delta\ell_{k})^{2}). The gate B(1-B) is maximal at B=\tfrac{1}{2} and vanishes as B\to\{0,1\}. ∎
+
+###### Proposition 5(Exact Budget of the Idealized Recursion).
+
+The idealized increments telescope to the endpoint change, \sum_{k}\Delta B_{k}=B_{K}-B_{0}.
+
+###### Proof.
+
+\sum_{k=1}^{K}(B_{k}-B_{k-1})=B_{K}-B_{0}. ∎
+
+###### Proposition 6(Non-Identifiability of Per-Turn Contribution).
+
+There exist two trajectories with identical outcome reward—hence identical broadcast advantage—whose per-turn contributions differ; per-turn credit is not identifiable from the trajectory return alone.
+
+###### Proof (by construction).
+
+Take \tau_{1},\tau_{2} in one group with R(\tau_{1})=R(\tau_{2}), so A(\tau_{1})=A(\tau_{2}) and GRPO assigns the same scalar to every turn. Let \tau_{1} succeed through a single decisive turn (\Delta B concentrated) and \tau_{2} through evenly spread progress. The returns coincide but the per-turn contributions differ, so an additional per-turn signal is required to recover them. ∎
+
+###### Proposition 7(B_{0} as the Group Success-Rate Estimate).
+
+For a task with success probability \theta_{x} and a group of G trajectories yielding S successes under a binary reward, the maximum-likelihood estimate of \theta_{x} is the group success fraction \bar{R}=S/G, which is the standard GRPO group mean; AgentOPSD sets B_{0}=\operatorname{clip}(\bar{R},\epsilon_{0},1-\epsilon_{0}).
+
+###### Proof.
+
+Under a Binomial(G,\theta_{x}) likelihood the MLE is S/G. The clip (\epsilon_{0}{=}10^{-4}) only keeps \operatorname{logit}(B_{0}) finite for all-correct or all-wrong groups, which have zero group-relative advantage and hence do not contribute to the update. ∎
+
+## Appendix B Algorithm
+
+We give pseudocode for one AgentOPSD training iteration at turn-level granularity in Algorithm[1](https://arxiv.org/html/2608.05987#alg1 "Algorithm 1 ‣ Appendix B Algorithm ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"). The only addition over GRPO is a single teacher forward pass per turn and the per-turn belief reshaping block; everything else is the standard group-relative update.
+
+Algorithm 1 AgentOPSD: Recursive State Updates for Turn-Level Credit
+
+1:policy
+
+\pi_{\theta}
+, verifier
+
+R
+, group size
+
+G
+, skill retriever; mixing
+
+\lambda
+, bound
+
+b
+, evidence decay
+
+\gamma
+
+2:for each training iteration do
+
+3: sample a batch of tasks
+
+\{x\}
+
+4:for each task
+
+x
+with retrieved skill
+
+c^{+}
+do
+
+5: sample
+
+G
+trajectories
+
+\{y^{(1)},\dots,y^{(G)}\}\sim\pi_{\theta}(\cdot\mid x)
+; trajectory
+
+i
+has
+
+K_{i}
+turns \triangleright on-policy rollout
+
+6:for
+
+i=1,\dots,G
+do
+
+7: obtain reward
+
+R^{(i)}=R(x,y^{(i)})\in\{0,1\}
+from the verifier
+
+8:end for
+
+9:
+
+A_{\mathrm{seq}}^{(i)}\leftarrow(R^{(i)}-\mu_{G})/\sigma_{G}
+\triangleright group-relative advantage
+
+10:for
+
+i=1,\dots,G
+do
+
+11:
+
+B_{0}\leftarrow\mathrm{clip}(\bar{R},\epsilon_{B},1-\epsilon_{B})
+;
+
+\ell_{0}\leftarrow\mathrm{logit}(B_{0})
+\triangleright standard GRPO group success rate \bar{R}{=}S/G (Prop.[7](https://arxiv.org/html/2608.05987#Thmproposition7 "Proposition 7 (𝐵₀ as the Group Success-Rate Estimate). ‣ A.2 Properties of the reshaping ‣ Appendix A Theoretical Analysis ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"))
+
+12:
+
+c_{0}\leftarrow 0
+
+13:for
+
+k=1,\dots,K_{i}
+do\triangleright per-turn belief state
+
+14:
+
+e_{k}\leftarrow\sum_{t}\mathrm{sg}[\log\pi_{\theta}(y_{k,t}\mid s_{k}^{+})-\log\pi_{\theta}(y_{k,t}\mid s_{k})]
+\triangleright one extra teacher forward
+
+15:
+
+c_{k}\leftarrow\gamma\,c_{k-1}+e_{k}
+;
+
+\ell_{k}\leftarrow\ell_{0}+c_{k}
+;
+
+B_{k}\leftarrow\sigma(\ell_{k})
+;
+
+\Delta B_{k}\leftarrow B_{k}-B_{k-1}
+
+16:end for
+
+17:
+
+q_{k}\leftarrow\mathrm{sign}(A_{\mathrm{seq}}^{(i)})\,\Delta B_{k}
+for all
+
+k
+\triangleright outcome-aligned credit
+
+18:
+
+z_{k}\leftarrow(q_{k}-\mathrm{mean}(q))/(\mathrm{std}(q)+\epsilon)
+\triangleright within-trajectory standardization
+
+19:
+
+w_{k}\leftarrow\mathrm{clip}(1+b\,z_{k},\,1-b,\,1+b)
+\triangleright bounded multiplier
+
+20:
+
+\widetilde{A}_{k}^{(i)}\leftarrow A_{\mathrm{seq}}^{(i)}\big[(1-\lambda)+\lambda w_{k}\big]
+; each token inherits
+
+\widetilde{A}
+of its turn
+
+21:end for
+
+22:end for
+
+23: update
+
+\theta
+by maximizing the clipped GRPO objective
+
+\mathcal{L}_{\text{AgentOPSD}}(\theta)
+with
+
+\{\widetilde{A}\}
+\triangleright policy update
+
+24:end for
+
+#### Token-level variant.
+
+Replace the per-turn recursion with the same recursion over the flattened token sequence under a response mask: accumulate \delta_{t} directly, standardize \Delta B_{t} over the trajectory’s tokens, and assign \widetilde{A}_{t} per token. This is the granularity ablation reported in Table[2](https://arxiv.org/html/2608.05987#S3.T2 "Table 2 ‣ 3.3 Mechanism Ablation ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning").
+
+#### Cost.
+
+The overhead over GRPO is one teacher forward pass per trajectory; the belief reshaping block is elementwise and adds no rollouts and no learned parameters.
+
+## Appendix C Datasets
+
+Our experiments span three multi-turn agentic environments covering embodied household reasoning, web navigation, and search-augmented question answering.
+
+#### ALFWorld
+
+(Shridhar et al., [2020](https://arxiv.org/html/2608.05987#bib.bib11 "Alfworld: aligning text and embodied environments for interactive learning")) is a text-based embodied environment with six task categories—Pick and Place, Look at Object in Light, Pick Clean then Place, Pick Heat then Place, Pick Cool then Place, and Pick Two and Place. Given a language goal and textual observations, the agent selects admissible actions until the goal is satisfied.
+
+#### WebShop
+
+(Yao et al., [2022](https://arxiv.org/html/2608.05987#bib.bib9 "Webshop: towards scalable real-world web interaction with grounded language agents")) is an interactive online-shopping environment. For each user request the agent searches the product catalog, inspects candidate items, selects the required attributes, and attempts a purchase satisfying the specified constraints. We evaluate on the 128 fixed validation tasks of Feng et al. ([2025](https://arxiv.org/html/2608.05987#bib.bib20 "Group-in-group policy optimization for llm agent training")).
+
+#### Search-QA
+
+follows the Search-R1 setup(Jin et al., [2025](https://arxiv.org/html/2608.05987#bib.bib12 "Search-r1: training llms to reason and leverage search engines with reinforcement learning")) over seven datasets: single-hop NQ(Kwiatkowski et al., [2019](https://arxiv.org/html/2608.05987#bib.bib13 "Natural questions: a benchmark for question answering research")), TriviaQA(Joshi et al., [2017](https://arxiv.org/html/2608.05987#bib.bib14 "Triviaqa: a large scale distantly supervised challenge dataset for reading comprehension")), PopQA(Mallen et al., [2023](https://arxiv.org/html/2608.05987#bib.bib15 "When not to trust language models: investigating effectiveness of parametric and non-parametric memories")) and multi-hop HotpotQA(Yang et al., [2018](https://arxiv.org/html/2608.05987#bib.bib16 "HotpotQA: a dataset for diverse, explainable multi-hop question answering")), 2Wiki(Ho et al., [2020](https://arxiv.org/html/2608.05987#bib.bib17 "Constructing a multi-hop qa dataset for comprehensive evaluation of reasoning steps")), MuSiQue(Trivedi et al., [2022](https://arxiv.org/html/2608.05987#bib.bib18 "MuSiQue: multi-hop questions via single-hop question composition")), Bamboogle(Press et al., [2023](https://arxiv.org/html/2608.05987#bib.bib19 "Measuring and narrowing the compositionality gap in language models")), with NQ and HotpotQA in-domain and the rest held out. The agent issues search queries, inspects retrieved documents (retrieval via E5(Wang et al., [2022](https://arxiv.org/html/2608.05987#bib.bib21 "Text embeddings by weakly-supervised contrastive pre-training"))), and synthesizes the collected evidence before returning its final answer(Ye et al., [2026b](https://arxiv.org/html/2608.05987#bib.bib71 "Look before you leap: autonomous exploration for llm agents"); Chen et al., [2026b](https://arxiv.org/html/2608.05987#bib.bib70 "Learning to self-verify makes language models better reasoners"); [a](https://arxiv.org/html/2608.05987#bib.bib72 "Understanding multilingualism in mixture-of-experts llms: routing mechanism, expert specialization, and layerwise steering"); Ji et al., [2026](https://arxiv.org/html/2608.05987#bib.bib73 "Tiny brains, giant impact: uncovering the keystone neurons of llm with just a few prompts"); Zhou et al., [2025](https://arxiv.org/html/2608.05987#bib.bib74 "Memento: fine-tuning llm agents without fine-tuning llms"); Xu et al., [2024](https://arxiv.org/html/2608.05987#bib.bib75 "Reducing tool hallucination via reliability alignment"); [2025](https://arxiv.org/html/2608.05987#bib.bib76 "Alignment for efficient tool calling of large language models")).
+
+## Appendix D Baseline Details
+
+We compare against three groups of baselines. Unless a method is marked with *, evaluation uses only the standard task prompt and the interaction history returned by the environment; * indicates that a retrieved skill is additionally supplied during validation and testing.
+
+#### Vanilla.
+
+The instruction-tuned backbone evaluated without any post-training.
+
+#### Skill-Prompt∗.
+
+The same frozen parameters as Vanilla, but a retrieved task-relevant skill is prepended to the context at validation/test time, measuring the inference-time value of skills without any parameter update.
+
+#### GRPO
+
+(Shao et al., [2024](https://arxiv.org/html/2608.05987#bib.bib23 "Deepseekmath: pushing the limits of mathematical reasoning in open language models")). A critic-free group-relative RL algorithm: it samples a group of trajectories per task, normalizes their terminal rewards into relative advantages, and optimizes a clipped surrogate objective; every token inherits its trajectory’s sequence-level advantage.
+
+#### Skill-GRPO / Skill-GRPO∗.
+
+GRPO with a retrieved skill injected into the training prompt. The skill is removed at inference for Skill-GRPO (testing whether the guidance has been internalized), and kept at inference for Skill-GRPO∗.
+
+#### OPSD
+
+(Zhao et al., [2026](https://arxiv.org/html/2608.05987#bib.bib24 "Self-distilled reasoner: on-policy self-distillation for large language models")). On-policy self-distillation: a teacher branch conditioned on training-only privileged context re-scores the student’s sampled tokens and produces dense token-level targets through distribution matching; the teacher outputs are detached and the privileged context is not used at inference.
+
+#### GRPO+OPSD.
+
+Jointly optimizes the trajectory-level GRPO loss and the token-level OPSD objective, a straightforward combination of outcome-based RL and generic self-distillation.
+
+#### Skill-SD
+
+(Wang et al., [2026a](https://arxiv.org/html/2608.05987#bib.bib5 "Skill-sd: skill-conditioned self-distillation for multi-turn llm agents")). Supplies the retrieved skill only to the teacher branch and trains the student to absorb the skill-conditioned guidance via an importance-weighted distillation loss, without requiring skills at evaluation.
+
+#### RLSD
+
+(Yang et al., [2026a](https://arxiv.org/html/2608.05987#bib.bib2 "Self-distilled rlvr")). Converts the teacher–student log-probability gap into a bounded coefficient that scales the magnitude of each token’s GRPO update; the sign of the update remains determined by the outcome-derived advantage.
+
+#### SDAR
+
+(Lu et al., [2026b](https://arxiv.org/html/2608.05987#bib.bib67 "Self-distilled agentic reinforcement learning")). Adds a separately gated auxiliary self-distillation loss on top of GRPO, leaving the original GRPO advantage unchanged and using a bounded gate to modulate each teacher signal.
+
+#### StepOPSD
+
+(Zhang et al., [2026](https://arxiv.org/html/2608.05987#bib.bib55 "StepOPSD: step-aware online preference distillation for agent reinforcement learning")). Applies the teacher–student self-distillation signal at the turn (step) level rather than per token, but uses each step’s local signal in isolation.
+
+All post-training baselines share the same backbone models, environment interfaces, data, and training budget as AgentOPSD; they differ primarily in their optimization objective and in whether skills are available during training or evaluation.
+
+## Appendix E Evaluation Metrics
+
+#### ALFWorld.
+
+We report the overall success rate over the evaluation tasks (the fraction of episodes that reach the specified goal), which is the sample-weighted average of the six per-category success rates.
+
+#### Search-QA.
+
+We report the overall accuracy over all evaluation questions aggregated across the seven datasets.
+
+#### WebShop.
+
+We report a normalized completion Score (averaged over partial-constraint satisfaction and scaled by 100) and an exact-completion success rate Succ. (the percentage of episodes that satisfy all specified requirements).
+
+## Appendix F Hyperparameters
+
+Table[3](https://arxiv.org/html/2608.05987#A6.T3 "Table 3 ‣ Appendix F Hyperparameters ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning") summarizes the hyperparameters used by AgentOPSD across all our experiments. We deliberately use a _single_ setting for every environment and model scale rather than tuning per task: AgentOPSD runs at turn-level granularity with reshaping weight \lambda{=}0.5, multiplier band b{=}0.2, gap accumulation with decay \gamma{=}0.95, policy clipping \epsilon_{\mathrm{low}}{=}0.2 / \epsilon_{\mathrm{high}}{=}0.24, and the empirical group success rate \bar{R}=S/G (clipped) as the state prior B_{0}. The sensitivity study in §[3.4](https://arxiv.org/html/2608.05987#S3.SS4 "3.4 Hyperparameter Sensitivity ‣ 3 Experiments ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning") sweeps \lambda, \gamma and \epsilon_{\mathrm{high}} around this setting and finds no swept value that improves on it by a meaningful margin, which is why one shared configuration is used throughout rather than per-environment tuning.
+
+Table 3: Hyperparameters. \eta: learning rate; G: group size; \epsilon_{\mathrm{low}}/\epsilon_{\mathrm{high}}: PPO clip range; \alpha_{\mathrm{KL}}: KL penalty coefficient toward the reference policy; SRS: skill retrieval strategy (KM = keyword matching). AgentOPSD-specific reshaping knobs: \lambda (mult_lambda, reshaping weight), b (mult_band, multiplier band), and \gamma (gap_decay_gamma, gap-accumulation decay). A single shared setting is used across all environments and model scales.
+
+We use a single shared optimization recipe across environments (learning rate, group size, PPO clip range, and KL coefficient in Table[3](https://arxiv.org/html/2608.05987#A6.T3 "Table 3 ‣ Appendix F Hyperparameters ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"); dual-clip constant c{=}3.0, gradient clipping 1.0, entropy coefficient 0.001, one PPO epoch per update, and FSDP on a single node). The remaining settings are environment-specific and summarized in Table[4](https://arxiv.org/html/2608.05987#A6.T4 "Table 4 ‣ Appendix F Hyperparameters ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning").
+
+Table 4: Per-environment training configuration. Optimization settings shared across all environments are listed in Table[3](https://arxiv.org/html/2608.05987#A6.T3 "Table 3 ‣ Appendix F Hyperparameters ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"); the environment-specific settings are below.
+
+ALFWorld WebShop Search-QA
+Training steps 150 150 150
+Train batch size 16 16 128
+Rollout group size G 8 8 8
+Max prompt length 2048 4096 4096
+Max response length 512 512 512
+Max interaction turns 50 15 4
+Rollout temperature (train / val)1.0 / 0.4 1.0 / 0.4 1.0 / 0.4
+GPUs (tensor-parallel size)8 (2)2 (2)4 (1)
+
+## Appendix G Training Dynamics
+
+We present the full training dynamics of AgentOPSD across all model scales and environments in Figures[4](https://arxiv.org/html/2608.05987#A7.F4 "Figure 4 ‣ Appendix G Training Dynamics ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")–[5](https://arxiv.org/html/2608.05987#A7.F5 "Figure 5 ‣ Appendix G Training Dynamics ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning"), tracking the teacher–student gap and the reward throughout training.
+
+![Image 4: Refer to caption](https://arxiv.org/html/2608.05987v1/x4.png)
+
+Figure 4: Teacher–Student Gap\bar{\delta} when training Qwen2.5-3B and Qwen2.5-7B on ALFWorld, WebShop and Search-QA.
+
+![Image 5: Refer to caption](https://arxiv.org/html/2608.05987v1/x5.png)
+
+Figure 5: Reward Curve when training Qwen2.5-3B and Qwen2.5-7B on ALFWorld, WebShop and Search-QA.
+
+## Appendix H Prompt
+
+Figures[6](https://arxiv.org/html/2608.05987#A8.F6 "Figure 6 ‣ Appendix H Prompt ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning")–[8](https://arxiv.org/html/2608.05987#A8.F8 "Figure 8 ‣ Appendix H Prompt ‣ AgentOPSD: Recursive Self-Distillation for Agentic Reinforcement Learning") present the full prompt templates used by AgentOPSD for the three evaluation environments, where {skill_context} is populated with the retrieved skill during training and left empty at inference time.
+
+Figure 6: Prompt template used by AgentOPSD for the ALFWorld task environment.
+
+Figure 7: Prompt template used by AgentOPSD for the Search-based QA task environment.
+
+Figure 8: Prompt template used by AgentOPSD for the WebShop task environment.

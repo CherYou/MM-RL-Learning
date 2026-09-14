@@ -1,0 +1,28 @@
+Based on the tutorial structure and selected utilities of
+KMnO4-zx/agentic-rl-lab, Apache-2.0,
+https://github.com/KMnO4-zx/agentic-rl-lab
+Pinned revision: d745e6e26f96485f7689da962630026723546cd5.
+
+references/upstream is an unmodified source/documentation snapshot for comparison.
+The local implementation is newly written unless its file header identifies a
+ported utility. PyTRIO code in the reference snapshot is never imported or run.
+Upstream reported benchmark results are NOT results of this local reproduction.
+Dataset and paper rights remain with their respective authors; see docs/DATA.md.
+
+The explicitly ported local utilities are:
+  src/agentic_rl/agentopsd.py
+  src/agentic_rl/alfworld_data.py
+  src/agentic_rl/alfworld_env.py
+Their provenance headers are retained. ALFWorld skill prompt files copied by
+scripts/prepare_environments.py also retain the reference project's provenance.
+The new Chinese tutorials and conceptual illustrations are separately authored
+for this project. Prompts and generated-asset hashes are in docs/assets/algorithms.
+The continuous-control implementations in src/agentic_rl/embodied are locally
+written educational implementations of SAC, TD3, HER and IQL mechanisms.
+See docs/CODE_PROVENANCE.md and reports/code-provenance-audit.json for scope.
+
+The optional verl backends use the official verl project, Apache-2.0,
+https://github.com/verl-project/verl
+Pinned release: v0.7.1, revision bec9ef74768dd201881cd4e54cd0385e87caae27.
+scripts/setup_verl.sh fetches the upstream source without modifying it.
+The local extensions are in src/agentic_rl/verl_backend; see docs/VERL.md.

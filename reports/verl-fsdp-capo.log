@@ -1,0 +1,47 @@
+[W910 12:56:04.375381868 ProcessGroupGloo.cpp:516] Warning: Unable to resolve hostname to a (local) address. Using the loopback address as fallback. Manually set the network interface to bind to with GLOO_SOCKET_IFNAME. (function operator())
+[W910 12:56:09.432363745 ProcessGroupGloo.cpp:516] Warning: Unable to resolve hostname to a (local) address. Using the loopback address as fallback. Manually set the network interface to bind to with GLOO_SOCKET_IFNAME. (function operator())
+[Gloo] Rank 1 is connected to 1 peer ranks. Expected number of connected peer ranks is : 1
+[Gloo] Rank 0 is connected to 1 peer ranks. Expected number of connected peer ranks is : 1
+/data/xionglei-extract/agentic-rl-lab/.venv-verl/lib/python3.12/site-packages/torch/distributed/fsdp/fully_sharded_data_parallel.py:675: FutureWarning: FSDP.state_dict_type() and FSDP.set_state_dict_type() are being deprecated. Please use APIs, get_state_dict() and set_state_dict(), which can support different parallelisms, FSDP1, FSDP2, DDP. API doc: https://pytorch.org/docs/stable/distributed.checkpoint.html#torch.distributed.checkpoint.state_dict.get_state_dict .Tutorial: https://pytorch.org/tutorials/recipes/distributed_checkpoint_recipe.html .
+  warnings.warn(
+/data/xionglei-extract/agentic-rl-lab/.venv-verl/lib/python3.12/site-packages/torch/distributed/fsdp/fully_sharded_data_parallel.py:675: FutureWarning: FSDP.state_dict_type() and FSDP.set_state_dict_type() are being deprecated. Please use APIs, get_state_dict() and set_state_dict(), which can support different parallelisms, FSDP1, FSDP2, DDP. API doc: https://pytorch.org/docs/stable/distributed.checkpoint.html#torch.distributed.checkpoint.state_dict.get_state_dict .Tutorial: https://pytorch.org/tutorials/recipes/distributed_checkpoint_recipe.html .
+  warnings.warn(
+/data/xionglei-extract/agentic-rl-lab/.venv-verl/lib/python3.12/site-packages/torch/amp/autocast_mode.py:287: UserWarning: In CPU autocast, but the target dtype is not supported. Disabling autocast.
+CPU Autocast only supports dtype of torch.bfloat16, torch.float16 currently.
+  warnings.warn(error_message)
+/data/xionglei-extract/agentic-rl-lab/.venv-verl/lib/python3.12/site-packages/torch/amp/autocast_mode.py:287: UserWarning: In CPU autocast, but the target dtype is not supported. Disabling autocast.
+CPU Autocast only supports dtype of torch.bfloat16, torch.float16 currently.
+  warnings.warn(error_message)
+INFO:2026-09-10 12:56:10,645:[Rank 1] Saved model to /tmp/arl-fsdp-nbyep7_o/checkpoint/model_world_size_2_rank_1.pt
+INFO:2026-09-10 12:56:10,645:[Rank 0] Saved model to /tmp/arl-fsdp-nbyep7_o/checkpoint/model_world_size_2_rank_0.pt
+INFO:2026-09-10 12:56:10,647:[Rank 1] Saved optim to /tmp/arl-fsdp-nbyep7_o/checkpoint/optim_world_size_2_rank_1.pt
+INFO:2026-09-10 12:56:10,647:[Rank 0] Saved optim to /tmp/arl-fsdp-nbyep7_o/checkpoint/optim_world_size_2_rank_0.pt
+INFO:2026-09-10 12:56:10,648:[Rank 1] Saved extra_state to /tmp/arl-fsdp-nbyep7_o/checkpoint/extra_state_world_size_2_rank_1.pt
+INFO:2026-09-10 12:56:10,648:[Rank 0] Saved extra_state to /tmp/arl-fsdp-nbyep7_o/checkpoint/extra_state_world_size_2_rank_0.pt
+INFO:2026-09-10 12:56:10,650:[Rank 0] Saved model config and tokenizer class to /tmp/arl-fsdp-nbyep7_o/checkpoint/huggingface
+/data/xionglei-extract/agentic-rl-lab/.venv-verl/lib/python3.12/site-packages/torch/distributed/fsdp/fully_sharded_data_parallel.py:675: FutureWarning: FSDP.state_dict_type() and FSDP.set_state_dict_type() are being deprecated. Please use APIs, get_state_dict() and set_state_dict(), which can support different parallelisms, FSDP1, FSDP2, DDP. API doc: https://pytorch.org/docs/stable/distributed.checkpoint.html#torch.distributed.checkpoint.state_dict.get_state_dict .Tutorial: https://pytorch.org/tutorials/recipes/distributed_checkpoint_recipe.html .
+  warnings.warn(
+/data/xionglei-extract/agentic-rl-lab/.venv-verl/lib/python3.12/site-packages/torch/distributed/fsdp/fully_sharded_data_parallel.py:675: FutureWarning: FSDP.state_dict_type() and FSDP.set_state_dict_type() are being deprecated. Please use APIs, get_state_dict() and set_state_dict(), which can support different parallelisms, FSDP1, FSDP2, DDP. API doc: https://pytorch.org/docs/stable/distributed.checkpoint.html#torch.distributed.checkpoint.state_dict.get_state_dict .Tutorial: https://pytorch.org/tutorials/recipes/distributed_checkpoint_recipe.html .
+  warnings.warn(
+/data/xionglei-extract/agentic-rl-lab/.venv-verl/lib/python3.12/site-packages/torch/distributed/fsdp/_state_dict_utils.py:625: FutureWarning: Please use DTensor instead and we are deprecating ShardedTensor.
+  param_numel = param.size().numel()
+/data/xionglei-extract/agentic-rl-lab/.venv-verl/lib/python3.12/site-packages/torch/distributed/fsdp/_state_dict_utils.py:625: FutureWarning: Please use DTensor instead and we are deprecating ShardedTensor.
+  param_numel = param.size().numel()
+/data/xionglei-extract/agentic-rl-lab/.venv-verl/lib/python3.12/site-packages/torch/distributed/fsdp/_state_dict_utils.py:626: FutureWarning: Please use DTensor instead and we are deprecating ShardedTensor.
+  dim_0_size = param.size()[0]
+/data/xionglei-extract/agentic-rl-lab/.venv-verl/lib/python3.12/site-packages/torch/distributed/fsdp/_state_dict_utils.py:626: FutureWarning: Please use DTensor instead and we are deprecating ShardedTensor.
+  dim_0_size = param.size()[0]
+/data/xionglei-extract/agentic-rl-lab/.venv-verl/lib/python3.12/site-packages/torch/distributed/fsdp/_state_dict_utils.py:652: FutureWarning: Please use DTensor instead and we are deprecating ShardedTensor.
+  tensor = tensor.narrow(0, 0, param_numel).reshape(param.size())
+/data/xionglei-extract/agentic-rl-lab/.venv-verl/lib/python3.12/site-packages/torch/distributed/fsdp/_state_dict_utils.py:652: FutureWarning: Please use DTensor instead and we are deprecating ShardedTensor.
+  tensor = tensor.narrow(0, 0, param_numel).reshape(param.size())
+INFO:2026-09-10 12:56:10,677:[Rank 0] Loaded model from /tmp/arl-fsdp-nbyep7_o/checkpoint/model_world_size_2_rank_0.pt
+INFO:2026-09-10 12:56:10,678:[Rank 1] Loaded model from /tmp/arl-fsdp-nbyep7_o/checkpoint/model_world_size_2_rank_1.pt
+INFO:2026-09-10 12:56:10,679:[Rank 0] Loaded optimizer from /tmp/arl-fsdp-nbyep7_o/checkpoint/optim_world_size_2_rank_0.pt
+INFO:2026-09-10 12:56:10,680:[Rank 1] Loaded optimizer from /tmp/arl-fsdp-nbyep7_o/checkpoint/optim_world_size_2_rank_1.pt
+INFO:2026-09-10 12:56:10,680:[Rank 0] Loaded rng from /tmp/arl-fsdp-nbyep7_o/checkpoint/extra_state_world_size_2_rank_0.pt
+INFO:2026-09-10 12:56:10,681:[Rank 1] Loaded rng from /tmp/arl-fsdp-nbyep7_o/checkpoint/extra_state_world_size_2_rank_1.pt
+Actor use_remove_padding=False
+Actor use_fused_kernels=False
+Actor use_prefix_grouper=False
+REAL_CPU_FSDP_CAPO_PASSED 28380

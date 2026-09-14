@@ -1,0 +1,19 @@
+{
+  "repo": "yentinglin/aime_2025",
+  "revision": "6f71d77b0b89b9dabe07ab466c51df33f514df7f",
+  "config": null,
+  "seed": 42,
+  "requested_limit": 1024,
+  "license": "See source dataset card",
+  "url": "https://huggingface.co/datasets/yentinglin/aime_2025/tree/6f71d77b0b89b9dabe07ab466c51df33f514df7f",
+  "source_train_rows_read": 30,
+  "conflicting_questions_removed": 0,
+  "scope": "bounded source prefix; learning subset, not full benchmark",
+  "files": {
+    "eval.jsonl": {
+      "sha256": "84c046077508ead9377928fca56decd0550af9c1224e51709d605b702a13e6d2",
+      "bytes": 17315,
+      "rows": 30
+    }
+  }
+}

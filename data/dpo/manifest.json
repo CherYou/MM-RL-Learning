@@ -1,0 +1,28 @@
+{
+  "derived_from": {
+    "repo": "openai/gsm8k",
+    "revision": "740312add88f781978c0658806c59bc2815b9866",
+    "config": "main",
+    "seed": 42,
+    "requested_limit": 0,
+    "license": [
+      "mit"
+    ],
+    "url": "https://huggingface.co/datasets/openai/gsm8k/tree/740312add88f781978c0658806c59bc2815b9866",
+    "source_train_rows_read": 7473,
+    "source_test_rows_read": 1319
+  },
+  "negative_generation": "numeric answer + 1",
+  "files": {
+    "eval.jsonl": {
+      "sha256": "b7c2944331e0591b146229c995bb7b2cf13ca57c84816c32c446b0e531f896a9",
+      "bytes": 913091,
+      "rows": 1319
+    },
+    "train.jsonl": {
+      "sha256": "bba0e080240f593a9ecd6b7e596b06cd640bdf6e4be2a6e8709acb8b9d36ce14",
+      "bytes": 5097375,
+      "rows": 7473
+    }
+  }
+}

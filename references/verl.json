@@ -1,0 +1,7 @@
+{
+  "url": "https://github.com/verl-project/verl",
+  "version": "0.7.1",
+  "revision": "bec9ef74768dd201881cd4e54cd0385e87caae27",
+  "directory": "references/verl",
+  "reason": "Released DataParallelPPOActor / RayWorkerGroup / AgentLoopBase APIs; separate CPU environment keeps the existing TRL lock independent."
+}

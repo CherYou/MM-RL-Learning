@@ -1,0 +1,81 @@
+{
+  "checkpoint": "/data/xionglei-extract/agentic-rl-lab/runs/embodied-iql-default-20260911/checkpoint-final",
+  "metrics": {
+    "eval/return": -46.8,
+    "eval/success_rate": 0.3,
+    "eval/final_success_rate": 0.2,
+    "eval/length": 50.0
+  },
+  "episodes": [
+    {
+      "seed": 20000,
+      "return": -27.0,
+      "length": 50,
+      "success": true,
+      "final_success": true
+    },
+    {
+      "seed": 20001,
+      "return": -46.0,
+      "length": 50,
+      "success": true,
+      "final_success": true
+    },
+    {
+      "seed": 20002,
+      "return": -50.0,
+      "length": 50,
+      "success": false,
+      "final_success": false
+    },
+    {
+      "seed": 20003,
+      "return": -50.0,
+      "length": 50,
+      "success": false,
+      "final_success": false
+    },
+    {
+      "seed": 20004,
+      "return": -45.0,
+      "length": 50,
+      "success": true,
+      "final_success": false
+    },
+    {
+      "seed": 20005,
+      "return": -50.0,
+      "length": 50,
+      "success": false,
+      "final_success": false
+    },
+    {
+      "seed": 20006,
+      "return": -50.0,
+      "length": 50,
+      "success": false,
+      "final_success": false
+    },
+    {
+      "seed": 20007,
+      "return": -50.0,
+      "length": 50,
+      "success": false,
+      "final_success": false
+    },
+    {
+      "seed": 20008,
+      "return": -50.0,
+      "length": 50,
+      "success": false,
+      "final_success": false
+    },
+    {
+      "seed": 20009,
+      "return": -50.0,
+      "length": 50,
+      "success": false,
+      "final_success": false
+    }
+  ]
+}

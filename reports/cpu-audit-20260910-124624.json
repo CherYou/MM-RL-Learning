@@ -1,0 +1,16 @@
+{
+  "ppo": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 6.64,
+    "run": "runs/cpu-audit-20260910-124624/ppo",
+    "log": "reports/cpu-audit-20260910-124624-ppo.log"
+  },
+  "dpo": {
+    "passed": true,
+    "exit_code": 0,
+    "seconds": 6.63,
+    "run": "runs/cpu-audit-20260910-124624/dpo",
+    "log": "reports/cpu-audit-20260910-124624-dpo.log"
+  }
+}

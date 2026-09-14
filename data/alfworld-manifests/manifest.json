@@ -1,0 +1,27 @@
+{
+  "source": "https://github.com/alfworld/alfworld/releases",
+  "versions": [
+    "0.2.2 JSON/PDDL",
+    "0.4.0 TW-PDDL"
+  ],
+  "environment": "alfworld==0.4.2 / textworld==1.7.0",
+  "scope": "all supported solvable text-only games",
+  "license": "MIT (ALFWorld code); ALFRED data terms apply",
+  "files": {
+    "eval-seen.jsonl": {
+      "sha256": "091f71ef74c650a567dcdf896ecba5b2d5140ab3b1ba27a236433751aa330ebe",
+      "bytes": 61458,
+      "rows": 140
+    },
+    "eval-unseen.jsonl": {
+      "sha256": "8d2b553526e44126643c4d8a3d1a8a5b361a57c69bafde6ff921ac2b16e60c76",
+      "bytes": 59815,
+      "rows": 134
+    },
+    "train.jsonl": {
+      "sha256": "6271b96306bc1066b735c41fb38332115afbfe71f24837d1694f0942daa9d169",
+      "bytes": 1486620,
+      "rows": 3553
+    }
+  }
+}

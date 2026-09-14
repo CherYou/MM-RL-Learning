@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/data/xionglei-extract/agentic-rl-lab/.venv-verl-gpu/bin/arl",
+    "train",
+    "01-grpo/verify-gpu1.yaml",
+    "--output",
+    "runs/verl-grpo-gpu1-20260910-a6"
+  ],
+  "exit_code": 0,
+  "log": "reports/verl-grpo-gpu1-20260910-a6.log",
+  "wall_seconds": 185.5078502483666,
+  "sampled_peak_memory_mib": 19604
+}

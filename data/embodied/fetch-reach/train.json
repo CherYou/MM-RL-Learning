@@ -1,0 +1,152 @@
+{
+  "format": 1,
+  "environment": "FetchReach-v4",
+  "reward_type": "sparse",
+  "collector": "75% noisy proportional controller; 25% uniform random, by episode",
+  "origin": "Locally generated real MuJoCo physics transitions; no human demonstrations",
+  "episodes": 40,
+  "transitions": 2000,
+  "episode_seeds": [
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81
+  ],
+  "episode_success_rate": 0.8,
+  "sha256": "033623fa2590069a783cbfd76a1c4980d45c14fb6c4eea1e042f1a45b899cecf",
+  "versions": {
+    "numpy": "2.2.6",
+    "gymnasium": "1.3.0",
+    "gymnasium-robotics": "1.4.2",
+    "mujoco": "3.3.7"
+  },
+  "fields": {
+    "observation": {
+      "shape": [
+        2000,
+        10
+      ],
+      "dtype": "float32"
+    },
+    "achieved_goal": {
+      "shape": [
+        2000,
+        3
+      ],
+      "dtype": "float32"
+    },
+    "desired_goal": {
+      "shape": [
+        2000,
+        3
+      ],
+      "dtype": "float32"
+    },
+    "next_observation": {
+      "shape": [
+        2000,
+        10
+      ],
+      "dtype": "float32"
+    },
+    "next_achieved_goal": {
+      "shape": [
+        2000,
+        3
+      ],
+      "dtype": "float32"
+    },
+    "next_desired_goal": {
+      "shape": [
+        2000,
+        3
+      ],
+      "dtype": "float32"
+    },
+    "action": {
+      "shape": [
+        2000,
+        4
+      ],
+      "dtype": "float32"
+    },
+    "reward": {
+      "shape": [
+        2000
+      ],
+      "dtype": "float64"
+    },
+    "terminated": {
+      "shape": [
+        2000
+      ],
+      "dtype": "bool"
+    },
+    "truncated": {
+      "shape": [
+        2000
+      ],
+      "dtype": "bool"
+    },
+    "episode": {
+      "shape": [
+        2000
+      ],
+      "dtype": "int64"
+    },
+    "time": {
+      "shape": [
+        2000
+      ],
+      "dtype": "int64"
+    },
+    "relabeled": {
+      "shape": [
+        2000
+      ],
+      "dtype": "bool"
+    },
+    "future_time": {
+      "shape": [
+        2000
+      ],
+      "dtype": "int64"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+................................................................         [100%]
+=============================== warnings summary ===============================
+.venv-verl/lib/python3.12/site-packages/ray/util/state/util.py:54
+  /data/xionglei-extract/agentic-rl-lab/.venv-verl/lib/python3.12/site-packages/ray/util/state/util.py:54: DeprecationWarning: Ray state API is no longer experimental. Please import from `ray.util.state`. instead. Importing from `ray.experimental` will be deprecated in future releases. 
+    warnings.warn(
+
+tests/test_mechanisms.py::test_dpo_moves_chosen_up_rejected_down
+  /data/xionglei-extract/agentic-rl-lab/tests/test_mechanisms.py:97: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+  Consider using tensor.detach() first. (Triggered internally at /pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:836.)
+    assert float(loss) == pytest.approx(math.log(2))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+64 passed, 2 warnings in 21.93s

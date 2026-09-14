@@ -1,0 +1,34 @@
+{
+  "repo": "ceval/ceval-exam",
+  "revision": "617524a00b307ff6f9933702f724131fe12ca7ce",
+  "configs": [
+    "computer_network",
+    "college_programming",
+    "advanced_mathematics",
+    "discrete_mathematics",
+    "college_physics",
+    "logic",
+    "chinese_language_and_literature",
+    "college_economics"
+  ],
+  "source_splits": [
+    "dev",
+    "val"
+  ],
+  "seed": 42,
+  "split": "80/20 within each subject after global prompt deduplication",
+  "license": "CC-BY-NC-SA-4.0 (source card)",
+  "scope": "labelled learning subset, not official C-Eval test leaderboard",
+  "files": {
+    "eval.jsonl": {
+      "sha256": "321e318c534147b4dafbd71e29883face8ee74512af654567c36e039044f529d",
+      "bytes": 19712,
+      "rows": 45
+    },
+    "train.jsonl": {
+      "sha256": "b8db7c8d2a0339286b475daa9f36046402f49bab2197d28bc7b51ba3efaac6a7",
+      "bytes": 104650,
+      "rows": 204
+    }
+  }
+}

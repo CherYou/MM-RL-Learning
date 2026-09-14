@@ -1,0 +1,11 @@
+Prepared 1 package in 1.49s
+Uninstalled 1 package in 1ms
+warning: Failed to hardlink files; falling back to full copy. This may lead to degraded performance.
+         If the cache and target directories are on different filesystems, hardlinking may not be supported.
+         If this is intentional, set `export UV_LINK_MODE=copy` or use `--link-mode=copy` to suppress this warning.
+Installed 1 package in 45ms
+ ~ agentic-rl-lab-local==0.1.0 (from file:///data/xionglei-extract/agentic-rl-lab)
+Using Python 3.12.3 environment at: .venv-verl
+Checked 177 packages in 52ms
+All installed packages are compatible
+Installed .venv-verl from environments/verl-cpu/uv.lock. No training or GPU validation was run.

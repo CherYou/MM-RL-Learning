@@ -1,0 +1,22 @@
+Uninstalled 1 package in 1ms
+Installed 1 package in 48ms
+ ~ agentic-rl-lab-local==0.1.0 (from file:///data/xionglei-extract/agentic-rl-lab)
+{
+  "versions": {
+    "torch": "2.9.1+cpu",
+    "torchvision": "0.24.1+cpu",
+    "transformers": "4.57.6",
+    "trl": "0.25.1",
+    "accelerate": "1.12.0",
+    "peft": "0.18.1",
+    "datasets": "4.4.2",
+    "alfworld": "0.4.2",
+    "textworld": "1.7.0",
+    "tensorboard": "2.20.0",
+    "streamlit": "1.52.2"
+  },
+  "torch_cuda_build": null,
+  "default_device": "cpu",
+  "pytrio_installed": false
+}
+Dataset manifests: aime25, alfworld-manifests, ceval, dapo, deepmath, dpo, fixtures, geoqa, gsm8k, harness, hotpot, medical, medqa, opsd, search

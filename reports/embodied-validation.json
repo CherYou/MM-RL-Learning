@@ -1,0 +1,1056 @@
+{
+  "passed": true,
+  "checks": {
+    "sac/checkpoint_hash": true,
+    "sac/actor_reloaded": true,
+    "sac/actor_changed": true,
+    "sac/finite_weights": true,
+    "sac/finite_metrics": true,
+    "sac/nonzero_updates": true,
+    "sac/exact_reload_eval": true,
+    "sac/tensorboard": true,
+    "sac/actual_physics": true,
+    "sac/training_interactions": true,
+    "sac/independent_eval": true,
+    "td3/checkpoint_hash": true,
+    "td3/actor_reloaded": true,
+    "td3/actor_changed": true,
+    "td3/finite_weights": true,
+    "td3/finite_metrics": true,
+    "td3/nonzero_updates": true,
+    "td3/exact_reload_eval": true,
+    "td3/tensorboard": true,
+    "td3/actual_physics": true,
+    "td3/training_interactions": true,
+    "td3/independent_eval": true,
+    "her/checkpoint_hash": true,
+    "her/actor_reloaded": true,
+    "her/actor_changed": true,
+    "her/finite_weights": true,
+    "her/finite_metrics": true,
+    "her/nonzero_updates": true,
+    "her/exact_reload_eval": true,
+    "her/tensorboard": true,
+    "her/actual_physics": true,
+    "her/training_interactions": true,
+    "her/independent_eval": true,
+    "iql/checkpoint_hash": true,
+    "iql/actor_reloaded": true,
+    "iql/actor_changed": true,
+    "iql/finite_weights": true,
+    "iql/finite_metrics": true,
+    "iql/nonzero_updates": true,
+    "iql/exact_reload_eval": true,
+    "iql/tensorboard": true,
+    "iql/actual_physics": true,
+    "iql/training_interactions": true,
+    "iql/independent_eval": true,
+    "her/real_and_relabelled_separate": true,
+    "iql/dataset_unchanged": true,
+    "iql/fixed_2000_transitions": true
+  },
+  "experiments": {
+    "sac": {
+      "run": "runs/embodied-sac-default-20260911",
+      "validation": {
+        "algorithm": "sac",
+        "environment": "FetchReach-v4",
+        "reward_type": "sparse",
+        "device": "cpu",
+        "steps": 5000,
+        "updates": 4001,
+        "training_environment_steps": 5000,
+        "initial_actor_sha256": "3d5313fef5bced4556fb46b826bf26fd53af4bc6f15fe0095ec81384e0f91b32",
+        "final_actor_sha256": "ca71d0686e0662750d3b21ec4ba50fc46c737ffc09b1e939aa475cdadde2ac08",
+        "actor_change_l2": 1.2186543941497803,
+        "checkpoint_sha256": "b75f4a5a63958ee249e494fa6752b14c6cec060edfe4cfeba05e7a74f3d9074b",
+        "reload_exact": true,
+        "baseline": {
+          "eval/return": -49.4,
+          "eval/success_rate": 0.2,
+          "eval/final_success_rate": 0.0,
+          "eval/length": 50.0
+        },
+        "final": {
+          "eval/return": -49.7,
+          "eval/success_rate": 0.2,
+          "eval/final_success_rate": 0.0,
+          "eval/length": 50.0
+        },
+        "reloaded": {
+          "eval/return": -49.7,
+          "eval/success_rate": 0.2,
+          "eval/final_success_rate": 0.0,
+          "eval/length": 50.0
+        },
+        "eval_episodes": [
+          {
+            "seed": 10000,
+            "return": -48.0,
+            "length": 50,
+            "success": true,
+            "final_success": false
+          },
+          {
+            "seed": 10001,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10002,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10003,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10004,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10005,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10006,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10007,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10008,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10009,
+            "return": -49.0,
+            "length": 50,
+            "success": true,
+            "final_success": false
+          }
+        ],
+        "dataset": null,
+        "replay_transitions": 5000,
+        "her_transitions": 0,
+        "versions": {
+          "torch": "2.9.1+cpu",
+          "gymnasium": "1.3.0",
+          "gymnasium-robotics": "1.4.2",
+          "mujoco": "3.3.7"
+        },
+        "scope": "Functional real-physics validation; short runs do not establish benchmark learning performance"
+      },
+      "independent_evaluation": {
+        "checkpoint": "/data/xionglei-extract/agentic-rl-lab/runs/embodied-sac-default-20260911/checkpoint-final",
+        "metrics": {
+          "eval/return": -49.3,
+          "eval/success_rate": 0.1,
+          "eval/final_success_rate": 0.0,
+          "eval/length": 50.0
+        },
+        "episodes": [
+          {
+            "seed": 20000,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20001,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20002,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20003,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20004,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20005,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20006,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20007,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20008,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20009,
+            "return": -43.0,
+            "length": 50,
+            "success": true,
+            "final_success": false
+          }
+        ]
+      },
+      "tensorboard_tags": [
+        "eval/return",
+        "eval/success_rate",
+        "eval/final_success_rate",
+        "eval/length",
+        "train/replay_size",
+        "train/environment_steps",
+        "train/updates",
+        "loss/critic",
+        "train/actor_updated",
+        "loss/actor",
+        "loss/alpha",
+        "train/q",
+        "train/target",
+        "train/alpha"
+      ]
+    },
+    "td3": {
+      "run": "runs/embodied-td3-default-20260911",
+      "validation": {
+        "algorithm": "td3",
+        "environment": "FetchReach-v4",
+        "reward_type": "sparse",
+        "device": "cpu",
+        "steps": 5000,
+        "updates": 4001,
+        "training_environment_steps": 5000,
+        "initial_actor_sha256": "a48b83e8b574d0c0ddb82c89b083d71ba4e331cf8a6a2a98cd73ced3c9802f54",
+        "final_actor_sha256": "9a5cdec6dcefa847c630ba38e88d74120f1429ca9ffa896b0121c661e5f58498",
+        "actor_change_l2": 5.322560787200928,
+        "checkpoint_sha256": "b2767acf559303330c2857dbd11266852c7d75f57ab01ff3da7d5f910ee953da",
+        "reload_exact": true,
+        "baseline": {
+          "eval/return": -49.5,
+          "eval/success_rate": 0.2,
+          "eval/final_success_rate": 0.0,
+          "eval/length": 50.0
+        },
+        "final": {
+          "eval/return": -49.0,
+          "eval/success_rate": 0.4,
+          "eval/final_success_rate": 0.0,
+          "eval/length": 50.0
+        },
+        "reloaded": {
+          "eval/return": -49.0,
+          "eval/success_rate": 0.4,
+          "eval/final_success_rate": 0.0,
+          "eval/length": 50.0
+        },
+        "eval_episodes": [
+          {
+            "seed": 10000,
+            "return": -47.0,
+            "length": 50,
+            "success": true,
+            "final_success": false
+          },
+          {
+            "seed": 10001,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10002,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10003,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10004,
+            "return": -49.0,
+            "length": 50,
+            "success": true,
+            "final_success": false
+          },
+          {
+            "seed": 10005,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10006,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10007,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10008,
+            "return": -46.0,
+            "length": 50,
+            "success": true,
+            "final_success": false
+          },
+          {
+            "seed": 10009,
+            "return": -48.0,
+            "length": 50,
+            "success": true,
+            "final_success": false
+          }
+        ],
+        "dataset": null,
+        "replay_transitions": 5000,
+        "her_transitions": 0,
+        "versions": {
+          "torch": "2.9.1+cpu",
+          "gymnasium": "1.3.0",
+          "gymnasium-robotics": "1.4.2",
+          "mujoco": "3.3.7"
+        },
+        "scope": "Functional real-physics validation; short runs do not establish benchmark learning performance"
+      },
+      "independent_evaluation": {
+        "checkpoint": "/data/xionglei-extract/agentic-rl-lab/runs/embodied-td3-default-20260911/checkpoint-final",
+        "metrics": {
+          "eval/return": -50.0,
+          "eval/success_rate": 0.0,
+          "eval/final_success_rate": 0.0,
+          "eval/length": 50.0
+        },
+        "episodes": [
+          {
+            "seed": 20000,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20001,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20002,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20003,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20004,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20005,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20006,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20007,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20008,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20009,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          }
+        ]
+      },
+      "tensorboard_tags": [
+        "eval/return",
+        "eval/success_rate",
+        "eval/final_success_rate",
+        "eval/length",
+        "train/replay_size",
+        "train/environment_steps",
+        "train/updates",
+        "loss/critic",
+        "train/actor_updated",
+        "train/q",
+        "train/target",
+        "loss/actor"
+      ]
+    },
+    "her": {
+      "run": "runs/embodied-her-default-20260911",
+      "validation": {
+        "algorithm": "her",
+        "environment": "FetchReach-v4",
+        "reward_type": "sparse",
+        "device": "cpu",
+        "steps": 5000,
+        "updates": 4001,
+        "training_environment_steps": 5000,
+        "initial_actor_sha256": "a48b83e8b574d0c0ddb82c89b083d71ba4e331cf8a6a2a98cd73ced3c9802f54",
+        "final_actor_sha256": "d93852b3cbb173194adb3f8aa7b63c123f3d1f6c615e67eef9e8f28fdb8d9d29",
+        "actor_change_l2": 8.069783210754395,
+        "checkpoint_sha256": "3632448ce04f104c8228e5f9d308f83a1719a1b2203efca3a58b49ccfa311cb1",
+        "reload_exact": true,
+        "baseline": {
+          "eval/return": -49.5,
+          "eval/success_rate": 0.2,
+          "eval/final_success_rate": 0.0,
+          "eval/length": 50.0
+        },
+        "final": {
+          "eval/return": -50.0,
+          "eval/success_rate": 0.0,
+          "eval/final_success_rate": 0.0,
+          "eval/length": 50.0
+        },
+        "reloaded": {
+          "eval/return": -50.0,
+          "eval/success_rate": 0.0,
+          "eval/final_success_rate": 0.0,
+          "eval/length": 50.0
+        },
+        "eval_episodes": [
+          {
+            "seed": 10000,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10001,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10002,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10003,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10004,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10005,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10006,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10007,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10008,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10009,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          }
+        ],
+        "dataset": null,
+        "replay_transitions": 25000,
+        "her_transitions": 20000,
+        "versions": {
+          "torch": "2.9.1+cpu",
+          "gymnasium": "1.3.0",
+          "gymnasium-robotics": "1.4.2",
+          "mujoco": "3.3.7"
+        },
+        "scope": "Functional real-physics validation; short runs do not establish benchmark learning performance"
+      },
+      "independent_evaluation": {
+        "checkpoint": "/data/xionglei-extract/agentic-rl-lab/runs/embodied-her-default-20260911/checkpoint-final",
+        "metrics": {
+          "eval/return": -50.0,
+          "eval/success_rate": 0.0,
+          "eval/final_success_rate": 0.0,
+          "eval/length": 50.0
+        },
+        "episodes": [
+          {
+            "seed": 20000,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20001,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20002,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20003,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20004,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20005,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20006,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20007,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20008,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20009,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          }
+        ]
+      },
+      "tensorboard_tags": [
+        "eval/return",
+        "eval/success_rate",
+        "eval/final_success_rate",
+        "eval/length",
+        "train/replay_size",
+        "train/environment_steps",
+        "train/updates",
+        "loss/critic",
+        "train/actor_updated",
+        "train/q",
+        "train/target",
+        "loss/actor"
+      ]
+    },
+    "iql": {
+      "run": "runs/embodied-iql-default-20260911",
+      "validation": {
+        "algorithm": "iql",
+        "environment": "FetchReach-v4",
+        "reward_type": "sparse",
+        "device": "cpu",
+        "steps": 5000,
+        "updates": 5000,
+        "training_environment_steps": 0,
+        "initial_actor_sha256": "3d5313fef5bced4556fb46b826bf26fd53af4bc6f15fe0095ec81384e0f91b32",
+        "final_actor_sha256": "acb2ab862d197aa1cd103b0866b181003969cb552569c772d859de3d9bbb415a",
+        "actor_change_l2": 22.030338287353516,
+        "checkpoint_sha256": "57a1a30252a0b7587e70d10bd0e06f035bab8ac47e7d38a275a16c075deae72f",
+        "reload_exact": true,
+        "baseline": {
+          "eval/return": -49.4,
+          "eval/success_rate": 0.2,
+          "eval/final_success_rate": 0.0,
+          "eval/length": 50.0
+        },
+        "final": {
+          "eval/return": -44.6,
+          "eval/success_rate": 0.5,
+          "eval/final_success_rate": 0.1,
+          "eval/length": 50.0
+        },
+        "reloaded": {
+          "eval/return": -44.6,
+          "eval/success_rate": 0.5,
+          "eval/final_success_rate": 0.1,
+          "eval/length": 50.0
+        },
+        "eval_episodes": [
+          {
+            "seed": 10000,
+            "return": -42.0,
+            "length": 50,
+            "success": true,
+            "final_success": false
+          },
+          {
+            "seed": 10001,
+            "return": -29.0,
+            "length": 50,
+            "success": true,
+            "final_success": false
+          },
+          {
+            "seed": 10002,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10003,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10004,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10005,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10006,
+            "return": -44.0,
+            "length": 50,
+            "success": true,
+            "final_success": true
+          },
+          {
+            "seed": 10007,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 10008,
+            "return": -45.0,
+            "length": 50,
+            "success": true,
+            "final_success": false
+          },
+          {
+            "seed": 10009,
+            "return": -36.0,
+            "length": 50,
+            "success": true,
+            "final_success": false
+          }
+        ],
+        "dataset": {
+          "format": 1,
+          "environment": "FetchReach-v4",
+          "reward_type": "sparse",
+          "collector": "75% noisy proportional controller; 25% uniform random, by episode",
+          "origin": "Locally generated real MuJoCo physics transitions; no human demonstrations",
+          "episodes": 40,
+          "transitions": 2000,
+          "episode_seeds": [
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81
+          ],
+          "episode_success_rate": 0.8,
+          "sha256": "033623fa2590069a783cbfd76a1c4980d45c14fb6c4eea1e042f1a45b899cecf",
+          "versions": {
+            "numpy": "2.2.6",
+            "gymnasium": "1.3.0",
+            "gymnasium-robotics": "1.4.2",
+            "mujoco": "3.3.7"
+          },
+          "fields": {
+            "observation": {
+              "shape": [
+                2000,
+                10
+              ],
+              "dtype": "float32"
+            },
+            "achieved_goal": {
+              "shape": [
+                2000,
+                3
+              ],
+              "dtype": "float32"
+            },
+            "desired_goal": {
+              "shape": [
+                2000,
+                3
+              ],
+              "dtype": "float32"
+            },
+            "next_observation": {
+              "shape": [
+                2000,
+                10
+              ],
+              "dtype": "float32"
+            },
+            "next_achieved_goal": {
+              "shape": [
+                2000,
+                3
+              ],
+              "dtype": "float32"
+            },
+            "next_desired_goal": {
+              "shape": [
+                2000,
+                3
+              ],
+              "dtype": "float32"
+            },
+            "action": {
+              "shape": [
+                2000,
+                4
+              ],
+              "dtype": "float32"
+            },
+            "reward": {
+              "shape": [
+                2000
+              ],
+              "dtype": "float64"
+            },
+            "terminated": {
+              "shape": [
+                2000
+              ],
+              "dtype": "bool"
+            },
+            "truncated": {
+              "shape": [
+                2000
+              ],
+              "dtype": "bool"
+            },
+            "episode": {
+              "shape": [
+                2000
+              ],
+              "dtype": "int64"
+            },
+            "time": {
+              "shape": [
+                2000
+              ],
+              "dtype": "int64"
+            },
+            "relabeled": {
+              "shape": [
+                2000
+              ],
+              "dtype": "bool"
+            },
+            "future_time": {
+              "shape": [
+                2000
+              ],
+              "dtype": "int64"
+            }
+          }
+        },
+        "replay_transitions": 2000,
+        "her_transitions": 0,
+        "versions": {
+          "torch": "2.9.1+cpu",
+          "gymnasium": "1.3.0",
+          "gymnasium-robotics": "1.4.2",
+          "mujoco": "3.3.7"
+        },
+        "scope": "Functional real-physics validation; short runs do not establish benchmark learning performance"
+      },
+      "independent_evaluation": {
+        "checkpoint": "/data/xionglei-extract/agentic-rl-lab/runs/embodied-iql-default-20260911/checkpoint-final",
+        "metrics": {
+          "eval/return": -46.8,
+          "eval/success_rate": 0.3,
+          "eval/final_success_rate": 0.2,
+          "eval/length": 50.0
+        },
+        "episodes": [
+          {
+            "seed": 20000,
+            "return": -27.0,
+            "length": 50,
+            "success": true,
+            "final_success": true
+          },
+          {
+            "seed": 20001,
+            "return": -46.0,
+            "length": 50,
+            "success": true,
+            "final_success": true
+          },
+          {
+            "seed": 20002,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20003,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20004,
+            "return": -45.0,
+            "length": 50,
+            "success": true,
+            "final_success": false
+          },
+          {
+            "seed": 20005,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20006,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20007,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20008,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          },
+          {
+            "seed": 20009,
+            "return": -50.0,
+            "length": 50,
+            "success": false,
+            "final_success": false
+          }
+        ]
+      },
+      "tensorboard_tags": [
+        "eval/return",
+        "eval/success_rate",
+        "eval/final_success_rate",
+        "eval/length",
+        "loss/value",
+        "loss/critic",
+        "loss/actor",
+        "train/advantage",
+        "train/weight",
+        "train/replay_size",
+        "train/environment_steps",
+        "train/updates"
+      ]
+    }
+  },
+  "limits": "One training seed, short budgets, low-dimensional state-goal policies; no benchmark or VLA capability claim"
+}

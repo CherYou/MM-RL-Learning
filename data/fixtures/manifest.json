@@ -1,0 +1,41 @@
+{
+  "source": "generated CPU plumbing examples",
+  "purpose": "check tensor/gradient/image/serialization paths only",
+  "files": {
+    "dpo-eval.jsonl": {
+      "sha256": "18554deb98fe4f8f211ce2f1bd172ec2d1f664997dfb0c2b7917389390d89c5b",
+      "bytes": 3991,
+      "rows": 32
+    },
+    "dpo-train.jsonl": {
+      "sha256": "1faac0b6c26940718d3f674d5b47b9f7d173d9b59f14a38af8ccf16c38025840",
+      "bytes": 3870,
+      "rows": 32
+    },
+    "eval.jsonl": {
+      "sha256": "335a11e81130c264b959f9d03e9f17e9881bb303be0e71b7d03a1b2d93d86228",
+      "bytes": 3383,
+      "rows": 32
+    },
+    "general-train.jsonl": {
+      "sha256": "37aeb9d693e99fd9d7ce3787e017bb0c536fc2758b500855aacae3e1d6013f89",
+      "bytes": 688,
+      "rows": 8
+    },
+    "train.jsonl": {
+      "sha256": "3214e16470bb322a68fe68cb8948722fa2845fd14ffdaae8deb97d87694e9b1b",
+      "bytes": 3225,
+      "rows": 32
+    },
+    "vision-eval.jsonl": {
+      "sha256": "6d66565e3b7af778d10c6618790885fbb620d604b242753d646f1edb07ab8b50",
+      "bytes": 1832,
+      "rows": 8
+    },
+    "vision-train.jsonl": {
+      "sha256": "859d9c865e95c72d83d3debd6f223fbec40bab072847635493b53272ea8574f0",
+      "bytes": 1811,
+      "rows": 8
+    }
+  }
+}

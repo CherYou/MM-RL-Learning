@@ -1,0 +1,122 @@
+[
+  {
+    "chapter": "preliminary",
+    "algorithm": "loss-functions",
+    "dataset": "fixtures",
+    "backend": "native"
+  },
+  {
+    "chapter": "001-ppo",
+    "algorithm": "ppo",
+    "dataset": "gsm8k",
+    "backend": "trl"
+  },
+  {
+    "chapter": "002-dpo",
+    "algorithm": "dpo",
+    "dataset": "dpo",
+    "backend": "trl"
+  },
+  {
+    "chapter": "01-grpo",
+    "algorithm": "grpo",
+    "dataset": "gsm8k",
+    "backend": "trl"
+  },
+  {
+    "chapter": "02-opd",
+    "algorithm": "sar-opd",
+    "dataset": "medical",
+    "backend": "verl"
+  },
+  {
+    "chapter": "02-opd/general-opd",
+    "algorithm": "opd",
+    "dataset": "deepmath",
+    "backend": "verl"
+  },
+  {
+    "chapter": "03-search-r1",
+    "algorithm": "search-r1",
+    "dataset": "hotpot",
+    "backend": "verl"
+  },
+  {
+    "chapter": "04-opsd",
+    "algorithm": "opsd",
+    "dataset": "opsd",
+    "backend": "verl"
+  },
+  {
+    "chapter": "05-retool",
+    "algorithm": "retool",
+    "dataset": "dapo",
+    "backend": "verl"
+  },
+  {
+    "chapter": "06-dapo",
+    "algorithm": "dapo",
+    "dataset": "dapo",
+    "backend": "verl"
+  },
+  {
+    "chapter": "07-gspo",
+    "algorithm": "gspo",
+    "dataset": "dapo",
+    "backend": "trl"
+  },
+  {
+    "chapter": "08-alfworld",
+    "algorithm": "alfworld",
+    "dataset": "alfworld-manifests",
+    "backend": "verl"
+  },
+  {
+    "chapter": "09-AgentOPSD",
+    "algorithm": "agentopsd",
+    "dataset": "alfworld-manifests",
+    "backend": "verl"
+  },
+  {
+    "chapter": "09-tempo",
+    "algorithm": "tempo",
+    "dataset": "alfworld-manifests",
+    "backend": "verl"
+  },
+  {
+    "chapter": "09-vision-grpo",
+    "algorithm": "vision-grpo",
+    "dataset": "geoqa",
+    "backend": "verl"
+  },
+  {
+    "chapter": "12-harness-rl",
+    "algorithm": "harness-rl",
+    "dataset": "hotpot",
+    "backend": "verl"
+  },
+  {
+    "chapter": "13-sac",
+    "algorithm": "sac",
+    "dataset": "embodied/fetch-reach",
+    "backend": "embodied"
+  },
+  {
+    "chapter": "14-td3",
+    "algorithm": "td3",
+    "dataset": "embodied/fetch-reach",
+    "backend": "embodied"
+  },
+  {
+    "chapter": "15-her",
+    "algorithm": "her",
+    "dataset": "embodied/fetch-reach",
+    "backend": "embodied"
+  },
+  {
+    "chapter": "16-iql",
+    "algorithm": "iql",
+    "dataset": "embodied/fetch-reach",
+    "backend": "embodied"
+  }
+]
