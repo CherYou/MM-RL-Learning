@@ -11,7 +11,7 @@ import numpy as np
 import torch
 import yaml
 
-from ..data import ROOT
+from ..data import ROOT, report_path
 from ..logging import RunLogger
 from .agents import Agent
 from .replay import Replay, encode, file_hash, load_dataset, make_env, prepare_dataset, transition
@@ -278,7 +278,7 @@ def main(argv=None):
             if getattr(args, key) is not None:
                 config[key] = getattr(args, key)
         config.setdefault("output", f"runs/embodied-{config['algorithm']}-{time.time_ns()}")
-        print(f"Saved run: {train(config)}")
+        print(f"Saved run: {report_path(train(config))}")
     else:
         if args.episodes < 1:
             raise ValueError("episodes must be positive")
@@ -292,7 +292,7 @@ def main(argv=None):
         agent = Agent(config)
         agent.load_state_dict(state)
         metrics, records = evaluate(agent, config)
-        result = {"checkpoint": str(checkpoint), "metrics": metrics, "episodes": records}
+        result = {"checkpoint": report_path(checkpoint), "metrics": metrics, "episodes": records}
         if args.output:
             output = absolute(args.output)
             output.parent.mkdir(parents=True, exist_ok=True)

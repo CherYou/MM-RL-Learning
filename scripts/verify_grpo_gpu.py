@@ -6,14 +6,14 @@ from collections import defaultdict
 import json
 import math
 
-from agentic_rl.data import ROOT, read_jsonl
+from agentic_rl.data import ROOT, read_jsonl, report_path
 from agentic_rl.rewards import exact_match
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("run")
-    parser.add_argument("--report", default="reports/verl-grpo-gpu1-verification.json")
+    parser.add_argument("--report", default="reports/verl-grpo-gpu-verification.json")
     args = parser.parse_args()
     run = ROOT / args.run
     config = json.loads((run / "config.json").read_text())
@@ -42,11 +42,21 @@ def main():
         and "fixtures" not in config["dataset"]
         and config["model"] != "tiny",
     )
+    monitor_path = run / "gpu-monitor.json"
+    monitor = json.loads(monitor_path.read_text()) if monitor_path.exists() else None
+    worker_uuid = runtime["workers"][0]["device_uuid"] if len(runtime["workers"]) == 1 else None
+
+    def normalize_uuid(value):
+        return str(value).lower().removeprefix("gpu-")
+
+    monitored_uuids = (
+        {normalize_uuid(sample["uuid"]) for sample in monitor.get("gpu_samples", [])}
+        if monitor
+        else set()
+    )
     require(
         "physical_gpu_affinity",
-        len(runtime["workers"]) == 1
-        and runtime["workers"][0]["device_uuid"].removeprefix("GPU-")
-        == config["expected_gpu_uuid"].removeprefix("GPU-"),
+        bool(worker_uuid) and monitored_uuids == {normalize_uuid(worker_uuid)},
     )
     require("all_steps_logged", [m["step"] for m in metrics] == list(range(config["steps"])))
     require("finite_metrics", all(math.isfinite(v) for m in metrics for v in m.values()))
@@ -113,24 +123,51 @@ def main():
             )
             and evaluation["score"] == sum(p["score"] for p in predictions) / len(predictions),
         )
+        evaluation = dict(evaluation)
+        for key in ("checkpoint", "dataset"):
+            if key in evaluation:
+                evaluation[key] = report_path(evaluation[key])
     tokenizer_audit = None
     if (run / "evaluation/tokenizer-audit.json").exists():
         tokenizer_audit = json.loads((run / "evaluation/tokenizer-audit.json").read_text())
         require("checkpoint_tokenizer_preserved", tokenizer_audit["passed"])
-    monitor_path = ROOT / "reports" / (run.name + "-monitor.json")
-    monitor = json.loads(monitor_path.read_text()) if monitor_path.exists() else None
+        tokenizer_audit = dict(tokenizer_audit)
+        for key in ("original", "saved"):
+            if key in tokenizer_audit:
+                tokenizer_audit[key] = report_path(tokenizer_audit[key])
+    public_workers = [
+        {key: value for key, value in worker.items() if key not in {"pid", "device_uuid"}}
+        for worker in runtime["workers"]
+    ]
+    public_runtime = {
+        key: value
+        for key, value in runtime.items()
+        if key not in {"driver_pid", "host", "workers"}
+    }
+    public_runtime["workers"] = public_workers
+    public_monitor = None
+    if monitor:
+        public_monitor = {key: value for key, value in monitor.items() if key != "gpu_samples"}
+        if "command" in public_monitor:
+            public_monitor["command"] = [report_path(part) for part in public_monitor["command"]]
+        if "log" in public_monitor:
+            public_monitor["log"] = report_path(public_monitor["log"])
+        public_monitor["gpu_samples"] = [
+            {key: value for key, value in sample.items() if key != "uuid"}
+            for sample in monitor.get("gpu_samples", [])
+        ]
     report = {
         "passed": all(checks.values()),
-        "run": str(run),
+        "run": report_path(run),
         "checks": checks,
-        "model": config["model"],
-        "workers": runtime["workers"],
+        "model": report_path(config["model"]),
+        "workers": public_workers,
         "metrics": metrics,
         "rollouts": len(samples),
         "reward_groups": {f"step-{s}/{i}": r for (s, i), r in groups.items()},
         "training_sample_accuracy": sum(x["reward"] for x in samples) / len(samples),
-        "runtime": runtime,
-        "monitor": monitor,
+        "runtime": public_runtime,
+        "monitor": public_monitor,
         "evaluation": evaluation,
         "tokenizer_audit": tokenizer_audit,
         "scope": "Real GPU functional validation on a small training subset; not benchmark accuracy or demonstrated improvement",
@@ -144,7 +181,7 @@ def main():
                 "passed": report["passed"],
                 "checks": len(checks),
                 "failed": [k for k, v in checks.items() if not v],
-                "report": str(target),
+                "report": report_path(target),
             },
             indent=2,
         )

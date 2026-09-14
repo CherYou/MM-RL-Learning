@@ -3,7 +3,7 @@
 import json
 from pathlib import Path
 import torch
-from .data import ROOT, read_jsonl, write_jsonl
+from .data import ROOT, read_jsonl, report_path, write_jsonl
 from .models import Policy, VisionPolicy
 from .rollout import single_rollout, agent_rollout
 from .harness import harness_rollout
@@ -61,8 +61,8 @@ def evaluate(config, checkpoint, limit=32, output=None):
     out.mkdir(parents=True, exist_ok=True)
     write_jsonl(out / "predictions.jsonl", records)
     summary = {
-        "checkpoint": str(path),
-        "dataset": config["eval_dataset"],
+        "checkpoint": report_path(path),
+        "dataset": report_path(config["eval_dataset"]),
         "rows": len(records),
         "score": sum(r["score"] for r in records) / len(records),
         "seed": config["seed"],

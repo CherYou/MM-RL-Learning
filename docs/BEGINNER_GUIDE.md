@@ -35,10 +35,9 @@ Medical 章节包含 SFT、Medical OPD、SAR-OPD、IDT-OPD；preliminary 损失�
 
 对一个回答 $y=(y_1,\ldots,y_T)$：
 
-$$
-\pi_\theta(y\mid x)=\prod_{t=1}^{T}\pi_\theta(y_t\mid x,y_{<t}),\qquad
-\log\pi_\theta(y\mid x)=\sum_{t=1}^{T}\log\pi_\theta(y_t\mid x,y_{<t}).
-$$
+$$\pi_\theta(y\mid x)=\prod_{t=1}^{T}\pi_\theta(y_t\mid x,y_{1:t-1}).$$
+
+$$\log\pi_\theta(y\mid x)=\sum_{t=1}^{T}\log\pi_\theta(y_t\mid x,y_{1:t-1}).$$
 
 乘很多小数容易下溢，所以代码常保存 `logprob`。`exp(logp - old_logp)` 就是“现在的概率 / 采样时的概率”。整段的概率与单个 token 的概率不能混用。
 

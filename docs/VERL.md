@@ -27,7 +27,7 @@
 verl 固定官方发布标签 v0.7.1，revision `bec9ef74768dd201881cd4e54cd0385e87caae27`。它保留本实现使用的 DataParallelPPOActor、ActorRolloutRefWorker 和异步 AgentLoop 接口；新版主分支重构了 worker/engine，不能直接替换。来源记录见 `references/verl.json`，两个环境各有 pyproject.toml 和 uv.lock。numpy<2 等要求由独立环境满足。
 
 ```bash
-cd /data/xionglei-extract/agentic-rl-lab
+# 从仓库根目录运行
 bash scripts/setup.sh
 bash scripts/setup_verl.sh --cpu
 
@@ -101,8 +101,9 @@ GPU 生成通过官方异步 Replica、负载均衡器和 AsyncLLMServerManager 
 .venv/bin/arl train 02-opd/config.yaml --smoke --teacher-model medical_sft --verl-workers 2
 
 # steps 是累计目标步数；输出用新目录，worker 数须保持一致
+TEMPO_RUN="runs/TEMPO_RUN_NAME"
 .venv/bin/arl train 09-tempo/config.yaml --smoke --verl-workers 2 \
-  --resume runs/<已有TEMPO实验>/checkpoint-final --steps 4 --output runs/tempo-continued
+  --resume "$TEMPO_RUN/checkpoint-final" --steps 4 --output runs/tempo-continued
 
 .venv/bin/arl eval 09-tempo/config.yaml --smoke \
   --checkpoint runs/tempo-continued/checkpoint-final --limit 1
@@ -114,15 +115,15 @@ TEMPO 的修正为 `exp(sum(log π_current − log π_behavior))`，求和只覆
 
 ## GPU 启动方式与边界
 
-已验证的单卡 GRPO 命令如下，启动器固定第二张卡（物理 index 1），校验 UUID，设置本机通信接口与 CUDA eager 执行。使用已下载的 Qwen2.5-0.5B-Instruct，三步共 48 条真实 GSM8K rollout。输出路径须不存在。
+单卡 GRPO 启动器通过参数选择设备，比较 worker 与 `nvidia-smi` 记录的 UUID，并设置回环通信接口与 CUDA eager 执行。配置使用仓库相对模型路径；运行前须准备 Qwen2.5-0.5B-Instruct，输出目录须不存在。历史验证三步共生成 48 条真实 GSM8K rollout。
 
 ```bash
-.venv/bin/python scripts/run_grpo_gpu_check.py --output runs/verl-grpo-gpu1-repeat
-.venv/bin/python scripts/verify_grpo_gpu.py runs/verl-grpo-gpu1-repeat \
-  --report reports/verl-grpo-gpu1-repeat-verification.json
+.venv/bin/python scripts/run_grpo_gpu_check.py --gpu-index 0 --output runs/verl-grpo-gpu-repeat
+.venv/bin/python scripts/verify_grpo_gpu.py runs/verl-grpo-gpu-repeat \
+  --report reports/verl-grpo-gpu-repeat-verification.json
 ```
 
-运行配置为 `01-grpo/verify-gpu1.yaml`。`CUDA_VISIBLE_DEVICES=1` 映射成进程内 `cuda:0`；本机 vLLM 0.12 的设备解析要求数字索引。`TORCHDYNAMO_DISABLE=1` 避免其 logprob 辅助函数触发本机不可用的编译工具链，不影响实际 CUDA 采样和优化器更新。详细证据与适用范围见 [GPU 验证记录](GRPO_GPU_VALIDATION.md)。
+运行配置为 `01-grpo/verify-gpu.yaml`。`--gpu-index` 通过 `CUDA_VISIBLE_DEVICES` 将所选物理设备映射成进程内 `cuda:0`；vLLM 0.12 的设备解析要求数字索引。`TORCHDYNAMO_DISABLE=1` 避免 logprob 辅助函数依赖额外的主机编译工具链，不影响实际 CUDA 采样和优化器更新。详细证据与适用范围见 [GPU 验证记录](GRPO_GPU_VALIDATION.md)。
 
 下列命令用于后续实验，本次未执行。先确认模型权重存在、卡数与显存满足模型/teacher/critic 配置，再按可用设备调整 worker 数和模型路径。
 
@@ -131,8 +132,9 @@ TEMPO 的修正为 `exp(sum(log π_current − log π_behavior))`，求和只覆
   --model models/Qwen--Qwen2.5-0.5B-Instruct --verl-workers 2 --steps 20
 
 # 多节点要求已经由用户准备好的 Ray 集群、共享项目/数据/模型路径和一致环境
+RAY_ADDRESS="ray://ray-head.example.com:10001"
 .venv/bin/arl train 09-tempo/verl-gpu.yaml \
-  --verl-workers 8 --verl-nodes 2 --ray-address <Ray集群地址>
+  --verl-workers 8 --verl-nodes 2 --ray-address "$RAY_ADDRESS"
 ```
 
 verl_workers 是总训练 rank 数，须能被 verl_nodes 整除；rollout_tensor_parallel_size 还需适配 worker 拓扑。默认在本机创建独立 Ray 会话，只清理本次创建的 worker/placement group；使用显式 Ray 地址时不关闭共享集群。CPU 不请求 GPU 资源。

@@ -1,12 +1,12 @@
 Using CPython 3.12.3 interpreter at: .venv/bin/python
 Creating virtual environment at: .venv-verl
 Resolved 178 packages in 10.39s
-   Building verl @ file:///data/xionglei-extract/agentic-rl-lab/references/verl
-   Building agentic-rl-lab-local @ file:///data/xionglei-extract/agentic-rl-lab
+   Building verl @ file://${PROJECT_ROOT}/references/verl
+   Building agentic-rl-lab-local @ file://${PROJECT_ROOT}
    Building antlr4-python3-runtime==4.9.3
-      Built verl @ file:///data/xionglei-extract/agentic-rl-lab/references/verl
+      Built verl @ file://${PROJECT_ROOT}/references/verl
       Built antlr4-python3-runtime==4.9.3
-      Built agentic-rl-lab-local @ file:///data/xionglei-extract/agentic-rl-lab
+      Built agentic-rl-lab-local @ file://${PROJECT_ROOT}
 Downloading virtualenv (5.1MiB)
 Downloading spacy (6.2MiB)
 Downloading blis (9.7MiB)
@@ -26,7 +26,7 @@ warning: Failed to hardlink files; falling back to full copy. This may lead to d
 Installed 177 packages in 4.01s
  + absl-py==2.5.0
  + accelerate==1.12.0
- + agentic-rl-lab-local==0.1.0 (from file:///data/xionglei-extract/agentic-rl-lab)
+ + agentic-rl-lab-local==0.1.0 (from file://${PROJECT_ROOT})
  + aiohappyeyeballs==2.7.1
  + aiohttp==3.14.3
  + aiohttp-cors==0.8.1
@@ -189,7 +189,7 @@ Installed 177 packages in 4.01s
  + typing-inspection==0.4.4
  + tzdata==2026.3
  + urllib3==2.7.0
- + verl==0.7.1 (from file:///data/xionglei-extract/agentic-rl-lab/references/verl)
+ + verl==0.7.1 (from file://${PROJECT_ROOT}/references/verl)
  + virtualenv==21.7.9
  + wandb==0.30.0
  + wasabi==1.1.3

@@ -1,6 +1,6 @@
 absl-py==2.5.0
 accelerate==1.12.0
--e file:///data/xionglei-extract/agentic-rl-lab
+-e file://${PROJECT_ROOT}
 aiohappyeyeballs==2.7.1
 aiohttp==3.14.3
 aiosignal==1.4.0

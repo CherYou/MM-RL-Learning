@@ -154,7 +154,7 @@ def alfworld(download=False):
                 "prompt": g.id,
                 "answer": "success",
                 "split": g.split,
-                "game_file": str(g.game_file.relative_to(ROOT)),
+                "game_file": g.game_file.relative_to(ROOT).as_posix(),
                 "task_type": g.task_type,
             }
             for g in games

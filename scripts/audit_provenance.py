@@ -34,13 +34,15 @@ def tokens(path):
     }
     return [
         (item.string, item.start[0])
-        for item in tokenize.generate_tokens(io.StringIO(path.read_text()).readline)
+        for item in tokenize.generate_tokens(
+            io.StringIO(path.read_text(encoding="utf-8")).readline
+        )
         if item.type not in ignored
     ]
 
 
 def own_files():
-    chapters = json.loads((ROOT / "configs/chapters.json").read_text())
+    chapters = json.loads((ROOT / "configs/chapters.json").read_text(encoding="utf-8"))
     directories = [ROOT / name for name in ("src", "scripts", "tests", "environments")]
     directories += [ROOT / row["chapter"] for row in chapters]
     return sorted(
@@ -67,7 +69,9 @@ def main():
         inventory.append(
             {
                 "file": relative,
-                "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                "sha256": hashlib.sha256(
+                    path.read_text(encoding="utf-8").encode("utf-8")
+                ).hexdigest(),
                 "language": path.suffix,
                 "historical_port": relative in ACKNOWLEDGED,
             }
@@ -95,20 +99,23 @@ def main():
                         }
                     )
     # Paragraph comparison deliberately skips equations and short shared terminology.
-    originals = {path: path.read_text(errors="replace") for path in REFERENCE.rglob("*.md")}
+    originals = {
+        path: path.read_text(encoding="utf-8", errors="replace")
+        for path in REFERENCE.rglob("*.md")
+    }
     text_matches = []
     guides = sorted(ROOT.glob("*/TUTORIAL.md")) + sorted(ROOT.glob("*/*/TUTORIAL.md"))
     guides += [ROOT / "preliminary/FOUNDATIONS.md"]
     for guide in guides:
-        for paragraph in guide.read_text().split("\n\n"):
+        for paragraph in guide.read_text(encoding="utf-8").split("\n\n"):
             if sum("\u4e00" <= char <= "\u9fff" for char in paragraph) < 50:
                 continue
             for source, content in originals.items():
                 if paragraph in content:
                     text_matches.append(
                         {
-                            "file": str(guide.relative_to(ROOT)),
-                            "reference": str(source.relative_to(ROOT)),
+                            "file": guide.relative_to(ROOT).as_posix(),
+                            "reference": source.relative_to(ROOT).as_posix(),
                             "paragraph": paragraph,
                         }
                     )
@@ -127,7 +134,9 @@ def main():
         ],
     }
     target = ROOT / "reports/code-provenance-audit.json"
-    target.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+    target.write_text(
+        json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
     print(
         json.dumps(
             {

@@ -1,3 +1,3 @@
 {"step": 0, "elapsed_seconds": 0.22242237720638514, "sampling/attempts": 1.0, "sampling/degenerate_groups": 0.0, "reward/mean": 2.5, "policy/ratio": 1.0, "policy/clip_fraction": 0.0, "policy/kl": 0.0, "loss/total": -2.9802322387695312e-08, "tokens/trainable": 92.0, "update/grad_norm": 1.9691518545150757, "update/skipped": 0.0, "time/elapsed_seconds": 0.22237060870975256}
 {"step": 1, "elapsed_seconds": 0.48959582205861807, "sampling/attempts": 1.0, "sampling/degenerate_groups": 0.0, "reward/mean": 4.0, "policy/ratio": 1.0, "policy/clip_fraction": 0.0, "policy/kl": 0.0, "loss/total": -8.940696716308594e-08, "tokens/trainable": 96.0, "update/grad_norm": 1.9393506050109863, "update/skipped": 0.0, "time/elapsed_seconds": 0.4895300269126892}
-Saved run: /data/xionglei-extract/agentic-rl-lab/runs/cpu-audit-20260909-193056/retool
+Saved run: ${PROJECT_ROOT}/runs/cpu-audit-20260909-193056/retool

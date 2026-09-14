@@ -1,6 +1,6 @@
 # 验证范围与实验记录
 
-初始原生/TRL/verl 批量检查使用 CPU；对应两个环境安装 `torch==2.9.1+cpu`，`torch.version.cuda` 为 `None`，smoke 设置 `CUDA_VISIBLE_DEVICES=''`、`ACCELERATE_USE_CPU=true`、`HF_HUB_OFFLINE=1`。2026-09-10 按用户指定新增物理 1 号 GPU 的 verl GRPO 验证，使用独立 CUDA 环境。两阶段证据分别记录，不请求远程训练服务。
+初始原生/TRL/verl 批量检查使用 CPU；对应两个环境安装 `torch==2.9.1+cpu`，`torch.version.cuda` 为 `None`，smoke 设置 `CUDA_VISIBLE_DEVICES=''`、`ACCELERATE_USE_CPU=true`、`HF_HUB_OFFLINE=1`。2026-09-10 另在指定单卡上完成 verl GRPO 验证，使用独立 CUDA 环境。两阶段证据分别记录，不请求远程训练服务；当前重跑入口通过参数选择本机 GPU。
 
 ## 哪些证据能证明什么
 
@@ -58,7 +58,7 @@
 - [详细运行记录](GRPO_GPU_VALIDATION.md)：A100-SXM4-40GB、Qwen2.5-0.5B-Instruct、真实 GSM8K，48 条 rollout、三步非零梯度更新。Actor 发生变化、reference 保持冻结；单 rank FSDP1 自动使用 NO_SHARD。
 - [核对报告](../reports/verl-grpo-gpu1-verification.json)：22 项通过，包括 19 项训练检查及 checkpoint CUDA 重载、独立 eval 奖励重算、tokenizer 保存前后一致性。
 - [GPU 监测](../reports/verl-grpo-gpu1-20260910-a6-monitor.json)：实际进程退出码 0、耗时 185.51 秒、采样显存峰值 19,604 MiB；worker UUID 与物理 GPU 1 相符。
-- [checkpoint 评估](../runs/verl-grpo-gpu1-20260910-a6/evaluation/summary.json)：同一卡重载，独立 eval 子集答对 2/4。未运行训练前对照，不能据此推断能力提升。
+- checkpoint 重载评估结果已汇总进[核对报告](../reports/verl-grpo-gpu1-verification.json)：独立 eval 子集答对 2/4。未运行训练前对照，不能据此推断能力提升；`runs/` 产物未随公开仓库发布。
 - [相关机制回归](../reports/verl-gpu-regression-tests.log)：23 项通过，覆盖异步事件循环、replica 初始 sleep、真实 RolloutConfig schema 转换及既有 verl 机制。
 
 `reports/verl-completion-audit.json` 保留初始 CPU 接入阶段的历史范围；新 GPU 结论以本节报告为准。GPU 优化器状态已经保存，但本次未执行其续训恢复验证。

@@ -12,8 +12,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
-    chapters = json.loads((ROOT / "configs/chapters.json").read_text())
-    assets = json.loads((ROOT / "docs/assets/algorithms/manifest.json").read_text())["assets"]
+    chapters = json.loads((ROOT / "configs/chapters.json").read_text(encoding="utf-8"))
+    assets = json.loads(
+        (ROOT / "docs/assets/algorithms/manifest.json").read_text(encoding="utf-8")
+    )["assets"]
     checks, inventory = {}, []
     checks["twenty_chapters"] = len(chapters) == 20
     checks["intro_ppo_dpo_order"] = [row["chapter"] for row in chapters[:3]] == [
@@ -25,7 +27,7 @@ def main():
         not (ROOT / name).exists() for name in ("00-loss-function", "10-ppo", "11-dpo")
     )
     checks["twenty_generated_assets"] = len(assets) == 20 and len({row["sha256"] for row in assets}) == 20
-    root_readme = (ROOT / "README.md").read_text()
+    root_readme = (ROOT / "README.md").read_text(encoding="utf-8")
     checks["thanks_at_start"] = root_readme.index("## 参考与感谢") < root_readme.index("## 这套课程包含什么")
     checks["worklogs_removed"] = all(
         not (ROOT / path).exists()
@@ -36,10 +38,12 @@ def main():
     for row in chapters:
         folder = ROOT / row["chapter"]
         tutorial = folder / "TUTORIAL.md"
-        text = tutorial.read_text()
+        text = tutorial.read_text(encoding="utf-8")
         documents.extend([tutorial, folder / "README.md"])
         prefix = row["chapter"] + "/"
-        checks[prefix + "entry_link"] = "TUTORIAL.md" in (folder / "README.md").read_text()
+        checks[prefix + "entry_link"] = "TUTORIAL.md" in (folder / "README.md").read_text(
+            encoding="utf-8"
+        )
         checks[prefix + "math_and_code"] = (
             text.count("$$") >= 2
             and text.count("$$") % 2 == 0
@@ -52,27 +56,30 @@ def main():
             len(images) == 1 and str((folder / images[0]).resolve()) in asset_files
         )
         checks[prefix + "repo_links_consolidated"] = all(
-            "https://github.com/" not in doc.read_text() and "references/upstream" not in doc.read_text()
+            "https://github.com/" not in doc.read_text(encoding="utf-8")
+            and "references/upstream" not in doc.read_text(encoding="utf-8")
             for doc in folder.glob("*.md")
         )
         inventory.append(
             {
                 "chapter": row["chapter"],
-                "tutorial_sha256": hashlib.sha256(tutorial.read_bytes()).hexdigest(),
+                "tutorial_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
                 "characters": len(text),
                 "image": images,
             }
         )
     broken = []
     for document in documents:
-        for link in re.findall(r"\[[^\]]*\]\(([^)]+)\)", document.read_text()):
+        for link in re.findall(
+            r"\[[^\]]*\]\(([^)]+)\)", document.read_text(encoding="utf-8")
+        ):
             link = link.strip("<>").split("#", 1)[0]
             if (
                 link
                 and not link.startswith(("http:", "https:", "mailto:"))
                 and not (document.parent / link).exists()
             ):
-                broken.append([str(document.relative_to(ROOT)), link])
+                broken.append([document.relative_to(ROOT).as_posix(), link])
     checks["local_links_resolve"] = not broken
     for row in assets:
         path = ROOT / "docs/assets/algorithms" / row["file"]

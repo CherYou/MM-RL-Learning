@@ -7,7 +7,7 @@ import os
 from pathlib import Path
 import time
 import yaml
-from .data import ROOT
+from .data import ROOT, report_path
 
 DEFAULTS = {
     "model": "tiny",
@@ -99,7 +99,7 @@ def train(config):
         from .embodied.runner import train as train_embodied
 
         result = train_embodied(config)
-        print(f"Saved run: {result}")
+        print(f"Saved run: {report_path(result)}")
         return result
     if config["backend"] == "verl":
         from .verl_backend import needs_environment_switch, run_verl
@@ -152,7 +152,7 @@ def train(config):
         result = run_trl(config)
     else:
         result = run_native(config)
-    print(f"Saved run: {result}")
+    print(f"Saved run: {report_path(result)}")
     return result
 
 

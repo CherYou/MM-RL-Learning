@@ -1,18 +1,18 @@
 Traceback (most recent call last):
-  File "/data/xionglei-extract/agentic-rl-lab/09-tempo/train.py", line 10, in <module>
+  File "${PROJECT_ROOT}/09-tempo/train.py", line 10, in <module>
     main(["train", "09-tempo/config.yaml", *sys.argv[1:]])
-  File "/data/xionglei-extract/agentic-rl-lab/src/agentic_rl/cli.py", line 215, in main
+  File "${PROJECT_ROOT}/src/agentic_rl/cli.py", line 215, in main
     train(config)
-  File "/data/xionglei-extract/agentic-rl-lab/src/agentic_rl/cli.py", line 115, in train
+  File "${PROJECT_ROOT}/src/agentic_rl/cli.py", line 115, in train
     result = run_verl(config)
              ^^^^^^^^^^^^^^^^
-  File "/data/xionglei-extract/agentic-rl-lab/src/agentic_rl/verl_backend/__init__.py", line 35, in run_verl
+  File "${PROJECT_ROOT}/src/agentic_rl/verl_backend/__init__.py", line 35, in run_verl
     return run(config)
            ^^^^^^^^^^^
-  File "/data/xionglei-extract/agentic-rl-lab/src/agentic_rl/verl_backend/trainer.py", line 37, in run
+  File "${PROJECT_ROOT}/src/agentic_rl/verl_backend/trainer.py", line 37, in run
     runtime = WorkerRuntime(config)
               ^^^^^^^^^^^^^^^^^^^^^
-  File "/data/xionglei-extract/agentic-rl-lab/src/agentic_rl/verl_backend/runtime.py", line 29, in __init__
+  File "${PROJECT_ROOT}/src/agentic_rl/verl_backend/runtime.py", line 29, in __init__
     *os.environ.get("NO_PROXY", "").split(","),
      ^^
 NameError: name 'os' is not defined. Did you forget to import 'os'?

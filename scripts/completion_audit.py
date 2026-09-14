@@ -9,6 +9,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import tempfile
 from datetime import datetime, timezone
 
 from agentic_rl.data import ROOT, read_jsonl
@@ -139,7 +140,7 @@ def main():
         for file in ["train.py", "eval.py", "prepare_data.py"]:
             subprocess.run(
                 [sys.executable, str(ROOT / c["chapter"] / file), "--help"],
-                cwd="/tmp",
+                cwd=tempfile.gettempdir(),
                 check=True,
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.PIPE,

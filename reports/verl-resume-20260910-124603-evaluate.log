@@ -1,6 +1,6 @@
 `torch_dtype` is deprecated! Use `dtype` instead!
 {
-  "checkpoint": "/data/xionglei-extract/agentic-rl-lab/runs/verl-resume-20260910-124603-tempo-continued/checkpoint-final/model",
+  "checkpoint": "${PROJECT_ROOT}/runs/verl-resume-20260910-124603-tempo-continued/checkpoint-final/model",
   "dataset": "data/fixtures/eval.jsonl",
   "rows": 1,
   "score": 0.0,

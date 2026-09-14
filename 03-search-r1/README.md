@@ -6,7 +6,7 @@
 
 ## 本地实现
 
-模型生成 <search>query</search>，本地 BM25 返回真实公开文档片段，模型继续生成，最后用 <answer>回答</answer> 结束。训练时仍按同题多轨迹计算组内优势。
+模型生成 `<search>query</search>`，本地 BM25 返回真实公开文档片段，模型继续生成，最后用 `<answer>回答</answer>` 结束。训练时仍按同题多轨迹计算组内优势。
 
 最关键的工程约束是 token 前缀：只追加模型实际生成的 IDs，工具输出编码后追加为 observation；不重渲染旧历史。模型自己的 token mask=1，检索返回内容和模板 mask=0。否则模型会被训练去模仿检索系统的文档。
 
@@ -15,13 +15,14 @@
 ## 从代码入口开始
 
 ```bash
-cd /data/xionglei-extract/agentic-rl-lab
+# 从仓库根目录运行
 source .venv/bin/activate
 python 03-search-r1/train.py --smoke
 # 正式学习配置（CPU 默认；较大模型可能较慢）
 python 03-search-r1/train.py
-# 每次运行自动生成唯一 runs/ 子目录，替换下方实际路径
-python 03-search-r1/eval.py --checkpoint runs/<本次实验>/checkpoint-final --limit 32
+# 每次运行自动生成唯一 runs/ 子目录；把 RUN_NAME 改为终端输出的目录名
+RUN_DIR="runs/RUN_NAME"
+python 03-search-r1/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
 ```
 
 本章 `config.yaml` 保存实验配置，`train.py`、`eval.py` 是直接可运行入口。共用实现见 `rollout.py / environments.py / losses.py`，位于 `../src/agentic_rl/`；薄入口让修复 token 对齐、设备或日志问题时可以统一维护各章训练逻辑。

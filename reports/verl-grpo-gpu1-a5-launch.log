@@ -1,6 +1,6 @@
 {
   "command": [
-    "/data/xionglei-extract/agentic-rl-lab/.venv-verl-gpu/bin/arl",
+    "${PROJECT_ROOT}/.venv-verl-gpu/bin/arl",
     "train",
     "01-grpo/verify-gpu1.yaml",
     "--output",

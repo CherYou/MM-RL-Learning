@@ -1,9 +1,9 @@
-   Building agentic-rl-lab-local @ file:///data/xionglei-extract/agentic-rl-lab
-      Built agentic-rl-lab-local @ file:///data/xionglei-extract/agentic-rl-lab
+   Building agentic-rl-lab-local @ file://${PROJECT_ROOT}
+      Built agentic-rl-lab-local @ file://${PROJECT_ROOT}
 Prepared 2 packages in 1.01s
 Uninstalled 5 packages in 36ms
 Installed 3 packages in 73ms
- ~ agentic-rl-lab-local==0.1.0 (from file:///data/xionglei-extract/agentic-rl-lab)
+ ~ agentic-rl-lab-local==0.1.0 (from file://${PROJECT_ROOT})
  - beautifulsoup4==4.15.0
  - filelock==3.32.3
  + filelock==3.32.6

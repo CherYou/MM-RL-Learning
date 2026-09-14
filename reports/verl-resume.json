@@ -4,7 +4,7 @@
   "commands": [
     {
       "command": [
-        "/data/xionglei-extract/agentic-rl-lab/.venv/bin/arl",
+        "${PROJECT_ROOT}/.venv/bin/arl",
         "train",
         "09-tempo/config.yaml",
         "--smoke",
@@ -18,7 +18,7 @@
     },
     {
       "command": [
-        "/data/xionglei-extract/agentic-rl-lab/.venv/bin/arl",
+        "${PROJECT_ROOT}/.venv/bin/arl",
         "train",
         "09-tempo/config.yaml",
         "--smoke",
@@ -36,7 +36,7 @@
     },
     {
       "command": [
-        "/data/xionglei-extract/agentic-rl-lab/.venv/bin/arl",
+        "${PROJECT_ROOT}/.venv/bin/arl",
         "eval",
         "09-tempo/config.yaml",
         "--smoke",
@@ -50,7 +50,7 @@
     },
     {
       "command": [
-        "/data/xionglei-extract/agentic-rl-lab/.venv/bin/arl",
+        "${PROJECT_ROOT}/.venv/bin/arl",
         "train",
         "02-opd/config.yaml",
         "--smoke",

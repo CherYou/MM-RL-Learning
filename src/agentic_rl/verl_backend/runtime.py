@@ -2,6 +2,7 @@
 
 import uuid
 import os
+import tempfile
 from collections import OrderedDict
 import torch
 import ray
@@ -57,7 +58,9 @@ class WorkerRuntime:
                         "num_cpus": max(4, self.world_size * 2),
                         "num_gpus": 0 if cpu else self.world_size,
                         "object_store_memory": 128 * 1024**2,
-                        "_temp_dir": "/tmp/arl-verl-" + uuid.uuid4().hex[:8],
+                        "_temp_dir": os.path.join(
+                            tempfile.gettempdir(), "arl-verl-" + uuid.uuid4().hex[:8]
+                        ),
                         "_node_ip_address": "127.0.0.1",
                         "include_dashboard": False,
                     }

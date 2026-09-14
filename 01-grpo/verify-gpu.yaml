@@ -1,10 +1,9 @@
-# Functional GPU validation on physical GPU 1. Launch with CUDA_DEVICE_ORDER=PCI_BUS_ID
-# CUDA_VISIBLE_DEVICES=1. vLLM 0.12 requires numeric indices; the worker checks UUID.
+# Functional single-GPU validation. Select the physical device with
+# scripts/run_grpo_gpu_check.py --gpu-index; the process sees it as cuda:0.
 algorithm: grpo
 backend: verl
-model: /data/xionglei-extract/agentic-rl-lab/models/Qwen--Qwen2.5-0.5B-Instruct
+model: models/Qwen--Qwen2.5-0.5B-Instruct
 device: cuda
-expected_gpu_uuid: GPU-c063cb89-5e7c-1228-b9d4-6bef4945b171
 dataset: data/gsm8k/train.jsonl
 eval_dataset: data/gsm8k/eval.jsonl
 reward: math

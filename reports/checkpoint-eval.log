@@ -1,6 +1,6 @@
 `torch_dtype` is deprecated! Use `dtype` instead!
 {
-  "checkpoint": "/data/xionglei-extract/agentic-rl-lab/runs/cpu-audit-20260909-193056/grpo/checkpoint-final/model",
+  "checkpoint": "${PROJECT_ROOT}/runs/cpu-audit-20260909-193056/grpo/checkpoint-final/model",
   "dataset": "data/fixtures/eval.jsonl",
   "rows": 3,
   "score": 0.0,

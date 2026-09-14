@@ -4,6 +4,7 @@ from collections import Counter
 import ast
 import json
 import math
+import os
 import re
 import subprocess
 import sys
@@ -175,7 +176,7 @@ def python_tool(code, timeout=3):
                     stdout=output,
                     stderr=subprocess.STDOUT,
                     cwd=cwd,
-                    env={"PATH": "/usr/bin:/bin"},
+                    env={"PATH": os.defpath},
                     timeout=timeout,
                     preexec_fn=_limits,
                 )

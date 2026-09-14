@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "run": "/data/xionglei-extract/agentic-rl-lab/runs/verl-real-alfworld-20260910-125324",
+  "run": "${PROJECT_ROOT}/runs/verl-real-alfworld-20260910-125324",
   "device": "cpu",
   "verl_workers": 2,
   "environment": "alfworld",

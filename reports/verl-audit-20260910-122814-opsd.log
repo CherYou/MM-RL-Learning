@@ -1,4 +1,4 @@
 2026-09-10 12:30:26,081	INFO worker.py:1951 -- Started a local Ray instance.
 {"step": 0, "elapsed_seconds": 32.10294850729406, "sampling/attempts": 1.0, "sampling/degenerate_groups": 0.0, "reward/mean": 2.0, "distill/sampled_reverse_kl": 0.0417323000729084, "policy/ratio": 1.0, "policy/clip_fraction": 0.0, "policy/kl": 0.0, "update/grad_norm": 0.3809918463230133, "update/skipped": 0.0, "loss/total": 0.04173230053856969, "tokens/trainable": 24.0, "verl/optimizer_steps": 1.0, "verl/policy_version": 1.0, "time/elapsed_seconds": 32.10292636603117}
 {"step": 1, "elapsed_seconds": 32.23145761992782, "sampling/attempts": 1.0, "sampling/degenerate_groups": 0.0, "reward/mean": 1.5, "distill/sampled_reverse_kl": 0.007011073175817728, "policy/ratio": 1.0, "policy/clip_fraction": 0.0, "policy/kl": 0.0, "update/grad_norm": 0.5124906301498413, "update/skipped": 0.0, "loss/total": 0.007011072244495153, "tokens/trainable": 14.0, "verl/optimizer_steps": 1.0, "verl/policy_version": 2.0, "time/elapsed_seconds": 32.23144216090441}
-Saved run: /data/xionglei-extract/agentic-rl-lab/runs/verl-audit-20260910-122814-opsd
+Saved run: ${PROJECT_ROOT}/runs/verl-audit-20260910-122814-opsd

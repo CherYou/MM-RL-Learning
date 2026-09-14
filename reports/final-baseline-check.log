@@ -2,8 +2,8 @@ CUDA_VISIBLE_DEVICES='' HF_HUB_OFFLINE=1 .venv/bin/python -m pytest -q
 .........................                                                [100%]
 =============================== warnings summary ===============================
 tests/test_mechanisms.py::test_dpo_moves_chosen_up_rejected_down
-  /data/xionglei-extract/agentic-rl-lab/tests/test_mechanisms.py:97: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
-  Consider using tensor.detach() first. (Triggered internally at /pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:836.)
+  ${PROJECT_ROOT}/tests/test_mechanisms.py:97: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+  Consider using tensor.detach() first. (Triggered internally at ${PYTORCH_SOURCE}/torch/csrc/autograd/generated/python_variable_methods.cpp:836.)
     assert float(loss) == pytest.approx(math.log(2))
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html

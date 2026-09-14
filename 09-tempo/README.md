@@ -6,7 +6,7 @@
 
 ## 本地实现
 
-把长任务切成 H 个交互步的 macro-step。同一个起点恢复多份独立环境，分别执行分支。终局分支 future value=0；非终局边界通过同一个语言模型生成 <value>成功概率</value>，估计未来回报。
+把长任务切成 H 个交互步的 macro-step。同一个起点恢复多份独立环境，分别执行分支。终局分支 future value=0；非终局边界通过同一个语言模型生成 `<value>成功概率</value>`，估计未来回报。
 
 actor return=段内 reward+终点 value；TD target G 是同起点各分支 return 的均值。actor advantage 做组内中心化；critic 生成的 value 按 −abs(value−G) 奖励，也做组内中心化。两种样本共同更新同一套参数，不额外训练线性 value head。
 
@@ -15,13 +15,14 @@ StateStore 保存边界 token 前缀、动作和环境观察。下一轮恢复�
 ## 从代码入口开始
 
 ```bash
-cd /data/xionglei-extract/agentic-rl-lab
+# 从仓库根目录运行
 source .venv/bin/activate
 python 09-tempo/train.py --smoke
 # 正式学习配置（CPU 默认；较大模型可能较慢）
 python 09-tempo/train.py
-# 每次运行自动生成唯一 runs/ 子目录，替换下方实际路径
-python 09-tempo/eval.py --checkpoint runs/<本次实验>/checkpoint-final --limit 32
+# 每次运行自动生成唯一 runs/ 子目录；把 RUN_NAME 改为终端输出的目录名
+RUN_DIR="runs/RUN_NAME"
+python 09-tempo/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
 ```
 
 本章 `config.yaml` 保存实验配置，`train.py`、`eval.py` 是直接可运行入口。共用实现见 `tempo.py / rollout.py`，位于 `../src/agentic_rl/`；薄入口让修复 token 对齐、设备或日志问题时可以统一维护各章训练逻辑。

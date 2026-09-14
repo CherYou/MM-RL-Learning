@@ -10,4 +10,4 @@
 {'loss': 0.6926, 'grad_norm': 2.5336127281188965, 'learning_rate': 2.5e-06, 'rewards/chosen': 0.0002944946463685483, 'rewards/rejected': -0.000759124755859375, 'rewards/accuracies': 1.0, 'rewards/margins': 0.0010536194313317537, 'logps/chosen': -66.48579406738281, 'logps/rejected': -67.04344940185547, 'logits/chosen': 0.001407848671078682, 'logits/rejected': -8.396353223361075e-05, 'epoch': 0.0625}
 {"step": 2, "elapsed_seconds": 0.2973394514992833, "train_runtime": 0.032, "train_samples_per_second": 62.455, "train_steps_per_second": 62.455, "total_flos": 0.0, "train_loss": 0.6928838491439819, "epoch": 0.0625}
 {'train_runtime': 0.032, 'train_samples_per_second': 62.455, 'train_steps_per_second': 62.455, 'train_loss': 0.6928838491439819, 'epoch': 0.0625}
-Saved run: /data/xionglei-extract/agentic-rl-lab/runs/cpu-audit-20260909-195147/dpo
+Saved run: ${PROJECT_ROOT}/runs/cpu-audit-20260909-195147/dpo

@@ -15,13 +15,14 @@ completion logprob 先在有效回答 token 上求和，prompt/pad 不参与比�
 ## 从代码入口开始
 
 ```bash
-cd /data/xionglei-extract/agentic-rl-lab
+# 从仓库根目录运行
 source .venv/bin/activate
 python 002-dpo/train.py --smoke
 # 正式学习配置（CPU 默认；较大模型可能较慢）
 python 002-dpo/train.py
-# 每次运行自动生成唯一 runs/ 子目录，替换下方实际路径
-python 002-dpo/eval.py --checkpoint runs/<本次实验>/checkpoint-final --limit 32
+# 每次运行自动生成唯一 runs/ 子目录；把 RUN_NAME 改为终端输出的目录名
+RUN_DIR="runs/RUN_NAME"
+python 002-dpo/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
 ```
 
 本章 `config.yaml` 保存实验配置，`train.py`、`eval.py` 是直接可运行入口。共用实现见 `trl_backend.py / trainers.py / losses.py`，位于 `../src/agentic_rl/`；薄入口让修复 token 对齐、设备或日志问题时可以统一维护各章训练逻辑。

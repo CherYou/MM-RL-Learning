@@ -1,6 +1,6 @@
 Using CPython 3.12.3 interpreter at: .venv/bin/python
 Creating virtual environment at: .venv-verl-gpu
-   Building agentic-rl-lab-local @ file:///data/xionglei-extract/agentic-rl-lab
+   Building agentic-rl-lab-local @ file://${PROJECT_ROOT}
 Downloading torchaudio (1.8MiB)
 Downloading openai (1.7MiB)
 Downloading setuptools (1.0MiB)
@@ -39,7 +39,7 @@ Downloading torchvision (8.7MiB)
  Downloaded torchaudio
 Downloading torch (1.2GiB)
  Downloaded torchvision
-      Built agentic-rl-lab-local @ file:///data/xionglei-extract/agentic-rl-lab
+      Built agentic-rl-lab-local @ file://${PROJECT_ROOT}
  Downloaded setuptools
  Downloaded nvidia-cutlass-dsl-libs-core
  Downloaded nvidia-cufile-cu12
@@ -82,7 +82,7 @@ Installed 275 packages in 9.58s
  + absl-py==2.5.0
  + accelerate==1.12.0
  + agent-detector==2.0.0
- + agentic-rl-lab-local==0.1.0 (from file:///data/xionglei-extract/agentic-rl-lab)
+ + agentic-rl-lab-local==0.1.0 (from file://${PROJECT_ROOT})
  + aiohappyeyeballs==2.7.1
  + aiohttp==3.14.3
  + aiohttp-cors==0.8.1
@@ -338,7 +338,7 @@ Installed 275 packages in 9.58s
  + urllib3==2.7.0
  + uvicorn==0.52.4
  + uvloop==0.22.1
- + verl==0.7.1 (from file:///data/xionglei-extract/agentic-rl-lab/references/verl)
+ + verl==0.7.1 (from file://${PROJECT_ROOT}/references/verl)
  + virtualenv==21.7.9
  + vllm==0.12.0
  + wandb==0.30.0

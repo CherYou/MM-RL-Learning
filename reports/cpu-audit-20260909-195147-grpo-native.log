@@ -1,3 +1,3 @@
 {"step": 0, "elapsed_seconds": 0.10507076978683472, "sampling/attempts": 1.0, "sampling/degenerate_groups": 0.0, "reward/mean": 1.0, "policy/ratio": 1.0, "policy/clip_fraction": 0.0, "policy/kl": 0.0, "loss/total": 0.0, "tokens/trainable": 44.0, "update/grad_norm": 3.045506477355957, "update/skipped": 0.0, "time/elapsed_seconds": 0.10503214690834284}
 {"step": 1, "elapsed_seconds": 0.20157691650092602, "sampling/attempts": 1.0, "sampling/degenerate_groups": 0.0, "reward/mean": 1.5, "policy/ratio": 1.0, "policy/clip_fraction": 0.0, "policy/kl": 0.0, "loss/total": 2.9802322387695312e-08, "tokens/trainable": 48.0, "update/grad_norm": 2.8324880599975586, "update/skipped": 0.0, "time/elapsed_seconds": 0.20153984520584345}
-Saved run: /data/xionglei-extract/agentic-rl-lab/runs/cpu-audit-20260909-195147/grpo-native
+Saved run: ${PROJECT_ROOT}/runs/cpu-audit-20260909-195147/grpo-native

@@ -12,7 +12,7 @@
 {"step": 2, "elapsed_seconds": 0.26002524606883526, "train_runtime": 0.028, "train_samples_per_second": 71.395, "train_steps_per_second": 71.395, "total_flos": 42040320.0, "train_loss": 5.59150767326355, "epoch": 0.0625}
 `torch_dtype` is deprecated! Use `dtype` instead!
 {'train_runtime': 0.028, 'train_samples_per_second': 71.395, 'train_steps_per_second': 71.395, 'train_loss': 5.59150767326355, 'epoch': 0.0625}
-Saved run: /data/xionglei-extract/agentic-rl-lab/runs/medical-auto-teacher-smoke-teacher-sft
+Saved run: ${PROJECT_ROOT}/runs/medical-auto-teacher-smoke-teacher-sft
 {"step": 0, "elapsed_seconds": 0.12592380680143833, "distill/general_phase": 0.0, "sampling/attempts": 1.0, "sampling/degenerate_groups": 0.0, "reward/mean": 0.75, "distill/sampled_reverse_kl": -3.289116648375057e-05, "loss/total": -3.289116648375057e-05, "tokens/trainable": 45.0, "update/grad_norm": 0.0012629140401259065, "update/skipped": 0.0, "time/elapsed_seconds": 0.12589242681860924}
 {"step": 1, "elapsed_seconds": 0.2480928199365735, "distill/general_phase": 1.0, "sampling/attempts": 1.0, "sampling/degenerate_groups": 0.0, "reward/mean": 2.0, "distill/sampled_reverse_kl": -8.710225665709004e-05, "loss/total": -8.710225665709004e-05, "tokens/trainable": 48.0, "update/grad_norm": 0.001431801705621183, "update/skipped": 0.0, "time/elapsed_seconds": 0.24805877450853586}
-Saved run: /data/xionglei-extract/agentic-rl-lab/runs/medical-auto-teacher-smoke
+Saved run: ${PROJECT_ROOT}/runs/medical-auto-teacher-smoke

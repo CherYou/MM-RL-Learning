@@ -25,6 +25,7 @@ $$\epsilon\sim\mathcal N(0,\sigma^2I),\quad
 **双 critic 取小**构造 bootstrap 标签：
 
 $$y=r+\gamma(1-d)\min\{Q_{\bar\phi_1}(s',\tilde a'),Q_{\bar\phi_2}(s',\tilde a')\},$$
+
 $$L_Q=\mathbb E[(Q_{\phi_1}(s,a)-y)^2+(Q_{\phi_2}(s,a)-y)^2].$$
 
 $d$ 是真正终止，$\bar\phi$ 是目标网络参数。两个 critic 的结构相同但初始化独立、权重独立；如果只是同一网络调用两次，就没有双估计的意义。

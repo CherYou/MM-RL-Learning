@@ -11,4 +11,4 @@
 {'loss': 5.5854, 'grad_norm': 5.317009449005127, 'learning_rate': 2.5e-06, 'entropy': 5.545654773712158, 'num_tokens': 70.0, 'mean_token_accuracy': 0.05000000074505806, 'epoch': 0.0625}
 {"step": 2, "elapsed_seconds": 0.31775753013789654, "train_runtime": 0.0307, "train_samples_per_second": 65.067, "train_steps_per_second": 65.067, "total_flos": 42040320.0, "train_loss": 5.59150767326355, "epoch": 0.0625}
 {'train_runtime': 0.0307, 'train_samples_per_second': 65.067, 'train_steps_per_second': 65.067, 'train_loss': 5.59150767326355, 'epoch': 0.0625}
-Saved run: /data/xionglei-extract/agentic-rl-lab/runs/cpu-audit-20260909-195147/sft
+Saved run: ${PROJECT_ROOT}/runs/cpu-audit-20260909-195147/sft

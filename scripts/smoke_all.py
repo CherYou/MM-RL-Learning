@@ -46,7 +46,8 @@ def main():
         if a.only and name not in a.only:
             continue
         output = f"runs/cpu-audit-{stamp}/{name}"
-        log = ROOT / f"reports/cpu-audit-{stamp}-{name}.log"
+        log = ROOT / f"runs/.logs/cpu-audit-{stamp}-{name}.log"
+        log.parent.mkdir(parents=True, exist_ok=True)
         command = [
             sys.executable,
             "-m",
@@ -66,7 +67,11 @@ def main():
                     command, cwd=ROOT, env=env, stdout=f, stderr=subprocess.STDOUT, timeout=180
                 )
             except subprocess.TimeoutExpired:
-                report[name] = {"passed": False, "error": "180s timeout", "log": str(log)}
+                report[name] = {
+                    "passed": False,
+                    "error": "180s timeout",
+                    "log": log.relative_to(ROOT).as_posix(),
+                }
                 continue
         status = ROOT / output / "status.json"
         success = (
@@ -79,7 +84,7 @@ def main():
             "exit_code": result.returncode,
             "seconds": round(time.monotonic() - started, 2),
             "run": output,
-            "log": str(log.relative_to(ROOT)),
+            "log": log.relative_to(ROOT).as_posix(),
         }
         print(name, report[name], flush=True)
     target = ROOT / f"reports/cpu-audit-{stamp}.json"

@@ -53,7 +53,7 @@ $$d=\ell^{ref}-\ell,\qquad k=e^d-d-1.$$
 
 ## 顺着真实代码读一遍
 
-默认 [config.yaml](config.yaml) 选择 TRL；[verl.yaml](verl.yaml) 和 [verify-gpu1.yaml](verify-gpu1.yaml) 选择 verl。不要只看章节名就断言运行了哪个 Trainer。
+默认 [config.yaml](config.yaml) 选择 TRL；[verl.yaml](verl.yaml) 和 [verify-gpu.yaml](verify-gpu.yaml) 选择 verl。不要只看章节名就断言运行了哪个 Trainer。
 
 | 代码位置 | 你应该追踪的变量 |
 | --- | --- |

@@ -10,18 +10,19 @@
 
 默认入口实际实例化 TRL GRPOTrainer。原生对照入口把采样、token logprob、组内归一化和损失完全展开，适合逐行阅读。训练没有另建 critic；reference policy 仅在 beta>0 时提供 KL 约束。整组奖励相同就保持零优势，不给它人为制造排序。
 
-GSM8K 使用官方 main train/test。答案同时支持 <answer>、嵌套 boxed、####、数字等价；数学等价通过 math-verify 处理。
+GSM8K 使用官方 main train/test。答案同时支持 `<answer>`、嵌套 boxed、`####`、数字等价；数学等价通过 math-verify 处理。
 
 ## 从代码入口开始
 
 ```bash
-cd /data/xionglei-extract/agentic-rl-lab
+# 从仓库根目录运行
 source .venv/bin/activate
 python 01-grpo/train.py --smoke
 # 正式学习配置（CPU 默认；较大模型可能较慢）
 python 01-grpo/train.py
-# 每次运行自动生成唯一 runs/ 子目录，替换下方实际路径
-python 01-grpo/eval.py --checkpoint runs/<本次实验>/checkpoint-final --limit 32
+# 每次运行自动生成唯一 runs/ 子目录；把 RUN_NAME 改为终端输出的目录名
+RUN_DIR="runs/RUN_NAME"
+python 01-grpo/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
 ```
 
 本章 `config.yaml` 保存实验配置，`train.py`、`eval.py` 是直接可运行入口。共用实现见 `losses.py / trl_backend.py`，位于 `../src/agentic_rl/`；薄入口让修复 token 对齐、设备或日志问题时可以统一维护各章训练逻辑。
@@ -52,12 +53,12 @@ CPU smoke 使用随机 tiny 模型和明确标记的 debug_token 奖励，只检
 ```bash
 # 在项目根目录运行；两个实际 CPU worker
 .venv/bin/arl train 01-grpo/verl.yaml --smoke --verl-workers 2
-# 已在物理 1 号卡验证：真实 Qwen 模型、GSM8K、三步更新
-.venv/bin/python scripts/run_grpo_gpu_check.py --output runs/verl-grpo-gpu1-repeat
-.venv/bin/python scripts/verify_grpo_gpu.py runs/verl-grpo-gpu1-repeat \
-  --report reports/verl-grpo-gpu1-repeat-verification.json
+# 选择本机可用的 GPU；示例使用物理 index 0
+.venv/bin/python scripts/run_grpo_gpu_check.py --gpu-index 0 --output runs/verl-grpo-gpu-repeat
+.venv/bin/python scripts/verify_grpo_gpu.py runs/verl-grpo-gpu-repeat \
+  --report reports/verl-grpo-gpu-repeat-verification.json
 ```
 
 真实更新代码在 `src/agentic_rl/verl_backend/`，本章机制对应关系、安装和恢复方式见 [verl 指南](../docs/VERL.md)。轨迹通过 DataProto 传递，参数更新调用官方 verl actor；CPU 逐入口证据见 [verl 审计](../reports/verl-audit-latest.json)。verl 与原生均保存 token、mask、旧概率和轮次日志。
 
-GPU 验证使用 [verify-gpu1.yaml](verify-gpu1.yaml)，启动器固定 `CUDA_VISIBLE_DEVICES=1` 并由 worker 校验实际 UUID。实测 48 条 rollout、三步非零梯度、actor 参数变化且 reference 冻结；保存后在同一卡重载，独立 eval 子集答对 2/4。完整指标、运行兼容修复和单卡验证边界见 [GPU 验证记录](../docs/GRPO_GPU_VALIDATION.md)。
+GPU 验证使用 [verify-gpu.yaml](verify-gpu.yaml)。启动器通过 `--gpu-index` 选择设备，并核对 worker 与 `nvidia-smi` 监测到的 UUID 是否一致；配置文件不绑定某台机器。历史实测完成 48 条 rollout、三步非零梯度，actor 参数变化且 reference 冻结；保存后重载，独立 eval 子集答对 2/4。完整指标和单卡验证边界见 [GPU 验证记录](../docs/GRPO_GPU_VALIDATION.md)。

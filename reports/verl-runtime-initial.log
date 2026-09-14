@@ -1,8 +1,8 @@
 Initializing two real verl workers
-2026-09-10 12:11:21,287	ERROR services.py:1357 -- Failed to start the dashboard 
+2026-09-10 12:11:21,287	ERROR services.py:1357 -- Failed to start the dashboard
 2026-09-10 12:11:21,288	ERROR services.py:1382 -- Error should be written to 'dashboard.log' or 'dashboard.err'. We are printing the last 20 lines for you. See 'https://docs.ray.io/en/master/ray-observability/user-guides/configure-logging.html#logging-directory-structure' to find where the log file is.
-2026-09-10 12:11:21,288	ERROR services.py:1426 -- 
-The last 20 lines of /tmp/arl-verl-e414842c/session_2026-09-10_12-10-59_526202_1532133/logs/dashboard.log (it contains the error message from the dashboard): 
+2026-09-10 12:11:21,288	ERROR services.py:1426 --
+The last 20 lines of ${TMPDIR}/arl-verl-e414842c/session_2026-09-10_12-10-59_526202_1532133/logs/dashboard.log (it contains the error message from the dashboard):
 2026-09-10 12:11:01,967	INFO utils.py:338 -- Available modules: [<class 'ray.dashboard.modules.usage_stats.usage_stats_head.UsageStatsHead'>]
 2026-09-10 12:11:01,967	INFO head.py:235 -- DashboardHeadModules to load: {'UsageStatsHead'}.
 2026-09-10 12:11:01,967	INFO head.py:238 -- Loading DashboardHeadModule: <class 'ray.dashboard.modules.usage_stats.usage_stats_head.UsageStatsHead'>.

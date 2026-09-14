@@ -12,8 +12,8 @@
 
 语言模型的概率同时依赖权重与上下文：
 
-$$p_S(y_t)=\pi_\theta(y_t\mid x,y_{<t}),\qquad
-p_T(y_t)=\pi_{\theta_0}(y_t\mid x,z,y_{<t}),$$
+$$p_S(y_t)=\pi_\theta(y_t\mid x,y_{1:t-1}),\qquad
+p_T(y_t)=\pi_{\theta_0}(y_t\mid x,z,y_{1:t-1}),$$
 
 z 是参考 solution，$\theta_0$ 是开训时的固定权重。即使开始时 $\theta=\theta_0$，只要上下文不同，两份分布就可能不同。
 
@@ -24,8 +24,8 @@ z 是参考 solution，$\theta_0$ 是开训时的固定权重。即使开始时 
 在学生采到的 token 上：
 
 $$d_{i,t}=\operatorname{sg}\left[
-\log\pi_{old}(y_{i,t}\mid x_i,y_{i,<t})-
-\log\pi_{\theta_0}(y_{i,t}\mid x_i,z_i,y_{i,<t})\right],$$
+\log\pi_{old}(y_{i,t}\mid x_i,y_{i,1:t-1})-
+\log\pi_{\theta_0}(y_{i,t}\mid x_i,z_i,y_{i,1:t-1})\right],$$
 
 $$L_{OPSD}=\frac{\sum_{i,t}m_{i,t}
 e^{\ell_{i,t}-\ell^{old}_{i,t}}d_{i,t}}{\sum_{i,t}m_{i,t}}.$$

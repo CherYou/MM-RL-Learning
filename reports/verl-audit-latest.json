@@ -1,7 +1,7 @@
 {
   "sar-opd": {
     "command": [
-      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "${PROJECT_ROOT}/.venv-verl/bin/arl",
       "train",
       "02-opd/config.yaml",
       "--backend",
@@ -21,7 +21,7 @@
   },
   "grpo": {
     "command": [
-      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "${PROJECT_ROOT}/.venv-verl/bin/arl",
       "train",
       "01-grpo/config.yaml",
       "--backend",
@@ -41,7 +41,7 @@
   },
   "opd": {
     "command": [
-      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "${PROJECT_ROOT}/.venv-verl/bin/arl",
       "train",
       "02-opd/general-opd/config.yaml",
       "--backend",
@@ -61,7 +61,7 @@
   },
   "medical-opd": {
     "command": [
-      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "${PROJECT_ROOT}/.venv-verl/bin/arl",
       "train",
       "02-opd/medical-opd.yaml",
       "--backend",
@@ -81,7 +81,7 @@
   },
   "idt-opd": {
     "command": [
-      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "${PROJECT_ROOT}/.venv-verl/bin/arl",
       "train",
       "02-opd/idt-opd.yaml",
       "--backend",
@@ -101,7 +101,7 @@
   },
   "search-r1": {
     "command": [
-      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "${PROJECT_ROOT}/.venv-verl/bin/arl",
       "train",
       "03-search-r1/config.yaml",
       "--backend",
@@ -121,7 +121,7 @@
   },
   "opsd": {
     "command": [
-      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "${PROJECT_ROOT}/.venv-verl/bin/arl",
       "train",
       "04-opsd/config.yaml",
       "--backend",
@@ -141,7 +141,7 @@
   },
   "retool": {
     "command": [
-      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "${PROJECT_ROOT}/.venv-verl/bin/arl",
       "train",
       "05-retool/config.yaml",
       "--backend",
@@ -161,7 +161,7 @@
   },
   "dapo": {
     "command": [
-      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "${PROJECT_ROOT}/.venv-verl/bin/arl",
       "train",
       "06-dapo/config.yaml",
       "--backend",
@@ -181,7 +181,7 @@
   },
   "gspo": {
     "command": [
-      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "${PROJECT_ROOT}/.venv-verl/bin/arl",
       "train",
       "07-gspo/config.yaml",
       "--backend",
@@ -201,7 +201,7 @@
   },
   "alfworld": {
     "command": [
-      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "${PROJECT_ROOT}/.venv-verl/bin/arl",
       "train",
       "08-alfworld/config.yaml",
       "--backend",
@@ -221,7 +221,7 @@
   },
   "agentopsd": {
     "command": [
-      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "${PROJECT_ROOT}/.venv-verl/bin/arl",
       "train",
       "09-AgentOPSD/config.yaml",
       "--backend",
@@ -241,7 +241,7 @@
   },
   "tempo": {
     "command": [
-      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "${PROJECT_ROOT}/.venv-verl/bin/arl",
       "train",
       "09-tempo/config.yaml",
       "--backend",
@@ -261,7 +261,7 @@
   },
   "vision-grpo": {
     "command": [
-      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "${PROJECT_ROOT}/.venv-verl/bin/arl",
       "train",
       "09-vision-grpo/config.yaml",
       "--backend",
@@ -281,7 +281,7 @@
   },
   "ppo": {
     "command": [
-      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "${PROJECT_ROOT}/.venv-verl/bin/arl",
       "train",
       "10-ppo/config.yaml",
       "--backend",
@@ -301,7 +301,7 @@
   },
   "harness-rl": {
     "command": [
-      "/data/xionglei-extract/agentic-rl-lab/.venv-verl/bin/arl",
+      "${PROJECT_ROOT}/.venv-verl/bin/arl",
       "train",
       "12-harness-rl/config.yaml",
       "--backend",

@@ -101,7 +101,7 @@ def main():
                 and bool(list((ROOT / path).glob("trees-*.json"))),
             )
         evidence[name] = {
-            "run": str(path),
+            "run": path.as_posix(),
             "workers": len(workers),
             "parameters_changed": changed,
             "max_grad_norm": max(m.get("update/grad_norm", 0) for m in metrics),
@@ -120,7 +120,7 @@ def main():
                     row["chapter"] + "/" + mode, variant["backend"] == "verl" and variant["device"] == device
                 )
                 if device == "cuda":
-                    gpu_configs.append(str((folder / (mode + ".yaml")).relative_to(ROOT)))
+                    gpu_configs.append((folder / (mode + ".yaml")).relative_to(ROOT).as_posix())
             require(row["chapter"] + "/guide", "verl 训练路径" in (folder / "README.md").read_text())
             if row["algorithm"] not in {"grpo", "gspo", "ppo"}:
                 require(row["chapter"] + "/complex_defaults_to_verl", cfg["backend"] == "verl")

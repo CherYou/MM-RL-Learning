@@ -358,19 +358,31 @@
     },
     {
       "file": "scripts/audit_provenance.py",
-      "sha256": "9e1728bbdd56e31ea2c245fe49ddffd555267bf25afe468eebfa50804428c98d",
+      "sha256": "bb59d85aba9562eb9c0892115cd650f5267cb48083b9e61050833195dbe53a7e",
       "language": ".py",
       "historical_port": false
     },
     {
       "file": "scripts/audit_tutorials.py",
-      "sha256": "5d32ca5633df71f3ac2184a5f6d4ae287d093a5b3c5ca25daf7cd4a96495441e",
+      "sha256": "deed37c0e4e6612a17f79878f4ddbaf48e9219e05c04aaf3c2e45bb4e63d174a",
       "language": ".py",
       "historical_port": false
     },
     {
       "file": "scripts/audit_verl.py",
-      "sha256": "40c5a571d64cc4c2865e0ba9d44dfef3d7d0d083bfce9fbb6daf7d6e9f998bf8",
+      "sha256": "d6603227ab60ab7f53f53a9239c5a008c8090d4162950ff0b5631c170b9dfea9",
+      "language": ".py",
+      "historical_port": false
+    },
+    {
+      "file": "scripts/check_markdown_math.py",
+      "sha256": "e892045bd2c6abb5140181965ecb5d0357f84ecf7b111fcc864b7c94413f65b4",
+      "language": ".py",
+      "historical_port": false
+    },
+    {
+      "file": "scripts/check_portability.py",
+      "sha256": "e3508af5c977dc9041bd3853844ed592efe3a4f896abe1c9ed8dc521831a67dc",
       "language": ".py",
       "historical_port": false
     },
@@ -382,7 +394,7 @@
     },
     {
       "file": "scripts/check_verl_resume.py",
-      "sha256": "1228aaafc444945603b0e4bda5258ff2205b82453625aaf19115b8d99d55f173",
+      "sha256": "950cec9b251bc4463d430c0f710b47d57fb471c40a814d6c2658ed398be31c44",
       "language": ".py",
       "historical_port": false
     },
@@ -394,7 +406,7 @@
     },
     {
       "file": "scripts/completion_audit.py",
-      "sha256": "056cce09dc97af53f13c05d4f808506764947178fd386c860fdaf3460d660f76",
+      "sha256": "4c749e9e859a6951e9315a7e4e5145cbc34a0bcc2538d39cfe30f285e4d51015",
       "language": ".py",
       "historical_port": false
     },
@@ -406,7 +418,7 @@
     },
     {
       "file": "scripts/dashboard.py",
-      "sha256": "556db59269b7b0acba27f051af88a3d66e21532576649ae4da17ab2de5456569",
+      "sha256": "74a24da1501b42f60ca456157306694fe74a9bb37b1d8ac93598e4ad7a24f0e7",
       "language": ".py",
       "historical_port": false
     },
@@ -430,13 +442,13 @@
     },
     {
       "file": "scripts/prepare_data.py",
-      "sha256": "02c83e5a28969e601a0add4acaf1cf527a15e217f2e0edbc89cbfed12bdc06d9",
+      "sha256": "05ae6d35b99cc784b2fc665492bb3c109a6cf58111d4c925353b45ada59fce66",
       "language": ".py",
       "historical_port": false
     },
     {
       "file": "scripts/prepare_environments.py",
-      "sha256": "357d7e09bcffd02f3fba8d21c69573fe092875b1f3bc05676ad8439d60a25c8e",
+      "sha256": "da6eceadabe3c9144b117dd169e6d5bfec54cb888e8523ed95f2be288dfcc0bf",
       "language": ".py",
       "historical_port": false
     },
@@ -448,19 +460,19 @@
     },
     {
       "file": "scripts/prepare_models.py",
-      "sha256": "5f6a698da2746111cc2186ea2dd55e720dc5d822b6035135b0e70c5d8b1a78d2",
+      "sha256": "4105eccd863c2eca75f52333edcf4e2fb21882b1914a9804bc60426a491c02e9",
       "language": ".py",
       "historical_port": false
     },
     {
       "file": "scripts/run_grpo_gpu_check.py",
-      "sha256": "60fcd94b36c56c192176668fabc232811bd69f8f61981ba4afad9f42aa973714",
+      "sha256": "a4fe921e4f69de3aa9d6b239fcbda9c1e99fc73e4f6482f1b3039db008c53f5c",
       "language": ".py",
       "historical_port": false
     },
     {
       "file": "scripts/services.py",
-      "sha256": "f21e7d3d6495d0bf650bbc3bce456f243c3991c320969282322b90edc08d753b",
+      "sha256": "d497fd5b45a5231cf1aa2d9c479ce1716ecf861a9bbd9591243ccd5d0ec0366a",
       "language": ".py",
       "historical_port": false
     },
@@ -478,13 +490,13 @@
     },
     {
       "file": "scripts/smoke_all.py",
-      "sha256": "e4c11fab75827d0ab230d996a2f7cc2467dbbf3ed1bda02abc12c18bc6409d93",
+      "sha256": "fe0cbbbdfbd9e2c53ae7dbb6be75805f6e0208e3bbf6cd30ef901183dde9bb4d",
       "language": ".py",
       "historical_port": false
     },
     {
       "file": "scripts/smoke_verl.py",
-      "sha256": "86e0fe13687dc4f9a0fc336b9234baaa513706b2d64a22794087670711942ab6",
+      "sha256": "ea83d00176c4e7791c86568ef2270dc530e8c346591971924b42283863e61904",
       "language": ".py",
       "historical_port": false
     },
@@ -496,13 +508,13 @@
     },
     {
       "file": "scripts/verify_embodied.py",
-      "sha256": "48761e0df4386e387a9ef9c9e92f0454c99cafe4980325f49f9f7323e7b66cd0",
+      "sha256": "02df1c0f06d3e9f27d9d6f0a28727200c303eeb06bd66f42b58c29c522e3c5e2",
       "language": ".py",
       "historical_port": false
     },
     {
       "file": "scripts/verify_grpo_gpu.py",
-      "sha256": "4dcd541fbac199a5ddc12b5442b8ca2291b782816d4080bff4f33070594329b9",
+      "sha256": "fa38de30844900a2d9ca66cce2688a0e9363d54c29160977275d9ba55f15ce39",
       "language": ".py",
       "historical_port": false
     },
@@ -532,13 +544,13 @@
     },
     {
       "file": "src/agentic_rl/cli.py",
-      "sha256": "f71a0ab7273adfb6db014168aec49ab54f50292e504018a9501b8260bca85a56",
+      "sha256": "6db72aaf32f87513d6d95d96348728dca31167d44a978e59ac02ee4a41ca1490",
       "language": ".py",
       "historical_port": false
     },
     {
       "file": "src/agentic_rl/data.py",
-      "sha256": "27ab32eb280313a85c61799fad277eed44436e21efa80ea5da5dbbbaeb0b710f",
+      "sha256": "13162686e5107629da7cb980657551143e7742d16c39294f00ad41918e0bdb93",
       "language": ".py",
       "historical_port": false
     },
@@ -568,19 +580,19 @@
     },
     {
       "file": "src/agentic_rl/embodied/runner.py",
-      "sha256": "51c9a46a576441664dcdc7767661a8e443fe3aee575ed8c5e325202fc7b521d0",
+      "sha256": "3539d1236b00cea90442adc8e5aa3f5f345fcb8fad8b0a30a4cbbdab7e004c3f",
       "language": ".py",
       "historical_port": false
     },
     {
       "file": "src/agentic_rl/environments.py",
-      "sha256": "3ff1ddd5dc67ea6f1ff2374f4c67c9d7886f736b3a46cb5055450c2e11b8bec9",
+      "sha256": "a86546b310a9d7f38f6cee5037b26e4d8dedd8d3a7a05b7983959e24a4a84b2c",
       "language": ".py",
       "historical_port": false
     },
     {
       "file": "src/agentic_rl/evaluation.py",
-      "sha256": "b49af499dfb385b6d4eb2e24df459d651d1ce40dfa572db3db552d59cf15d103",
+      "sha256": "3ea4e55d29e10b9ee0da2acc530cc32764d018e4bf5f8c49b70d02ed42335348",
       "language": ".py",
       "historical_port": false
     },
@@ -598,7 +610,7 @@
     },
     {
       "file": "src/agentic_rl/loss_demo.py",
-      "sha256": "6e3ec82fc6c74b1f266fc0f443ddf60a8aa04bbc8c5fb2b8224f0b07ffac7082",
+      "sha256": "69e2da364b14effbe1fb7d9f0859bceeb33d1fbee85a8798b096de832d074126",
       "language": ".py",
       "historical_port": false
     },
@@ -652,7 +664,7 @@
     },
     {
       "file": "src/agentic_rl/verl_backend/__main__.py",
-      "sha256": "d41368c2fb0e66e93f313fb0c088ed25b208f5cfd929bff147130a8267c158a3",
+      "sha256": "a60cb740a6d910a0b3844450f9ffd6b301cec25fb854cb3500e879f4d4346183",
       "language": ".py",
       "historical_port": false
     },
@@ -712,7 +724,7 @@
     },
     {
       "file": "src/agentic_rl/verl_backend/runtime.py",
-      "sha256": "325c1a1a487e5fdf717bf653348f9d7c41c3b91197f7166e56a2139b7499eaa1",
+      "sha256": "b3f5bcb8a9a4ab839855d4c567f24666f3fa5e6f95c03f86e2ab0c2463d6d779",
       "language": ".py",
       "historical_port": false
     },
@@ -724,7 +736,7 @@
     },
     {
       "file": "src/agentic_rl/verl_backend/trainer.py",
-      "sha256": "965ea610e59c446a7181938d108a6f36e6ec09d537bcae0592f75b8806e37193",
+      "sha256": "6512e906aaeda7a0f367371dda560c12ef32efe176b3eb75eb4ce6072036eee4",
       "language": ".py",
       "historical_port": false
     },
@@ -742,7 +754,7 @@
     },
     {
       "file": "tests/test_mechanisms.py",
-      "sha256": "6aee289401ccb11c7c32ce5aa2359aa543f00fcd14364e177903111bb712cef8",
+      "sha256": "0e8120a11696110f92a5a52f2ce3ff7271bb0ec4d5d627a2bb1843d65c077172",
       "language": ".py",
       "historical_port": false
     },
@@ -759,7 +771,7 @@
       "line": 18,
       "reference": "references/upstream/08-alfworld/environment.py",
       "reference_line": 16,
-      "tokens": 1390,
+      "tokens": 1360,
       "acknowledged_port": true
     },
     {
@@ -767,7 +779,7 @@
       "line": 18,
       "reference": "references/upstream/09-tempo/environment.py",
       "reference_line": 16,
-      "tokens": 1390,
+      "tokens": 1360,
       "acknowledged_port": true
     },
     {
@@ -783,7 +795,7 @@
       "line": 19,
       "reference": "references/upstream/08-alfworld/data.py",
       "reference_line": 17,
-      "tokens": 496,
+      "tokens": 456,
       "acknowledged_port": true
     },
     {
@@ -791,7 +803,7 @@
       "line": 19,
       "reference": "references/upstream/09-tempo/data.py",
       "reference_line": 18,
-      "tokens": 496,
+      "tokens": 456,
       "acknowledged_port": true
     },
     {
@@ -860,18 +872,18 @@
     },
     {
       "file": "src/agentic_rl/alfworld_data.py",
-      "line": 106,
+      "line": 126,
       "reference": "references/upstream/09-AgentOPSD/data.py",
-      "reference_line": 91,
-      "tokens": 97,
+      "reference_line": 108,
+      "tokens": 95,
       "acknowledged_port": true
     },
     {
       "file": "src/agentic_rl/alfworld_data.py",
-      "line": 127,
+      "line": 106,
       "reference": "references/upstream/09-AgentOPSD/data.py",
-      "reference_line": 110,
-      "tokens": 94,
+      "reference_line": 91,
+      "tokens": 82,
       "acknowledged_port": true
     },
     {

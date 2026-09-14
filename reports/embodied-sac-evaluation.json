@@ -1,5 +1,5 @@
 {
-  "checkpoint": "/data/xionglei-extract/agentic-rl-lab/runs/embodied-sac-default-20260911/checkpoint-final",
+  "checkpoint": "${PROJECT_ROOT}/runs/embodied-sac-default-20260911/checkpoint-final",
   "metrics": {
     "eval/return": -49.3,
     "eval/success_rate": 0.1,

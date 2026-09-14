@@ -1,4 +1,4 @@
 2026-09-10 12:33:13,359	INFO worker.py:1951 -- Started a local Ray instance.
 {"step": 0, "elapsed_seconds": 34.05903480760753, "reward/mean": 0.0, "policy/ratio": 0.0, "policy/clip_fraction": 0.0, "policy/kl": 0.0, "capo/routed_parameters": 28380.0, "update/grad_norm": 0.0, "update/skipped": 1.0, "loss/total": 0.0, "tokens/trainable": 38.0, "verl/optimizer_steps": 1.0, "verl/policy_version": 1.0, "time/elapsed_seconds": 34.05900971964002}
 {"step": 1, "elapsed_seconds": 35.675327562727034, "reward/mean": 0.0, "policy/ratio": 0.0, "policy/clip_fraction": 0.0, "policy/kl": 0.0, "capo/routed_parameters": 28380.0, "update/grad_norm": 0.0, "update/skipped": 1.0, "loss/total": 0.0, "tokens/trainable": 48.0, "verl/optimizer_steps": 1.0, "verl/policy_version": 2.0, "time/elapsed_seconds": 35.675316613167524}
-Saved run: /data/xionglei-extract/agentic-rl-lab/runs/verl-audit-20260910-122814-harness-rl
+Saved run: ${PROJECT_ROOT}/runs/verl-audit-20260910-122814-harness-rl

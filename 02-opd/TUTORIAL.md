@@ -20,7 +20,7 @@ Student 从 fresh Base 开始，而不是直接继承 Medical Teacher 的 SFT ch
 
 SFT 有固定问题 x 与示范解答 $y^*$，最小化示范生成部分的负对数概率：
 
-$$L_{SFT}=-\frac{\sum_{i,t}m_{i,t}\log\pi_\theta(y^*_{i,t}\mid x_i,y^*_{i,<t})}{\sum_{i,t}m_{i,t}}.$$
+$$L_{SFT}=-\frac{\sum_{i,t}m_{i,t}\log\pi_\theta(y^*_{i,t}\mid x_i,y^*_{i,1:t-1})}{\sum_{i,t}m_{i,t}}.$$
 
 如果某个示范 token 当前概率是 0.1，它贡献 $-\log0.1\approx2.3026$；提高到 0.2 后贡献约 1.6094。训练推动模型在这段示范历史后更容易选择示范 token。
 
@@ -42,7 +42,7 @@ L_M=\operatorname{mean}_{m=1}\left[e^{\log\pi_\theta-\log\pi_{old}}d_t\right].$$
 设更新步编号 k 从 0 开始，边界为 M：
 
 $$L_k=\begin{cases}
-L_{OPD}(D_M,T_M),&k<M,\\
+L_{OPD}(D_M,T_M),&k\lt M,\\
 L_{OPD}(D_G,T_B),&k\ge M.
 \end{cases}$$
 

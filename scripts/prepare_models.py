@@ -7,7 +7,7 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-from agentic_rl.data import ROOT
+from agentic_rl.data import ROOT, report_path
 
 
 if __name__ == "__main__":
@@ -42,4 +42,4 @@ if __name__ == "__main__":
         (destination / "download-manifest.json").write_text(
             json.dumps({"repo": a.model, "revision": info.sha, "inference_performed": False}, indent=2) + "\n"
         )
-        print(destination)
+        print(report_path(destination))

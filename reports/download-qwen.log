@@ -1,2 +1,2 @@
 Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files:  89%|████████▉ | 8/9 [00:02<00:00,  3.79it/s]Fetching 9 files:  89%|████████▉ | 8/9 [00:20<00:02,  2.50s/it]Fetching 9 files: 100%|██████████| 9/9 [00:58<00:00,  6.49s/it]Fetching 9 files: 100%|██████████| 9/9 [00:58<00:00,  6.49s/it]
-/data/xionglei-extract/agentic-rl-lab/models/Qwen--Qwen2.5-0.5B-Instruct
+${PROJECT_ROOT}/models/Qwen--Qwen2.5-0.5B-Instruct

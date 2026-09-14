@@ -40,7 +40,8 @@ def main():
 
     def check(name, config):
         run = f"runs/verl-audit-{stamp}-{name}"
-        log = ROOT / f"reports/verl-audit-{stamp}-{name}.log"
+        log = ROOT / f"runs/.logs/verl-audit-{stamp}-{name}.log"
+        log.parent.mkdir(parents=True, exist_ok=True)
         env = {**os.environ, "CUDA_VISIBLE_DEVICES": "", "HF_HUB_OFFLINE": "1", "ACCELERATE_USE_CPU": "true"}
         command = [
             str(ROOT / ".venv-verl/bin/arl"),
@@ -61,10 +62,10 @@ def main():
         status_file = ROOT / run / "status.json"
         status = json.loads(status_file.read_text()) if status_file.exists() else {}
         result = {
-            "command": command,
+            "command": [".venv-verl/bin/arl", *command[1:]],
             "exit_code": process.returncode,
             "run": run,
-            "log": str(log.relative_to(ROOT)),
+            "log": log.relative_to(ROOT).as_posix(),
             "status": status.get("status"),
             "checkpoint": (ROOT / run / "checkpoint-final/model/config.json").exists(),
         }
@@ -81,7 +82,7 @@ def main():
             try:
                 results[name] = future.result()
             except Exception as error:
-                results[name] = {"passed": False, "error": str(error)}
+                results[name] = {"passed": False, "error_type": type(error).__name__}
             print(name, "PASS" if results[name]["passed"] else "FAIL", flush=True)
             (ROOT / f"reports/verl-audit-{stamp}.json").write_text(json.dumps(results, indent=2) + "\n")
     latest = ROOT / "reports/verl-audit-latest.json"

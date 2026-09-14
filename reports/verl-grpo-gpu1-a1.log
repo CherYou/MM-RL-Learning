@@ -1,35 +1,35 @@
 2026-09-10 13:27:19,829	INFO worker.py:1951 -- Started a local Ray instance.
 Traceback (most recent call last):
-  File "/data/xionglei-extract/agentic-rl-lab/.venv-verl-gpu/bin/arl", line 10, in <module>
+  File "${PROJECT_ROOT}/.venv-verl-gpu/bin/arl", line 10, in <module>
     sys.exit(main())
              ^^^^^^
-  File "/data/xionglei-extract/agentic-rl-lab/src/agentic_rl/cli.py", line 236, in main
+  File "${PROJECT_ROOT}/src/agentic_rl/cli.py", line 236, in main
     train(config)
-  File "/data/xionglei-extract/agentic-rl-lab/src/agentic_rl/cli.py", line 132, in train
+  File "${PROJECT_ROOT}/src/agentic_rl/cli.py", line 132, in train
     result = run_verl(config)
              ^^^^^^^^^^^^^^^^
-  File "/data/xionglei-extract/agentic-rl-lab/src/agentic_rl/verl_backend/__init__.py", line 43, in run_verl
+  File "${PROJECT_ROOT}/src/agentic_rl/verl_backend/__init__.py", line 43, in run_verl
     return run(config)
            ^^^^^^^^^^^
-  File "/data/xionglei-extract/agentic-rl-lab/src/agentic_rl/verl_backend/trainer.py", line 39, in run
+  File "${PROJECT_ROOT}/src/agentic_rl/verl_backend/trainer.py", line 39, in run
     runtime = WorkerRuntime(config)
               ^^^^^^^^^^^^^^^^^^^^^
-  File "/data/xionglei-extract/agentic-rl-lab/src/agentic_rl/verl_backend/runtime.py", line 86, in __init__
+  File "${PROJECT_ROOT}/src/agentic_rl/verl_backend/runtime.py", line 86, in __init__
     self.evidence = self.group.init_model()
                     ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/data/xionglei-extract/agentic-rl-lab/references/verl/verl/single_controller/ray/base.py", line 55, in __call__
+  File "${PROJECT_ROOT}/references/verl/verl/single_controller/ray/base.py", line 55, in __call__
     output = ray.get(output)
              ^^^^^^^^^^^^^^^
-  File "/data/xionglei-extract/agentic-rl-lab/.venv-verl-gpu/lib/python3.12/site-packages/ray/_private/auto_init_hook.py", line 22, in auto_init_wrapper
+  File "${PROJECT_ROOT}/.venv-verl-gpu/lib/python3.12/site-packages/ray/_private/auto_init_hook.py", line 22, in auto_init_wrapper
     return fn(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^
-  File "/data/xionglei-extract/agentic-rl-lab/.venv-verl-gpu/lib/python3.12/site-packages/ray/_private/client_mode_hook.py", line 104, in wrapper
+  File "${PROJECT_ROOT}/.venv-verl-gpu/lib/python3.12/site-packages/ray/_private/client_mode_hook.py", line 104, in wrapper
     return func(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^
-  File "/data/xionglei-extract/agentic-rl-lab/.venv-verl-gpu/lib/python3.12/site-packages/ray/_private/worker.py", line 2882, in get
+  File "${PROJECT_ROOT}/.venv-verl-gpu/lib/python3.12/site-packages/ray/_private/worker.py", line 2882, in get
     values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/data/xionglei-extract/agentic-rl-lab/.venv-verl-gpu/lib/python3.12/site-packages/ray/_private/worker.py", line 968, in get_objects
+  File "${PROJECT_ROOT}/.venv-verl-gpu/lib/python3.12/site-packages/ray/_private/worker.py", line 968, in get_objects
     raise value.as_instanceof_cause()
 ray.exceptions.RayTaskError(ValueError): [36mray::GPUWorker.init_model()[39m (pid=3605480, ip=127.0.0.1, actor_id=2f77736a551b69d0a5631a7801000000, repr=<agentic_rl.verl_backend.gpu_worker.GPUWorker object at 0x7241f78ab5f0>)
 ModuleNotFoundError: No module named 'vllm.lora.lora_model'
@@ -37,32 +37,32 @@ ModuleNotFoundError: No module named 'vllm.lora.lora_model'
 During handling of the above exception, another exception occurred:
 
 [36mray::GPUWorker.init_model()[39m (pid=3605480, ip=127.0.0.1, actor_id=2f77736a551b69d0a5631a7801000000, repr=<agentic_rl.verl_backend.gpu_worker.GPUWorker object at 0x7241f78ab5f0>)
-  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 449, in result
+  File "${PYTHON_STDLIB}/concurrent/futures/_base.py", line 449, in result
     return self.__get_result()
            ^^^^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+  File "${PYTHON_STDLIB}/concurrent/futures/_base.py", line 401, in __get_result
     raise self._exception
            ^^^^^^^^^^^^^^^^^^^^^
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/data/xionglei-extract/agentic-rl-lab/references/verl/verl/single_controller/base/decorator.py", line 427, in inner
+  File "${PROJECT_ROOT}/references/verl/verl/single_controller/base/decorator.py", line 427, in inner
     return func(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^
-  File "/data/xionglei-extract/agentic-rl-lab/src/agentic_rl/verl_backend/gpu_worker.py", line 82, in init_model
+  File "${PROJECT_ROOT}/src/agentic_rl/verl_backend/gpu_worker.py", line 82, in init_model
     super().init_model()
-  File "/data/xionglei-extract/agentic-rl-lab/references/verl/verl/single_controller/base/decorator.py", line 427, in inner
+  File "${PROJECT_ROOT}/references/verl/verl/single_controller/base/decorator.py", line 427, in inner
     return func(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^
-  File "/data/xionglei-extract/agentic-rl-lab/references/verl/verl/workers/fsdp_workers.py", line 928, in init_model
+  File "${PROJECT_ROOT}/references/verl/verl/workers/fsdp_workers.py", line 928, in init_model
     self._build_rollout(trust_remote_code=self.config.model.get("trust_remote_code", False))
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/data/xionglei-extract/agentic-rl-lab/references/verl/verl/workers/fsdp_workers.py", line 722, in _build_rollout
+  File "${PROJECT_ROOT}/references/verl/verl/workers/fsdp_workers.py", line 722, in _build_rollout
     self.rollout = get_rollout_class(rollout_config.name, rollout_config.mode)(
                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/data/xionglei-extract/agentic-rl-lab/references/verl/verl/workers/rollout/base.py", line 103, in get_rollout_class
+  File "${PROJECT_ROOT}/references/verl/verl/workers/rollout/base.py", line 103, in get_rollout_class
     rollout_module = importlib.import_module(module_name)
                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+  File "${PYTHON_STDLIB}/importlib/__init__.py", line 90, in import_module
     return _bootstrap._gcd_import(name[level:], package, level)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
@@ -71,46 +71,46 @@ During handling of the above exception, another exception occurred:
   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
   File "<frozen importlib._bootstrap_external>", line 995, in exec_module
   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
-  File "/data/xionglei-extract/agentic-rl-lab/references/verl/verl/workers/rollout/vllm_rollout/__init__.py", line 17, in <module>
+  File "${PROJECT_ROOT}/references/verl/verl/workers/rollout/vllm_rollout/__init__.py", line 17, in <module>
     from .vllm_rollout import ServerAdapter  # noqa: F401
     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/data/xionglei-extract/agentic-rl-lab/references/verl/verl/workers/rollout/vllm_rollout/vllm_rollout.py", line 45, in <module>
+  File "${PROJECT_ROOT}/references/verl/verl/workers/rollout/vllm_rollout/vllm_rollout.py", line 45, in <module>
     from verl.workers.rollout.vllm_rollout.utils import get_device_uuid
-  File "/data/xionglei-extract/agentic-rl-lab/references/verl/verl/workers/rollout/vllm_rollout/utils.py", line 27, in <module>
+  File "${PROJECT_ROOT}/references/verl/verl/workers/rollout/vllm_rollout/utils.py", line 27, in <module>
     from verl.utils.vllm import TensorLoRARequest, VLLMHijack
-  File "/data/xionglei-extract/agentic-rl-lab/references/verl/verl/utils/vllm/__init__.py", line 15, in <module>
+  File "${PROJECT_ROOT}/references/verl/verl/utils/vllm/__init__.py", line 15, in <module>
     from .utils import TensorLoRARequest, VLLMHijack, is_version_ge
-  File "/data/xionglei-extract/agentic-rl-lab/references/verl/verl/utils/vllm/utils.py", line 22, in <module>
+  File "${PROJECT_ROOT}/references/verl/verl/utils/vllm/utils.py", line 22, in <module>
     from vllm.lora.models import LoRAModel
-  File "/data/xionglei-extract/agentic-rl-lab/.venv-verl-gpu/lib/python3.12/site-packages/vllm/lora/models.py", line 16, in <module>
+  File "${PROJECT_ROOT}/.venv-verl-gpu/lib/python3.12/site-packages/vllm/lora/models.py", line 16, in <module>
     from vllm.lora.layers import BaseLayerWithLoRA, FusedMoE3DWithLoRA, LoRAMapping
-  File "/data/xionglei-extract/agentic-rl-lab/.venv-verl-gpu/lib/python3.12/site-packages/vllm/lora/layers/__init__.py", line 14, in <module>
+  File "${PROJECT_ROOT}/.venv-verl-gpu/lib/python3.12/site-packages/vllm/lora/layers/__init__.py", line 14, in <module>
     from vllm.lora.layers.fused_moe import FusedMoE3DWithLoRA, FusedMoEWithLoRA
-  File "/data/xionglei-extract/agentic-rl-lab/.venv-verl-gpu/lib/python3.12/site-packages/vllm/lora/layers/fused_moe.py", line 18, in <module>
+  File "${PROJECT_ROOT}/.venv-verl-gpu/lib/python3.12/site-packages/vllm/lora/layers/fused_moe.py", line 18, in <module>
     from vllm.model_executor.layers.fused_moe import FusedMoE
-  File "/data/xionglei-extract/agentic-rl-lab/.venv-verl-gpu/lib/python3.12/site-packages/vllm/model_executor/layers/fused_moe/__init__.py", line 8, in <module>
+  File "${PROJECT_ROOT}/.venv-verl-gpu/lib/python3.12/site-packages/vllm/model_executor/layers/fused_moe/__init__.py", line 8, in <module>
     from vllm.model_executor.layers.fused_moe.fused_moe_method_base import (
-  File "/data/xionglei-extract/agentic-rl-lab/.venv-verl-gpu/lib/python3.12/site-packages/vllm/model_executor/layers/fused_moe/fused_moe_method_base.py", line 14, in <module>
+  File "${PROJECT_ROOT}/.venv-verl-gpu/lib/python3.12/site-packages/vllm/model_executor/layers/fused_moe/fused_moe_method_base.py", line 14, in <module>
     from vllm.model_executor.layers.fused_moe.modular_kernel import (
-  File "/data/xionglei-extract/agentic-rl-lab/.venv-verl-gpu/lib/python3.12/site-packages/vllm/model_executor/layers/fused_moe/modular_kernel.py", line 17, in <module>
+  File "${PROJECT_ROOT}/.venv-verl-gpu/lib/python3.12/site-packages/vllm/model_executor/layers/fused_moe/modular_kernel.py", line 17, in <module>
     from vllm.model_executor.layers.fused_moe.utils import (
-  File "/data/xionglei-extract/agentic-rl-lab/.venv-verl-gpu/lib/python3.12/site-packages/vllm/model_executor/layers/fused_moe/utils.py", line 9, in <module>
+  File "${PROJECT_ROOT}/.venv-verl-gpu/lib/python3.12/site-packages/vllm/model_executor/layers/fused_moe/utils.py", line 9, in <module>
     from vllm.model_executor.layers.quantization.utils.fp8_utils import (
-  File "/data/xionglei-extract/agentic-rl-lab/.venv-verl-gpu/lib/python3.12/site-packages/vllm/model_executor/layers/quantization/utils/fp8_utils.py", line 22, in <module>
+  File "${PROJECT_ROOT}/.venv-verl-gpu/lib/python3.12/site-packages/vllm/model_executor/layers/quantization/utils/fp8_utils.py", line 22, in <module>
     from vllm.model_executor.layers.quantization.utils.w8a8_utils import (
-  File "/data/xionglei-extract/agentic-rl-lab/.venv-verl-gpu/lib/python3.12/site-packages/vllm/model_executor/layers/quantization/utils/w8a8_utils.py", line 74, in <module>
+  File "${PROJECT_ROOT}/.venv-verl-gpu/lib/python3.12/site-packages/vllm/model_executor/layers/quantization/utils/w8a8_utils.py", line 74, in <module>
     CUTLASS_FP8_SUPPORTED = cutlass_fp8_supported()
                             ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/data/xionglei-extract/agentic-rl-lab/.venv-verl-gpu/lib/python3.12/site-packages/vllm/model_executor/layers/quantization/utils/w8a8_utils.py", line 48, in cutlass_fp8_supported
+  File "${PROJECT_ROOT}/.venv-verl-gpu/lib/python3.12/site-packages/vllm/model_executor/layers/quantization/utils/w8a8_utils.py", line 48, in cutlass_fp8_supported
     capability_tuple = current_platform.get_device_capability()
                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/data/xionglei-extract/agentic-rl-lab/.venv-verl-gpu/lib/python3.12/site-packages/vllm/platforms/cuda.py", line 91, in wrapper
+  File "${PROJECT_ROOT}/.venv-verl-gpu/lib/python3.12/site-packages/vllm/platforms/cuda.py", line 91, in wrapper
     return fn(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^
-  File "/data/xionglei-extract/agentic-rl-lab/.venv-verl-gpu/lib/python3.12/site-packages/vllm/platforms/cuda.py", line 513, in get_device_capability
+  File "${PROJECT_ROOT}/.venv-verl-gpu/lib/python3.12/site-packages/vllm/platforms/cuda.py", line 513, in get_device_capability
     physical_device_id = cls.device_id_to_physical_device_id(device_id)
                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/data/xionglei-extract/agentic-rl-lab/.venv-verl-gpu/lib/python3.12/site-packages/vllm/platforms/interface.py", line 211, in device_id_to_physical_device_id
+  File "${PROJECT_ROOT}/.venv-verl-gpu/lib/python3.12/site-packages/vllm/platforms/interface.py", line 211, in device_id_to_physical_device_id
     return int(physical_device_id)
            ^^^^^^^^^^^^^^^^^^^^^^^
-ValueError: invalid literal for int() with base 10: 'GPU-c063cb89-5e7c-1228-b9d4-6bef4945b171'
+ValueError: invalid literal for int() with base 10: '${GPU_UUID}'

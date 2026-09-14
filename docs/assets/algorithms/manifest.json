@@ -4,7 +4,6 @@
     {
       "id": "loss",
       "file": "loss.png",
-      "generated_source": "/home/codex-agent-xionglei/.codex/generated_images/01a084fd-3b48-70d2-ab94-82f586f69874/exec-a369d23b-b837-4f6d-bdae-bb9af62dc798.png",
       "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
       "edited": false,
       "dimensions": [
@@ -16,7 +15,6 @@
     {
       "id": "grpo",
       "file": "grpo.png",
-      "generated_source": "/home/codex-agent-xionglei/.codex/generated_images/01a084fd-3b48-70d2-ab94-82f586f69874/exec-f5c958c6-3f62-483f-9245-d94bcead6f25.png",
       "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
       "edited": false,
       "dimensions": [
@@ -28,7 +26,6 @@
     {
       "id": "medical-opd",
       "file": "medical-opd.png",
-      "generated_source": "/home/codex-agent-xionglei/.codex/generated_images/01a084fd-3b48-70d2-ab94-82f586f69874/exec-4758eec6-b1bd-4748-9776-07fc8cc5c1ef.png",
       "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
       "edited": false,
       "dimensions": [
@@ -40,7 +37,6 @@
     {
       "id": "general-opd",
       "file": "general-opd.png",
-      "generated_source": "/home/codex-agent-xionglei/.codex/generated_images/01a084fd-3b48-70d2-ab94-82f586f69874/exec-04ff1d2f-266b-40e0-9bc9-fa1da801c97d.png",
       "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
       "edited": false,
       "dimensions": [
@@ -52,7 +48,6 @@
     {
       "id": "search-r1",
       "file": "search-r1.png",
-      "generated_source": "/home/codex-agent-xionglei/.codex/generated_images/01a084fd-3b48-70d2-ab94-82f586f69874/exec-d18566f8-4c27-48d1-9374-18471d7767a1.png",
       "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
       "edited": false,
       "dimensions": [
@@ -64,7 +59,6 @@
     {
       "id": "opsd",
       "file": "opsd.png",
-      "generated_source": "/home/codex-agent-xionglei/.codex/generated_images/01a084fd-3b48-70d2-ab94-82f586f69874/exec-942a0dff-887b-491c-980c-6b606d2f1776.png",
       "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
       "edited": true,
       "dimensions": [
@@ -76,7 +70,6 @@
     {
       "id": "retool",
       "file": "retool.png",
-      "generated_source": "/home/codex-agent-xionglei/.codex/generated_images/01a084fd-3b48-70d2-ab94-82f586f69874/exec-cfb48d0e-0b43-4513-8456-9ab790e02ac7.png",
       "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
       "edited": false,
       "dimensions": [
@@ -88,7 +81,6 @@
     {
       "id": "dapo",
       "file": "dapo.png",
-      "generated_source": "/home/codex-agent-xionglei/.codex/generated_images/01a084fd-3b48-70d2-ab94-82f586f69874/exec-02b06835-5e68-428b-8f3c-95fd0f1abd8a.png",
       "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
       "edited": true,
       "dimensions": [
@@ -100,7 +92,6 @@
     {
       "id": "gspo",
       "file": "gspo.png",
-      "generated_source": "/home/codex-agent-xionglei/.codex/generated_images/01a084fd-3b48-70d2-ab94-82f586f69874/exec-5f94d648-ea17-4bf4-b1de-d4c202c97020.png",
       "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
       "edited": false,
       "dimensions": [
@@ -112,7 +103,6 @@
     {
       "id": "alfworld",
       "file": "alfworld.png",
-      "generated_source": "/home/codex-agent-xionglei/.codex/generated_images/01a084fd-3b48-70d2-ab94-82f586f69874/exec-97b30eb9-dc84-47ec-84ac-a5039f697390.png",
       "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
       "edited": false,
       "dimensions": [
@@ -124,7 +114,6 @@
     {
       "id": "agentopsd",
       "file": "agentopsd.png",
-      "generated_source": "/home/codex-agent-xionglei/.codex/generated_images/01a084fd-3b48-70d2-ab94-82f586f69874/exec-4974b253-f13a-40ed-986a-20edda96c4b2.png",
       "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
       "edited": false,
       "dimensions": [
@@ -136,7 +125,6 @@
     {
       "id": "tempo",
       "file": "tempo.png",
-      "generated_source": "/home/codex-agent-xionglei/.codex/generated_images/01a084fd-3b48-70d2-ab94-82f586f69874/exec-5583384c-1898-4356-94b8-ad1c45fc3fcf.png",
       "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
       "edited": false,
       "dimensions": [
@@ -148,7 +136,6 @@
     {
       "id": "vision-grpo",
       "file": "vision-grpo.png",
-      "generated_source": "/home/codex-agent-xionglei/.codex/generated_images/01a084fd-3b48-70d2-ab94-82f586f69874/exec-8deb4f6d-1f09-4cf5-ab77-d92539efe434.png",
       "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
       "edited": false,
       "dimensions": [
@@ -160,7 +147,6 @@
     {
       "id": "ppo",
       "file": "ppo.png",
-      "generated_source": "/home/codex-agent-xionglei/.codex/generated_images/01a084fd-3b48-70d2-ab94-82f586f69874/exec-a8f69aaa-c50b-41d7-8c68-a7feddf90cfd.png",
       "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
       "edited": false,
       "dimensions": [
@@ -172,7 +158,6 @@
     {
       "id": "dpo",
       "file": "dpo.png",
-      "generated_source": "/home/codex-agent-xionglei/.codex/generated_images/01a084fd-3b48-70d2-ab94-82f586f69874/exec-cf8315a4-5d4d-493f-a34d-3214ffaf5b3b.png",
       "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
       "edited": false,
       "dimensions": [
@@ -184,7 +169,6 @@
     {
       "id": "harness-rl",
       "file": "harness-rl.png",
-      "generated_source": "/home/codex-agent-xionglei/.codex/generated_images/01a084fd-3b48-70d2-ab94-82f586f69874/exec-5393adec-9f8f-46f0-8a3a-dad32c6623b1.png",
       "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
       "edited": false,
       "dimensions": [
@@ -196,7 +180,6 @@
     {
       "id": "sac",
       "file": "sac.png",
-      "generated_source": "/home/codex-agent-xionglei/.codex/generated_images/01a084fd-3b48-70d2-ab94-82f586f69874/exec-d5bec445-75bc-4e33-ab15-24fc354dc6c9.png",
       "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
       "edited": false,
       "dimensions": [
@@ -208,7 +191,6 @@
     {
       "id": "td3",
       "file": "td3.png",
-      "generated_source": "/home/codex-agent-xionglei/.codex/generated_images/01a084fd-3b48-70d2-ab94-82f586f69874/exec-95adf811-c95e-4ec0-a5df-2779ce948abd.png",
       "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
       "edited": false,
       "dimensions": [
@@ -220,7 +202,6 @@
     {
       "id": "her",
       "file": "her.png",
-      "generated_source": "/home/codex-agent-xionglei/.codex/generated_images/01a084fd-3b48-70d2-ab94-82f586f69874/exec-dd1ca8bd-9853-4a69-b2ad-0664b71b98a7.png",
       "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
       "edited": false,
       "dimensions": [
@@ -232,7 +213,6 @@
     {
       "id": "iql",
       "file": "iql.png",
-      "generated_source": "/home/codex-agent-xionglei/.codex/generated_images/01a084fd-3b48-70d2-ab94-82f586f69874/exec-fa54ff7e-0b13-4a0d-99af-87e9a4839e59.png",
       "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
       "edited": false,
       "dimensions": [

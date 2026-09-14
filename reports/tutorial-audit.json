@@ -156,16 +156,16 @@
     },
     {
       "chapter": "01-grpo",
-      "tutorial_sha256": "edcbb0afff7b62650a7f73e6d9468e97eecfc9be32b67565f5299ebc31ec971a",
-      "characters": 3822,
+      "tutorial_sha256": "4cbc17fc15b59b3f39c2cc75cb5e7607e9cafd8cf20fa3352bf007ed2bb658b7",
+      "characters": 3820,
       "image": [
         "../docs/assets/algorithms/grpo.png"
       ]
     },
     {
       "chapter": "02-opd",
-      "tutorial_sha256": "661068c5f8b76cde37b04ae098613e214f13bf2044682ba8624a0bbfeb8c4355",
-      "characters": 3527,
+      "tutorial_sha256": "a1263d46c8451301b17180f90ae3803df1605ffffd8aed0a814e720d433ca43c",
+      "characters": 3533,
       "image": [
         "../docs/assets/algorithms/medical-opd.png"
       ]
@@ -188,8 +188,8 @@
     },
     {
       "chapter": "04-opsd",
-      "tutorial_sha256": "cfe8a062b450357c3e0ff0a7011cc788d24fefd652da871f181660f66cb92817",
-      "characters": 3389,
+      "tutorial_sha256": "0d3b2ccecc838691f6b12ccb9786641e6d99ee02ced2a16e5e71aafebbbc99ca",
+      "characters": 3401,
       "image": [
         "../docs/assets/algorithms/opsd.png"
       ]
@@ -244,8 +244,8 @@
     },
     {
       "chapter": "09-vision-grpo",
-      "tutorial_sha256": "e4baa4affa8710fa1b13d05eab77c5b8361153bd8c692110802e31d54e476f2a",
-      "characters": 2722,
+      "tutorial_sha256": "51617bc21b40411bf2621e93ae820aefa48ee735174ab925de48cdf2b5c37e02",
+      "characters": 2731,
       "image": [
         "../docs/assets/algorithms/vision-grpo.png"
       ]
@@ -268,8 +268,8 @@
     },
     {
       "chapter": "14-td3",
-      "tutorial_sha256": "5fcde64fbca363ce371e3385c2bf0b3a66bf7bc85196e8bb2a9d755c99a55166",
-      "characters": 3751,
+      "tutorial_sha256": "47c73037a5b6ee07b3cf6b3a672c0e3efb4b7fdbfb1409c2ebef89f529ed6eb7",
+      "characters": 3752,
       "image": [
         "../docs/assets/algorithms/td3.png"
       ]
@@ -284,14 +284,14 @@
     },
     {
       "chapter": "16-iql",
-      "tutorial_sha256": "b903750009e52b33426019912c2c8837d0b0e685928bdb195df1e5e31dbc1748",
-      "characters": 4272,
+      "tutorial_sha256": "acad7d40949ffecb7be9d1606685d2470f50b6976d100cb8aa14d887bb88f0b3",
+      "characters": 4279,
       "image": [
         "../docs/assets/algorithms/iql.png"
       ]
     }
   ],
-  "documents_checked": 53,
+  "documents_checked": 55,
   "broken_links": [],
   "review_scope": "Structure/link/hash checks complement formula/code and visual review; they do not prove theoretical correctness"
 }

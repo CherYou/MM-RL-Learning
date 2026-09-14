@@ -39,6 +39,7 @@ Actor 做优势加权行为克隆：
 
 $$A(s,a)=\bar Q(s,a)-V_\psi(s),\quad
 w(s,a)=\min\{\exp(\beta A(s,a)),w_{\max}\},$$
+
 $$L_\pi=-\mathbb E_{(s,a)\sim\mathcal D}[\operatorname{stopgrad}(w(s,a))\log\pi_\theta(a\mid s)].$$
 
 本地 `advantage_scale` 对应 $\beta$，默认 3；`max_weight` 默认 100。这个参数越大越偏向高优势动作，注意有些资料用倒数温度，不能只按参数名字复制数值。所有 Q、V target 与 actor 权重按各自更新需要停止梯度。
@@ -47,7 +48,7 @@ $$L_\pi=-\mathbb E_{(s,a)\sim\mathcal D}[\operatorname{stopgrad}(w(s,a))\log\pi_
 
 ## 4. 两个手算例子
 
-同一状态记录了两个等频动作，Q 值分别 0 和 2。若 $\eta=0.75$，在 $0<v<2$ 范围内：
+同一状态记录了两个等频动作，Q 值分别 0 和 2。若 $\eta=0.75$，在 $0\lt v\lt 2$ 范围内：
 
 $$L_V(v)=\tfrac12[0.25v^2+0.75(2-v)^2].$$
 

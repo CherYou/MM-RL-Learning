@@ -32,7 +32,7 @@
 
 20 篇 `TUTORIAL.md` 与 `preliminary/FOUNDATIONS.md` 采用重新组织的中文叙述、手算例子、代码定位、误区和练习答案。对固定参考仓库的 Markdown 执行长中文段落完全相同检测，未检出相同段落；短术语、公式与方法名称不纳入原创措辞保证。教程明确区分实际代码片段、机制伪代码、手算值与实测结果。
 
-20 张概念图均由内置图像生成工具按照本教程描述生成，没有复制参考仓库图片。提示词在 [prompts.json](assets/algorithms/prompts.json)，修图指令在 [edits.json](assets/algorithms/edits.json)，生成源路径、人工查看记录、尺寸与 SHA256 在 [manifest.json](assets/algorithms/manifest.json)。DAPO 全对组与 OPSD 相同 token 数的初稿细节已修正。插图辅助理解，机制以公式、代码和中文图注为准。
+20 张概念图均由内置图像生成工具按照本教程描述生成，没有复制参考仓库图片。提示词在 [prompts.json](assets/algorithms/prompts.json)，修图指令在 [edits.json](assets/algorithms/edits.json)，人工查看记录、尺寸与 SHA256 在 [manifest.json](assets/algorithms/manifest.json)。生成工具的机器专属临时路径不随仓库发布。DAPO 全对组与 OPSD 相同 token 数的初稿细节已修正。插图辅助理解，机制以公式、代码和中文图注为准。
 
 ## 外部材料的单独归属
 

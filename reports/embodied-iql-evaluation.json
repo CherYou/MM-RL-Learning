@@ -1,5 +1,5 @@
 {
-  "checkpoint": "/data/xionglei-extract/agentic-rl-lab/runs/embodied-iql-default-20260911/checkpoint-final",
+  "checkpoint": "${PROJECT_ROOT}/runs/embodied-iql-default-20260911/checkpoint-final",
   "metrics": {
     "eval/return": -46.8,
     "eval/success_rate": 0.3,

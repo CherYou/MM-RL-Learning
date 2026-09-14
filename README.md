@@ -14,16 +14,18 @@
 
 PPO 与 DPO 位于 `001-ppo`、`002-dpo`；原损失函数目录扩展为 `preliminary`。新增 SAC、TD3、HER、IQL 用真实 FetchReach / MuJoCo 演示连续动作、稀疏奖励和固定数据学习，是理解具身/VLA 强化学习的基础课；输入为低维机械状态与目标，尚未训练视觉语言动作模型。
 
-项目位置：`/data/xionglei-extract/agentic-rl-lab`。
+项目可以克隆到任意目录。文档、配置和命令中的相对路径都以仓库根目录为基准；完整约定见[路径与可移植性说明](docs/PORTABILITY.md)。
 
 已完成代码、实验数据、依赖、本地日志与 CPU 执行验证。2026-09-10 新增 **物理 1 号 A100 上的 verl GRPO 实际验证**：Qwen2.5-0.5B-Instruct、真实 GSM8K 奖励、48 条 rollout、3 次非零梯度更新及 checkpoint 重载评估。详见 [GPU 验证记录](docs/GRPO_GPU_VALIDATION.md)。这属于功能验证，尚未证明模型能力提升或复现论文准确率。
 
 ## 五分钟开始
 
-TRL/原生依赖安装在 `.venv/`，verl CPU 依赖安装在 `.venv-verl/`；两者的 CPU PyTorch 都不包含 CUDA runtime。复杂算法默认走 verl，CLI 会自动切换环境。下面命令全部从项目根目录运行：
+项目面向 Linux / WSL 和 Python 3.12。初始化脚本会在当前仓库内创建 `.venv/`；verl CPU 与 GPU 环境分别使用 `.venv-verl/` 和 `.venv-verl-gpu/`。复杂算法默认走 verl，CLI 会按设备切换环境。
 
 ```bash
-cd /data/xionglei-extract/agentic-rl-lab
+git clone https://github.com/CherYou/mm-agent-rl-lab.git
+cd mm-agent-rl-lab
+bash scripts/setup.sh
 source .venv/bin/activate
 
 # 查看版本、设备和本地数据
@@ -91,9 +93,10 @@ arl train 01-grpo/config.yaml --smoke --backend native
 arl train 01-grpo/config.yaml --smoke --backend trl
 arl train 01-grpo/verl.yaml --smoke --verl-workers 2
 
-# 用保存的 checkpoint 重新加载并评测；路径替换为训练输出
+# 用保存的 checkpoint 重新加载并评测；把 RUN_NAME 改为终端输出的目录名
+RUN_DIR="runs/RUN_NAME"
 arl eval 01-grpo/config.yaml --smoke \
-  --checkpoint runs/<实验目录>/checkpoint-final --limit 32
+  --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
 
 # 使用已下载的小型预训练模型做后续实验（不会自动改用 GPU）
 arl train 01-grpo/config.yaml \
@@ -132,7 +135,9 @@ python scripts/prepare_data.py --dataset opsd --limit 0
 如果代码在远程服务器，通过本机终端建立转发后访问上述地址：
 
 ```bash
-ssh -L 8501:127.0.0.1:8501 -L 6006:127.0.0.1:6006 <你的SSH用户名>@<服务器地址>
+SSH_USER="your-user"
+SERVER="server.example.com"
+ssh -L 8501:127.0.0.1:8501 -L 6006:127.0.0.1:6006 "${SSH_USER}@${SERVER}"
 ```
 
 只记录本地文件，不要求 SwanLab/W&B 登录。端口已有服务时不会替换它；可用 `scripts/services.py start --dashboard-port 8502 --tensorboard-port 6007` 指定其他端口。

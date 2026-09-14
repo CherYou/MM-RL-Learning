@@ -12,7 +12,7 @@ from agentic_rl.harness import capture, prefix_trees, CAPORouter
 from agentic_rl.agentopsd import reshape_turn_advantages
 from agentic_rl.tempo import signals, parse_value
 from agentic_rl.environments import python_tool, LocalSearch
-from agentic_rl.data import ROOT, read_jsonl, write_jsonl
+from agentic_rl.data import ROOT, read_jsonl, report_path, write_jsonl
 
 torch.set_num_threads(2)
 
@@ -139,7 +139,7 @@ def test_numeric_and_boxed_reward():
 def test_tool_exec_and_boundaries():
     assert python_tool("import math\nprint(math.sqrt(81) + 1)") == "10.0"
     assert python_tool("print(sum(range(10)))") == "45"
-    assert python_tool("open('/etc/passwd').read()").startswith("ToolError")
+    assert python_tool("open('forbidden.txt').read()").startswith("ToolError")
     assert python_tool("import os").startswith("ToolError")
 
 
@@ -148,6 +148,14 @@ def test_jsonl_embedded_unicode_line_separator(tmp_path):
     rows = [{"prompt": "x\u2028y\u0085z", "answer": "1"}]
     write_jsonl(p, rows)
     assert read_jsonl(p) == rows
+
+
+def test_report_path_sanitizes_native_and_foreign_absolute_paths():
+    assert report_path(ROOT / "models/example") == "models/example"
+    assert report_path("models/example") == "models/example"
+    assert report_path("/private/mount/models/example") == "<external>/example"
+    windows_path = "C:" + chr(92) + chr(92).join(["Users", "alice", "models", "example"])
+    assert report_path(windows_path) == "<external>/example"
 
 
 def test_token_snapshot_and_reload(policy, tmp_path):

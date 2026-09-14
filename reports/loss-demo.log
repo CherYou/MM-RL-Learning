@@ -1,5 +1,5 @@
-mkdir -p failed for path /home/codex-agent-xionglei/.config/matplotlib: [Errno 13] Permission denied: '/home/codex-agent-xionglei/.config/matplotlib'
-Matplotlib created a temporary cache directory at /tmp/matplotlib-_svpbaiw because there was an issue with the default path (/home/codex-agent-xionglei/.config/matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+mkdir -p failed for path ${HOME}/.config/matplotlib: [Errno 13] Permission denied: '${HOME}/.config/matplotlib'
+Matplotlib created a temporary cache directory at ${TMPDIR}/matplotlib-_svpbaiw because there was an issue with the default path (${HOME}/.config/matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
 {"step": 0, "elapsed_seconds": 0.6922700153663754, "ratio": 0.5, "gradient": -0.5}
 {"step": 1, "elapsed_seconds": 0.692938000895083, "ratio": 0.5099999904632568, "gradient": -0.5099999904632568}
 {"step": 2, "elapsed_seconds": 0.6932351486757398, "ratio": 0.5199999809265137, "gradient": -0.5199999809265137}
@@ -101,4 +101,4 @@ Matplotlib created a temporary cache directory at /tmp/matplotlib-_svpbaiw becau
 {"step": 98, "elapsed_seconds": 0.7161499345675111, "ratio": 1.4800000190734863, "gradient": -1.4800000190734863}
 {"step": 99, "elapsed_seconds": 0.7163869179785252, "ratio": 1.4900000095367432, "gradient": -1.4900000095367432}
 {"step": 100, "elapsed_seconds": 0.7166324071586132, "ratio": 1.5, "gradient": -1.5}
-/data/xionglei-extract/agentic-rl-lab/runs/loss-functions-1788954598073041924
+${PROJECT_ROOT}/runs/loss-functions-1788954598073041924

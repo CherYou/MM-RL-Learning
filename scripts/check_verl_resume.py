@@ -16,14 +16,19 @@ def main():
     evidence = {"device": "cpu", "passed": False, "commands": []}
 
     def command(name, args):
-        log = ROOT / f"reports/verl-resume-{stamp}-{name}.log"
+        log = ROOT / f"runs/.logs/verl-resume-{stamp}-{name}.log"
+        log.parent.mkdir(parents=True, exist_ok=True)
         cmd = [str(ROOT / ".venv/bin/arl"), *args]
         with log.open("w") as file:
             result = subprocess.run(
                 cmd, cwd=ROOT, env=env, stdout=file, stderr=subprocess.STDOUT, timeout=420
             )
         evidence["commands"].append(
-            {"command": cmd, "log": str(log.relative_to(ROOT)), "exit_code": result.returncode}
+            {
+                "command": [".venv/bin/arl", *cmd[1:]],
+                "log": log.relative_to(ROOT).as_posix(),
+                "exit_code": result.returncode,
+            }
         )
         assert result.returncode == 0, log
 

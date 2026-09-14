@@ -1,6 +1,6 @@
 Uninstalled 1 package in 1ms
 Installed 1 package in 48ms
- ~ agentic-rl-lab-local==0.1.0 (from file:///data/xionglei-extract/agentic-rl-lab)
+ ~ agentic-rl-lab-local==0.1.0 (from file://${PROJECT_ROOT})
 {
   "versions": {
     "torch": "2.9.1+cpu",

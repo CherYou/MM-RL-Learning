@@ -59,7 +59,7 @@
       "pid": 1401821,
       "url": "http://127.0.0.1:6006",
       "health": "http://127.0.0.1:6006/",
-      "log": "/data/xionglei-extract/agentic-rl-lab/runs/tensorboard-server.log",
+      "log": "${PROJECT_ROOT}/runs/tensorboard-server.log",
       "live": true,
       "http_status": 200
     },
@@ -67,7 +67,7 @@
       "pid": 1401822,
       "url": "http://127.0.0.1:8501",
       "health": "http://127.0.0.1:8501/_stcore/health",
-      "log": "/data/xionglei-extract/agentic-rl-lab/runs/dashboard-server.log",
+      "log": "${PROJECT_ROOT}/runs/dashboard-server.log",
       "live": true,
       "http_status": 200
     }
@@ -247,7 +247,7 @@
           "scope": "Functional real-physics validation; short runs do not establish benchmark learning performance"
         },
         "independent_evaluation": {
-          "checkpoint": "/data/xionglei-extract/agentic-rl-lab/runs/embodied-sac-default-20260911/checkpoint-final",
+          "checkpoint": "${PROJECT_ROOT}/runs/embodied-sac-default-20260911/checkpoint-final",
           "metrics": {
             "eval/return": -49.3,
             "eval/success_rate": 0.1,
@@ -461,7 +461,7 @@
           "scope": "Functional real-physics validation; short runs do not establish benchmark learning performance"
         },
         "independent_evaluation": {
-          "checkpoint": "/data/xionglei-extract/agentic-rl-lab/runs/embodied-td3-default-20260911/checkpoint-final",
+          "checkpoint": "${PROJECT_ROOT}/runs/embodied-td3-default-20260911/checkpoint-final",
           "metrics": {
             "eval/return": -50.0,
             "eval/success_rate": 0.0,
@@ -673,7 +673,7 @@
           "scope": "Functional real-physics validation; short runs do not establish benchmark learning performance"
         },
         "independent_evaluation": {
-          "checkpoint": "/data/xionglei-extract/agentic-rl-lab/runs/embodied-her-default-20260911/checkpoint-final",
+          "checkpoint": "${PROJECT_ROOT}/runs/embodied-her-default-20260911/checkpoint-final",
           "metrics": {
             "eval/return": -50.0,
             "eval/success_rate": 0.0,
@@ -1036,7 +1036,7 @@
           "scope": "Functional real-physics validation; short runs do not establish benchmark learning performance"
         },
         "independent_evaluation": {
-          "checkpoint": "/data/xionglei-extract/agentic-rl-lab/runs/embodied-iql-default-20260911/checkpoint-final",
+          "checkpoint": "${PROJECT_ROOT}/runs/embodied-iql-default-20260911/checkpoint-final",
           "metrics": {
             "eval/return": -46.8,
             "eval/success_rate": 0.3,

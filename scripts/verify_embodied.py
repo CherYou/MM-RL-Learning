@@ -62,7 +62,7 @@ def main():
             range(20000, 20010)
         )
         evidence[algorithm] = {
-            "run": str(run.relative_to(ROOT)),
+            "run": run.relative_to(ROOT).as_posix(),
             "validation": result,
             "independent_evaluation": independent,
             "tensorboard_tags": tags,

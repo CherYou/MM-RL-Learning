@@ -1,7 +1,7 @@
 .......................                                                  [100%]
 =============================== warnings summary ===============================
 .venv-verl/lib/python3.12/site-packages/ray/util/state/util.py:54
-  /data/xionglei-extract/agentic-rl-lab/.venv-verl/lib/python3.12/site-packages/ray/util/state/util.py:54: DeprecationWarning: Ray state API is no longer experimental. Please import from `ray.util.state`. instead. Importing from `ray.experimental` will be deprecated in future releases. 
+  ${PROJECT_ROOT}/.venv-verl/lib/python3.12/site-packages/ray/util/state/util.py:54: DeprecationWarning: Ray state API is no longer experimental. Please import from `ray.util.state`. instead. Importing from `ray.experimental` will be deprecated in future releases.
     warnings.warn(
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html

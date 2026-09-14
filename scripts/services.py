@@ -18,11 +18,11 @@ STATE = ROOT / "runs/local-services.json"
 
 def owned(pid):
     try:
-        args = Path(f"/proc/{pid}/cmdline").read_bytes().decode().split("\0")
-        return any(str(ROOT) in arg for arg in args) and any(
-            "streamlit" in a or "tensorboard" in a for a in args
+        command = subprocess.check_output(
+            ["ps", "-p", str(pid), "-o", "args="], text=True, stderr=subprocess.DEVNULL
         )
-    except (FileNotFoundError, ProcessLookupError, PermissionError):
+        return str(ROOT) in command and ("streamlit" in command or "tensorboard" in command)
+    except (FileNotFoundError, ProcessLookupError, PermissionError, subprocess.CalledProcessError):
         return False
 
 
@@ -116,7 +116,7 @@ def main():
                 "pid": process.pid,
                 "url": f"http://127.0.0.1:{port}",
                 "health": f"http://127.0.0.1:{port}{health}",
-                "log": str(log),
+                "log": log.relative_to(ROOT).as_posix(),
             }
         STATE.parent.mkdir(parents=True, exist_ok=True)
         STATE.write_text(json.dumps(state, indent=2) + "\n")

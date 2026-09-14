@@ -13,7 +13,7 @@ files = sorted((ROOT / "runs").rglob("metrics.jsonl"), key=lambda p: p.stat().st
 if not files:
     st.info("运行一个章节后，这里会显示训练曲线。命令：arl train 01-grpo/config.yaml --smoke")
     st.stop()
-options = {str(p.parent.relative_to(ROOT / "runs")): p for p in files}
+options = {p.parent.relative_to(ROOT / "runs").as_posix(): p for p in files}
 selected = st.sidebar.selectbox("选择实验", list(options))
 if st.sidebar.button("刷新本地记录"):
     st.rerun()
@@ -60,7 +60,8 @@ with tabs[1]:
         st.json(json.loads(selected_file.read_text()))
 with tabs[2]:
     st.json(config)
-    st.code(f"cd {ROOT}\nsource .venv/bin/activate\narl train <章节>/config.yaml --smoke", language="bash")
+    st.write("从仓库根目录运行：")
+    st.code("source .venv/bin/activate\narl train 01-grpo/config.yaml --smoke", language="bash")
     status = run / "status.json"
     if status.exists():
         st.json(json.loads(status.read_text()))
@@ -71,4 +72,4 @@ with tabs[3]:
             with st.expander(name):
                 st.json(json.loads(report.read_text()))
     st.write("完整教程与来源记录：仓库 README.md、docs/ 和 references/upstream/。")
-st.caption(f"当前记录：{run}")
+st.caption(f"当前记录：{run.relative_to(ROOT).as_posix()}")

@@ -1,6 +1,6 @@
 {
   "command": [
-    "/data/xionglei-extract/agentic-rl-lab/.venv-verl-gpu/bin/arl",
+    "${PROJECT_ROOT}/.venv-verl-gpu/bin/arl",
     "train",
     "01-grpo/verify-gpu1.yaml",
     "--output",
@@ -13,105 +13,90 @@
     {
       "seconds": 0.10677106492221355,
       "physical_index": 1,
-      "uuid": "GPU-c063cb89-5e7c-1228-b9d4-6bef4945b171",
       "memory_mib": 0,
       "utilization_percent": 0
     },
     {
       "seconds": 2.217356512323022,
       "physical_index": 1,
-      "uuid": "GPU-c063cb89-5e7c-1228-b9d4-6bef4945b171",
       "memory_mib": 0,
       "utilization_percent": 0
     },
     {
       "seconds": 4.322447974234819,
       "physical_index": 1,
-      "uuid": "GPU-c063cb89-5e7c-1228-b9d4-6bef4945b171",
       "memory_mib": 0,
       "utilization_percent": 0
     },
     {
       "seconds": 6.4265819089487195,
       "physical_index": 1,
-      "uuid": "GPU-c063cb89-5e7c-1228-b9d4-6bef4945b171",
       "memory_mib": 4,
       "utilization_percent": 0
     },
     {
       "seconds": 8.528901886194944,
       "physical_index": 1,
-      "uuid": "GPU-c063cb89-5e7c-1228-b9d4-6bef4945b171",
       "memory_mib": 4,
       "utilization_percent": 0
     },
     {
       "seconds": 10.630482063628733,
       "physical_index": 1,
-      "uuid": "GPU-c063cb89-5e7c-1228-b9d4-6bef4945b171",
       "memory_mib": 4,
       "utilization_percent": 0
     },
     {
       "seconds": 12.80080059543252,
       "physical_index": 1,
-      "uuid": "GPU-c063cb89-5e7c-1228-b9d4-6bef4945b171",
       "memory_mib": 4,
       "utilization_percent": 0
     },
     {
       "seconds": 14.914141688495874,
       "physical_index": 1,
-      "uuid": "GPU-c063cb89-5e7c-1228-b9d4-6bef4945b171",
       "memory_mib": 4,
       "utilization_percent": 0
     },
     {
       "seconds": 17.016872939653695,
       "physical_index": 1,
-      "uuid": "GPU-c063cb89-5e7c-1228-b9d4-6bef4945b171",
       "memory_mib": 4,
       "utilization_percent": 0
     },
     {
       "seconds": 19.12659436929971,
       "physical_index": 1,
-      "uuid": "GPU-c063cb89-5e7c-1228-b9d4-6bef4945b171",
       "memory_mib": 4,
       "utilization_percent": 0
     },
     {
       "seconds": 21.30753383040428,
       "physical_index": 1,
-      "uuid": "GPU-c063cb89-5e7c-1228-b9d4-6bef4945b171",
       "memory_mib": 21,
       "utilization_percent": 0
     },
     {
       "seconds": 23.4535448923707,
       "physical_index": 1,
-      "uuid": "GPU-c063cb89-5e7c-1228-b9d4-6bef4945b171",
       "memory_mib": 561,
       "utilization_percent": 0
     },
     {
       "seconds": 25.677420892752707,
       "physical_index": 1,
-      "uuid": "GPU-c063cb89-5e7c-1228-b9d4-6bef4945b171",
       "memory_mib": 3463,
       "utilization_percent": 0
     },
     {
       "seconds": 27.778506728820503,
       "physical_index": 1,
-      "uuid": "GPU-c063cb89-5e7c-1228-b9d4-6bef4945b171",
       "memory_mib": 2869,
       "utilization_percent": 0
     },
     {
       "seconds": 29.88603975623846,
       "physical_index": 1,
-      "uuid": "GPU-c063cb89-5e7c-1228-b9d4-6bef4945b171",
       "memory_mib": 4,
       "utilization_percent": 0
     }

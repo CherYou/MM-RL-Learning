@@ -59,7 +59,7 @@
       "pid": 1401821,
       "url": "http://127.0.0.1:6006",
       "health": "http://127.0.0.1:6006/",
-      "log": "/data/xionglei-extract/agentic-rl-lab/runs/tensorboard-server.log",
+      "log": "${PROJECT_ROOT}/runs/tensorboard-server.log",
       "live": true,
       "http_status": 200
     },
@@ -67,7 +67,7 @@
       "pid": 1401822,
       "url": "http://127.0.0.1:8501",
       "health": "http://127.0.0.1:8501/_stcore/health",
-      "log": "/data/xionglei-extract/agentic-rl-lab/runs/dashboard-server.log",
+      "log": "${PROJECT_ROOT}/runs/dashboard-server.log",
       "live": true,
       "http_status": 200
     }

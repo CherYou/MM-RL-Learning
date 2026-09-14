@@ -7,7 +7,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from .data import ROOT
+from .data import ROOT, report_path
 from .losses import policy_loss
 from .logging import RunLogger
 
@@ -61,5 +61,5 @@ def run():
         logger.log(i, {"ratio": r["ratio"], "gradient": r["d_loss_d_logp"]})
     logger.close()
     (path / "status.json").write_text(json.dumps({"status": "completed", "device": "cpu"}) + "\n")
-    print(path)
+    print(report_path(path))
     return path

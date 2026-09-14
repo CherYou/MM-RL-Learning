@@ -75,7 +75,7 @@ def normalize(key, i, row):
         image_path = ROOT / "data/geoqa/images" / f"{i:06d}.png"
         image_path.parent.mkdir(parents=True, exist_ok=True)
         picture.convert("RGB").save(image_path)
-        result["image"] = str(image_path.relative_to(ROOT))
+        result["image"] = image_path.relative_to(ROOT).as_posix()
         result["original_split"] = row.get("original_split", "train")
     return result
 
@@ -251,8 +251,8 @@ if __name__ == "__main__":
     for key in SPECS if args.dataset == "all" else [] if args.dataset == "fixtures" else [args.dataset]:
         try:
             prepare(key, args.limit)
-        except Exception as e:
-            failures[key] = f"{type(e).__name__}: {e}"
+        except Exception as error:
+            failures[key] = {"error_type": type(error).__name__}
             print(f"FAILED {key}: {failures[key]}", flush=True)
     if failures:
         (ROOT / "reports/data-download-errors.json").write_text(json.dumps(failures, indent=2) + "\n")

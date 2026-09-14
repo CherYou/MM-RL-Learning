@@ -14,7 +14,7 @@
 
 条件策略写成：
 
-$$\pi_\theta(y_t\mid x,I,y_{<t}),$$
+$$\pi_\theta(y_t\mid x,I,y_{1:t-1}),$$
 
 其中 I 是图像像素经过 processor 后得到的视觉输入，不是图片路径字符串。Processor 还可能输出图像网格、尺寸等元数据，它们必须随样本一起传递。
 
@@ -22,7 +22,7 @@ $$\pi_\theta(y_t\mid x,I,y_{<t}),$$
 
 对同一 $(x,I)$ 生成 G 个答案，校验后得到组优势 $A_i$。令：
 
-$$r_{i,t}=\exp\big[\log\pi_\theta(y_{i,t}\mid x,I,y_{i,<t})-\log\pi_{old}(y_{i,t}\mid x,I,y_{i,<t})\big].$$
+$$r_{i,t}=\exp\big[\log\pi_\theta(y_{i,t}\mid x,I,y_{i,1:t-1})-\log\pi_{old}(y_{i,t}\mid x,I,y_{i,1:t-1})\big].$$
 
 本地使用序列归一化裁剪目标：
 

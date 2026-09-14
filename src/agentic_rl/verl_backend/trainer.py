@@ -2,14 +2,13 @@
 
 import json
 import os
-import platform
 import random
 import time
 
 import torch
 import verl
 
-from agentic_rl.data import ROOT
+from agentic_rl.data import ROOT, report_path
 from agentic_rl.logging import RunLogger
 from . import SUPPORTED
 from .algorithms import AlgorithmBatchBuilder
@@ -43,7 +42,6 @@ def run(config):
             "torch": torch.__version__,
             "torch_cuda_build": torch.version.cuda,
             "driver_pid": os.getpid(),
-            "host": platform.node(),
             "workers": runtime.evidence,
             "worker_class": "verl.single_controller.ray.RayWorkerGroup",
             "agent_loop": "agentic_rl.verl_backend.agent_loop.LabAgentLoop",
@@ -65,7 +63,7 @@ def run(config):
             random.setstate(state["python_rng"])
             start_step = state["next_step"]
             evidence["resume"] = {
-                "checkpoint": str(checkpoint),
+                "checkpoint": report_path(checkpoint),
                 "next_step": start_step,
                 "restored_parameters": runtime.group.fingerprint(),
             }
