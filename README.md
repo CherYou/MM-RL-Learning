@@ -26,7 +26,7 @@ PPO 与 DPO 位于 `001-ppo`、`002-dpo`；原损失函数目录扩展为 `preli
 
 | 模型 | 内容 | 阅读与下载 |
 | --- | --- | --- |
-| [DeepSeek-V4.1-Flash](Basic%20LLM/DeepSeek/DeepSeek-V4.1-Flash/README.md) | CED、CSA2、KV 缓存压缩、训练与推理基础设施、后训练和评估 | [中文合订稿](Basic%20LLM/DeepSeek/DeepSeek-V4.1-Flash/report.zh.md) · [PDF](Basic%20LLM/DeepSeek/DeepSeek-V4.1-Flash/documents/translation.zh.pdf) · [Word](Basic%20LLM/DeepSeek/DeepSeek-V4.1-Flash/documents/translation.zh.docx) |
+| [DeepSeek-V4.1-Flash](Basic%20LLM/DeepSeek/DeepSeek-V4.1-Flash/README.md) | CED、CSA2、KV 缓存压缩、训练与推理基础设施、后训练和评估 | [原始技术报告](https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/blob/main/DeepSeek_V41_Tech_Report.pdf) · [中文合订稿](Basic%20LLM/DeepSeek/DeepSeek-V4.1-Flash/report.zh.md) · [PDF](Basic%20LLM/DeepSeek/DeepSeek-V4.1-Flash/documents/translation.zh.pdf) · [Word](Basic%20LLM/DeepSeek/DeepSeek-V4.1-Flash/documents/translation.zh.docx) |
 
 DeepSeek 资料整理自提供的中文阅读文档，包含四份分章稿、12 张报告配图、英文提取文本、页面预览和文档导出工具。正式来源见 [DeepSeek 官方发布说明](https://api-docs.deepseek.com/news/news260910/) 与 [作者技术报告](https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/blob/main/DeepSeek_V41_Tech_Report.pdf)。中文资料属于学习用翻译与解读，报告中的实验结果属于原作者，不是本仓库的复现实验；文件对应关系见该目录的 `manifest.json`。
 

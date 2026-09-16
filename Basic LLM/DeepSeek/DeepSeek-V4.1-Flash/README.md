@@ -2,7 +2,7 @@
 
 [DeepSeek 目录](../README.md) · [Basic LLM](../../README.md) · [仓库首页](../../../README.md)
 
-原报告：**DeepSeek-V4.1-Flash: Pushing the Limits of KV Cache Compression**，作者 **DeepSeek-AI**。本目录整理提供的中文翻译、深度解读与配套文件，主题包括 CED 因果编码器–解码器、CSA2 压缩稀疏注意力、FP4 KV 缓存、有界重放、DSpark，以及预训练、后训练和评估。
+原报告：**[DeepSeek-V4.1-Flash: Pushing the Limits of KV Cache Compression](https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/blob/main/DeepSeek_V41_Tech_Report.pdf)**，作者 **DeepSeek-AI**。本目录整理提供的中文翻译、深度解读与配套文件，主题包括 CED 因果编码器–解码器、CSA2 压缩稀疏注意力、FP4 KV 缓存、有界重放、DSpark，以及预训练、后训练和评估。
 
 ## 从这里开始读
 

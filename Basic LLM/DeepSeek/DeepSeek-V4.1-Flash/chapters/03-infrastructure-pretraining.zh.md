@@ -1,5 +1,7 @@
 # 3. 通用基础设施
 
+> 原始技术报告：DeepSeek-AI. [DeepSeek-V4.1-Flash: Pushing the Limits of KV Cache Compression](https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/blob/main/DeepSeek_V41_Tech_Report.pdf).
+
 ## 3.1 训练基础设施
 
 ### 3.1.1 多模态训练基础设施

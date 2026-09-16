@@ -42,8 +42,8 @@
       "source_file": "dsv41_translation_full.md",
       "destination": "report.zh.md",
       "source_sha256": "d09b87b6b73449917c16ec93da8c6ffd120e485a3dae77c9265600c3c9901b85",
-      "change": "Normalized display-math fences and added relative figure links; prose retained.",
-      "destination_sha256": "c72aa729dddf55b063f87e5b79508b293dea28ced4d1f5b7e4e94b72100a79b2",
+      "change": "Normalized display-math fences and added relative figure links; prose retained. Added a direct original-report citation.",
+      "destination_sha256": "eefc75a927c18bb4a55a0318bcd45ead3ab1a590eb18b20661627c8562553bcf",
       "destination_hash_mode": "UTF-8 text with LF line endings"
     },
     {
@@ -378,32 +378,32 @@
       "source_file": "part1_intro.md",
       "destination": "chapters/01-overview.zh.md",
       "source_sha256": "6fd55e9219a96e42cdced16b415582c57e84f017dab7e1602d39807318b3898d",
-      "change": "Normalized display-math fences and added relative figure links; prose retained.",
-      "destination_sha256": "6fd55e9219a96e42cdced16b415582c57e84f017dab7e1602d39807318b3898d",
+      "change": "Normalized display-math fences and added relative figure links; prose retained. Added a direct original-report citation.",
+      "destination_sha256": "9e6190e6b33489493c1c2272fe560a9b6c8357de93b99a732b3bf8efb0af9087",
       "destination_hash_mode": "UTF-8 text with LF line endings"
     },
     {
       "source_file": "part2_arch.md",
       "destination": "chapters/02-architecture.zh.md",
       "source_sha256": "f2bb5ec9d93b3ac011b083778dbf2d965173ecaf8f431190cf5f62cd1d1d9fce",
-      "change": "Normalized display-math fences and added relative figure links; prose retained.",
-      "destination_sha256": "5188ed9d3ac1b2b1572a181880fd0b2aaa9336330dce2db5f90567c48cae4a98",
+      "change": "Normalized display-math fences and added relative figure links; prose retained. Added a direct original-report citation.",
+      "destination_sha256": "eca2db0f69cde0666703c5545054f8d6461d5beb6c314668f66d8c3f5d772d4c",
       "destination_hash_mode": "UTF-8 text with LF line endings"
     },
     {
       "source_file": "part3_infra.md",
       "destination": "chapters/03-infrastructure-pretraining.zh.md",
       "source_sha256": "62477fcaa0b546a034b49e16b92298e66f5a0512c2e88675db6aaac88cb30b7e",
-      "change": "Normalized display-math fences and added relative figure links; prose retained.",
-      "destination_sha256": "8af91574d5b80417d037d7b55dd77781547117bfc08a2f5fb20f729f2869ffce",
+      "change": "Normalized display-math fences and added relative figure links; prose retained. Added a direct original-report citation.",
+      "destination_sha256": "712ab7fb64e2f68db16eec7e67ec1f78bda11d1ef04ec6a2afdc653503ff8d29",
       "destination_hash_mode": "UTF-8 text with LF line endings"
     },
     {
       "source_file": "part4_post.md",
       "destination": "chapters/04-post-training-appendices.zh.md",
       "source_sha256": "c6b813dd7df48350378dd35eee17d366263344f02f29a0000f77b02d2b601e53",
-      "change": "Normalized display-math fences and added relative figure links; prose retained.",
-      "destination_sha256": "a84ccd39c63628ea4f7a324d2bff5e403ded2ef1cffadfbbaec853416db37317",
+      "change": "Normalized display-math fences and added relative figure links; prose retained. Added a direct original-report citation.",
+      "destination_sha256": "c456040e7e917d0aaa2e39996115b1fdab4e7d2e89dffe588c714e31a0c5b620",
       "destination_hash_mode": "UTF-8 text with LF line endings"
     },
     {

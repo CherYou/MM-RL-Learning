@@ -1,5 +1,7 @@
 # 第二部分 全文中文翻译
 
+> 原始技术报告：DeepSeek-AI. [DeepSeek-V4.1-Flash: Pushing the Limits of KV Cache Compression](https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/blob/main/DeepSeek_V41_Tech_Report.pdf).
+
 > 翻译说明：本部分为原文的忠实中文翻译，术语按文末对照表统一；公式、图号、表号与原论文一致；参考文献与作者列表保留英文原文（见附录说明）。
 
 ---
