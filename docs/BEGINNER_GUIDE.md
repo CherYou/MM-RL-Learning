@@ -2,7 +2,28 @@
 
 你不需要先学会分布式训练。读完这组教程，首先应该能回答三个问题：模型这一次看见了什么？哪个信号在告诉它好坏？这个信号最后改变了哪些参数？
 
-每章的 `TUTORIAL.md` 是重新编写的中文讲解，README 保留运行说明。图为内置 imagegen 生成的概念插图，图中的机器人表示模型角色，不表示不同角色一定使用不同网络。公式和真实代码是机制依据；插图不代表实验测量。
+每章 README 开头都有 **“直接阅读本章新手教程：TUTORIAL.md”** 链接，根目录表格也可直接进入各章教程。`TUTORIAL.md` 负责概念、动机、推导、手算和自测，README 保留安装与运行说明。
+
+建议一章读两遍。第一遍顺着“遇到什么困难 → 为什么引入下一部分 → 一次更新发生什么”理解，不急着记全部符号。第二遍自己重算数字例子，再沿代码链接查对应变量。节末练习先遮住答案；如果只能复述名词而说不清它解决的问题，就返回该概念出现前的动机段。
+
+图中的机器人表示模型角色，不表示一定是独立网络。原概念插图用于辅助直觉，PPO 另有包含 old、reference、reward、critic 和更新路径的完整流程图；以图旁说明的范围为准。图不是实验测量，也不能替代具体公式和执行代码。
+
+## 遇到这些词，先用普通话读一遍
+
+| 术语 | 本书中的读法 |
+| --- | --- |
+| Policy / actor | 根据当前信息做选择的模型 |
+| Reward / return | 一步获得的反馈 / 从当前起未来反馈的总账 |
+| Critic / value | 预测未来回报的模型 / 它预测的数值 |
+| Advantage / baseline | 相对基准好多少 / 拿来比较的预期水平 |
+| Rollout / trajectory / episode | 一次采样过程 / 记录下的行动与反馈 / 从初始化到停止的一回合 |
+| Group / batch | 同题的多个候选 / 一次更新使用的一批样本 |
+| On-policy / off-policy / offline | 当前策略采样 / 可以用旧行为数据 / 训练只用固定数据 |
+| Bootstrap / target network | 用预测补全尚未知的未来 / 缓慢更新的目标副本 |
+| Mask / detach | 哪些位置直接计损失 / 哪条计算分支停止梯度 |
+| Reference / teacher | 固定行为参照 / 提供学习反馈的教师；两者用途不同 |
+
+这些是帮助阅读的简写，各章会给出具体条件。例如 critic 在 PPO 中预测 V，在 SAC/TD3 中预测 Q，在 TEMPO 中则通过生成数字字符串扮演估值角色，不能仅凭同一个名字认为实现相同。
 
 ## 一条适合第一次学习的路线
 
@@ -97,6 +118,10 @@ Medical 章节包含 SFT、Medical OPD、SAR-OPD、IDT-OPD；preliminary 损失�
 
 ## 资料和原创范围
 
+教程采用“先解释来源解决什么疑问，再给链接”的引用方式。论文用于核对机制；作者教材、官方教程用于补充教学视角；本地数值与代码说明以本仓库实现为准。研究主张、教学例子和本地运行结果分别标明，未把其他项目成绩写成本仓库成绩。
+
 算法名称及机制依据链接到作者论文、官方文档或作者博客；本地行为依据实际代码。例子、阅读顺序、中文解释和诊断建议为本教程重新设计。上游参考副本继续保留原作者归属，不当作本教程原创内容。
 
 理论背景可查 [PPO 原论文](https://arxiv.org/abs/1707.06347)、[DeepSeekMath](https://arxiv.org/abs/2402.03300) 与 [DPO 原论文](https://arxiv.org/abs/2305.18290)。每章给出更具体的来源，不要求初学者先读完论文才能开始。
+
+需要另一种详细解释时，可补读 [Spinning Up 的策略梯度课](https://spinningup.openai.com/en/latest/spinningup/rl_intro3.html)、[SAC 教程](https://spinningup.openai.com/en/latest/algorithms/sac.html)、[TD3 教程](https://spinningup.openai.com/en/latest/algorithms/td3.html) 和 [Nathan Lambert 的 RLHF 教材](https://rlhfbook.com/c/06-policy-gradients)。这里引用概念依据并重新设计例子，没有整段搬运博客正文。

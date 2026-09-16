@@ -1,6 +1,8 @@
 # DPO：离线偏好优化
 
-**初次学习请先读 [新手算法详解](TUTORIAL.md)：直觉、公式、loss、代码对应与练习答案。**
+**[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
+
+从偏好对开始，推到 reference 校正、DPO loss 与具体更新。建议先读教程完成手算和自测，再回到本页运行代码。
 
 这是本地新增章节。 · [总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
 

@@ -1,6 +1,8 @@
 # Harness-RL：接口轨迹树与 CAPO
 
-**初次学习请先读 [新手算法详解](TUTORIAL.md)：直觉、公式、loss、代码对应与练习答案。**
+**[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
+
+先认清调用与字段，再理解轨迹记录和 CAPO 参数分区。建议先读教程完成手算和自测，再回到本页运行代码。
 
 这是本地新增章节。 · [总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
 

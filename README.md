@@ -58,28 +58,28 @@ make status
 
 语言模型路线：**preliminary → 001 PPO → 002 DPO → 01 GRPO → DAPO/GSPO → OPD/OPSD → 工具 Agent → ALFWorld/AgentOPSD/TEMPO → Harness-RL**。连续控制路线：**preliminary → SAC → TD3 → HER → IQL**。每章 README 的第一条学习入口指向详细教程。
 
-| 目录 | 本地重点 | 默认后端 |
-| --- | --- | --- |
-| [preliminary](preliminary/README.md) | 前置知识、IS、PPO surrogate、CISPO 梯度图 | PyTorch autograd |
-| [001-ppo](001-ppo/README.md) | Actor、value model、GAE、KL、PPO epochs | TRL PPOTrainer |
-| [002-dpo](002-dpo/README.md) | chosen/rejected 与 reference 校正 | TRL DPOTrainer |
-| [01-grpo](01-grpo/README.md) | GSM8K、组内 advantage、KL | TRL GRPOTrainer |
-| [02-opd](02-opd/README.md) | 医疗 SFT、SAR 分阶段恢复、IDT 交替 Teacher | TRL SFT + verl OPD |
-| [02-opd/general-opd](02-opd/general-opd/README.md) | 学生采样、教师复评、sampled reverse KL | verl WorkerGroup |
-| [03-search-r1](03-search-r1/README.md) | 本地真实文档检索、多轮 observation mask | verl WorkerGroup |
-| [04-opsd](04-opsd/README.md) | 固定 step-0 Teacher，特权 solution 条件 | verl WorkerGroup |
-| [05-retool](05-retool/README.md) | 实际数值 Python 执行、代码/观察交织 | verl WorkerGroup |
-| [06-dapo](06-dapo/README.md) | Clip-Higher、补采、token reduction、长度处理 | verl WorkerGroup |
-| [07-gspo](07-gspo/README.md) | 序列级几何平均 ratio 与 clipping | TRL GRPOTrainer |
-| [08-alfworld](08-alfworld/README.md) | 真实 TextWorld 游戏，独立 rollout 组 | verl WorkerGroup |
-| [09-AgentOPSD](09-AgentOPSD/README.md) | 当前快照 + Skill，turn-level credit | verl WorkerGroup |
-| [09-tempo](09-tempo/README.md) | 状态重放、macro-step、生成式 critic | verl WorkerGroup |
-| [09-vision-grpo](09-vision-grpo/README.md) | 实际图片输入、VLM logprob 与反传 | verl + Transformers VLM |
-| [12-harness-rl](12-harness-rl/README.md) | 接口记录、session prefix trees、CAPO | verl WorkerGroup |
-| [13-sac](13-sac/README.md) | 连续策略、最大熵、双 Q 与自动温度 | PyTorch embodied |
-| [14-td3](14-td3/README.md) | 双 Q、延迟 actor、目标动作平滑 | PyTorch embodied |
-| [15-her](15-her/README.md) | 同轨迹 future goal 重标记 + TD3 | PyTorch embodied |
-| [16-iql](16-iql/README.md) | 固定数据、expectile V、优势加权模仿 | PyTorch embodied |
+| 目录与运行说明 | 算法教程 | 本地重点 | 默认后端 |
+| --- | --- | --- | --- |
+| [preliminary](preliminary/README.md) | [TUTORIAL.md](preliminary/TUTORIAL.md) | 前置知识、IS、PPO surrogate、CISPO 梯度图 | PyTorch autograd |
+| [001-ppo](001-ppo/README.md) | [TUTORIAL.md](001-ppo/TUTORIAL.md) | Actor、value model、GAE、KL、PPO epochs | TRL PPOTrainer |
+| [002-dpo](002-dpo/README.md) | [TUTORIAL.md](002-dpo/TUTORIAL.md) | chosen/rejected 与 reference 校正 | TRL DPOTrainer |
+| [01-grpo](01-grpo/README.md) | [TUTORIAL.md](01-grpo/TUTORIAL.md) | GSM8K、组内 advantage、KL | TRL GRPOTrainer |
+| [02-opd](02-opd/README.md) | [TUTORIAL.md](02-opd/TUTORIAL.md) | 医疗 SFT、SAR 分阶段恢复、IDT 交替 Teacher | TRL SFT + verl OPD |
+| [02-opd/general-opd](02-opd/general-opd/README.md) | [TUTORIAL.md](02-opd/general-opd/TUTORIAL.md) | 学生采样、教师复评、sampled reverse KL | verl WorkerGroup |
+| [03-search-r1](03-search-r1/README.md) | [TUTORIAL.md](03-search-r1/TUTORIAL.md) | 本地真实文档检索、多轮 observation mask | verl WorkerGroup |
+| [04-opsd](04-opsd/README.md) | [TUTORIAL.md](04-opsd/TUTORIAL.md) | 固定 step-0 Teacher，特权 solution 条件 | verl WorkerGroup |
+| [05-retool](05-retool/README.md) | [TUTORIAL.md](05-retool/TUTORIAL.md) | 实际数值 Python 执行、代码/观察交织 | verl WorkerGroup |
+| [06-dapo](06-dapo/README.md) | [TUTORIAL.md](06-dapo/TUTORIAL.md) | Clip-Higher、补采、token reduction、长度处理 | verl WorkerGroup |
+| [07-gspo](07-gspo/README.md) | [TUTORIAL.md](07-gspo/TUTORIAL.md) | 序列级几何平均 ratio 与 clipping | TRL GRPOTrainer |
+| [08-alfworld](08-alfworld/README.md) | [TUTORIAL.md](08-alfworld/TUTORIAL.md) | 真实 TextWorld 游戏，独立 rollout 组 | verl WorkerGroup |
+| [09-AgentOPSD](09-AgentOPSD/README.md) | [TUTORIAL.md](09-AgentOPSD/TUTORIAL.md) | 当前快照 + Skill，turn-level credit | verl WorkerGroup |
+| [09-tempo](09-tempo/README.md) | [TUTORIAL.md](09-tempo/TUTORIAL.md) | 状态重放、macro-step、生成式 critic | verl WorkerGroup |
+| [09-vision-grpo](09-vision-grpo/README.md) | [TUTORIAL.md](09-vision-grpo/TUTORIAL.md) | 实际图片输入、VLM logprob 与反传 | verl + Transformers VLM |
+| [12-harness-rl](12-harness-rl/README.md) | [TUTORIAL.md](12-harness-rl/TUTORIAL.md) | 接口记录、session prefix trees、CAPO | verl WorkerGroup |
+| [13-sac](13-sac/README.md) | [TUTORIAL.md](13-sac/TUTORIAL.md) | 连续策略、最大熵、双 Q 与自动温度 | PyTorch embodied |
+| [14-td3](14-td3/README.md) | [TUTORIAL.md](14-td3/TUTORIAL.md) | 双 Q、延迟 actor、目标动作平滑 | PyTorch embodied |
+| [15-her](15-her/README.md) | [TUTORIAL.md](15-her/TUTORIAL.md) | 同轨迹 future goal 重标记 + TD3 | PyTorch embodied |
+| [16-iql](16-iql/README.md) | [TUTORIAL.md](16-iql/TUTORIAL.md) | 固定数据、expectile V、优势加权模仿 | PyTorch embodied |
 
 上游提到 Slime，但固定提交没有独立 Slime 算法目录；这里按实际目录完整映射。框架选择与版本依据见 [调研记录](docs/RESEARCH.md)。
 

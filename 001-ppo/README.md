@@ -1,6 +1,8 @@
 # PPO：Actor、Critic、GAE 与 KL
 
-**初次学习请先读 [新手算法详解](TUTORIAL.md)：直觉、公式、loss、代码对应与练习答案。**
+**[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
+
+从五种角色、reward/return 到 TD、GAE，再逐步理解 PPO 裁剪。建议先读教程完成手算和自测，再回到本页运行代码。
 
 这是本地新增章节。 · [总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
 

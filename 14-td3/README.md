@@ -1,6 +1,8 @@
 # TD3：具身强化学习基础
 
-**先读 [新手算法详解](TUTORIAL.md)：直觉、关键公式、loss、手算、代码路线与练习答案。**
+**[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
+
+先理解 DDPG，再看双 Q、延迟更新和目标动作平滑。建议先读教程完成手算和自测，再回到本页运行代码。
 
 [总目录](../README.md) · [前置知识](../preliminary/FOUNDATIONS.md) · [共享环境与验证说明](../docs/EMBODIED.md)
 

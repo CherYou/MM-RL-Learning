@@ -1,5 +1,9 @@
 # Preliminary：读算法之前的基础课
 
+**[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
+
+先理解概率、梯度和停止梯度，再比较 IS、PPO、CISPO。术语陌生时，可先读下方的基础知识详解。
+
 [基础知识详解](FOUNDATIONS.md) · [损失函数详解](TUTORIAL.md) · [总目录](../README.md)
 
 建议先学“数据是怎么来的、模型在预测什么、梯度改变了谁”，再比较各章 loss。

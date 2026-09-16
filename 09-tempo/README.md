@@ -1,6 +1,8 @@
 # TEMPO：macro-step 与生成式 critic
 
-**初次学习请先读 [新手算法详解](TUTORIAL.md)：直觉、公式、loss、代码对应与练习答案。**
+**[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
+
+逐步解释宏步、自举估计、生成式 critic 与状态恢复。建议先读教程完成手算和自测，再回到本页运行代码。
 
 [总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
 

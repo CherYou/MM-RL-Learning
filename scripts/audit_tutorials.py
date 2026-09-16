@@ -41,8 +41,18 @@ def main():
         text = tutorial.read_text(encoding="utf-8")
         documents.extend([tutorial, folder / "README.md"])
         prefix = row["chapter"] + "/"
-        checks[prefix + "entry_link"] = "TUTORIAL.md" in (folder / "README.md").read_text(
-            encoding="utf-8"
+        chapter_readme = (folder / "README.md").read_text(encoding="utf-8")
+        checks[prefix + "entry_link"] = bool(
+            re.search(r"\[[^\]]+\]\(TUTORIAL\.md\)", chapter_readme)
+        )
+        checks[prefix + "entry_near_top"] = bool(
+            re.search(
+                r"\[[^\]]+\]\(TUTORIAL\.md\)",
+                "\n".join(chapter_readme.splitlines()[:12]),
+            )
+        )
+        checks[prefix + "root_tutorial_link"] = (
+            f"]({row['chapter']}/TUTORIAL.md)" in root_readme
         )
         math_fence_starts = len(
             re.findall(r"^```math[ \t]*$", text, re.IGNORECASE | re.MULTILINE)
