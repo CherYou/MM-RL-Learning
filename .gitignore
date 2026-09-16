@@ -13,3 +13,4 @@ models/
 runs/
 *.pid
 .env
+Basic LLM/**/build/

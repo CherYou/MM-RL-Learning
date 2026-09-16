@@ -1,0 +1,62 @@
+<html style="margin:0;padding:0;">
+<div style="background-color:transparent;box-sizing:border-box;font-family:'Roboto','PingFang SC','Segoe UI',Arial,sans-serif;color:#1A1B1C;max-width:720px;">
+  <div style="font-size:16px;font-weight:600;margin:8px 0 4px;">KV 缓存压缩的三重杠杆（示意）</div>
+  <div style="font-size:12px;color:#6B7280;line-height:1.5;margin-bottom:12px;">机制示意：架构 × 注意力复用 × 精度 × 部署策略联合压缩。全局 KV 足迹由 V1 的约 389KB/token 降至 V4.1-Flash 的 890B/token（约 1/437）。</div>
+
+  <!-- 输入 -->
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:stretch;margin-bottom:10px;">
+    <div style="flex:1 1 220px;min-width:0;padding:10px 12px;border-radius:12px;background:rgba(158,172,234,0.14);border:1px solid rgba(0,0,0,0.08);box-sizing:border-box;">
+      <div style="font-size:13px;font-weight:600;">输入：长程智能体工作负载</div>
+      <div style="font-size:12px;color:#6B7280;margin-top:4px;line-height:1.5;">频繁工具调用 → 大量预填充请求；超长上下文 → 大 KV 缓存。瓶颈：HBM 容量（全局 KV）、SSD/主机内存（持久化 KV）、I/O 带宽。</div>
+    </div>
+    <div style="flex:0 0 auto;display:flex;align-items:center;font-size:18px;color:#9EACEA;">→</div>
+    <div style="flex:1 1 220px;min-width:0;padding:10px 12px;border-radius:12px;background:rgba(158,172,234,0.28);border:1px solid rgba(0,0,0,0.08);box-sizing:border-box;">
+      <div style="font-size:13px;font-weight:600;">552B 主干 · MoE</div>
+      <div style="font-size:12px;color:#4B5563;margin-top:4px;line-height:1.5;">预填充激活 8B/token、解码激活 16B/token；原生多模态；最高 100 万 token 上下文。</div>
+    </div>
+  </div>
+
+  <!-- 四个杠杆 -->
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:stretch;padding:10px 12px;border-radius:12px;background:rgba(139,200,234,0.10);border-left:4px solid #8BC8EA;box-sizing:border-box;">
+      <div style="flex:0 0 150px;min-width:0;"><div style="font-size:13px;font-weight:600;">① 架构 · CED</div><div style="font-size:11px;color:#6B7280;">因果编码器-解码器</div></div>
+      <div style="flex:1 1 260px;min-width:0;font-size:12px;color:#4B5563;line-height:1.5;">解码器全局 KV 由最终编码器隐状态 H<sub>L/2</sub> 一次性投影得到；预填充只需计算前半网络，复杂度 O(NL) → ≈ O(NL/2)。</div>
+      <div style="flex:0 0 130px;min-width:0;text-align:right;font-size:12px;font-weight:600;color:#1A1B1C;">预填充计算 ≈ 减半</div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:stretch;padding:10px 12px;border-radius:12px;background:rgba(147,197,253,0.12);border-left:4px solid #9BBBF4;box-sizing:border-box;">
+      <div style="flex:0 0 150px;min-width:0;"><div style="font-size:13px;font-weight:600;">② 注意力 · CSA2</div><div style="font-size:11px;color:#6B7280;">跨层复用 + 分层索引</div></div>
+      <div style="flex:1 1 260px;min-width:0;font-size:12px;color:#4B5563;line-height:1.5;">Full / Reindex / Reuse 三种模式跨层共享主 KV 与索引器 K、复用 Top-K 索引；分层稀疏索引器把深层索引器搜索域固定为 16K 候选，每查询成本从随上下文线性变为常数。</div>
+      <div style="flex:0 0 130px;min-width:0;text-align:right;font-size:12px;font-weight:600;color:#1A1B1C;">层维度压缩缓存与索引</div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:stretch;padding:10px 12px;border-radius:12px;background:rgba(148,216,195,0.14);border-left:4px solid #94D8C3;box-sizing:border-box;">
+      <div style="flex:0 0 150px;min-width:0;"><div style="font-size:13px;font-weight:600;">③ 精度 · FP4 主 KV</div><div style="font-size:11px;color:#6B7280;">MXFP4 + QAT</div></div>
+      <div style="flex:1 1 260px;min-width:0;font-size:12px;color:#4B5563;line-height:1.5;">主 KV 用 E2M1 + 每 16 通道 E4M3 缩放（省略全局缩放，幅值上界 √512≈22.6 远低于格式上限 2688）；后训练引入 QAT，在 RoPE 后量化；SWA KV 保留 FP8。</div>
+      <div style="flex:0 0 130px;min-width:0;text-align:right;font-size:12px;font-weight:600;color:#1A1B1C;">主 KV 足迹 ≈ 减半</div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:stretch;padding:10px 12px;border-radius:12px;background:rgba(196,167,232,0.14);border-left:4px solid #C9A7E8;box-sizing:border-box;">
+      <div style="flex:0 0 150px;min-width:0;"><div style="font-size:13px;font-weight:600;">④ 部署 · SWA 有界重放</div><div style="font-size:11px;color:#6B7280;">持久化缓存优化</div></div>
+      <div style="flex:1 1 260px;min-width:0;font-size:12px;color:#4B5563;line-height:1.5;">SWA KV 不再持久化；未命中时只重放最近 n_win=128 个 token 近似重建（编码器/解码器两条路径），将"灾难性未命中"变为"廉价降级"；训练中模拟同样重放做训练感知适配。</div>
+      <div style="flex:0 0 130px;min-width:0;text-align:right;font-size:12px;font-weight:600;color:#1A1B1C;">持久化 KV ≈ 减半</div>
+    </div>
+  </div>
+
+  <!-- 结果 -->
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;">
+    <div style="flex:1 1 200px;min-width:0;padding:12px;border-radius:12px;background:linear-gradient(135deg, rgba(158,172,234,0.18), rgba(139,200,234,0.24));box-sizing:border-box;">
+      <div style="font-size:12px;color:#6B7280;">全局 KV 足迹（常驻 HBM）</div>
+      <div style="font-size:20px;font-weight:600;margin-top:4px;">890 <span style="font-size:12px;color:#6B7280;font-weight:400;">B/token</span></div>
+      <div style="font-size:11px;color:#4B5563;margin-top:4px;">≈ V4-Flash 的 1/4；≈ V1 的 1/437</div>
+    </div>
+    <div style="flex:1 1 200px;min-width:0;padding:12px;border-radius:12px;background:linear-gradient(135deg, rgba(148,216,195,0.16), rgba(162,221,170,0.22));box-sizing:border-box;">
+      <div style="font-size:12px;color:#6B7280;">持久化 KV 足迹（SSD/主机内存）</div>
+      <div style="font-size:20px;font-weight:600;margin-top:4px;">≈ V4-Flash 的 <span style="font-size:16px;">1/8</span></div>
+      <div style="font-size:11px;color:#4B5563;margin-top:4px;">SWA KV 移出持久化缓存，仅全局 KV 留存 ≥72h</div>
+    </div>
+    <div style="flex:1 1 200px;min-width:0;padding:12px;border-radius:12px;background:linear-gradient(135deg, rgba(147,197,253,0.16), rgba(139,200,234,0.20));box-sizing:border-box;">
+      <div style="font-size:12px;color:#6B7280;">解码 FLOPs 随上下文几乎恒定</div>
+      <div style="font-size:20px;font-weight:600;margin-top:4px;">4K → 1M <span style="font-size:12px;color:#6B7280;font-weight:400;">仅 +1/4</span></div>
+      <div style="font-size:11px;color:#4B5563;margin-top:4px;">256 倍上下文扩展，解码成本微增</div>
+    </div>
+  </div>
+</div>
+</html>

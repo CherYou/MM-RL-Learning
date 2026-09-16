@@ -21,6 +21,14 @@ The continuous-control implementations in src/agentic_rl/embodied are locally
 written educational implementations of SAC, TD3, HER and IQL mechanisms.
 See docs/CODE_PROVENANCE.md and reports/code-provenance-audit.json for scope.
 
+Basic LLM contains separately supplied technical-report reading materials.
+DeepSeek-V4.1-Flash report text, figures and original-page images are attributed
+to DeepSeek-AI. Chinese translation, commentary and document tools were imported
+from user-supplied materials; they are not claimed as new original work of this
+repository. See the model directory README.md and manifest.json for attribution,
+file mapping and changes. The repository license does not relicense third-party
+paper content or figures.
+
 The optional verl backends use the official verl project, Apache-2.0,
 https://github.com/verl-project/verl
 Pinned release: v0.7.1, revision bec9ef74768dd201881cd4e54cd0385e87caae27.

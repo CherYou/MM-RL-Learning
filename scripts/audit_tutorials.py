@@ -5,6 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+from urllib.parse import unquote
 
 from PIL import Image
 
@@ -94,7 +95,7 @@ def main():
         for link in re.findall(
             r"\[[^\]]*\]\(([^)]+)\)", document.read_text(encoding="utf-8")
         ):
-            link = link.strip("<>").split("#", 1)[0]
+            link = unquote(link.strip("<>").split("#", 1)[0])
             if (
                 link
                 and not link.startswith(("http:", "https:", "mailto:"))

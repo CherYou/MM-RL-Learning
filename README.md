@@ -1,4 +1,6 @@
-# Agentic RL Lab · 本地学习复现版
+# MM-RL-Learning
+
+面向大模型、多模态与强化学习的中文学习仓库，包含技术报告阅读资料、算法新手教程、可运行的训练实现与实验验证记录。
 
 ## 参考与感谢
 
@@ -10,7 +12,7 @@
 
 ## 这套课程包含什么
 
-目前共 **19 个顶层学习目录、20 篇算法详解**（包括 General OPD 子章），每篇配有内置图像生成工具制作的原创概念图。另有 `preliminary/FOUNDATIONS.md` 补足 MDP、Bellman 方程、概率、自动求导、回放、离线学习和实验评估等前置知识。开始阅读：[零基础学习导航](docs/BEGINNER_GUIDE.md)。
+强化学习部分目前共 **19 个顶层学习目录、20 篇算法详解**（包括 General OPD 子章），每篇配有内置图像生成工具制作的原创概念图。另有 `preliminary/FOUNDATIONS.md` 补足 MDP、Bellman 方程、概率、自动求导、回放、离线学习和实验评估等前置知识。开始阅读：[零基础学习导航](docs/BEGINNER_GUIDE.md)。大模型技术报告资料收录在 [Basic LLM](Basic%20LLM/README.md)。
 
 PPO 与 DPO 位于 `001-ppo`、`002-dpo`；原损失函数目录扩展为 `preliminary`。新增 SAC、TD3、HER、IQL 用真实 FetchReach / MuJoCo 演示连续动作、稀疏奖励和固定数据学习，是理解具身/VLA 强化学习的基础课；输入为低维机械状态与目标，尚未训练视觉语言动作模型。
 
@@ -18,13 +20,23 @@ PPO 与 DPO 位于 `001-ppo`、`002-dpo`；原损失函数目录扩展为 `preli
 
 已完成代码、实验数据、依赖、本地日志与 CPU 执行验证。2026-09-10 新增 **物理 1 号 A100 上的 verl GRPO 实际验证**：Qwen2.5-0.5B-Instruct、真实 GSM8K 奖励、48 条 rollout、3 次非零梯度更新及 checkpoint 重载评估。详见 [GPU 验证记录](docs/GRPO_GPU_VALIDATION.md)。这属于功能验证，尚未证明模型能力提升或复现论文准确率。
 
+## 大模型技术报告
+
+[Basic LLM](Basic%20LLM/README.md) 按“模型系列 → 模型版本”组织技术报告、中文翻译与解读、原文资料和配图。阅读报告可帮助理解模型架构、训练和推理系统，再与本仓库的强化学习实现对照。
+
+| 模型 | 内容 | 阅读与下载 |
+| --- | --- | --- |
+| [DeepSeek-V4.1-Flash](Basic%20LLM/DeepSeek/DeepSeek-V4.1-Flash/README.md) | CED、CSA2、KV 缓存压缩、训练与推理基础设施、后训练和评估 | [中文合订稿](Basic%20LLM/DeepSeek/DeepSeek-V4.1-Flash/report.zh.md) · [PDF](Basic%20LLM/DeepSeek/DeepSeek-V4.1-Flash/documents/translation.zh.pdf) · [Word](Basic%20LLM/DeepSeek/DeepSeek-V4.1-Flash/documents/translation.zh.docx) |
+
+DeepSeek 资料整理自提供的中文阅读文档，包含四份分章稿、12 张报告配图、英文提取文本、页面预览和文档导出工具。正式来源见 [DeepSeek 官方发布说明](https://api-docs.deepseek.com/news/news260910/) 与 [作者技术报告](https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/blob/main/DeepSeek_V41_Tech_Report.pdf)。中文资料属于学习用翻译与解读，报告中的实验结果属于原作者，不是本仓库的复现实验；文件对应关系见该目录的 `manifest.json`。
+
 ## 五分钟开始
 
 项目面向 Linux / WSL 和 Python 3.12。初始化脚本会在当前仓库内创建 `.venv/`；verl CPU 与 GPU 环境分别使用 `.venv-verl/` 和 `.venv-verl-gpu/`。复杂算法默认走 verl，CLI 会按设备切换环境。
 
 ```bash
-git clone https://github.com/CherYou/mm-agent-rl-lab.git
-cd mm-agent-rl-lab
+git clone https://github.com/CherYou/MM-RL-Learning.git
+cd MM-RL-Learning
 bash scripts/setup.sh
 source .venv/bin/activate
 

@@ -1,0 +1,426 @@
+{
+  "import_date": "2026-09-16",
+  "source_collection": "User-supplied new-chat export",
+  "source_files": 52,
+  "unique_imported_files": 51,
+  "translated_pdf_pages": 58,
+  "scope": "Organized supplied content. No full translation or scientific correctness audit performed.",
+  "files": [
+    {
+      "source_file": "DeepSeek-V4.1-Flash技术报告_中文翻译与深度解读.docx",
+      "destination": "documents/translation.zh.docx",
+      "source_sha256": "e1b6cd312ae5b4877fbb13e9048d3cb90af3cc82b2141c29901558515321c3a0",
+      "change": "Copied without content changes.",
+      "destination_sha256": "e1b6cd312ae5b4877fbb13e9048d3cb90af3cc82b2141c29901558515321c3a0",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "docx2pdf3.ps1",
+      "destination": "tools/docx2pdf.ps1",
+      "source_sha256": "b0b5d26569c5c27332e0e54a553632dba26662333b3257a16d3a283d6662b9c5",
+      "change": "Replaced machine paths with parameters; added read-only Word import, cleanup and overwrite protection.",
+      "destination_sha256": "2c3eaef92a7be9702b41757be166c9ef561f80a248fb3e05600c1e647da40eef",
+      "destination_hash_mode": "UTF-8 text with LF line endings"
+    },
+    {
+      "source_file": "dsv41_full.txt",
+      "destination": "source/report.en.txt",
+      "source_sha256": "3f897253785e2617a46ad0254eceb53e10eea03c750c839fbd09a96325ef4e05",
+      "change": "Joined one wrapped sentence and repaired one line-wrapped reference URL; extracted report content retained.",
+      "destination_sha256": "e1e3e0b940575ea13a1194b13d8f321428dc8eedf6f0be20c9b06dfaf51ba2d6",
+      "destination_hash_mode": "UTF-8 text with LF line endings"
+    },
+    {
+      "source_file": "dsv41_preview_src.docx",
+      "destination": "documents/translation.zh.docx",
+      "source_sha256": "e1b6cd312ae5b4877fbb13e9048d3cb90af3cc82b2141c29901558515321c3a0",
+      "change": "Deduplicated byte-identical DOCX into documents/translation.zh.docx.",
+      "destination_sha256": "e1b6cd312ae5b4877fbb13e9048d3cb90af3cc82b2141c29901558515321c3a0",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "dsv41_translation_full.md",
+      "destination": "report.zh.md",
+      "source_sha256": "d09b87b6b73449917c16ec93da8c6ffd120e485a3dae77c9265600c3c9901b85",
+      "change": "Normalized display-math fences and added relative figure links; prose retained.",
+      "destination_sha256": "c72aa729dddf55b063f87e5b79508b293dea28ced4d1f5b7e4e94b72100a79b2",
+      "destination_hash_mode": "UTF-8 text with LF line endings"
+    },
+    {
+      "source_file": "figures/Figure1.png",
+      "destination": "assets/figures/figure-01.png",
+      "source_sha256": "3b0892ab1967844adac6eb9794c30b0457631a45aa4db7c339b75afb3c0bf9e7",
+      "change": "Copied without content changes.",
+      "destination_sha256": "3b0892ab1967844adac6eb9794c30b0457631a45aa4db7c339b75afb3c0bf9e7",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "figures/Figure10.png",
+      "destination": "assets/figures/figure-10.png",
+      "source_sha256": "b940b7fa5670506e8e22680ae229dce38778ebdb9137c28b036b097be3876b98",
+      "change": "Copied without content changes.",
+      "destination_sha256": "b940b7fa5670506e8e22680ae229dce38778ebdb9137c28b036b097be3876b98",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "figures/Figure11.png",
+      "destination": "assets/figures/figure-11.png",
+      "source_sha256": "33e84f74f744c7da1dc75382c62c072c52ca7603072a1f201e9854d2ac5d4a8b",
+      "change": "Copied without content changes.",
+      "destination_sha256": "33e84f74f744c7da1dc75382c62c072c52ca7603072a1f201e9854d2ac5d4a8b",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "figures/Figure12.png",
+      "destination": "assets/figures/figure-12.png",
+      "source_sha256": "ab1ca9ef10232dc6efad84e32c61c6eaab51bf8aac4ca0713010a04574d4c37b",
+      "change": "Copied without content changes.",
+      "destination_sha256": "ab1ca9ef10232dc6efad84e32c61c6eaab51bf8aac4ca0713010a04574d4c37b",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "figures/Figure2.png",
+      "destination": "assets/figures/figure-02.png",
+      "source_sha256": "9bcfa3e2d50a1876536e39108df23d30c06b92de44e496a914c2e14bed7aa654",
+      "change": "Copied without content changes.",
+      "destination_sha256": "9bcfa3e2d50a1876536e39108df23d30c06b92de44e496a914c2e14bed7aa654",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "figures/Figure3.png",
+      "destination": "assets/figures/figure-03.png",
+      "source_sha256": "906fe6619d0f381814d33473bd649c8b24772d8d1f295b13816ee5a20ec684df",
+      "change": "Copied without content changes.",
+      "destination_sha256": "906fe6619d0f381814d33473bd649c8b24772d8d1f295b13816ee5a20ec684df",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "figures/Figure4.png",
+      "destination": "assets/figures/figure-04.png",
+      "source_sha256": "bd4fbdb6a4bec952b30b53bea091f7f4e176215ac618c17731dfd74fcbf35518",
+      "change": "Copied without content changes.",
+      "destination_sha256": "bd4fbdb6a4bec952b30b53bea091f7f4e176215ac618c17731dfd74fcbf35518",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "figures/Figure5.png",
+      "destination": "assets/figures/figure-05.png",
+      "source_sha256": "db197a9952ffa19f83269c1d9d968a013534285a77a434ff939f157c3076cf24",
+      "change": "Copied without content changes.",
+      "destination_sha256": "db197a9952ffa19f83269c1d9d968a013534285a77a434ff939f157c3076cf24",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "figures/Figure6.png",
+      "destination": "assets/figures/figure-06.png",
+      "source_sha256": "e059eb4da2ba84feec56bf61ef995e08206014965122302c3ac979c7bcfba1b8",
+      "change": "Copied without content changes.",
+      "destination_sha256": "e059eb4da2ba84feec56bf61ef995e08206014965122302c3ac979c7bcfba1b8",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "figures/Figure7.png",
+      "destination": "assets/figures/figure-07.png",
+      "source_sha256": "3fc5979d13c6f57801edb537cb5c25012934b5fa98b1e4a051e438b0e0cdfc96",
+      "change": "Copied without content changes.",
+      "destination_sha256": "3fc5979d13c6f57801edb537cb5c25012934b5fa98b1e4a051e438b0e0cdfc96",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "figures/Figure8.png",
+      "destination": "assets/figures/figure-08.png",
+      "source_sha256": "1dc8c368490d42e154d317910c61972a6d7d1974dfd6e2dedb6115f0e4d5ea18",
+      "change": "Copied without content changes.",
+      "destination_sha256": "1dc8c368490d42e154d317910c61972a6d7d1974dfd6e2dedb6115f0e4d5ea18",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "figures/Figure9.png",
+      "destination": "assets/figures/figure-09.png",
+      "source_sha256": "56d58ed38197b9d935aadc233d32afbf944054627c2aee85a3f981777f8da806",
+      "change": "Copied without content changes.",
+      "destination_sha256": "56d58ed38197b9d935aadc233d32afbf944054627c2aee85a3f981777f8da806",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "fullpage_1.png",
+      "destination": "assets/pages/en/page-001.png",
+      "source_sha256": "eb51dada057ce4e08385695f0c8495290837f100a9c9f29e1c3fcae9102838d1",
+      "change": "Copied without content changes.",
+      "destination_sha256": "eb51dada057ce4e08385695f0c8495290837f100a9c9f29e1c3fcae9102838d1",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "fullpage_10.png",
+      "destination": "assets/pages/en/page-010.png",
+      "source_sha256": "aaf400951eaf65cd385497b5b068d4fbfc66ef65dd4c01e39c415803a5f1e587",
+      "change": "Copied without content changes.",
+      "destination_sha256": "aaf400951eaf65cd385497b5b068d4fbfc66ef65dd4c01e39c415803a5f1e587",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "fullpage_11.png",
+      "destination": "assets/pages/en/page-011.png",
+      "source_sha256": "e5accf56d543651164db6e75b4a8385c1230dcb456e3e89253277735d748c48a",
+      "change": "Copied without content changes.",
+      "destination_sha256": "e5accf56d543651164db6e75b4a8385c1230dcb456e3e89253277735d748c48a",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "fullpage_25.png",
+      "destination": "assets/pages/en/page-025.png",
+      "source_sha256": "3649596d271dcb258d1f19c0bed7caabfd4338a6abc82f5db37bdc4083d2be92",
+      "change": "Copied without content changes.",
+      "destination_sha256": "3649596d271dcb258d1f19c0bed7caabfd4338a6abc82f5db37bdc4083d2be92",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "fullpage_27.png",
+      "destination": "assets/pages/en/page-027.png",
+      "source_sha256": "490f426371a21d21d69392a92d54c8b816a5b3153f95459140ae36807a6849b6",
+      "change": "Copied without content changes.",
+      "destination_sha256": "490f426371a21d21d69392a92d54c8b816a5b3153f95459140ae36807a6849b6",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "fullpage_28.png",
+      "destination": "assets/pages/en/page-028.png",
+      "source_sha256": "12baa97c64ce84de8b281bebacf1a4c03102b7ef2f14fc708bc483008e450b1e",
+      "change": "Copied without content changes.",
+      "destination_sha256": "12baa97c64ce84de8b281bebacf1a4c03102b7ef2f14fc708bc483008e450b1e",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "fullpage_35.png",
+      "destination": "assets/pages/en/page-035.png",
+      "source_sha256": "0742085d1bcba701939f956d98f45b4bef05bde6f98c98d914f13fa9d49c8042",
+      "change": "Copied without content changes.",
+      "destination_sha256": "0742085d1bcba701939f956d98f45b4bef05bde6f98c98d914f13fa9d49c8042",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "fullpage_36.png",
+      "destination": "assets/pages/en/page-036.png",
+      "source_sha256": "e99bb4f63e3814d1516bcab8c3d2ff455754675884e70ce2c53e82425e8fd57c",
+      "change": "Copied without content changes.",
+      "destination_sha256": "e99bb4f63e3814d1516bcab8c3d2ff455754675884e70ce2c53e82425e8fd57c",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "fullpage_49.png",
+      "destination": "assets/pages/en/page-049.png",
+      "source_sha256": "1d974f62ebb805d4917f2f66f3cf3239e27a4a81bf5ac40044bd4c6c34379be0",
+      "change": "Copied without content changes.",
+      "destination_sha256": "1d974f62ebb805d4917f2f66f3cf3239e27a4a81bf5ac40044bd4c6c34379be0",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "fullpage_5.png",
+      "destination": "assets/pages/en/page-005.png",
+      "source_sha256": "5bfe05bb8a30d99bfdd7b7cf6a03adb346ee72a158fdcbe367d83790764f9dcf",
+      "change": "Copied without content changes.",
+      "destination_sha256": "5bfe05bb8a30d99bfdd7b7cf6a03adb346ee72a158fdcbe367d83790764f9dcf",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "fullpage_50.png",
+      "destination": "assets/pages/en/page-050.png",
+      "source_sha256": "2a5e5e9170a96787ff80e8e987dfac6d2d53b30c3c54b127bae949998f29dbf9",
+      "change": "Copied without content changes.",
+      "destination_sha256": "2a5e5e9170a96787ff80e8e987dfac6d2d53b30c3c54b127bae949998f29dbf9",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "fullpage_7.png",
+      "destination": "assets/pages/en/page-007.png",
+      "source_sha256": "f203e7e8730fc5bbfe202c1bf3084ac4838c0f8c4a1b21733df0fcc68c784ff7",
+      "change": "Copied without content changes.",
+      "destination_sha256": "f203e7e8730fc5bbfe202c1bf3084ac4838c0f8c4a1b21733df0fcc68c784ff7",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "mathml2omml.py",
+      "destination": "tools/mathml2omml.py",
+      "source_sha256": "656d51462341056ef52a5ca15d4f77f28a00ccfe77585219e9dbbda6d571315c",
+      "change": "Copied without content changes.",
+      "destination_sha256": "656d51462341056ef52a5ca15d4f77f28a00ccfe77585219e9dbbda6d571315c",
+      "destination_hash_mode": "UTF-8 text with LF line endings"
+    },
+    {
+      "source_file": "md2docx.py",
+      "destination": "tools/md2docx.py",
+      "source_sha256": "2371d304dd4c64f64e06ac8c69fdb4ec1a34699267b08c45242ded0df06d3f4e",
+      "change": "Made paths relative to this chapter; added CLI options and GitHub math/figure support; outputs go to build/.",
+      "destination_sha256": "fb3777a4bb9d06fd8df02dabd8c272cfd8dd08b8517973c6eebc4fac300275c5",
+      "destination_hash_mode": "UTF-8 text with LF line endings"
+    },
+    {
+      "source_file": "outline.md",
+      "destination": "source/outline.md",
+      "source_sha256": "503d0c623cd984e51977cef334f1eac4bf40cea74210681a81558867b207ebca",
+      "change": "Copied without content changes.",
+      "destination_sha256": "503d0c623cd984e51977cef334f1eac4bf40cea74210681a81558867b207ebca",
+      "destination_hash_mode": "UTF-8 text with LF line endings"
+    },
+    {
+      "source_file": "pages/pg1.png",
+      "destination": "assets/pages/zh/page-001.png",
+      "source_sha256": "32d6f03dcc6aa2b99fb67eb04b84f30ce03f6b47f22e358e466a0c14f58aa885",
+      "change": "Copied without content changes.",
+      "destination_sha256": "32d6f03dcc6aa2b99fb67eb04b84f30ce03f6b47f22e358e466a0c14f58aa885",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "pages/pg13.png",
+      "destination": "assets/pages/zh/page-013.png",
+      "source_sha256": "5e0eb60a6d76da643d165ed95b496626b9ff16667fd74044ee65e8acac6b0085",
+      "change": "Copied without content changes.",
+      "destination_sha256": "5e0eb60a6d76da643d165ed95b496626b9ff16667fd74044ee65e8acac6b0085",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "pages/pg2.png",
+      "destination": "assets/pages/zh/page-002.png",
+      "source_sha256": "97f96f00379a22ec85c15e039fb8066c19c5a082ca9dc321fee7e27cea800f13",
+      "change": "Copied without content changes.",
+      "destination_sha256": "97f96f00379a22ec85c15e039fb8066c19c5a082ca9dc321fee7e27cea800f13",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "pages/pg20.png",
+      "destination": "assets/pages/zh/page-020.png",
+      "source_sha256": "4df616ac2432744ef6b8c60997686b658d5e2ad24525c3d0b344e4ca93af0ce6",
+      "change": "Copied without content changes.",
+      "destination_sha256": "4df616ac2432744ef6b8c60997686b658d5e2ad24525c3d0b344e4ca93af0ce6",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "pages/pg28.png",
+      "destination": "assets/pages/zh/page-028.png",
+      "source_sha256": "213d9faa808fd757433dc8e933edcb49fa5d1d14f9ea238f3ec0e67aef03d96a",
+      "change": "Copied without content changes.",
+      "destination_sha256": "213d9faa808fd757433dc8e933edcb49fa5d1d14f9ea238f3ec0e67aef03d96a",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "pages/pg3.png",
+      "destination": "assets/pages/zh/page-003.png",
+      "source_sha256": "b3ecf94db0110f8ff22f110dcf85dd2d6a8975c7e18e26c1d7b3716f5679a77d",
+      "change": "Copied without content changes.",
+      "destination_sha256": "b3ecf94db0110f8ff22f110dcf85dd2d6a8975c7e18e26c1d7b3716f5679a77d",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "pages/pg36.png",
+      "destination": "assets/pages/zh/page-036.png",
+      "source_sha256": "0c8173915544a1f55eafda3478ae1dc909474c0633f34d81f3ead5861eb20c45",
+      "change": "Copied without content changes.",
+      "destination_sha256": "0c8173915544a1f55eafda3478ae1dc909474c0633f34d81f3ead5861eb20c45",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "pages/pg37.png",
+      "destination": "assets/pages/zh/page-037.png",
+      "source_sha256": "6b8eacd662c4efa51b6d6e11a81e6054f14dabc66bb2be1e3dadb2519ed9bc76",
+      "change": "Copied without content changes.",
+      "destination_sha256": "6b8eacd662c4efa51b6d6e11a81e6054f14dabc66bb2be1e3dadb2519ed9bc76",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "pages/pg4.png",
+      "destination": "assets/pages/zh/page-004.png",
+      "source_sha256": "fbd898ede8541065e672f83df12b4ca1524b2f60448559955ec48899e3d830bc",
+      "change": "Copied without content changes.",
+      "destination_sha256": "fbd898ede8541065e672f83df12b4ca1524b2f60448559955ec48899e3d830bc",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "pages/pg40.png",
+      "destination": "assets/pages/zh/page-040.png",
+      "source_sha256": "e5806679991965b63ba630d5570606e16f0f616a9ffe6d737557ec83e1ce53d4",
+      "change": "Copied without content changes.",
+      "destination_sha256": "e5806679991965b63ba630d5570606e16f0f616a9ffe6d737557ec83e1ce53d4",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "pages/pg45.png",
+      "destination": "assets/pages/zh/page-045.png",
+      "source_sha256": "5c3bbd4e16da9c6d3cdfe941b3f57f6823cd25073ef956d4cab2ecc6ef14f5b8",
+      "change": "Copied without content changes.",
+      "destination_sha256": "5c3bbd4e16da9c6d3cdfe941b3f57f6823cd25073ef956d4cab2ecc6ef14f5b8",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "pages/pg53.png",
+      "destination": "assets/pages/zh/page-053.png",
+      "source_sha256": "f20c63b1533c7a26e60e02366a59ec3219aa25497a9c10f55828c9f2b92d83a2",
+      "change": "Copied without content changes.",
+      "destination_sha256": "f20c63b1533c7a26e60e02366a59ec3219aa25497a9c10f55828c9f2b92d83a2",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "pages/pg54.png",
+      "destination": "assets/pages/zh/page-054.png",
+      "source_sha256": "24d64fdec2a2640ca67e69a74f7d4b1e392caec442d0869f22195cf691a8e320",
+      "change": "Copied without content changes.",
+      "destination_sha256": "24d64fdec2a2640ca67e69a74f7d4b1e392caec442d0869f22195cf691a8e320",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "pages/pg6.png",
+      "destination": "assets/pages/zh/page-006.png",
+      "source_sha256": "ae39e5de17d73d1097e4e5379b86642643cbcd3ce96882593990b87d54dad1e1",
+      "change": "Copied without content changes.",
+      "destination_sha256": "ae39e5de17d73d1097e4e5379b86642643cbcd3ce96882593990b87d54dad1e1",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "part1_intro.md",
+      "destination": "chapters/01-overview.zh.md",
+      "source_sha256": "6fd55e9219a96e42cdced16b415582c57e84f017dab7e1602d39807318b3898d",
+      "change": "Normalized display-math fences and added relative figure links; prose retained.",
+      "destination_sha256": "6fd55e9219a96e42cdced16b415582c57e84f017dab7e1602d39807318b3898d",
+      "destination_hash_mode": "UTF-8 text with LF line endings"
+    },
+    {
+      "source_file": "part2_arch.md",
+      "destination": "chapters/02-architecture.zh.md",
+      "source_sha256": "f2bb5ec9d93b3ac011b083778dbf2d965173ecaf8f431190cf5f62cd1d1d9fce",
+      "change": "Normalized display-math fences and added relative figure links; prose retained.",
+      "destination_sha256": "5188ed9d3ac1b2b1572a181880fd0b2aaa9336330dce2db5f90567c48cae4a98",
+      "destination_hash_mode": "UTF-8 text with LF line endings"
+    },
+    {
+      "source_file": "part3_infra.md",
+      "destination": "chapters/03-infrastructure-pretraining.zh.md",
+      "source_sha256": "62477fcaa0b546a034b49e16b92298e66f5a0512c2e88675db6aaac88cb30b7e",
+      "change": "Normalized display-math fences and added relative figure links; prose retained.",
+      "destination_sha256": "8af91574d5b80417d037d7b55dd77781547117bfc08a2f5fb20f729f2869ffce",
+      "destination_hash_mode": "UTF-8 text with LF line endings"
+    },
+    {
+      "source_file": "part4_post.md",
+      "destination": "chapters/04-post-training-appendices.zh.md",
+      "source_sha256": "c6b813dd7df48350378dd35eee17d366263344f02f29a0000f77b02d2b601e53",
+      "change": "Normalized display-math fences and added relative figure links; prose retained.",
+      "destination_sha256": "a84ccd39c63628ea4f7a324d2bff5e403ded2ef1cffadfbbaec853416db37317",
+      "destination_hash_mode": "UTF-8 text with LF line endings"
+    },
+    {
+      "source_file": "preview.pdf",
+      "destination": "documents/translation.zh.pdf",
+      "source_sha256": "bb8b432e5c1c95ef65c1717d207018bece9df1b24a9421ee49410b6ccd0e3779",
+      "change": "Copied latest supplied PDF; source was refreshed during organization.",
+      "destination_sha256": "bb8b432e5c1c95ef65c1717d207018bece9df1b24a9421ee49410b6ccd0e3779",
+      "destination_hash_mode": "raw binary"
+    },
+    {
+      "source_file": "renderer_kv.html",
+      "destination": "visualizations/kv-cache.html",
+      "source_sha256": "7cf496466e18df0fd161819692d21eff829131a0e76fec08bc11363269ed0a68",
+      "change": "Copied without content changes.",
+      "destination_sha256": "7cf496466e18df0fd161819692d21eff829131a0e76fec08bc11363269ed0a68",
+      "destination_hash_mode": "UTF-8 text with LF line endings"
+    }
+  ]
+}
