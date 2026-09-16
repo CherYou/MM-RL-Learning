@@ -5,7 +5,6 @@
 ## 参考与感谢
 
 感谢 [KMnO4-zx/agentic-rl-lab](https://github.com/KMnO4-zx/agentic-rl-lab) 提供章节组织、算法资料与工具实现的参考。代码与素材来源见 [来源说明](docs/CODE_PROVENANCE.md)、[NOTICE](NOTICE) 和 [LICENSE](LICENSE)。
-
 感谢算法论文作者，以及 [TRL](https://github.com/huggingface/trl)、[verl](https://github.com/verl-project/verl)、[Search-R1](https://github.com/PeterGriffinJin/Search-R1)、[ReTool](https://github.com/ReTool-RL/ReTool)、[DAPO](https://github.com/BytedTsinghua-SIA/DAPO)、[ALFWorld](https://github.com/alfworld/alfworld)、[AgentOPSD](https://github.com/ZethWang/AgentOPSD)、[Harness-RL](https://github.com/jiangxinke/Harness-RL)、[Gymnasium-Robotics](https://github.com/Farama-Foundation/Gymnasium-Robotics) 等项目。论文及官方接口依据在各教程中就近列出，参考仓库链接集中在这里。
 
 ## 这套课程包含什么
