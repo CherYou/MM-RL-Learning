@@ -127,6 +127,7 @@ def main():
             time.sleep(0.5)
     report = status(state)
     print(json.dumps(report, indent=2))
+    (ROOT / "reports").mkdir(parents=True, exist_ok=True)
     (ROOT / "reports/local-services.json").write_text(json.dumps(report, indent=2) + "\n")
     if not all(x["live"] and x["http_status"] == 200 for x in report.values()):
         raise SystemExit(1)

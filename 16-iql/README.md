@@ -54,4 +54,4 @@ uv sync --frozen --extra dev --extra cpu --extra embodied
 
 浏览器打开 `http://127.0.0.1:6006`；远程服务器按[根 README](../README.md#本地日志)转发端口。评估同时记录“episode 内曾到达目标”与“最后一步仍在目标内”，不要混成一个成功定义。
 
-已完成的默认运行见 [验证汇总](../reports/embodied-validation.json)。实际结果及局限见 [实验说明](../docs/EMBODIED.md)。这里只验证学习机制和小预算运行，不宣称重现论文 benchmark，也不宣称学会 VLA 任务。
+环境、数据准备与评估方法见 [具身实验指南](../docs/EMBODIED.md)。建议先用小预算检查训练流程，再通过独立评估种子和更充分的训练观察学习效果。

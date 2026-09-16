@@ -4,8 +4,6 @@
     {
       "id": "loss",
       "file": "loss.png",
-      "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
-      "edited": false,
       "dimensions": [
         1536,
         1024
@@ -15,8 +13,6 @@
     {
       "id": "grpo",
       "file": "grpo.png",
-      "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
-      "edited": false,
       "dimensions": [
         1536,
         1024
@@ -26,8 +22,6 @@
     {
       "id": "medical-opd",
       "file": "medical-opd.png",
-      "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
-      "edited": false,
       "dimensions": [
         1536,
         1024
@@ -37,8 +31,6 @@
     {
       "id": "general-opd",
       "file": "general-opd.png",
-      "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
-      "edited": false,
       "dimensions": [
         1536,
         1024
@@ -48,8 +40,6 @@
     {
       "id": "search-r1",
       "file": "search-r1.png",
-      "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
-      "edited": false,
       "dimensions": [
         1536,
         1024
@@ -59,8 +49,6 @@
     {
       "id": "opsd",
       "file": "opsd.png",
-      "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
-      "edited": true,
       "dimensions": [
         1536,
         1024
@@ -70,8 +58,6 @@
     {
       "id": "retool",
       "file": "retool.png",
-      "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
-      "edited": false,
       "dimensions": [
         1536,
         1024
@@ -81,8 +67,6 @@
     {
       "id": "dapo",
       "file": "dapo.png",
-      "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
-      "edited": true,
       "dimensions": [
         1536,
         1024
@@ -92,8 +76,6 @@
     {
       "id": "gspo",
       "file": "gspo.png",
-      "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
-      "edited": false,
       "dimensions": [
         1536,
         1024
@@ -103,8 +85,6 @@
     {
       "id": "alfworld",
       "file": "alfworld.png",
-      "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
-      "edited": false,
       "dimensions": [
         1536,
         1024
@@ -114,8 +94,6 @@
     {
       "id": "agentopsd",
       "file": "agentopsd.png",
-      "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
-      "edited": false,
       "dimensions": [
         1536,
         1024
@@ -125,8 +103,6 @@
     {
       "id": "tempo",
       "file": "tempo.png",
-      "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
-      "edited": false,
       "dimensions": [
         1536,
         1024
@@ -136,8 +112,6 @@
     {
       "id": "vision-grpo",
       "file": "vision-grpo.png",
-      "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
-      "edited": false,
       "dimensions": [
         1536,
         1024
@@ -147,8 +121,6 @@
     {
       "id": "ppo",
       "file": "ppo.png",
-      "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
-      "edited": false,
       "dimensions": [
         1536,
         1024
@@ -158,8 +130,6 @@
     {
       "id": "dpo",
       "file": "dpo.png",
-      "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
-      "edited": false,
       "dimensions": [
         1536,
         1024
@@ -169,8 +139,6 @@
     {
       "id": "harness-rl",
       "file": "harness-rl.png",
-      "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
-      "edited": false,
       "dimensions": [
         1536,
         1024
@@ -180,8 +148,6 @@
     {
       "id": "sac",
       "file": "sac.png",
-      "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
-      "edited": false,
       "dimensions": [
         1536,
         1024
@@ -191,8 +157,6 @@
     {
       "id": "td3",
       "file": "td3.png",
-      "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
-      "edited": false,
       "dimensions": [
         1536,
         1024
@@ -202,8 +166,6 @@
     {
       "id": "her",
       "file": "her.png",
-      "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
-      "edited": false,
       "dimensions": [
         1536,
         1024
@@ -213,8 +175,6 @@
     {
       "id": "iql",
       "file": "iql.png",
-      "review": "Visual inspection completed; use with the Chinese caption and equations. Conceptual artwork, not measured results.",
-      "edited": false,
       "dimensions": [
         1536,
         1024

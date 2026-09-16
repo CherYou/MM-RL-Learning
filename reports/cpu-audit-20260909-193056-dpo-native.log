@@ -1,3 +1,0 @@
-{"step": 0, "elapsed_seconds": 0.02600848115980625, "dpo/margin": 0.0, "loss/total": 0.6931471824645996, "update/grad_norm": 2.596173048019409, "update/skipped": 0.0, "time/elapsed_seconds": 0.025973345153033733}
-{"step": 1, "elapsed_seconds": 0.0431119566783309, "dpo/margin": 0.0031387328635901213, "loss/total": 0.6915790438652039, "update/grad_norm": 2.573779344558716, "update/skipped": 0.0, "time/elapsed_seconds": 0.04307953640818596}
-Saved run: ${PROJECT_ROOT}/runs/cpu-audit-20260909-193056/dpo-native

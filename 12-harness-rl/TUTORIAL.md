@@ -103,7 +103,7 @@ optimizer.step_with(combined)
 .venv/bin/arl train 12-harness-rl/verl.yaml --smoke --verl-workers 2
 ```
 
-随机模型可能连合法 JSON 都生成不了，这时无有效字段梯度是合理结果。已有独立 FSDP 机制检查明确验证非零选区更新、选区外不变和跨 rank 一致；这比把 smoke 退出成功当成学会调用更有说服力，见 [验证记录](../docs/VALIDATION.md)。
+随机模型可能连合法 JSON 都生成不了，这时无有效字段梯度是合理结果。可以运行 `scripts/check_verl_fsdp.py`，检查 FSDP 下选区内参数更新、选区外参数不变及跨 rank 权重一致性，再用有效调用率与任务成功率评估模型。
 
 默认 probing 数据是明确标记的人工构造、工具验证种子；正式训练应从目标策略的成功轨迹收集 probing 数据。人工种子不能冒充模型已经成功的历史。
 

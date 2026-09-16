@@ -255,5 +255,6 @@ if __name__ == "__main__":
             failures[key] = {"error_type": type(error).__name__}
             print(f"FAILED {key}: {failures[key]}", flush=True)
     if failures:
+        (ROOT / "reports").mkdir(parents=True, exist_ok=True)
         (ROOT / "reports/data-download-errors.json").write_text(json.dumps(failures, indent=2) + "\n")
         raise SystemExit(1)

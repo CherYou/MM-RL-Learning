@@ -31,6 +31,7 @@ ENTRIES = {
 
 
 def main():
+    (ROOT / "reports").mkdir(parents=True, exist_ok=True)
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--only", nargs="+", choices=sorted(ENTRIES))
     parser.add_argument("--jobs", type=int, default=2)

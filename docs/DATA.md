@@ -49,9 +49,9 @@ python scripts/prepare_environments.py --only alfworld --download-alfworld
 
 原始大数据可留在 Hub cache；直接训练只需要清洗后的 JSONL、图像或游戏文件。学习子集不等于全量论文 benchmark。不要拿第一个 1024 行的结果估计完整数据分布，也不要把调试 reward 当成任务正确率。
 
-## 与原仓库的差异
+## 数据范围
 
-为支持快速本地学习，DeepMath、OPSD、DAPO、医疗、Search-R1 先准备 bounded subset；没有声称下载了这些集合全部题目。GSM8K、GeoQA train/test、AIME25 和 ALFWorld 文本游戏则已完整准备其选定范围。C-Eval 使用八科有标签 dev/val 后重新隔离训练/评测，未使用没有公开答案的官方 test 作准确率评测。MedQA 删除了完全重复题；本地评测题数与上游随机抽 600 题不同。
+为支持快速本地学习，DeepMath、OPSD、DAPO、医疗和 Search-R1 使用学习子集；GSM8K、GeoQA train/test、AIME25 和 ALFWorld 文本游戏采用表中所列范围。C-Eval 使用八科有标签 dev/val 重新划分训练与评测，MedQA 评测集按题目去重。
 
 ## 数据归属
 

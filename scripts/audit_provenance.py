@@ -134,6 +134,7 @@ def main():
         ],
     }
     target = ROOT / "reports/code-provenance-audit.json"
+    (ROOT / "reports").mkdir(parents=True, exist_ok=True)
     target.write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )

@@ -14,3 +14,7 @@ runs/
 *.pid
 .env
 Basic LLM/**/build/
+
+# Local diagnostics and development logs
+/reports/
+*.log

@@ -82,7 +82,7 @@ observation, reward, done = env.step(action)
 .venv/bin/arl train 08-alfworld/verl.yaml --smoke --verl-workers 2
 ```
 
-`--smoke` 可使用显式 toy 环境验证快速路径；真实 ALFWorld 的 reset/step 已有独立检查证据，见 [验证范围](../docs/VALIDATION.md)。不要把 toy 的“拿苹果”结果报告成 ALFWorld benchmark。
+`--smoke` 使用显式 toy 环境检查快速路径。切换到真实 ALFWorld 前，可运行 `tests/test_mechanisms.py` 中的 reset/step 检查，确认游戏资产和环境接口可用；任务成功率应在真实游戏中单独评估。
 
 真实实验要看合法动作率、任务成功率、平均轮数以及失败的停止原因。评估应使用 `eval-unseen` 等隔离游戏，而不是只改训练游戏的采样种子。当前配置在 [config.yaml](config.yaml) 中明确给出训练和评估清单。
 

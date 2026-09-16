@@ -106,6 +106,7 @@ def worker(rank, path):
         restored = state()
         assert all(torch.equal(restored[k], v) for k, v in after.items())
         if rank == 0:
+            (ROOT / "reports").mkdir(parents=True, exist_ok=True)
             (ROOT / "reports/verl-fsdp-capo.json").write_text(
                 json.dumps(
                     {

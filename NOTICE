@@ -16,10 +16,10 @@ The explicitly ported local utilities are:
 Their provenance headers are retained. ALFWorld skill prompt files copied by
 scripts/prepare_environments.py also retain the reference project's provenance.
 The new Chinese tutorials and conceptual illustrations are separately authored
-for this project. Prompts and generated-asset hashes are in docs/assets/algorithms.
+for this project. Generated-asset hashes are in docs/assets/algorithms/manifest.json.
 The continuous-control implementations in src/agentic_rl/embodied are locally
 written educational implementations of SAC, TD3, HER and IQL mechanisms.
-See docs/CODE_PROVENANCE.md and reports/code-provenance-audit.json for scope.
+See docs/CODE_PROVENANCE.md for attribution.
 
 Basic LLM contains separately supplied technical-report reading materials.
 DeepSeek-V4.1-Flash report text, figures and original-page images are attributed

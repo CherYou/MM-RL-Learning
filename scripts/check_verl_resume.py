@@ -101,6 +101,7 @@ def main():
         evaluation_checkpoint_loaded=True,
         medical_sft_to_verl=True,
     )
+    (ROOT / "reports").mkdir(parents=True, exist_ok=True)
     (ROOT / "reports/verl-resume.json").write_text(json.dumps(evidence, indent=2) + "\n")
     print(json.dumps(evidence, indent=2))
 

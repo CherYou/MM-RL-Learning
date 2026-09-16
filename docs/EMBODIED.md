@@ -22,7 +22,7 @@ uv sync --frozen --extra dev --extra cpu --extra embodied
 
 `--smoke` 运行 300 步、小 MLP、真实物理与奖励。它不同于 LLM 的随机 GPT-2/debug reward smoke。去掉该选项，SAC/TD3/HER 为 5000 环境步（1000 步预热），IQL 为 5000 梯度更新。
 
-根 CLI 也可执行 `arl train 13-sac/config.yaml --smoke`。`backend: embodied` 会分派到连续控制 runner；无需安装 verl 来运行这些章节。LLM 的批量 `scripts/smoke_all.py` 继续覆盖原有 22 个 LLM 入口，具身验证单独记录。
+根 CLI 也可执行 `arl train 13-sac/config.yaml --smoke`。`backend: embodied` 会分派到连续控制 runner；无需安装 verl 来运行这些章节。LLM 入口由 `scripts/smoke_all.py` 批量检查，具身章节可分别运行上面的命令。
 
 ## 数据是什么，怎样准备
 
@@ -51,35 +51,17 @@ IQL 读取 [train.npz](../data/embodied/fetch-reach/train.npz) 与 [train.json](
 
 IQL 的训练循环没有在线环境对象，评估经历也不会写回 replay。数据 loader 检查内容 hash、字段、动作范围、reward 类型及评估种子隔离。
 
-## 已实际运行的默认配置结果（2026-09-11）
+## 如何评估学习效果
 
-四个算法各运行一次训练种子 42。评估种子 10000–10009 在训练前与训练后各执行一次，动作使用确定性 actor 输出；下面的“成功”指 episode 内曾经到达目标。
+训练前后使用同一组独立评估种子，比较平均回报、episode 内曾到达目标的比例，以及末步仍在目标内的比例。这三个指标分别反映累计表现、是否达到目标和是否稳定保持目标。
 
-| 方法 | 训练交互 / 梯度更新 | 初始成功率 | 结束成功率 | 结束时仍在目标内 | 结束平均回报 |
-| --- | --- | --- | --- | --- | --- |
-| SAC | 5000 / 4001 | 20% | 20% | 0% | -49.7 |
-| TD3 | 5000 / 4001 | 20% | 40% | 0% | -49.0 |
-| TD3 + HER | 5000 / 4001 | 20% | 0% | 0% | -50.0 |
-| IQL | 0 / 5000 | 20% | 50% | 10% | -44.6 |
-
-随后通过各章 `eval.py` 从磁盘重载，另用未参与以上对照的种子 20000–20009 评估：
-
-| 方法 | 曾到达成功率 | 末步成功率 | 平均回报 |
-| --- | --- | --- | --- |
-| SAC | 10% | 0% | -49.3 |
-| TD3 | 0% | 0% | -50.0 |
-| TD3 + HER | 0% | 0% | -50.0 |
-| IQL | 30% | 20% | -46.8 |
-
-这些结果说明小预算稀疏奖励实验还远未充分学习，HER 本次也没有表现出成功优势。没有删除失败结果，也不依据单个训练种子和每组 10 个 episode 给算法排名。IQL 使用程序示范，而其他三者从随机交互开始，训练预算含义也不同，不能将表当公平样本效率 benchmark。
-
-正式证据在 [embodied-validation.json](../reports/embodied-validation.json)，其中包含实际 run 路径、检查点 hash、策略前后 hash、参数变化量、优化次数、回放数量、TensorBoard tags 和逐 episode 评估。验证还检查 HER 的 5000 条原经验与 20000 条重标记经验分开计数，IQL 数据文件前后 hash 不变。
+SAC、TD3 和 HER 的预算以环境交互步计，IQL 的预算以固定数据上的梯度更新计。比较算法时还需交代数据来源、训练预算与种子；小预算下的单次成功率容易波动，建议使用多个训练种子。
 
 ## 保存、评估与 TensorBoard
 
 ```bash
 .venv/bin/python 16-iql/eval.py \
-  --checkpoint runs/embodied-iql-default-20260911/checkpoint-final \
+  --checkpoint runs/my-iql/checkpoint-final \
   --episodes 10 --seed 20000 --output reports/my-iql-evaluation.json
 .venv/bin/tensorboard --logdir runs --host 127.0.0.1 --port 6006
 ```
@@ -94,7 +76,6 @@ IQL 的训练循环没有在线环境对象，评估经历也不会写回 replay
 
 ```bash
 .venv/bin/python -m pytest -q tests/test_embodied.py
-.venv/bin/python scripts/verify_embodied.py
 ```
 
-数学测试覆盖终止 bootstrap、expectile 的手算最优值、tanh 密度与饱和梯度、TD3 更新延迟、SAC 温度、IQL 仅查询记录动作、HER 边界及重标记一致性、检查点优化状态恢复。验收脚本读取已经生成的四份默认运行和独立评估报告；要重新执行训练，应先用新输出目录，不能用审计命令代替训练。
+数学测试覆盖终止 bootstrap、expectile 的手算最优值、tanh 密度与饱和梯度、TD3 更新延迟、SAC 温度、IQL 仅查询记录动作、HER 边界及重标记一致性、检查点优化状态恢复。训练生成的 `validation.json` 记录参数变化、更新次数和重载一致性；使用各章 `eval.py` 在独立种子上评估保存的模型。

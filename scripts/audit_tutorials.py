@@ -119,6 +119,7 @@ def main():
         "broken_links": broken,
         "review_scope": "Structure/link/hash checks complement formula/code and visual review; they do not prove theoretical correctness",
     }
+    (ROOT / "reports").mkdir(parents=True, exist_ok=True)
     (ROOT / "reports/tutorial-audit.json").write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
     print(
         json.dumps(

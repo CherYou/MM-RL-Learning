@@ -1,1 +1,0 @@
-{"passed": true, "device": "cpu", "gpu_worker_imported_without_instantiation": true, "official_base_classes": true, "official_async_manager_signatures": true}

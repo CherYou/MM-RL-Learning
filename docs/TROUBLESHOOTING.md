@@ -16,7 +16,7 @@ Teacher 和 Student 必须使用同一 vocab；token-level 蒸馏不会把不同
 
 ## 依赖和 CPU
 
-先执行 `bash scripts/setup.sh`，再 `arl doctor`。本环境安装 CPU torch，不能通过修改 device 字符串获得 CUDA 训练能力。verl CPU 环境用 `bash scripts/setup_verl.sh --cpu`，独立 CUDA 环境用 `bash scripts/setup_verl.sh --gpu` 安装。GPU 训练仍需显式选 `verl-gpu.yaml` 并按设备资源设置 workers；本次未执行 GPU 验证。
+先执行 `bash scripts/setup.sh`，再 `arl doctor`。本环境安装 CPU torch，不能通过修改 device 字符串获得 CUDA 训练能力。verl CPU 环境用 `bash scripts/setup_verl.sh --cpu`，独立 CUDA 环境用 `bash scripts/setup_verl.sh --gpu` 安装。GPU 训练仍需显式选 `verl-gpu.yaml` 并按设备资源设置 workers。
 
 ## 看不到日志页面
 

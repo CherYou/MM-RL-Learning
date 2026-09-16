@@ -61,6 +61,6 @@ CPU smoke 使用随机 tiny 模型和明确标记的 debug_token 奖励，只检
   --report reports/verl-grpo-gpu-repeat-verification.json
 ```
 
-真实更新代码在 `src/agentic_rl/verl_backend/`，本章机制对应关系、安装和恢复方式见 [verl 指南](../docs/VERL.md)。轨迹通过 DataProto 传递，参数更新调用官方 verl actor；CPU 逐入口证据见 [verl 审计](../reports/verl-audit-latest.json)。verl 与原生均保存 token、mask、旧概率和轮次日志。
+真实更新代码在 `src/agentic_rl/verl_backend/`，本章机制对应关系、安装和恢复方式见 [verl 指南](../docs/VERL.md)。轨迹通过 DataProto 传递，参数更新调用官方 verl actor。verl 与原生均保存 token、mask、旧概率和轮次日志。
 
-GPU 验证使用 [verify-gpu.yaml](verify-gpu.yaml)。启动器通过 `--gpu-index` 选择设备，并核对 worker 与 `nvidia-smi` 监测到的 UUID 是否一致；配置文件不绑定某台机器。历史实测完成 48 条 rollout、三步非零梯度，actor 参数变化且 reference 冻结；保存后重载，独立 eval 子集答对 2/4。完整指标和单卡验证边界见 [GPU 验证记录](../docs/GRPO_GPU_VALIDATION.md)。
+GPU 检查使用 [verify-gpu.yaml](verify-gpu.yaml)。启动器通过 `--gpu-index` 选择设备，并核对 worker 与 `nvidia-smi` 监测到的 UUID；检查脚本核对参数更新、reference 冻结、轨迹对齐和 checkpoint 保存。

@@ -1,18 +1,0 @@
-Adding EOS to train dataset:   0%|          | 0/32 [00:00<?, ? examples/s]Adding EOS to train dataset: 100%|██████████| 32/32 [00:00<00:00, 11098.80 examples/s]
-Tokenizing train dataset:   0%|          | 0/32 [00:00<?, ? examples/s]Tokenizing train dataset: 100%|██████████| 32/32 [00:00<00:00, 3535.77 examples/s]
-Truncating train dataset:   0%|          | 0/32 [00:00<?, ? examples/s]Truncating train dataset: 100%|██████████| 32/32 [00:00<00:00, 11261.77 examples/s]
-Adding EOS to eval dataset:   0%|          | 0/32 [00:00<?, ? examples/s]Adding EOS to eval dataset: 100%|██████████| 32/32 [00:00<00:00, 10322.85 examples/s]
-Tokenizing eval dataset:   0%|          | 0/32 [00:00<?, ? examples/s]Tokenizing eval dataset: 100%|██████████| 32/32 [00:00<00:00, 3909.75 examples/s]
-Truncating eval dataset:   0%|          | 0/32 [00:00<?, ? examples/s]Truncating eval dataset: 100%|██████████| 32/32 [00:00<00:00, 15402.54 examples/s]
-`loss_type=None` was set in the config but it is unrecognized. Using the default loss: `ForCausalLMLoss`.
-{"step": 1, "elapsed_seconds": 0.24677372258156538, "loss": 5.5976, "grad_norm": 5.011022567749023, "learning_rate": 5e-06, "entropy": 5.545528411865234, "num_tokens": 34.0, "mean_token_accuracy": 0.0, "epoch": 0.03125}
-{'loss': 5.5976, 'grad_norm': 5.011022567749023, 'learning_rate': 5e-06, 'entropy': 5.545528411865234, 'num_tokens': 34.0, 'mean_token_accuracy': 0.0, 'epoch': 0.03125}
-{"step": 2, "elapsed_seconds": 0.2584333987906575, "loss": 5.5854, "grad_norm": 5.317009449005127, "learning_rate": 2.5e-06, "entropy": 5.545654773712158, "num_tokens": 70.0, "mean_token_accuracy": 0.05000000074505806, "epoch": 0.0625}
-{'loss': 5.5854, 'grad_norm': 5.317009449005127, 'learning_rate': 2.5e-06, 'entropy': 5.545654773712158, 'num_tokens': 70.0, 'mean_token_accuracy': 0.05000000074505806, 'epoch': 0.0625}
-{"step": 2, "elapsed_seconds": 0.26002524606883526, "train_runtime": 0.028, "train_samples_per_second": 71.395, "train_steps_per_second": 71.395, "total_flos": 42040320.0, "train_loss": 5.59150767326355, "epoch": 0.0625}
-`torch_dtype` is deprecated! Use `dtype` instead!
-{'train_runtime': 0.028, 'train_samples_per_second': 71.395, 'train_steps_per_second': 71.395, 'train_loss': 5.59150767326355, 'epoch': 0.0625}
-Saved run: ${PROJECT_ROOT}/runs/medical-auto-teacher-smoke-teacher-sft
-{"step": 0, "elapsed_seconds": 0.12592380680143833, "distill/general_phase": 0.0, "sampling/attempts": 1.0, "sampling/degenerate_groups": 0.0, "reward/mean": 0.75, "distill/sampled_reverse_kl": -3.289116648375057e-05, "loss/total": -3.289116648375057e-05, "tokens/trainable": 45.0, "update/grad_norm": 0.0012629140401259065, "update/skipped": 0.0, "time/elapsed_seconds": 0.12589242681860924}
-{"step": 1, "elapsed_seconds": 0.2480928199365735, "distill/general_phase": 1.0, "sampling/attempts": 1.0, "sampling/degenerate_groups": 0.0, "reward/mean": 2.0, "distill/sampled_reverse_kl": -8.710225665709004e-05, "loss/total": -8.710225665709004e-05, "tokens/trainable": 48.0, "update/grad_norm": 0.001431801705621183, "update/skipped": 0.0, "time/elapsed_seconds": 0.24805877450853586}
-Saved run: ${PROJECT_ROOT}/runs/medical-auto-teacher-smoke

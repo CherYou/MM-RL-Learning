@@ -88,6 +88,7 @@ def main():
         }
         print(name, report[name], flush=True)
     target = ROOT / f"reports/cpu-audit-{stamp}.json"
+    (ROOT / "reports").mkdir(parents=True, exist_ok=True)
     target.write_text(json.dumps(report, indent=2) + "\n")
     latest = ROOT / "reports/cpu-audit-latest.json"
     combined = json.loads(latest.read_text()) if a.only and latest.exists() else {}

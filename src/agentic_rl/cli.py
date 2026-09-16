@@ -186,6 +186,7 @@ def doctor():
         pass
     for path in sorted((ROOT / "data").glob("*/manifest.json")):
         result["datasets"][path.parent.name] = json.loads(path.read_text()).get("files", {})
+    (ROOT / "reports").mkdir(parents=True, exist_ok=True)
     (ROOT / "reports/doctor.json").write_text(json.dumps(result, indent=2) + "\n")
     print(json.dumps({k: v for k, v in result.items() if k != "datasets"}, indent=2))
     print("Dataset manifests:", ", ".join(result["datasets"]))

@@ -39,7 +39,7 @@ padding 只为 forward 对齐形状。工具返回文字不是动作，即使包
 
 预训练文本模型使用 AutoModelForCausalLM；VLM 使用 AutoProcessor/AutoModelForImageTextToText。默认 sampling temperature=1、top_p=1、top_k=0，减少采样分布与重算 logprob 不一致；eval mode 禁用 dropout，但训练时仍保留 autograd。
 
-Native 模型 forward 使用 float32/eager；LoRA 可通过 `lora_rank` 启用，CAPO 章节要求全 MLP 单元参数路由。GPU 环境已独立锁定 torch 2.9.0+cu129 / vLLM 0.12.0；尚未执行 GPU 训练验证。CPU wheel 不会通过修改 device 变成 CUDA wheel。
+Native 模型 forward 使用 float32/eager；LoRA 可通过 `lora_rank` 启用，CAPO 章节要求全 MLP 单元参数路由。GPU 环境已独立锁定 torch 2.9.0+cu129 / vLLM 0.12.0。CPU wheel 不会通过修改 device 变成 CUDA wheel。
 
 ## 读代码的次序
 

@@ -1,6 +1,0 @@
-{
-  "path": "models/Qwen--Qwen2.5-0.5B-Instruct/model.safetensors",
-  "bytes": 988097824,
-  "tensors": 290,
-  "loaded_for_inference": false
-}

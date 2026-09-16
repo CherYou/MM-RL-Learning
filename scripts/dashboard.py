@@ -66,7 +66,7 @@ with tabs[2]:
     if status.exists():
         st.json(json.loads(status.read_text()))
 with tabs[3]:
-    for name in ["data-verification.json", "cpu-audit-latest.json", "doctor.json", "completion-audit.json"]:
+    for name in ["data-verification.json", "cpu-audit-latest.json", "doctor.json"]:
         report = ROOT / "reports" / name
         if report.exists():
             with st.expander(name):

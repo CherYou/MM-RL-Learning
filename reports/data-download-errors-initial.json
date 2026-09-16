@@ -1,3 +1,0 @@
-{
-  "geoqa": "ValueError: geoqa: an exported split is empty; increase --limit or check schema"
-}

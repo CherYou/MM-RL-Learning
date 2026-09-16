@@ -77,6 +77,7 @@ def verify():
             "hashed_files": len(meta["files"]),
             "revision": meta.get("revision"),
         }
+    (ROOT / "reports").mkdir(parents=True, exist_ok=True)
     (ROOT / "reports/data-verification.json").write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps(report, indent=2))
     return report

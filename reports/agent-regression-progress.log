@@ -1,5 +1,0 @@
-search-r1 {'passed': True, 'exit_code': 0, 'seconds': 7.48, 'run': 'runs/cpu-audit-20260909-195443/search-r1', 'log': 'reports/cpu-audit-20260909-195443-search-r1.log'}
-retool {'passed': True, 'exit_code': 0, 'seconds': 5.17, 'run': 'runs/cpu-audit-20260909-195443/retool', 'log': 'reports/cpu-audit-20260909-195443-retool.log'}
-alfworld {'passed': True, 'exit_code': 0, 'seconds': 5.42, 'run': 'runs/cpu-audit-20260909-195443/alfworld', 'log': 'reports/cpu-audit-20260909-195443-alfworld.log'}
-agentopsd {'passed': True, 'exit_code': 0, 'seconds': 5.37, 'run': 'runs/cpu-audit-20260909-195443/agentopsd', 'log': 'reports/cpu-audit-20260909-195443-agentopsd.log'}
-tempo {'passed': True, 'exit_code': 0, 'seconds': 6.18, 'run': 'runs/cpu-audit-20260909-195443/tempo', 'log': 'reports/cpu-audit-20260909-195443-tempo.log'}

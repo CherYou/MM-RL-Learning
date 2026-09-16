@@ -110,6 +110,7 @@ def main():
         {key: value for key, value in sample.items() if key != "uuid"} for sample in samples
     ]
     public_target = ROOT / "reports" / (name + "-monitor.json")
+    public_target.parent.mkdir(parents=True, exist_ok=True)
     public_target.write_text(json.dumps(public_report, indent=2) + "\n")
     print(json.dumps({key: value for key, value in public_report.items() if key != "gpu_samples"}, indent=2))
     raise SystemExit(process.returncode)
