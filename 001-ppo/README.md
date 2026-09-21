@@ -2,9 +2,9 @@
 
 **[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
 
-从五种角色、reward/return 到 TD、GAE，再逐步理解 PPO 裁剪。建议先读教程完成手算和自测，再回到本页运行代码。
+**本章默认教学后端：TRL（`config.yaml` → `backend: trl`）。** 裁剪的四种方向已在 [preliminary](../preliminary/TUTORIAL.md) 讲过；本章重点是角色分工、GAE，以及一条完整 batch 的 reward→loss 数据链。
 
-这是本地新增章节。 · [总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
+[学习路线](../docs/LEARNING_PATH.md) · [总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
 
 ## 本地实现
 
@@ -17,14 +17,23 @@ delta_t=r_t+gamma V(s_{t+1})−V(s_t)，A_t=delta_t+gamma lambda A_{t+1}。优�
 ## 从代码入口开始
 
 ```bash
-# 从仓库根目录运行
+# 从仓库根目录运行；默认与 TRL 后端一致
 source .venv/bin/activate
+.venv/bin/arl train 001-ppo/config.yaml --smoke --backend trl
+# 等价薄入口
 python 001-ppo/train.py --smoke
 # 正式学习配置（CPU 默认；较大模型可能较慢）
 python 001-ppo/train.py
 # 每次运行自动生成唯一 runs/ 子目录；把 RUN_NAME 改为终端输出的目录名
 RUN_DIR="runs/RUN_NAME"
 python 001-ppo/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
+```
+
+跨后端对照属于进阶，不要在第一次运行时同时学习算法与后端：
+
+```bash
+.venv/bin/arl train 001-ppo/config.yaml --smoke --backend native
+.venv/bin/arl train 001-ppo/verl.yaml --smoke --verl-workers 2
 ```
 
 本章 `config.yaml` 保存实验配置，`train.py`、`eval.py` 是直接可运行入口。共用实现见 `trl_backend.py / trainers.py / losses.py`，位于 `../src/agentic_rl/`；薄入口让修复 token 对齐、设备或日志问题时可以统一维护各章训练逻辑。
@@ -50,13 +59,4 @@ python 001-ppo/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
 
 ## verl 训练路径
 
-本章提供 `verl.yaml`（CPU）和 `verl-gpu.yaml`（显式 CUDA）。默认 config.yaml 保留 TRL，verl 作为并列入口；`--backend native` 可读取原生参考实现。根环境 CLI 会自动切换到独立 verl 环境。
-
-```bash
-# 在项目根目录运行；两个实际 CPU worker
-.venv/bin/arl train 001-ppo/verl.yaml --smoke --verl-workers 2
-# GPU 配置供后续实验使用，本次未运行 GPU 验证
-# .venv/bin/arl train 001-ppo/verl-gpu.yaml --verl-workers 2
-```
-
-真实更新代码在 `src/agentic_rl/verl_backend/`，本章机制对应关系、安装和恢复方式见 [verl 指南](../docs/VERL.md)。轨迹通过 DataProto 传递，参数更新调用官方 verl actor。verl 与原生均保存 token、mask、旧概率和轮次日志。
+本章提供 `verl.yaml`（CPU）和 `verl-gpu.yaml`（显式 CUDA）。默认 config.yaml 保留 TRL，verl 作为并列入口；`--backend native` 可读取原生参考实现。根环境 CLI 会自动切换到独立 verl 环境。安装与恢复见 [verl 指南](../docs/VERL.md)。

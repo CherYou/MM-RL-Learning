@@ -1,10 +1,23 @@
 # 001｜PPO：从“这次答得好”到一次稳妥的策略更新
 
-[学习路线](../docs/BEGINNER_GUIDE.md) · [概率与梯度入门](../preliminary/TUTORIAL.md) · [运行说明](README.md)
+[学习路线](../docs/LEARNING_PATH.md) · [损失与裁剪基础](../preliminary/TUTORIAL.md) · [运行说明](README.md)
+
+**本章学习任务：** 走完一次完整的 actor/critic 更新——从任务奖励与 reference 约束，到 GAE 优势与回报目标，再到 policy/value 两项 loss。
 
 PPO 全称 **Proximal Policy Optimization，近端策略优化**。Policy 是“当前情境下如何选择动作”的规则；optimization 是调整规则；proximal 表达更新时不要一下偏离采样策略太远。本章讲常见的 PPO-Clip 版本。它最初用于一般强化学习，后来被用于语言模型训练，方法来源是 [PPO 原论文](https://arxiv.org/abs/1707.06347)。
 
-本章用“3 盒笔，每盒 6 支，共多少支”贯穿讲解，答对得 1，答错得 0。你只需要知道模型会给下一个 token 分配概率；token 是分词器使用的文字单位，不一定是一个汉字。接下来先分清角色，再将最终分数变成每步学习信号，最后解释怎样更新概率。读完应能自己走完一次“生成 → 评分 → 算优势 → 更新”。
+**你已经具备的前置（来自第一章，不必在这里从零重学）：**
+
+| 概念 | 第一章入口 | 本章如何使用 |
+| --- | --- | --- |
+| 奖励 ≠ 可直接反传的标签 | [TUTORIAL §5](../preliminary/TUTORIAL.md) | 任务分数要经优势与 surrogate 进入梯度 |
+| old / current、概率比率 ρ | [TUTORIAL §7](../preliminary/TUTORIAL.md) | 多 epoch 复用同一批 rollout 时必须保留 old |
+| PPO 四种裁剪方向 | [TUTORIAL §8](../preliminary/TUTORIAL.md) | 本章不再从零推导 min/clip，只接到 GAE 产出的优势上 |
+| CE / MSE 的训练对象 | [TUTORIAL §2–3](../preliminary/TUTORIAL.md) | critic 用回归目标；actor 用策略梯度 surrogate |
+
+DPO 不必是本章前置；GRPO 可以在读完本章前先建立“组内优势”直觉，详见 [学习路线](../docs/LEARNING_PATH.md)。
+
+本章用“3 盒笔，每盒 6 支，共多少支”贯穿讲解，答对得 1，答错得 0。你只需要知道模型会给下一个 token 分配概率；token 是分词器使用的文字单位，不一定是一个汉字。接下来先分清角色，再将最终分数变成每步学习信号，最后用一条完整 batch 把数字串起来。读完应能自己走完一次“生成 → 评分 → 算优势 → 更新”。
 
 ## 1. 只有一个最终分数，为什么需要这么多步骤
 
@@ -153,33 +166,49 @@ $`\lambda`$ 是混合参数。取 0 只剩一步 TD；取 1 且完整终局被�
 
 Critic 的目标为 `[0.77+0.2, 0.6+0.4]=[0.97,1.0]`。第一步没有即时奖励，但后面的好结果通过 GAE 传回来了。改 lambda=0，第一步优势为 0.2；改 lambda=1，则为 0.8，对应回报目标为 1。读者可以用这三个数检查自己是否理解递推。
 
-## 7. 概率比与裁剪：知道方向之后，控制更新幅度
+## 7. 概率比与裁剪：把第一章的裁剪接到 GAE 优势上
 
-优势解决“往哪个方向学”。生成回答昂贵，PPO 往往对一批样本进行多次小批量更新；第一次之后，当前策略就不同于生成数据的 old policy。于是需要概率比衡量偏离。为避免和奖励 r 混淆，本节用 rho：
+优势解决“往哪个方向学”。生成回答昂贵，PPO 往往对一批样本进行多次小批量更新；第一次之后，当前策略就不同于生成数据的 old policy。比率与导数结构已在 [损失函数详解 §7–8](../preliminary/TUTORIAL.md) 展开：ρ=exp(ℓ−ℓ_old)，ρ=1 时导数仍可非零；old 必须是采样快照，不能与 current 共图相消。
 
-```math
-\rho_t=\frac{\pi_\theta(a_t\mid s_t)}{\pi_{old}(a_t\mid s_t)}
-=\exp(\ell_t-\ell_t^{old}).
-```
-
-旧概率 0.2、当前概率 0.3，rho=1.5。Old 分母与优势批内固定，只有当前 logprob 反传。Rho=1 是更新起点，不表示导数为零，因为它仍随当前参数变化。
-
-未裁剪收益是 $`\rho_t\widehat A_t`$：正优势鼓励提高概率，负优势鼓励降低概率。一直优化可能过度相信少量样本。PPO-Clip 取一个保守收益，再加负号转成最小化 loss：
+本章不重复推导那四种方向，只强调：**clip 比较的是 `min(ρA, clip(ρ)A)`，正负优势由 GAE（或其它优势估计）提供。** 未裁剪收益是 $`\rho_t\widehat A_t`$；PPO-Clip 取保守收益再加负号：
 
 ```math
 L_\pi=-\mathbb{E}_t\left[\min\left(\rho_t\widehat A_t,
 \mathrm{clip}(\rho_t,1-\epsilon,1+\epsilon)\widehat A_t\right)\right].
 ```
 
-Clip 把输入夹在上下界内；epsilon 是裁剪尺度；期望在此用有效生成位置的样本平均近似。必须先乘优势再取 min，因为优势正负决定应停止鼓励哪个方向。设 epsilon=0.2：
+设 epsilon=0.2，与第一章同一张核对表（优势来自本批 GAE）：
 
 | 情况 | 原收益 | 裁剪收益 | 实际取值与含义 |
 | --- | --- | --- | --- |
-| 优势 +1，比率 1.5 | 1.5 | 1.2 | 取 1.2；好动作已经增加很多，继续增加没有该项额外收益 |
-| 优势 -1，比率 0.5 | -0.5 | -0.8 | 取 -0.8；坏动作已经减少很多，继续减少不再额外奖励 |
-| 优势 -1，比率 1.5 | -1.5 | -1.2 | 取 -1.5；坏动作反而更多，仍应纠正 |
+| 优势 +1，比率 0.5 | 0.5 | 0.5 | 仍取 0.5；好动作被压低，继续纠正 |
+| 优势 +1，比率 1.5 | 1.5 | 1.2 | 取 1.2；好动作已经增加很多，不再追加同向激励 |
+| 优势 -1，比率 0.5 | -0.5 | -0.8 | 取 -0.8；坏动作已经减少很多，不再追加 |
+| 优势 -1，比率 1.5 | -1.5 | -1.5 | 仍取 -1.5；坏动作反而更多，继续纠正 |
 
-所以不是“越界就一律零梯度”，也不保证每个概率比最终都留在区间内。共享参数、其他样本和优化器状态仍能改变它。裁剪限制的是这个样本在特定方向的额外激励，导数对照见 [损失函数入门](../preliminary/TUTORIAL.md)。
+所以不是“越界就一律零梯度”，也不保证每个概率比最终都留在区间内。共享参数、其他样本和优化器状态仍能改变它。裁剪限制的是这个样本在特定方向的额外激励。
+
+## 7.1 一条完整 batch：奖励 → KL shaping → GAE → 两项 loss
+
+下面用**同一组数字**把前面各节串成一次更新。场景仍是买笔题的一次回答，两个有效生成 token（t=0,1），t=1 为真实终局。
+
+| 步骤 | 数值 | 来源 / 含义 |
+| --- | --- | --- |
+| 任务奖励 | R_task=1 | 答案校验器 |
+| old value | V_old=[0.2, 0.4] | 采样时 critic 保存 |
+| 参考示意 KL | ℓ_old−ℓ_ref = [0.0, 0.2] | 同 token 上 old 相对 reference |
+| β | 0.1 | 配置中的偏离强度 |
+| 合成训练奖励 | r̃=[−0.1×0, −0.1×0.2+1]=[0, 0.98] | §4 公式；任务分落在最后有效 token |
+| γ, λ | 1, 0.95 | 与 §6 手算一致 |
+| TD 误差 | δ1=0.98−0.4=0.58；δ0=0+0.4−0.2=0.2 | GAE 单元 |
+| 优势 | Â1=0.58；Â0=0.2+0.95×0.58≈0.751 | 终局后不再 bootstrap |
+| value 目标 | Ĝ=[0.751+0.2, 0.58+0.4]=[0.951, 0.98] | 用**未标准化**优势构造 |
+| 策略 loss 输入 | 当前 ℓ 与固定 ℓ_old、Â、response mask | actor 反传 |
+| value loss 输入 | 当前 V_φ 与固定 Ĝ（及 old value 裁剪） | critic 反传 |
+
+对应代码阅读顺序：合成奖励与优势标准化见 [verl algorithms](../src/agentic_rl/verl_backend/algorithms.py)；GAE 与 `ppo_loss` 见 [losses.py](../src/agentic_rl/losses.py)。**不要**把已标准化的 A 再加 V_old 当回归目标。
+
+若把任务分直接放在每个 token（而不是终局广播）或重复计入同一 KL，数字会变，语义也会变——这属于配方差异，不是“PPO 的唯一写法”。
 
 ## 8. Critic 怎样学，为什么有第二个 loss
 
@@ -236,8 +265,20 @@ next_value = torch.where(live.bool(), values[:, t], next_value)
 
 按 [README](README.md) 安装后，从仓库根目录运行下面的 Linux/WSL 命令。Windows PowerShell 按安装环境改用 `.venv\Scripts\arl.exe`。
 
+**本章默认教学入口与 `config.yaml` 的 TRL 后端一致：**
+
 ```bash
-.venv/bin/arl train 001-ppo/config.yaml --smoke
+# 默认：与本章介绍的 PPOTrainer 路径一致
+.venv/bin/arl train 001-ppo/config.yaml --smoke --backend trl
+# 等价薄入口（读取同一 config.yaml）
+python 001-ppo/train.py --smoke
+```
+
+进阶对照（不要在第一次运行时同时学习算法与后端切换）：
+
+```bash
+.venv/bin/arl train 001-ppo/config.yaml --smoke --backend native
+.venv/bin/arl train 001-ppo/verl.yaml --smoke --verl-workers 2
 ```
 
 Smoke 是少量步骤的管线检查，使用随机微型模型，不证明数学能力改善。默认 reward 是答案校验器通过 reward-model 接口包装，接口名称不意味着训练了人类偏好奖励网络。
@@ -263,5 +304,7 @@ Smoke 是少量步骤的管线检查，使用随机微型模型，不证明数�
 - [GAE 原论文](https://arxiv.org/abs/1506.02438)：lambda 如何连接不同时间尺度。
 - [Spinning Up：策略梯度教学](https://spinningup.openai.com/en/latest/spinningup/rl_intro3.html)：减 baseline 的数学理由。
 - [Nathan Lambert：RLHF 中的策略梯度](https://rlhfbook.com/c/06-policy-gradients)：一般 RL 与语言模型 reward/reference 的衔接。
+
+下一步：若你已理解 actor/critic 与 GAE，可转到 [GRPO：同题采样与组内优势](../01-grpo/TUTORIAL.md)，看怎样用组内统计替代学习式 critic。需要离线偏好时再读 [DPO](../002-dpo/TUTORIAL.md)。
 
 这些资料用于机制核对和深入阅读。本章数字例子、角色表、流程图和代码阅读顺序为本仓库重新组织，执行细节以本地配置与代码为准。

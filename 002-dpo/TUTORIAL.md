@@ -1,6 +1,10 @@
 # 002｜DPO：手里只有一对好坏回答，也能直接训练偏好
 
-[学习路线](../docs/BEGINNER_GUIDE.md) · [运行说明](README.md)
+[学习路线](../docs/LEARNING_PATH.md) · [BCE 与偏好分差](../preliminary/TUTORIAL.md) · [运行说明](README.md)
+
+**本章学习任务：** 用固定偏好对完成一次离线更新——先看清“分差 → 谁更好”的 logistic 目标，再接上 reference 校正的策略 logprob 差。
+
+**建议前置：** [损失函数详解 §4](../preliminary/TUTORIAL.md)（二元交叉熵 / 偏好 margin）。不必先读完 PPO/GRPO；在线 RL 与离线偏好是两条数据条件不同的分支。
 
 假设同一道题有两个回答，人工或规则告诉你 A 比 B 好。你没有每个 token 的分数，也未必想一边训练一边生成新答案。DPO 直接使用这种偏好对，增加模型对 preferred 回答相对 rejected 回答的偏好，并用固定 reference 作比较基准。
 
@@ -16,6 +20,18 @@ DPO 全称 **Direct Preference Optimization，直接偏好优化**。Preference 
 
 这并不意味着必须惩罚 rejected 的每个词。例如两个回答都正确写出“3 盒，每盒 6 支”，只在最后算错。整段偏好标签没有标出错误位置；DPO 的监督单位仍是完整回答，细粒度原因不会自动出现在标签里。
 
+## 先从“分差预测谁更好”开始（BCE 桥）
+
+在写完整 DPO 公式前，先只看偏好标签本身。设两个标量分数 s_A、s_B，分差 d=s_A−s_B，A 更好时：
+
+```math
+\sigma(d)=\frac1{1+e^{-d}},\qquad L=-\log\sigma(d).
+```
+
+d=0 时损失为 log2，对 d 的梯度为 −0.5：训练会**增大 A 相对 B 的分差**。这就是第一章的 logistic / BCE 形式，还没有出现 reference，也还没有规定“分数”必须是什么。
+
+DPO 唯一的额外设计是：**用当前策略与 reference 的 logprob 差来构造这个分差**，而不是训练一个独立打分网络。下面各节只是在回答“分差从哪来”。
+
 ## 一行数据有什么
 
 明确了监督单位，先检查数据能否表达它。一条样本必须让 chosen 和 rejected 对应**同一个 prompt**；如果把两道题的答案拼成一对，算法比较的就不再是同一条件下的偏好。
@@ -26,13 +42,13 @@ DPO 全称 **Direct Preference Optimization，直接偏好优化**。Preference 
 
 这是教学示例，不是对仓库数据逐字摘录。chosen/rejected 表示给定标注中的相对偏好，不保证 chosen 永远完美。仓库的 DPO 学习数据是明确标注的 GSM8K 派生偏好对，并不是大规模真实人类偏好采集结果。
 
-## 先算回答概率，再算相对差距
+## 先算回答概率，再把 logprob 差填进分差
 
 为什么比较的是概率而不是让模型“直接读懂标签”？神经网络训练需要一个可求导的量。我们把已经给定的回答逐 token 输入，计算每个正确后续 token 的概率，这叫 teacher forcing（使用给定前缀打分），不是让模型现场自由生成。序列概率是条件概率的乘积，logprob 则是相加。例如两个 token 的条件概率 0.5、0.2，对应序列概率 0.1，logprob 为 log0.5+log0.2=log0.1。只加回答部分，排除题目和补齐空位。
 
 用 x 表示题目，y+ 表示 chosen，y− 表示 rejected；theta 是当前模型参数，pi 表示回答的条件概率。设 $`\ell_\theta^+=\log\pi_\theta(y^+\mid x)`$，$`\ell_\theta^-=\log\pi_\theta(y^-\mid x)`$，reference 对应 $`\ell_{ref}^+,\ell_{ref}^-`$。这些是**整段生成 token 的 logprob 之和**。
 
-定义校正后的 margin（比较间隔），其中 beta 是正的尺度参数，期望符号表示对训练回答对取平均：
+现在把上一节的 d 换成“reference 校正后的策略偏好分差”：
 
 ```math
 z=\beta\left[(\ell_\theta^+-\ell_\theta^-)-(\ell_{ref}^+-\ell_{ref}^-)\right],
@@ -43,9 +59,19 @@ L_{DPO}=-\mathbb{E}_{(x,y^+,y^-)}\log\sigma(z),\qquad
 \sigma(z)=\frac1{1+e^{-z}}.
 ```
 
-直观上，$`\sigma(z)`$ 是偏好模型给“chosen 更好”的概率。我们希望这个概率变大，所以最小化它的负 log。
+直观上，$`\sigma(z)`$ 是偏好模型给“chosen 更好”的概率。我们希望这个概率变大，所以最小化它的负 log。这就是 BCE 桥里的 $`-\log\sigma(d)`$，只是 d 换成了 z。
 
-Reference 校正问的是“相对于原来，你有没有更偏向 chosen”，而不是简单要求 chosen 的原始概率超过 rejected。长短回答的序列概率受长度影响，不能随手把求和改平均后仍称相同的 DPO 目标。
+Reference 校正问的是“相对于原来，你有没有更偏向 chosen”，而不是简单要求 chosen 的原始概率超过 rejected。
+
+### 长度与合成负例：数据侧的两处混淆
+
+| 现象 | 为什么危险 | 阅读/实验时怎么做 |
+| --- | --- | --- |
+| chosen 与 rejected 长度差很大 | 序列 logprob 是求和；更长回答常有更低的总 logprob，模型可能学到长度捷径，而非内容偏好 | 手算时对比“长度相近”与“长度悬殊”两对；评估不要只看 chosen 历史 logprob 是否更高 |
+| 合成负例（本仓库 GSM8K 派生） | 负例往往更短、格式更简单，甚至只是答案数字 +1 | 它适合验证 **margin 与训练接口**，不能当作真实人类偏好能力的证据 |
+| 把求和改平均后仍称 DPO | 统计单位变了，目标不再与标准 DPO 相同 | 若改 reduction，必须在配置与文中标明 |
+
+仓库 DPO 学习数据是明确标注的 GSM8K 派生偏好对，并不是大规模真实人类偏好采集结果。长短回答的序列概率受长度影响，不能随手把求和改平均后仍称相同的 DPO 目标。
 
 ## 手算 margin 和梯度方向
 
@@ -126,7 +152,10 @@ loss = -torch.nn.functional.logsigmoid(margin).mean()
 运行前先预测：同一对数据、相同初始策略和 reference 应给出接近 log2 的 loss，但仍可以更新；chosen 与 rejected 完全相同时则没有区分梯度。用这两种情况能区分“分数相同”和“计算图相同”。
 
 ```bash
-.venv/bin/arl train 002-dpo/config.yaml --smoke
+# 默认教学入口：与本章 config.yaml 的 TRL DPOTrainer 一致
+.venv/bin/arl train 002-dpo/config.yaml --smoke --backend trl
+# 等价薄入口
+python 002-dpo/train.py --smoke
 ```
 
 练习：互换 chosen/rejected，z 怎样变化？答案是变为 -z，训练方向反转。若一对回答实际上完全相同，两个概率及其梯度相同，无法从这个对中学到区分，即便 loss 仍约为 0.6931。

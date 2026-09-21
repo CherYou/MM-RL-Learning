@@ -2,9 +2,9 @@
 
 **[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
 
-理解同题比较、组优势、token 更新和退化组。建议先读教程完成手算和自测，再回到本页运行代码。
+**本章默认教学后端：TRL（`config.yaml` → `backend: trl`）。** 教程命令与此一致；verl / native 是进阶对照。PPO 是推荐前置而非强制；裁剪基础见 [preliminary](../preliminary/TUTORIAL.md)。
 
-[总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
+[学习路线](../docs/LEARNING_PATH.md) · [总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
 
 ## 本地实现
 
@@ -17,8 +17,10 @@ GSM8K 使用官方 main train/test。答案同时支持 `<answer>`、嵌套 boxe
 ## 从代码入口开始
 
 ```bash
-# 从仓库根目录运行
+# 从仓库根目录运行；默认与 TRL 后端一致
 source .venv/bin/activate
+.venv/bin/arl train 01-grpo/config.yaml --smoke --backend trl
+# 等价薄入口
 python 01-grpo/train.py --smoke
 # 正式学习配置（CPU 默认；较大模型可能较慢）
 python 01-grpo/train.py
@@ -27,15 +29,22 @@ RUN_DIR="runs/RUN_NAME"
 python 01-grpo/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
 ```
 
-本章 `config.yaml` 保存实验配置，`train.py`、`eval.py` 是直接可运行入口。共用实现见 `losses.py / trl_backend.py`，位于 `../src/agentic_rl/`；薄入口让修复 token 对齐、设备或日志问题时可以统一维护各章训练逻辑。
+跨后端对照属于进阶：
+
+```bash
+.venv/bin/arl train 01-grpo/config.yaml --smoke --backend native
+.venv/bin/arl train 01-grpo/verl.yaml --smoke --verl-workers 2
+```
+
+本章 `config.yaml` 保存实验配置，`train.py`、`eval.py` 是直接可运行入口。共用实现见 `losses.py / trl_backend.py`，位于 `../src/agentic_rl/`。
 
 `--smoke` 强制 CPU、随机微型模型、两次更新，并使用标明的学习 fixture。普通配置读取 `data/` 的公开实验数据；没有远程训练服务调用。修改输出路径可用 `--output runs/my-01-grpo`，已存在的目录会拒绝覆盖。
 
 ## 验证思路与消融
 
-固定 prompt、模型和种子，比较 group_size=4/8、beta=0/0.02；观察 reward、reward_std、KL、梯度范数和回答长度。比较 native 与 TRL 时统一 reduction 和采样设置。
+固定 prompt、模型和种子，比较 group_size=4/8、beta=0/0.02；观察 reward、reward_std、KL、梯度范数和回答长度。比较 native 与 TRL 时统一 reduction 和采样设置。教程中的 `[1,1,0,0]` 完整数据链可用来预测日志方向，而不是只看 loss 是否下降。
 
-建议读 `tests/test_mechanisms.py` 中相应检查，再打开 `runs/<实验>/metrics.jsonl` 与 TensorBoard。Native 运行还保留 `trajectories.jsonl`，其中有 token IDs、mask、旧 logprob、turn spans 和 reward，可逐段检查信用分配。
+建议读 `tests/test_mechanisms.py` 中相应检查，再打开 `runs/<实验>/metrics.jsonl` 与 TensorBoard。
 
 ## 复现边界
 
@@ -50,17 +59,12 @@ CPU smoke 使用随机 tiny 模型和明确标记的 debug_token 奖励，只检
 
 ## verl 训练路径
 
-本章提供 `verl.yaml`（CPU）和 `verl-gpu.yaml`（显式 CUDA）。默认 config.yaml 保留 TRL，verl 作为并列入口；`--backend native` 可读取原生参考实现。根环境 CLI 会自动切换到独立 verl 环境。
+本章提供 `verl.yaml`（CPU）和 `verl-gpu.yaml`（显式 CUDA）。默认 config.yaml 保留 TRL。安装与恢复见 [verl 指南](../docs/VERL.md)。
 
 ```bash
-# 在项目根目录运行；两个实际 CPU worker
 .venv/bin/arl train 01-grpo/verl.yaml --smoke --verl-workers 2
-# 选择本机可用的 GPU；示例使用物理 index 0
+# GPU 检查（需本机 GPU）
 .venv/bin/python scripts/run_grpo_gpu_check.py --gpu-index 0 --output runs/verl-grpo-gpu-repeat
 .venv/bin/python scripts/verify_grpo_gpu.py runs/verl-grpo-gpu-repeat \
   --report reports/verl-grpo-gpu-repeat-verification.json
 ```
-
-真实更新代码在 `src/agentic_rl/verl_backend/`，本章机制对应关系、安装和恢复方式见 [verl 指南](../docs/VERL.md)。轨迹通过 DataProto 传递，参数更新调用官方 verl actor。verl 与原生均保存 token、mask、旧概率和轮次日志。
-
-GPU 检查使用 [verify-gpu.yaml](verify-gpu.yaml)。启动器通过 `--gpu-index` 选择设备，并核对 worker 与 `nvidia-smi` 监测到的 UUID；检查脚本核对参数更新、reference 冻结、轨迹对齐和 checkpoint 保存。

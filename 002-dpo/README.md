@@ -2,9 +2,9 @@
 
 **[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
 
-从偏好对开始，推到 reference 校正、DPO loss 与具体更新。建议先读教程完成手算和自测，再回到本页运行代码。
+**本章默认教学后端：TRL（`config.yaml` → `backend: trl`）。** 建议先读 [preliminary §4：BCE 与偏好分差](../preliminary/TUTORIAL.md)；PPO/GRPO 不是强制前置。
 
-这是本地新增章节。 · [总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
+[学习路线](../docs/LEARNING_PATH.md) · [总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
 
 ## 本地实现
 
@@ -17,8 +17,10 @@ completion logprob 先在有效回答 token 上求和，prompt/pad 不参与比�
 ## 从代码入口开始
 
 ```bash
-# 从仓库根目录运行
+# 从仓库根目录运行；默认与 TRL 后端一致
 source .venv/bin/activate
+.venv/bin/arl train 002-dpo/config.yaml --smoke --backend trl
+# 等价薄入口
 python 002-dpo/train.py --smoke
 # 正式学习配置（CPU 默认；较大模型可能较慢）
 python 002-dpo/train.py
@@ -27,7 +29,7 @@ RUN_DIR="runs/RUN_NAME"
 python 002-dpo/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
 ```
 
-本章 `config.yaml` 保存实验配置，`train.py`、`eval.py` 是直接可运行入口。共用实现见 `trl_backend.py / trainers.py / losses.py`，位于 `../src/agentic_rl/`；薄入口让修复 token 对齐、设备或日志问题时可以统一维护各章训练逻辑。
+本章 `config.yaml` 保存实验配置，`train.py`、`eval.py` 是直接可运行入口。共用实现见 `trl_backend.py / trainers.py / losses.py`，位于 `../src/agentic_rl/`。
 
 `--smoke` 强制 CPU、随机微型模型、两次更新，并使用标明的学习 fixture。普通配置读取 `data/` 的公开实验数据；没有远程训练服务调用。修改输出路径可用 `--output runs/my-002-dpo`，已存在的目录会拒绝覆盖。
 
@@ -35,7 +37,7 @@ python 002-dpo/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
 
 检查初始 policy=reference 时 loss≈log(2)，一步反传应鼓励 chosen、压低 rejected。比较 beta、回答长度和 synthetic-negative 策略，记录 reward margin。评测附带 chosen/rejected 原始 logprob 偏好率，注意长度偏差。
 
-建议读 `tests/test_mechanisms.py` 中相应检查，再打开 `runs/<实验>/metrics.jsonl` 与 TensorBoard。Native 运行还保留 `trajectories.jsonl`，其中有 token IDs、mask、旧 logprob、turn spans 和 reward，可逐段检查信用分配。
+建议读 `tests/test_mechanisms.py` 中相应检查，再打开 `runs/<实验>/metrics.jsonl` 与 TensorBoard。
 
 ## 复现边界
 

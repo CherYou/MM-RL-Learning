@@ -19,9 +19,9 @@
 适合希望先把“反馈 → 损失 → 梯度 → 更新”整条链走通的读者。
 
 1. [损失函数详解](../preliminary/TUTORIAL.md) + [L0 数值实验](../examples/math/README.md)
-2. [PPO](../001-ppo/TUTORIAL.md)：actor / critic、GAE、一次完整更新
-3. [GRPO](../01-grpo/TUTORIAL.md)：同题组内优势，无学习式 critic
-4. 按需进入 [DAPO](../06-dapo/TUTORIAL.md) / [GSPO](../07-gspo/TUTORIAL.md)
+2. [PPO](../001-ppo/TUTORIAL.md)：actor / critic、GAE、一条完整 batch 的 reward→loss 链；默认 TRL
+3. [GRPO](../01-grpo/TUTORIAL.md)：同题组内优势 + `[1,1,0,0]` 数据链；默认 TRL；PPO 推荐而非强制
+4. 按需进入 [DAPO](../06-dapo/TUTORIAL.md) / [GSPO](../07-gspo/TUTORIAL.md)（差异式阅读：采样供应 vs 比率粒度）
 
 DPO、OPD 不是这条路线的强制前置。
 
@@ -30,11 +30,11 @@ DPO、OPD 不是这条路线的强制前置。
 适合主要关心可验证奖励与工具型后训练的读者。
 
 1. 损失基础中的 CE / logprob / 策略梯度 / 比率与裁剪
-2. [最小 GRPO](../01-grpo/TUTORIAL.md)
+2. [最小 GRPO](../01-grpo/TUTORIAL.md)（默认命令 = TRL `config.yaml`）
 3. 工具与环境：[Search-R1](../03-search-r1/TUTORIAL.md) → [ReTool](../05-retool/TUTORIAL.md)
 4. 进阶：[ALFWorld](../08-alfworld/TUTORIAL.md)、[Vision-GRPO](../09-vision-grpo/TUTORIAL.md)、[Harness-RL](../12-harness-rl/TUTORIAL.md)
 
-PPO 的 GAE 细节可以后补；不要把它设成 GRPO 的必经关卡。
+PPO 的 GAE 细节可以后补；不要把它设成 GRPO 的必经关卡。离线偏好走 [DPO](../002-dpo/TUTORIAL.md)（BCE 桥 → margin → reference 校正）。
 
 ## 路线三：连续控制与离线
 
@@ -102,7 +102,7 @@ flowchart TD
 | 章节类型 | 默认教学入口 | 跨后端对照 |
 | --- | --- | --- |
 | preliminary 数学 | PyTorch 脚本 / `examples/math` | 不需要后端 |
-| PPO / DPO / GRPO / GSPO | TRL Trainer 与各章 `config.yaml` | 可切 native / verl，但不要在第一次运行时同时学算法与后端 |
+| PPO / DPO / GRPO / GSPO | TRL 与各章 `config.yaml`（教程命令已对齐 `--backend trl`） | native / verl 放进阶区，不要第一次就切 |
 | Agent / 蒸馏 / 在线复杂机制 | verl WorkerGroup | 见 [VERL.md](VERL.md) |
 | 连续控制 | PyTorch embodied | 见 [EMBODIED.md](EMBODIED.md) |
 

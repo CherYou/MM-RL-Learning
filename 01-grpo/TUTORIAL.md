@@ -1,12 +1,27 @@
 # 01｜GRPO：让同一道题的几个回答相互当参照
 
-[学习路线](../docs/BEGINNER_GUIDE.md) · [运行说明](README.md)
+[学习路线](../docs/LEARNING_PATH.md) · [损失与裁剪基础](../preliminary/TUTORIAL.md) · [PPO（推荐前置，非强制）](../001-ppo/TUTORIAL.md) · [运行说明](README.md)
+
+**本章学习任务：** 看清 GRPO 相对基础策略更新**真正改了什么**——优势从“critic + GAE”换成“同题组内统计”；其余采样、old 快照、token 打分与裁剪目标仍在同一条链上。
 
 假设你让模型回答“每盒 6 支笔，买 3 盒共有多少支？”一次答错只能告诉你这条路径不好。若它对同一道题尝试四次，其中两次答对、两次答错，就可以在同样难度下比较哪些生成路径更值得重复。这是理解 GRPO 最直接的起点。
 
 ![同一问题生成多份回答，组内比较奖励后将不同方向的信号送回同一个策略](../docs/assets/algorithms/grpo.png)
 
 图里的判分可以由程序执行，不要求另训练一个神经网络。GRPO 用组内统计提供 baseline，省去 PPO 的 value critic；它仍需要奖励来源，也可能保留 reference 模型。[DeepSeekMath](https://arxiv.org/abs/2402.03300)是这一机制的原始来源。
+
+## 与 PPO 相比，改变了什么
+
+| 组件 | PPO | GRPO（本章） |
+| --- | --- | --- |
+| 优势来源 | Critic 预测 + GAE | 同一题 G 次回答的奖励组内标准化 |
+| Value / GAE | 需要 | 本章路径不需要学习式 critic |
+| Old / 概率比率 | 需要 | 仍需要（多步复用批数据时） |
+| 裁剪 surrogate | min(ρA, clip(ρ)A) | 同一结构，A 换成组相对优势 |
+| Reference KL | 常见于 LLM PPO | 可选；β=0 时关闭 |
+| 每题采样成本 | 通常 1 条（或少条） | 每题 G 条 rollout |
+
+**不必先读完 PPO 的 GAE 手算。** 若你只需语言模型可验证奖励路线，可先掌握第一章的比率与裁剪，再直接进入本章；需要完整 actor-critic 时回头补 [PPO](../001-ppo/TUTORIAL.md)。DPO 不是本章前置。
 
 ## 从 PPO 的预期，走到同题回答的比较
 
@@ -46,6 +61,23 @@ A_i=\frac{R_i-\bar R}{\sigma+10^{-4}}\approx[1,1,-1,-1].
 这份仓库用总体标准差，代码中的 `correction=0` 对应分母 G，而非 G−1。不能和使用样本标准差的其它实现直接比数值。
 
 奖励是绝对判分，优势是相对判分。若奖励变成 `[1,1,1,1]`，所有优势为 0：这些回答都成功，但本组没有告诉模型哪条比其它更好。全错组同理。不要给相同奖励随意加噪声来伪造“有学习信号”。
+
+## 完整数据链：同一组 `[1,1,0,0]` 走到 loss
+
+优势算完后，仍要接到 token 概率上。下面用**同一道题、G=4**，把奖励一直追到裁剪目标。数值为教学构造，便于手算。
+
+| 回答 i | 有效 token 摘要 | 奖励 R_i | 优势 A_i | 某 token 的 old p | 当前 p | 比率 ρ | 未裁剪 ρA | 采用 min(ρA, clip(ρ)A) |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | `18`（示意 2 token） | 1 | ≈+1 | 0.20 | 0.22 | 1.10 | 1.10 | 1.10 |
+| 1 | `3×6=18`（更长） | 1 | ≈+1 | 0.15 | 0.225 | 1.50 | 1.50 | 1.20 |
+| 2 | `9` | 0 | ≈−1 | 0.40 | 0.20 | 0.50 | −0.50 | −0.80 |
+| 3 | `12` | 0 | ≈−1 | 0.25 | 0.375 | 1.50 | −1.50 | −1.50 |
+
+设 ε=0.2。回答 1 的好行为已被推高较多，该 token 停止追加正向激励；回答 2 的坏行为已压低，停止追加负向激励；回答 3 的坏行为反而升高，仍需纠正。**mask 只覆盖各回答自己的有效生成 token**；题目与 padding 不进 policy loss。
+
+本地 GRPO 在序列层做平均（每条回答先对有效 token 平均，再对回答平均），不是所有 token 全局一把梭。完整公式见下节；对照实现时请分清“比率粒度”和“loss 平均单位”。
+
+全同奖励组（例如 R=[1,1,1,1]）优势为 0，上表 ρA 全为 0——这是“本组无相对信号”，不是实现 bug。
 
 ## 从回答分数走到 token loss
 
@@ -118,9 +150,19 @@ optimizer.step()
 
 现在可以在运行前预测两种特殊情况：全同奖励使任务优势为零；正负优势平均为零却不一定使参数梯度为零，因为各回答的 token 与梯度方向不同。带着预测看日志，比只寻找一个下降的 loss 更可靠。
 
-在项目根目录运行 CPU 链路检查：
+在项目根目录运行。**默认教学入口与本章 `config.yaml`（backend: trl）一致：**
 
 ```bash
+# 默认：TRL GRPOTrainer，与本章正文介绍的后端一致
+.venv/bin/arl train 01-grpo/config.yaml --smoke --backend trl
+# 等价薄入口
+python 01-grpo/train.py --smoke
+```
+
+进阶对照（换后端前请先跑通默认入口）：
+
+```bash
+.venv/bin/arl train 01-grpo/config.yaml --smoke --backend native
 .venv/bin/arl train 01-grpo/verl.yaml --smoke --verl-workers 2
 ```
 
@@ -128,7 +170,7 @@ optimizer.step()
 
 我的判断：调 GRPO 时，先检查每道题能否产生有差异的回答，再调整 loss 超参数。没有差异时，把学习率调大只会放大其它噪声或正则；增加 G、调整题目难度和改善奖励可观测性才更直接。这个判断来自上面的梯度结构，不是本仓库已经测得的性能结论。
 
-继续阅读 [DAPO](../06-dapo/TUTORIAL.md)，看看它怎样主动处理全同奖励组。理论与 API 对照可看 [DeepSeekMath §4](https://arxiv.org/html/2402.03300v2) 和 [固定版本 TRL GRPO 文档](https://huggingface.co/docs/trl/v0.25.1/en/grpo_trainer)。
+继续阅读 [DAPO](../06-dapo/TUTORIAL.md)，看它怎样在组内反馈之上改**采样供应与长度处理**（不只是换一条 loss）；对照 [GSPO](../07-gspo/TUTORIAL.md) 时分清比率粒度与平均单位。理论与 API 对照可看 [DeepSeekMath §4](https://arxiv.org/html/2402.03300v2) 和 [固定版本 TRL GRPO 文档](https://huggingface.co/docs/trl/v0.25.1/en/grpo_trainer)。
 
 ## 新手自测
 
