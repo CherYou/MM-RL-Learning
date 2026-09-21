@@ -1,4 +1,8 @@
-# Search-R1｜把“去查一下”变成模型学会的行动
+# 07｜Search-R1：学习检索与观察 mask
+
+<!-- NAV:TOP:BEGIN -->
+[← 上一章：06 DPO：从偏好对直接优化策略](../002-dpo/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/02-tools-multimodal.md) · [下一章：08 ReTool：真实执行与工具决策 →](../05-retool/TUTORIAL.md)
+<!-- NAV:TOP:END -->
 
 [学习路线](../docs/LEARNING_PATH.md) · [GRPO 基础](../01-grpo/TUTORIAL.md) · [运行入口](README.md)
 
@@ -136,3 +140,7 @@ CPU smoke 检查工具调用路径，随机模型未必生成合法查询。真�
 ## 新手自测
 
 练习：第一次查到了作者，第二次查询却仍然照抄最初问题，哪部分能力没有体现？没有利用新观察调整下一动作。若最终答案正确，能否断言每个查询都必要？不能，终局奖励可能连多余查询一起鼓励。进一步实验可固定语料与题目，分别限制为零次、一次、多次查询，记录正确率和调用成本；这才说明额外交互带来了什么。
+
+<!-- NAV:BOTTOM:BEGIN -->
+[← 上一章：06 DPO：从偏好对直接优化策略](../002-dpo/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/02-tools-multimodal.md) · [下一章：08 ReTool：真实执行与工具决策 →](../05-retool/TUTORIAL.md)
+<!-- NAV:BOTTOM:END -->

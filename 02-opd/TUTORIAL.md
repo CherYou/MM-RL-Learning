@@ -1,4 +1,8 @@
-# 02｜Medical OPD、SAR 与 IDT：领域训练案例——先学专长，再设计怎样保留通用能力
+# 13｜Medical OPD / SAR / IDT：领域调度案例
+
+<!-- NAV:TOP:BEGIN -->
+[← 上一章：12 OPSD：特权信息与自教师](../04-opsd/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/03-distillation.md) · [下一章：14 AgentOPSD：自教师辅助的轮次信用 →](../09-AgentOPSD/TUTORIAL.md)
+<!-- NAV:TOP:END -->
 
 > **定位：领域训练案例，不是“更完整的 OPD 算法”。** 概念与采样监督先读 [General OPD](general-opd/TUTORIAL.md)。SAR / IDT 是本仓库的**实验调度标签**，不是未经核对的通用论文标准缩写。医学数据与例子**不构成诊疗建议**，也不说明临床能力。
 
@@ -135,3 +139,7 @@ teacher = base_teacher if general_phase else medical_teacher
 ## 新手自测
 
 练习：切换到通用阶段时，是否把学生重置成 Base？不重置，学生连续学习；重置会丢掉前面的专科训练。若学生一开始就用 Medical Teacher 权重，还能与本章 fresh Base 实验直接比较吗？不能，起点已经变了。最后检查自己是否能画出“Base → SFT → 冻结教师”与“fresh Base → 连续学生更新”两条分开的路径。
+
+<!-- NAV:BOTTOM:BEGIN -->
+[← 上一章：12 OPSD：特权信息与自教师](../04-opsd/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/03-distillation.md) · [下一章：14 AgentOPSD：自教师辅助的轮次信用 →](../09-AgentOPSD/TUTORIAL.md)
+<!-- NAV:BOTTOM:END -->

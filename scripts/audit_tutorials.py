@@ -26,21 +26,26 @@ def collect_markdown_documents(chapters: list[dict]) -> list[Path]:
     for extra in (
         "docs/START_HERE.md",
         "docs/LEARNING_PATH.md",
+        "docs/CHAPTERS.md",
+        "docs/NEXT_STEPS.md",
         "docs/BEGINNER_GUIDE.md",
         "preliminary/FOUNDATIONS.md",
         "examples/math/README.md",
+        "CONTRIBUTING.md",
     ):
         path = ROOT / extra
         if path.exists():
             documents.append(path)
     documents.extend(sorted((ROOT / "docs").glob("*.md")))
+    documents.extend(sorted((ROOT / "docs" / "families").glob("*.md")))
     for row in chapters:
         folder = ROOT / row["chapter"]
-        for name in ("TUTORIAL.md", "README.md"):
-            path = folder / name
-            if path.exists():
-                documents.append(path)
-    # Preserve order while removing duplicates.
+        tutorial = ROOT / row.get("tutorial", folder / "TUTORIAL.md")
+        readme = folder / "README.md"
+        if tutorial.is_file():
+            documents.append(tutorial)
+        if readme.is_file():
+            documents.append(readme)
     unique: list[Path] = []
     seen: set[Path] = set()
     for path in documents:
@@ -171,7 +176,14 @@ def main() -> None:
     checks["local_links_resolve"] = not broken
     checks["core_navigation_pages"] = all(
         (ROOT / path).is_file()
-        for path in ("docs/START_HERE.md", "docs/LEARNING_PATH.md", "preliminary/TUTORIAL.md")
+        for path in (
+            "docs/START_HERE.md",
+            "docs/LEARNING_PATH.md",
+            "docs/CHAPTERS.md",
+            "docs/NEXT_STEPS.md",
+            "configs/learning_paths.json",
+            "preliminary/TUTORIAL.md",
+        )
     )
 
     for row in assets:

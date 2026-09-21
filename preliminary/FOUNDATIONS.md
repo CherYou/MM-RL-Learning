@@ -14,18 +14,17 @@
 | 单元 | 本文章节 | LLM 路线 | 连续控制路线 |
 | --- | --- | --- | --- |
 | 概率、预测、梯度与常见损失 | 以 [TUTORIAL](TUTORIAL.md) 为主 | 必读（TUTORIAL） | 必读（TUTORIAL） |
-| MDP、观察与状态 | §1 | 首次用环境/多轮时 | 进控制章前建议读 |
-| 回报、V/Q、优势、Bellman | §2–3 | 读 PPO / critic 前 | 读 SAC/TD3/IQL 前 |
-| 终止与截断 | §4 | 多轮 Agent / 环境章前 | 必读 |
-| 连续动作密度、tanh、Jacobian | §5 | 可后置 | 读 SAC 前 |
+| MDP、观察与状态 | §1 [`#mdp-and-observation`](#mdp-and-observation) | 首次用环境/多轮时 | 进控制章前建议读 |
+| 回报、V/Q、优势、Bellman | §2–3 [`#value-and-advantage`](#value-and-advantage) | 读 PPO / critic 前 | 读 SAC/TD3/IQL 前 |
+| 终止与截断 | §4 [`#terminal-and-truncation`](#terminal-and-truncation) | 多轮 Agent / 环境章前 | 必读 |
+| 连续动作密度、tanh、Jacobian | §5 [`#continuous-density`](#continuous-density) | 可后置 | 读 SAC 前 |
 | autograd、detach、重参数化 | §6 | 必读核心概念 | 读 SAC 前 |
-| Mask、统计单位、回放与离线 | §7–8 | Agent/蒸馏/离线前 | HER/IQL 前 |
-| 连续动作密度、tanh、Jacobian | §5 | 可后置 | 读 SAC 前（SAC 章可先接受修正 logprob） |
+| Mask、统计单位、回放与离线 | §7–8 [`#replay-and-offline`](#replay-and-offline) | Agent/蒸馏/离线前 | HER/IQL 前 |
 | expectile（非 quantile） | 见 [IQL](../16-iql/TUTORIAL.md) | 不需要 | 读 IQL 前必读 |
-| VLA 表示与数据覆盖 | §9 + [LEARNING_PATH 边界表](../docs/LEARNING_PATH.md#低维控制--还差什么vla-边界集中说明) | 选读 | 选读 |
+| VLA 表示与数据覆盖 | §9 + [LEARNING_PATH VLA 边界](../docs/LEARNING_PATH.md) | 选读 | 选读 |
 | 评估、种子与来源 | §10 | 任何实跑前扫一眼 | 任何实跑前扫一眼 |
-| IS、PPO clipping、CISPO | [TUTORIAL](TUTORIAL.md) | 必读（TUTORIAL） | 通常不需要 |
 
+<a id="mdp-and-observation"></a>
 ## 1. 先把一次交互说完整：MDP 与部分可观察环境
 
 强化学习中，学习者是 **agent**，可调参数的决策规则是 **policy**。时刻 $`t`$，环境处于状态 $`s_t`$，策略选动作 $`a_t`$，环境返回奖励 $`r_t`$ 和下一状态 $`s_{t+1}`$。MDP 的核心假设是：给定当前状态和动作，预测下一步不再需要更久的历史。
@@ -46,6 +45,7 @@ s_{t+1}\sim P(\cdot\mid s_t,a_t),\qquad a_t\sim\pi_\theta(\cdot\mid s_t).
 | 奖励 | 答案正确度、环境成功、工具过程分 | 距离、到达目标、控制代价等 |
 | 评估 | 新题、独立环境任务 | 独立初始状态与目标种子 |
 
+<a id="value-and-advantage"></a>
 ## 2. 奖励不等于回报，回报不等于价值
 
 奖励 $`r_t`$ 是这一步给的分；折扣回报 $`G_t`$ 是从现在往后的总账：
@@ -81,6 +81,7 @@ Q^\pi(s,a)=\mathbb{E}\left[r+\gamma\mathbb{E}_{a'\sim\pi(\cdot\mid s')}Q^\pi(s',
 
 本仓库 $`\tau=0.005`$ 表示每次只混入 0.5% 新参数。有些资料把同一个系数写成“保留旧参数的比例”0.995，读代码时必须看它乘在哪边。
 
+<a id="terminal-and-truncation"></a>
 ## 4. `terminated` 和 `truncated` 为什么要分开
 
 `terminated=True` 表示任务进入吸收终态；`truncated=True` 常表示外部时间上限。两者都应结束当前 episode、阻止 HER 跨轨迹取目标，但**对价值目标的作用可以不同**。
@@ -133,6 +134,7 @@ print(loss.item(), theta.grad.item())  # 9.0, 18.0
 
 SAC 用 $`u=\mu_\theta(s)+\sigma_\theta(s)\epsilon`$、$`\epsilon\sim\mathcal N(0,I)`$ 实现重参数化：随机性留给 $`\epsilon`$，动作对参数仍可求导。TD3 的 actor 更新也要经过 $`Q(s,\mu_\theta(s))`$ 对动作的导数。冻结 critic 参数与把整个 critic 放进 `no_grad()` 不等价：后者会一起切断 actor 所需的梯度。
 
+<a id="replay-and-offline"></a>
 ## 7. Mask、平均方式与样本究竟是谁
 
 语言模型训练里，prompt、padding、工具返回往往不属于要优化的动作。令 $`m_{i,t}\in\{0,1\}`$ 表示本次有效位置，token 平均是：

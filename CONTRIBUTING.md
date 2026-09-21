@@ -22,6 +22,25 @@
 
 **不要：** 为了通过检查而把感谢挪回首页、每章强行一张图、或在教程旁禁止链接上游论文/源码。审计只校验有效性与一致性。
 
+## 目录与导航（唯一数据源）
+
+| 文件 | 作用 |
+| --- | --- |
+| [configs/chapters.json](configs/chapters.json) | 章节身份、家族、教程路径、前置、入口、验证层级 |
+| [configs/learning_paths.json](configs/learning_paths.json) | 全书 `book` 顺序 + 专题捷径完整 ID 列表 |
+| [configs/concepts.json](configs/concepts.json) | 概念锚点（path + anchor） |
+| [docs/CHAPTERS.md](docs/CHAPTERS.md) | 读者可见的 20 章总目录 |
+| `scripts/build_chapter_registry.py` | 由权威顺序生成 chapters.json |
+| `scripts/sync_navigation.py` | 读写各 TUTORIAL 的 NAV:TOP/BOTTOM 块 |
+| `scripts/check_navigation.py` | 校验 ID、路线闭合、NAV 双向一致 |
+
+```bash
+make nav          # 重建注册表 + 写入页首页尾 + 检查
+python scripts/sync_navigation.py --check
+```
+
+**不要**在每章手工维护互相冲突的“下一章”列表；显示编号由 `learning_paths.book` 派生。物理运行目录本轮**不搬迁**。
+
 ## 默认教学后端
 
 | 章节 | 默认入口 |

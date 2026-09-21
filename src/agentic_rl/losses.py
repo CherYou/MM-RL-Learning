@@ -80,7 +80,12 @@ def policy_loss(
         kl = gap.exp() - gap - 1
         per_token = per_token + beta * kl
     if reduction == "auto":
-        reduction = "token_mean" if kind in {"dapo", "cispo"} else "sequence_mean"
+        if kind == "dr_grpo":
+            reduction = "fixed_length"
+        elif kind in {"dapo", "cispo"}:
+            reduction = "token_mean"
+        else:
+            reduction = "sequence_mean"
     if reduction == "token_mean":
         loss = masked_mean(per_token, mask)
     elif reduction == "fixed_length":
@@ -99,16 +104,23 @@ def policy_loss(
     surrogate_clipped = torch.minimum(unclipped, clipped) != unclipped
     stats = {
         "policy/ratio": masked_mean(ratio.expand_as(mask), mask).detach(),
-        # Historical name: fraction of ratios outside the clip interval.
+        # Historical compatibility name: fraction of ratios outside the clip interval.
+        # Not the zero-gradient fraction; surrogate_clipped is PPO/GRPO-style only.
         "policy/clip_fraction": masked_mean(outside.float().expand_as(mask), mask).detach(),
         "policy/ratio_outside_fraction": masked_mean(
             outside.float().expand_as(mask), mask
         ).detach(),
-        "policy/surrogate_clipped_fraction": masked_mean(
-            surrogate_clipped.float().expand_as(mask), mask
-        ).detach(),
         "policy/kl": masked_mean(kl, mask).detach(),
     }
+    if kind in {"grpo", "ppo", "clipped_pg", "dapo", "gspo", "dr_grpo"}:
+        stats["policy/surrogate_clipped_fraction"] = masked_mean(
+            surrogate_clipped.float().expand_as(mask), mask
+        ).detach()
+    if kind == "cispo":
+        weight_clipped = (
+            (ratio < 1 - clip_low) | (ratio > 1 + clip_high)
+        ).float().expand_as(mask)
+        stats["policy/cispo_weight_clipped_fraction"] = masked_mean(weight_clipped, mask).detach()
     return loss, stats
 
 

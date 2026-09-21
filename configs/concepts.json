@@ -1,0 +1,69 @@
+{
+  "concepts": {
+    "probability-and-logprob": {
+      "title": "logits、概率与 logprob",
+      "path": "preliminary/TUTORIAL.md",
+      "anchor": "probability-and-logprob"
+    },
+    "gradient-and-detach": {
+      "title": "梯度与 detach",
+      "path": "preliminary/TUTORIAL.md",
+      "anchor": "gradient-and-detach"
+    },
+    "behavior-ratio": {
+      "title": "old/current 与概率比率",
+      "path": "preliminary/TUTORIAL.md",
+      "anchor": "behavior-ratio"
+    },
+    "ppo-clipping": {
+      "title": "PPO 四种裁剪情形",
+      "path": "preliminary/TUTORIAL.md",
+      "anchor": "ppo-clipping"
+    },
+    "preference-loss": {
+      "title": "偏好损失 / BCE",
+      "path": "preliminary/TUTORIAL.md",
+      "anchor": "preference-loss"
+    },
+    "kl-and-entropy": {
+      "title": "KL 与熵",
+      "path": "preliminary/TUTORIAL.md",
+      "anchor": "kl-and-entropy"
+    },
+    "mask-and-reduction": {
+      "title": "mask 与聚合单位",
+      "path": "preliminary/TUTORIAL.md",
+      "anchor": "mask-and-reduction"
+    },
+    "value-and-advantage": {
+      "title": "V/Q/优势",
+      "path": "preliminary/FOUNDATIONS.md",
+      "anchor": "value-and-advantage"
+    },
+    "terminal-and-truncation": {
+      "title": "终止与截断",
+      "path": "preliminary/FOUNDATIONS.md",
+      "anchor": "terminal-and-truncation"
+    },
+    "continuous-density": {
+      "title": "连续动作密度",
+      "path": "preliminary/FOUNDATIONS.md",
+      "anchor": "continuous-density"
+    },
+    "mdp-and-observation": {
+      "title": "状态与观察",
+      "path": "preliminary/FOUNDATIONS.md",
+      "anchor": "mdp-and-observation"
+    },
+    "replay-and-offline": {
+      "title": "replay、离线与分布偏移",
+      "path": "preliminary/FOUNDATIONS.md",
+      "anchor": "replay-and-offline"
+    },
+    "expectile": {
+      "title": "expectile（非 quantile）",
+      "path": "16-iql/TUTORIAL.md",
+      "anchor": "expectile-not-quantile"
+    }
+  }
+}

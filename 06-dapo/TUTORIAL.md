@@ -1,4 +1,8 @@
-# 06｜DAPO：除了写对 loss，还要让一个 batch 值得训练
+# 04｜DAPO：动态采样、裁剪与长度处理
+
+<!-- NAV:TOP:BEGIN -->
+[← 上一章：03 GRPO：同题采样与组内优势](../01-grpo/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/01-policy-preference.md) · [下一章：05 GSPO：序列级比率与裁剪 →](../07-gspo/TUTORIAL.md)
+<!-- NAV:TOP:END -->
 
 [学习路线](../docs/BEGINNER_GUIDE.md) · [GRPO 前置知识](../01-grpo/TUTORIAL.md) · [运行说明](README.md)
 
@@ -116,3 +120,7 @@ denominator = config["global_tokens"]
 ## 新手自测
 
 练习：保留下来的组中两条正确、两条错误，是否应该删掉错误的两条？不应该，它们提供负向比较信号。若所有候选都失败，动态采样能否保证最终找到成功？不能；本地有补采上限，奖励、题目难度或初始能力都可能让整批被跳过。若不会解释 token 平均与回答平均的区别，回看长度 2 与 8 的权重例子，再解释为什么长回答在两种方案中的总权重不同。
+
+<!-- NAV:BOTTOM:BEGIN -->
+[← 上一章：03 GRPO：同题采样与组内优势](../01-grpo/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/01-policy-preference.md) · [下一章：05 GSPO：序列级比率与裁剪 →](../07-gspo/TUTORIAL.md)
+<!-- NAV:BOTTOM:END -->

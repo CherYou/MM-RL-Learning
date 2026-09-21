@@ -1,4 +1,8 @@
-# ALFWorld｜文字也是传感器，行动会改变下一次看见的世界
+# 09｜ALFWorld：有状态环境中的策略学习
+
+<!-- NAV:TOP:BEGIN -->
+[← 上一章：08 ReTool：真实执行与工具决策](../05-retool/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/02-tools-multimodal.md) · [下一章：10 Vision-GRPO：图像条件下的策略学习 →](../09-vision-grpo/TUTORIAL.md)
+<!-- NAV:TOP:END -->
 
 [学习路线](../docs/LEARNING_PATH.md) · [GRPO 基础](../01-grpo/TUTORIAL.md) · [运行入口](README.md)
 
@@ -120,3 +124,7 @@ observation, reward, done = env.step(action)
 练习：模型文字里写“已经把苹果放进冰箱”，但环境没有执行对应动作，任务算完成吗？不算，成功由环境状态判断。恢复一份旧聊天记录是否同时恢复柜门状态？不会，文本与环境状态必须分别恢复。若忘掉过去观察导致重复搜同一个空柜子，首先检查历史管理与可观测性，而不是立即修改 clipping 系数。
 
 方法背景见 [ALFWorld 作者论文](https://arxiv.org/abs/2010.03768)。本章苹果故事用于解释状态与观察，不是论文轨迹的转载，也不是本仓库正式评测结果。
+
+<!-- NAV:BOTTOM:BEGIN -->
+[← 上一章：08 ReTool：真实执行与工具决策](../05-retool/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/02-tools-multimodal.md) · [下一章：10 Vision-GRPO：图像条件下的策略学习 →](../09-vision-grpo/TUTORIAL.md)
+<!-- NAV:BOTTOM:END -->

@@ -1,4 +1,8 @@
-# Harness-RL｜既要选对工具，也要把参数写对，梯度该交给谁
+# 16｜Harness-RL：调用记录与参数分区
+
+<!-- NAV:TOP:BEGIN -->
+[← 上一章：15 TEMPO：短分支、估值与状态恢复](../09-tempo/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/04-long-horizon.md) · [下一章：17 TD3：确定性策略与双 Q 稳定化 →](../14-td3/TUTORIAL.md)
+<!-- NAV:TOP:END -->
 
 [学习路线](../docs/LEARNING_PATH.md) · [ReTool：工具执行与 mask](../05-retool/TUTORIAL.md) · [运行入口](README.md)
 
@@ -143,3 +147,7 @@ optimizer.step_with(combined)
 ## 新手自测
 
 练习：参数不在 action 区，却在 args 区，它应接受哪项梯度？只接受 args 的梯度。相同回答文字出现在两个不同 session，能否只按字符串去重？不能，条件与调用身份不同。中央策略训练成功是否说明 worker 也被训练了？不说明，本仓库 central-only 明确只更新中央策略。先能回答这三问，再读分片参数布局；分片改变存储布局，不改变上述训练归属。
+
+<!-- NAV:BOTTOM:BEGIN -->
+[← 上一章：15 TEMPO：短分支、估值与状态恢复](../09-tempo/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/04-long-horizon.md) · [下一章：17 TD3：确定性策略与双 Q 稳定化 →](../14-td3/TUTORIAL.md)
+<!-- NAV:BOTTOM:END -->

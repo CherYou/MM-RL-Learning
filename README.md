@@ -26,23 +26,37 @@ python examples/math/loss_walkthrough.py
 
 接着阅读：
 
-1. [开始入口](docs/START_HERE.md) — 范围、验证层级、路线选择
-2. [损失函数详解](preliminary/TUTORIAL.md) — 从预测答案到用奖励更新模型
-3. [学习路线](docs/LEARNING_PATH.md) — 完整基础 / LLM 实践 / 连续控制
+1. **主线 01** [损失函数与策略梯度基础](preliminary/TUTORIAL.md)
+2. [全书目录 CHAPTERS](docs/CHAPTERS.md) — 六篇 × 20 章（显示编号；运行目录保持兼容路径）
+3. 专题捷径：[LEARNING_PATH](docs/LEARNING_PATH.md) · 末章后：[NEXT_STEPS](docs/NEXT_STEPS.md)
 
-需要完整训练环境时再进入下方安装节。完整安装下载较多，耗时取决于网络与机器，不保证固定分钟数完成。
+## 全书六篇（显示编号）
+
+| 篇 | 章号 | 内容 |
+| --- | ---: | --- |
+| [共同基础](docs/families/00-foundations.md) | 01 | 损失与策略梯度 |
+| [策略与偏好](docs/families/01-policy-preference.md) | 02–06 | PPO、GRPO、DAPO、GSPO、DPO |
+| [工具与多模态](docs/families/02-tools-multimodal.md) | 07–10 | Search-R1、ReTool、ALFWorld、Vision-GRPO |
+| [蒸馏与应用](docs/families/03-distillation.md) | 11–14 | General OPD、OPSD、医学案例、AgentOPSD |
+| [长程 Agent](docs/families/04-long-horizon.md) | 15–16 | TEMPO、Harness-RL |
+| [控制与离线](docs/families/05-control-offline.md) | 17–20 | TD3、SAC、HER、IQL |
+
+完整链接表见 [docs/CHAPTERS.md](docs/CHAPTERS.md)。**运行路径**仍为 `preliminary/`、`001-ppo/`、`02-opd/general-opd/` 等，与显示编号的映射写在章节注册表 [configs/chapters.json](configs/chapters.json)。
 
 ## 仓库教什么
 
-| 分支 | 内容 | 目录 |
+| 分支 | 内容 | 运行目录（兼容） |
 | --- | --- | --- |
 | 损失与策略梯度基础 | CE / MSE / BCE、PG、old/current、PPO 裁剪 | `preliminary`、`examples/math` |
-| 语言模型策略学习 | PPO、DPO、GRPO、DAPO、GSPO | `001-ppo` … `07-gspo` |
-| 蒸馏与领域配方 | General OPD、OPSD、医学 SAR/IDT | `02-opd`、`04-opsd` |
-| 工具与环境 Agent | Search-R1、ReTool、ALFWorld、AgentOPSD、TEMPO、Harness-RL | `03`–`12` 系列目录 |
+| 策略优化与偏好 | PPO、GRPO、DAPO、GSPO、DPO | `001-ppo`…`07-gspo`、`002-dpo` |
+| 蒸馏 | General OPD、OPSD、医学 SAR/IDT、AgentOPSD | `02-opd`、`04-opsd`、`09-AgentOPSD` |
+| 工具与环境 | Search-R1、ReTool、ALFWorld | `03-search-r1`、`05-retool`、`08-alfworld` |
 | 图文条件 | Vision-GRPO | `09-vision-grpo` |
-| 连续控制与离线 | SAC、TD3、HER、IQL | `13-sac`–`16-iql` |
+| 长程 Agent | TEMPO、Harness-RL | `09-tempo`、`12-harness-rl` |
+| 连续控制与离线 | TD3、SAC、HER、IQL | `14-td3`…`16-iql`、`13-sac` |
 | 技术报告阅读 | 模型系列报告与中文资料 | [Basic LLM](Basic%20LLM/README.md) |
+
+导航元数据：[configs/learning_paths.json](configs/learning_paths.json) · [configs/concepts.json](configs/concepts.json)。重新生成页首页尾：`python scripts/sync_navigation.py --write`；检查：`python scripts/check_navigation.py`。
 
 Vision-GRPO 是图文问答策略学习；ALFWorld 主要使用文字接口；SAC/TD3/HER/IQL 是低维 FetchReach 控制。它们共同提供理解 VLA 的基础，但不等于已覆盖完整视觉—语言—动作训练管线。路径可移植性见 [PORTABILITY](docs/PORTABILITY.md)。
 

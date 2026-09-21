@@ -1,4 +1,8 @@
-# 002｜DPO：手里只有一对好坏回答，也能直接训练偏好
+# 06｜DPO：从偏好对直接优化策略
+
+<!-- NAV:TOP:BEGIN -->
+[← 上一章：05 GSPO：序列级比率与裁剪](../07-gspo/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/01-policy-preference.md) · [下一章：07 Search-R1：学习检索与观察 mask →](../03-search-r1/TUTORIAL.md)
+<!-- NAV:TOP:END -->
 
 [学习路线](../docs/LEARNING_PATH.md) · [BCE 与偏好分差](../preliminary/TUTORIAL.md) · [运行说明](README.md)
 
@@ -167,3 +171,7 @@ python 002-dpo/train.py --smoke
 ## 新手自测
 
 用一句话解释 reference 为什么没有被优化：它提供固定比较起点，不能和学生一起移动尺子。再解释“DPO 不需要奖励模型”是否等于“不需要偏好质量”：不等于，质量要求转移到了回答对的覆盖和标注上。如果无法说明 Z(x) 为何抵消，回到推导确认两个回答是否共享同一题目。
+
+<!-- NAV:BOTTOM:BEGIN -->
+[← 上一章：05 GSPO：序列级比率与裁剪](../07-gspo/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/01-policy-preference.md) · [下一章：07 Search-R1：学习检索与观察 mask →](../03-search-r1/TUTORIAL.md)
+<!-- NAV:BOTTOM:END -->

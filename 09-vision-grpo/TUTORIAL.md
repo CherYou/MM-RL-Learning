@@ -1,4 +1,8 @@
-# Vision-GRPO｜把图像变成条件，仍然对模型生成的答案学习
+# 10｜Vision-GRPO：图像条件下的策略学习
+
+<!-- NAV:TOP:BEGIN -->
+[← 上一章：09 ALFWorld：有状态环境中的策略学习](../08-alfworld/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/02-tools-multimodal.md) · [下一章：11 General OPD：学生采样与教师反馈 →](../02-opd/general-opd/TUTORIAL.md)
+<!-- NAV:TOP:END -->
 
 [学习路线](../docs/LEARNING_PATH.md) · [GRPO 基础](../01-grpo/TUTORIAL.md) · [运行入口](README.md)
 
@@ -121,3 +125,7 @@ CPU smoke 使用随机微型视觉模型，只检查像素影响、梯度与保�
 练习：视觉编码器冻结，是否说明模型没有看图？不是，冻结控制更新，不控制是否输入图像。四个候选误用了不同图片，奖励还能直接组内标准化吗？不应如此，它们已不是同一条件的重复尝试。
 
 实际 Qwen2.5-VL 的图像与 processor 接口可看 [官方模型文档](https://huggingface.co/docs/transformers/model_doc/qwen2_5_vl)，与本地 tiny LLaVA 路径分别核对。不同结构的网格、尺寸和占位符约定不应混用；本章流程讲的是依赖关系，而不是规定所有 VLM 的内部结构完全一致。
+
+<!-- NAV:BOTTOM:BEGIN -->
+[← 上一章：09 ALFWorld：有状态环境中的策略学习](../08-alfworld/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/02-tools-multimodal.md) · [下一章：11 General OPD：学生采样与教师反馈 →](../02-opd/general-opd/TUTORIAL.md)
+<!-- NAV:BOTTOM:END -->

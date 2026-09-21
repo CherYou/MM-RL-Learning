@@ -1,4 +1,8 @@
-# 07｜GSPO：先把整段回答放上秤，再决定怎样裁剪
+# 05｜GSPO：序列级比率与裁剪
+
+<!-- NAV:TOP:BEGIN -->
+[← 上一章：04 DAPO：动态采样、裁剪与长度处理](../06-dapo/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/01-policy-preference.md) · [下一章：06 DPO：从偏好对直接优化策略 →](../002-dpo/TUTORIAL.md)
+<!-- NAV:TOP:END -->
 
 [学习路线](../docs/BEGINNER_GUIDE.md) · [GRPO](../01-grpo/TUTORIAL.md) · [运行说明](README.md)
 
@@ -102,3 +106,7 @@ CPU smoke 验证管线。机制测试应至少包含“[2,0.5] 的几何平均�
 ## 新手自测
 
 如果在回答末尾只增加 padding，s 应不应该变？不应该，因为 mask 排除了 padding。如果把 2 与 0.5 先取算术平均再裁剪，会不会还是 GSPO？不会，得到的是 1.25 而不是 1。最后解释：同一回答 token 共享权重，不代表它们获得相同参数梯度；每个位置的 logprob 对网络参数的导数仍不同。
+
+<!-- NAV:BOTTOM:BEGIN -->
+[← 上一章：04 DAPO：动态采样、裁剪与长度处理](../06-dapo/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/01-policy-preference.md) · [下一章：06 DPO：从偏好对直接优化策略 →](../002-dpo/TUTORIAL.md)
+<!-- NAV:BOTTOM:END -->

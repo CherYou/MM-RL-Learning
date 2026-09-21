@@ -1,4 +1,8 @@
-# 04｜OPSD：同一个起点的模型，看到解题过程后能否教会只看题目的自己
+# 12｜OPSD：特权信息与自教师
+
+<!-- NAV:TOP:BEGIN -->
+[← 上一章：11 General OPD：学生采样与教师反馈](../02-opd/general-opd/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/03-distillation.md) · [下一章：13 Medical OPD / SAR / IDT：领域调度案例 →](../02-opd/TUTORIAL.md)
+<!-- NAV:TOP:END -->
 
 [学习路线](../docs/LEARNING_PATH.md) · [General OPD 基础](../02-opd/general-opd/TUTORIAL.md) · [运行说明](README.md)
 
@@ -122,3 +126,7 @@ aligned[s.prompt_length - 1 :] = lp[0, len(ids) - 1 :].to(student.device)
 练习：学生偶然写出另一种同样正确的解法，与 solution 用词不同，是否必须逐字改成 solution？不是，本章训练目标由教师在学生实际前缀下给的概率决定，不是直接对 solution 做逐字交叉熵。不过教师是否能认可等价解法需要评估，不能由这种设计自动保证。
 
 阅读 [Self-Distilled Reasoner](https://arxiv.org/html/2601.18734v1) 时重点看“学生生成”和“特权教师条件”两部分；固定 step-0 教师、采样 token 的 reverse-KL surrogate 和数值设置是本仓库明示的选择，不代表论文所有变体。
+
+<!-- NAV:BOTTOM:BEGIN -->
+[← 上一章：11 General OPD：学生采样与教师反馈](../02-opd/general-opd/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/03-distillation.md) · [下一章：13 Medical OPD / SAR / IDT：领域调度案例 →](../02-opd/TUTORIAL.md)
+<!-- NAV:BOTTOM:END -->

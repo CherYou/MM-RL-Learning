@@ -1,4 +1,8 @@
-# 01｜GRPO：让同一道题的几个回答相互当参照
+# 03｜GRPO：同题采样与组内优势
+
+<!-- NAV:TOP:BEGIN -->
+[← 上一章：02 PPO：actor-critic、GAE 与裁剪更新](../001-ppo/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/01-policy-preference.md) · [下一章：04 DAPO：动态采样、裁剪与长度处理 →](../06-dapo/TUTORIAL.md)
+<!-- NAV:TOP:END -->
 
 [学习路线](../docs/LEARNING_PATH.md) · [损失与裁剪基础](../preliminary/TUTORIAL.md) · [PPO（推荐前置，非强制）](../001-ppo/TUTORIAL.md) · [运行说明](README.md)
 
@@ -105,7 +109,7 @@ d=\ell^{ref}-\ell,\qquad k=e^d-d-1.
 
 它是 KL 的采样估计形式，不是“将整个词表的 KL 精确求和”。本次 GPU 检查设置 `beta=0`，未启用此正则。
 
-重要区分：ratio 的 old 是生成该批数据的策略；KL 的 ref 通常从开训时冻结。二者不是同一件事。裁剪的正负优势行为先读 [00 章](../preliminary/TUTORIAL.md)。
+重要区分：ratio 的 old 是生成该批数据的策略；KL 的 ref 通常从开训时冻结。二者不是同一件事。裁剪的正负优势行为先读 [第 01 章 PPO 裁剪基础](../preliminary/TUTORIAL.md#ppo-clipping)。
 
 再做一次局部更新手算。好回答 A≈1，其中某 token 的 old 概率 0.2、当前 0.22，比率 1.1；若上界 1.2，收益仍为 1.1，梯度鼓励它增加。若当前变成 0.3，比率 1.5，收益被截成 1.2，该样本不再提供继续增加的额外激励。坏回答 A≈-1 的情况要先乘负号再取 min，不能机械地把所有越界 token 都删掉。
 
@@ -175,3 +179,7 @@ python 01-grpo/train.py --smoke
 ## 新手自测
 
 能否解释“4 条正确回答为什么可能没有任务学习信号”？因为相对于组均值没有差异，而非正确答案不重要。能否解释没有 critic 时优势从哪里来？来自同题多次采样的统计。能否解释为什么不同题不能随便混组？因为那会将题目难度和回答质量混在同一个参照中。上述三问分别对应采样、估计与实现分组，缺一个都不能只靠改 loss 修补。
+
+<!-- NAV:BOTTOM:BEGIN -->
+[← 上一章：02 PPO：actor-critic、GAE 与裁剪更新](../001-ppo/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/01-policy-preference.md) · [下一章：04 DAPO：动态采样、裁剪与长度处理 →](../06-dapo/TUTORIAL.md)
+<!-- NAV:BOTTOM:END -->

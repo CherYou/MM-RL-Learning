@@ -1,4 +1,8 @@
-# TEMPO｜不必每次走到结局，先学会评价下一段路
+# 15｜TEMPO：短分支、估值与状态恢复
+
+<!-- NAV:TOP:BEGIN -->
+[← 上一章：14 AgentOPSD：自教师辅助的轮次信用](../09-AgentOPSD/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/04-long-horizon.md) · [下一章：16 Harness-RL：调用记录与参数分区 →](../12-harness-rl/TUTORIAL.md)
+<!-- NAV:TOP:END -->
 
 > **定位：进阶实现研读。** 官方博客正文在审阅时未能稳定读取；本章公式与数值以**本地学习实现**为准，不补写未经核对的缩写全称或论文效果数字。新手可先完成 GRPO 与 ALFWorld，再读本章。
 
@@ -118,3 +122,7 @@ w_{prefix}=\exp\left(\sum_{t\in\text{历史模型 token}}
 ## 新手自测
 
 练习：critic 生成 `0.5`，为什么不直接对这个 Python 浮点数做反传？因为解析已经脱离可导模型输出，学习对象是生成数值字符串的 token 概率。保存前缀后是否能只恢复文本、不恢复环境？不能，这会让同一上下文描述一个并不存在的状态。若所有估值都解析失败而使用 0.5，指标应先看解析率，不应把稳定的中间值误认为准确的 critic。
+
+<!-- NAV:BOTTOM:BEGIN -->
+[← 上一章：14 AgentOPSD：自教师辅助的轮次信用](../09-AgentOPSD/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/04-long-horizon.md) · [下一章：16 Harness-RL：调用记录与参数分区 →](../12-harness-rl/TUTORIAL.md)
+<!-- NAV:BOTTOM:END -->

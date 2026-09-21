@@ -30,15 +30,17 @@ python examples/math/loss_walkthrough.py
 - Vision-GRPO 与 FetchReach 控制提供理解 VLA 的基础，但不等于完整 VLA 训练管线
 - 技术报告阅读资料在 [Basic LLM](../Basic%20LLM/README.md)，不是学习策略梯度的门槛
 
-## 三条路线怎么选
+## 三条阅读路线（摘要）
 
-| 你是谁 | 路线 | 入口 |
-| --- | --- | --- |
-| 想完整理解学习循环 | 完整基础路线 | 损失基础 → PPO → GRPO |
-| 主要做 LLM 后训练 | 快速 LLM 实践路线 | 损失与比率裁剪 → 最小 GRPO → ReTool / Vision-GRPO |
-| 关心机器人 / 连续控制 | 连续控制路线 | 损失与 RL 基础 → SAC → TD3 → HER / IQL |
+完整定义见 [LEARNING_PATH](LEARNING_PATH.md) 与 [CHAPTERS](CHAPTERS.md)。
 
-细节、前置与旁支见 [LEARNING_PATH.md](LEARNING_PATH.md)。
+| 路线 | 概要 |
+| --- | --- |
+| 完整基础 | 01 → 02 PPO → 03 GRPO →（04 DAPO / 05 GSPO） |
+| 快速 LLM | 01 → 03 GRPO → 工具/检索 → Vision-GRPO |
+| 连续控制 | 01 → 17 TD3 → 18 SAC → 19 HER / 20 IQL |
+
+偏好与蒸馏是旁支：General OPD（11）是概念入口，医学案例（13）不是 AgentOPSD 的硬前置。
 
 ## 验证层级
 

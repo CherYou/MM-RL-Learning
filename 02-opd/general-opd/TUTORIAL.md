@@ -1,4 +1,8 @@
-# General OPD｜学生先尝试，教师再评价学生走过的每一步
+# 11｜General OPD：学生采样与教师反馈
+
+<!-- NAV:TOP:BEGIN -->
+[← 上一章：10 Vision-GRPO：图像条件下的策略学习](../../09-vision-grpo/TUTORIAL.md) · [全书目录](../../docs/CHAPTERS.md) · [本篇目录](../../docs/families/03-distillation.md) · [下一章：12 OPSD：特权信息与自教师 →](../../04-opsd/TUTORIAL.md)
+<!-- NAV:TOP:END -->
 
 [学习路线](../../docs/LEARNING_PATH.md) · [运行说明](README.md) · [医疗调度案例](../TUTORIAL.md) · [OPSD](../../04-opsd/TUTORIAL.md)
 
@@ -129,3 +133,7 @@ verl 路径采用等价的符号约定：在 [algorithms.py](../../src/agentic_r
 练习：教师另外生成了一段更好的答案，能直接拿它的逐 token 概率减学生原回答的概率吗？不能，两份 token 与历史不同，不是在比较同一个事件。再解释：教师更支持一个 token，是否证明它正确？不证明，教师也可能犯错。因此能力评估仍要独立判分。
 
 延伸阅读时，可在 [GKD](https://arxiv.org/abs/2306.13649) 中关注学生生成历史的分布，在 [MiniLLM](https://arxiv.org/abs/2306.08543) 中关注 reverse KL 的选择。本章具体 sampled-token 梯度与停止梯度方式，以链接的本地实现为准，不将两篇论文的完整方法混成同一个配方。
+
+<!-- NAV:BOTTOM:BEGIN -->
+[← 上一章：10 Vision-GRPO：图像条件下的策略学习](../../09-vision-grpo/TUTORIAL.md) · [全书目录](../../docs/CHAPTERS.md) · [本篇目录](../../docs/families/03-distillation.md) · [下一章：12 OPSD：特权信息与自教师 →](../../04-opsd/TUTORIAL.md)
+<!-- NAV:BOTTOM:END -->

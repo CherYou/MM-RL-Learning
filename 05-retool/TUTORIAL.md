@@ -1,4 +1,8 @@
-# ReTool｜学会何时计算，而不只是学会写出像代码的文字
+# 08｜ReTool：真实执行与工具决策
+
+<!-- NAV:TOP:BEGIN -->
+[← 上一章：07 Search-R1：学习检索与观察 mask](../03-search-r1/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/02-tools-multimodal.md) · [下一章：09 ALFWorld：有状态环境中的策略学习 →](../08-alfworld/TUTORIAL.md)
+<!-- NAV:TOP:END -->
 
 [学习路线](../docs/LEARNING_PATH.md) · [GRPO 基础](../01-grpo/TUTORIAL.md) · [Search-R1 的 mask 与轨迹字段](../03-search-r1/TUTORIAL.md) · [运行入口](README.md)
 
@@ -112,3 +116,7 @@ PY
 练习：执行结果正确但最后答案错误，哪个指标能证明工具本身没坏？固定代码的独立执行输出，而非整条轨迹 reward。模型永远调用工具但奖励没涨，是否已经学会战略性使用？没有，还要比较调用成本与不用工具的基线。
 
 [ReTool 原论文](https://arxiv.org/html/2504.11536v1)用于理解交替推理与执行的研究问题；本章的受限数值工具、GRPO 目标和错误返回约定，以本地代码及 [工具说明](../docs/TOOLS.md) 为准。
+
+<!-- NAV:BOTTOM:BEGIN -->
+[← 上一章：07 Search-R1：学习检索与观察 mask](../03-search-r1/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/02-tools-multimodal.md) · [下一章：09 ALFWorld：有状态环境中的策略学习 →](../08-alfworld/TUTORIAL.md)
+<!-- NAV:BOTTOM:END -->

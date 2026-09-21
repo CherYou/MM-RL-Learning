@@ -1,4 +1,8 @@
-# SAC：一边提高回报，一边保留可用的动作选择
+# 18｜SAC：随机策略与最大熵目标
+
+<!-- NAV:TOP:BEGIN -->
+[← 上一章：17 TD3：确定性策略与双 Q 稳定化](../14-td3/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/05-control-offline.md) · [下一章：19 HER：目标条件经验重标记 →](../15-her/TUTORIAL.md)
+<!-- NAV:TOP:END -->
 
 [学习路线](../docs/LEARNING_PATH.md) · [MSE 与价值回归](../preliminary/TUTORIAL.md) · [连续动作密度（FOUNDATIONS §5）](../preliminary/FOUNDATIONS.md#foundations-map) · [运行说明](README.md)
 
@@ -23,13 +27,17 @@
 
 图中多根箭头表示同一个策略可以采出不同连续动作，双表盘表示两个 Q 估计，天平表示奖励与熵之间的权衡。表盘和天平没有数值刻度，是概念图，不是实验曲线。
 
-**Actor 更新时参数是否冻结（必看清）：**
+**组件生命周期（本地 SAC 实现）：**
 
-| 更新步 | Critic 权重 | Actor 权重 | 梯度能否从 Q 流到 actor |
-| --- | --- | --- | --- |
-| Critic 更新 | 训练（MSE→y） | 不更新 | 不需要 actor 路径 |
-| Actor 更新 | **冻结（不 step）** | 训练 | **能**：`Q(s,ã(θ))` 对 θ 可导 |
-| 目标网络 | Polyak 慢跟 | Polyak 慢跟 | target 中 `y` 停止梯度 |
+| 组件 | 作用 | 更新方式 |
+| --- | --- | --- |
+| 当前 actor | 当前/下一状态的动作分布 | 策略损失更新 |
+| 两个当前 critic | 估计 Q，供价值拟合与 actor 使用 | MSE 更新 |
+| 两个目标 critic | 构造较稳定的 bootstrap 目标 | **Polyak 慢更新** |
+| `target_actor` 容器成员 | 为共用 Agent 容器而存在 | **SAC 路径不使用，不参与目标或慢更新** |
+| log α | 自动温度 | 启用时由温度目标更新 |
+
+构造 bootstrap 目标时**整体停止梯度**；更新 actor 时**冻结 critic 权重，但保留 Q 对动作的导数**。目标动作来自**当前 actor** 的采样，不是慢更新的目标 actor。
 
 Jacobian 推导在后文；第一次阅读可先接受“`corrected_log_prob` 已含修正”，不影响走通一条 transition。
 
@@ -171,3 +179,7 @@ actor_loss = (alpha * log_prob - self.critic.minimum(states, proposed)).mean()
 2. Actor 更新时把 critic 前向放进 `no_grad()` 行吗？**不行；这会切断 Q 对动作的梯度。应只冻结 critic 参数。**
 3. SAC 的双 Q 应该取平均还是最小值？**本章目标和 actor 用最小值；平均是不同的设计。**
 4. 回放数据来自旧策略，是否需要在这里直接加 PPO ratio？**不需要；这不是 PPO 的重要性采样 surrogate。**
+
+<!-- NAV:BOTTOM:BEGIN -->
+[← 上一章：17 TD3：确定性策略与双 Q 稳定化](../14-td3/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/05-control-offline.md) · [下一章：19 HER：目标条件经验重标记 →](../15-her/TUTORIAL.md)
+<!-- NAV:BOTTOM:END -->

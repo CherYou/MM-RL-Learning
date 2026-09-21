@@ -143,25 +143,15 @@ if __name__ == "__main__":
         (ROOT / f"02-opd/{name}.yaml").write_text(yaml.safe_dump(variant, sort_keys=False))
         if name != "sft":
             write_verl_configs(ROOT / "02-opd", variant, f"{name}-verl")
+    # Preserve extended reading/navigation metadata; never overwrite with bare runtime rows.
     existing_path = ROOT / "configs/chapters.json"
-    existing_meta = {}
-    if existing_path.exists():
-        try:
-            for row in json.loads(existing_path.read_text(encoding="utf-8")):
-                if isinstance(row, dict) and "chapter" in row:
-                    existing_meta[row["chapter"]] = row
-        except json.JSONDecodeError:
-            existing_meta = {}
-    registry = []
-    for c, a, d, b in CHAPTERS + EMBODIED_CHAPTERS:
-        row = {"chapter": c, "algorithm": a, "dataset": d, "backend": b}
-        prior = existing_meta.get(c, {})
-        for key, value in prior.items():
-            if key not in row:
-                row[key] = value
-        registry.append(row)
-    existing_path.write_text(
-        json.dumps(registry, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    try:
+        json.loads(existing_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        pass
+    print(
+        "chapters.json identity is maintained by scripts/build_chapter_registry.py; "
+        "create_chapter_configs.py regenerates YAML under chapter folders only."
     )
 
 

@@ -1,6 +1,13 @@
-# 第 01 章｜损失函数详解：从预测一个答案，到用奖励更新模型
+# 01｜损失函数与策略梯度基础
 
-[学习路线](../docs/LEARNING_PATH.md) · [开始入口](../docs/START_HERE.md) · [本章运行说明](README.md) · [基础知识查阅](FOUNDATIONS.md) · [本章数值实验](../examples/math/README.md)
+<!-- NAV:TOP:BEGIN -->
+[← 开始学习](../docs/START_HERE.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/00-foundations.md) · [下一章：02 PPO：actor-critic、GAE 与裁剪更新 →](../001-ppo/TUTORIAL.md)
+<!-- NAV:TOP:END -->
+
+[← 开始学习](../docs/START_HERE.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/00-foundations.md) · [下一章：02 PPO →](../001-ppo/TUTORIAL.md)
+
+
+[学习路线](../docs/LEARNING_PATH.md) · [本章运行说明](README.md) · [基础知识查阅](FOUNDATIONS.md) · [本章数值实验](../examples/math/README.md)
 
 一道题是：“每盒有 6 支笔，买 3 盒，一共有多少支？”
 
@@ -17,6 +24,7 @@
 图为概念示意，不是训练测量结果。具体数值以正文和 `examples/math/loss_walkthrough.py` 为准。
 
 
+<a id="gradient-and-detach"></a>
 ## 1. 先把奖励、损失和参数更新分开
 
 假设模型回答了“18”，答案校验器返回 1；回答“9”，返回 0。这里的 1 和 0 是**奖励**，表示这次尝试的结果。
@@ -46,6 +54,8 @@ flowchart LR
 
 **损失值和梯度不是一回事。** 损失描述当前位置，梯度描述局部变化方向。一个损失可以为负；两个样本的损失也可能相加为零，而它们对参数的梯度并没有相互抵消。更不能把不同算法的 loss 数值拿来直接评判哪个模型更强。
 
+<a id="probability-and-logprob"></a>
+<a id="kl-and-entropy"></a>
 ## 2. 有正确答案时：交叉熵怎样训练模型
 
 ### 2.1 从模型分数变成概率
@@ -174,6 +184,7 @@ L_\delta(e)=\delta\left(|e|-\frac12\delta\right)\quad\mathrm{if}\ |e|\gt\delta.
 
 这是一种可选回归目标，不代表仓库每个 critic 已经使用了 Huber。还要注意，PyTorch 的 `HuberLoss` 与 `SmoothL1Loss` 在一般阈值下有缩放差别，不能只因为名字接近就无条件互换。
 
+<a id="preference-loss"></a>
 ## 4. 只有“哪个更好”时：二元交叉熵与偏好损失
 
 很多训练资料不给准确分数，只告诉我们回答 A 比回答 B 更好。可以让一个评分模型给出两个分数 $`s_A,s_B`$，用分差 $`d=s_A-s_B`$ 表示偏好强度。
@@ -315,6 +326,7 @@ print(logits.softmax(dim=-1))  # 约 [0.226831, 0.773169]
 
 把这里换成语言模型，原理仍然是：保存已经生成的 token，在同一历史下重新计算它们的 logprob，把固定反馈乘上去，再对网络参数反传。采样阶段通常不保存庞大的训练图；真正的梯度在重新打分时建立。
 
+<a id="behavior-ratio"></a>
 ## 7. 为什么训练还要保存“当时的概率”
 
 生成一批回答可能很贵。我们往往希望用同一批数据做几次更新，而不是每更新一次参数就重新生成所有回答。[PPO 原论文][ppo-paper]
@@ -410,6 +422,7 @@ for _ in range(update_epochs):
 
 另外，old 不等于 reference。Old 记录这批数据由谁采出；reference 常用于约束模型不要偏离某个固定模型。Teacher 则提供蒸馏反馈。三个角色可能在训练开始时碰巧有相同权重，职责仍然不同。
 
+<a id="ppo-clipping"></a>
 ## 8. PPO 为什么裁剪：防止把同一批反馈用得过头
 
 假设某条回答得到正优势。它的概率从 0.2 增加到 0.3，比率已经是 1.5。对 $`L=-\rho A`$ 来说，只要继续增大比率，损失就还可以继续下降。
@@ -527,7 +540,7 @@ for advantage, ratio_value in [(1.0, 0.5), (1.0, 1.5),
 配套的 `loss_walkthrough.py` 把这些结果写成了断言，还检查交叉熵、MSE、BCE、一次真实 logits 更新、旧概率快照、mask 与平均方式。它不下载模型，也不导入这个仓库的训练框架。
 
 ```bash
-python loss_walkthrough.py --output my_numerical_checks.json
+python examples/math/loss_walkthrough.py --output my_numerical_checks.json
 ```
 
 命令要求当前环境已经安装 PyTorch；它拒绝覆盖同名输出文件。随本稿提供的 `numerical_checks.json` 是实际运行结果，使用 PyTorch `2.10.0+cpu`、CPU、float64。**这不是仓库锁定环境的测试结果，也不能代替仓库的端到端训练验证。**
@@ -580,6 +593,7 @@ L_{\mathrm{token}}=\frac{2\times2+8\times1}{2+8}=1.2.
 
 还要注意浮点计算中的 `0 * (-inf)` 会产生 NaN。有 mask 不等于中间计算一定安全。对无效位置应在危险运算之前处理；有效位置出现 NaN 或无穷值则应报错或明确跳过，不能默默伪装成正常样本。`examples/math/loss_walkthrough.py`只演示最小边界例子，不声称仓库正常训练路径一定会发生该问题。
 
+<a id="mask-and-reduction"></a>
 ## 11. 限制偏离与保留多样性：KL 和熵
 
 奖励可能只覆盖我们关心的一小部分行为。只按奖励训练，未必能保留模型原来的其他能力。因此，一些训练方案还会加入分布约束或探索偏好。
@@ -728,3 +742,7 @@ L_{\mathrm{CISPO\text{-}demo}}
 [repo-grpo]: ../01-grpo/TUTORIAL.md
 [repo-opd]: ../02-opd/general-opd/TUTORIAL.md
 [repo-dpo]: ../002-dpo/TUTORIAL.md
+
+<!-- NAV:BOTTOM:BEGIN -->
+[← 开始学习](../docs/START_HERE.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/00-foundations.md) · [下一章：02 PPO：actor-critic、GAE 与裁剪更新 →](../001-ppo/TUTORIAL.md)
+<!-- NAV:BOTTOM:END -->

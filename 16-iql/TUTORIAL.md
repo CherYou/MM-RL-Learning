@@ -1,4 +1,8 @@
-# IQL：从固定数据学价值，再有重点地模仿
+# 20｜IQL：固定数据、expectile 与加权模仿
+
+<!-- NAV:TOP:BEGIN -->
+[← 上一章：19 HER：目标条件经验重标记](../15-her/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/05-control-offline.md) · [课程回顾与独立实验 →](../docs/NEXT_STEPS.md)
+<!-- NAV:TOP:END -->
 
 [学习路线](../docs/LEARNING_PATH.md) · [FOUNDATIONS：离线与分布偏移](../preliminary/FOUNDATIONS.md#foundations-map) · [MSE 与回归](../preliminary/TUTORIAL.md) · [运行说明](README.md)
 
@@ -44,6 +48,7 @@ TD3 的 actor 会寻找 $`Q(s,a)`$ 高的动作，即使这个动作从未出现
 
 IQL 的更新不让 critic 给新采样的策略动作打分。它先问：在已经记录过的动作价值里，能否学出偏向较好动作的状态价值？然后利用这个价值做 Bellman 回传，最后增加对较好记录动作的模仿权重。
 
+<a id="expectile-not-quantile"></a>
 ## 2. 三个网络分别负责什么
 
 一个状态通常能采取无数连续动作，而固定数据只覆盖其中一小部分。IQL 的核心选择是先在这些记录动作上学习价值。Q 指定了动作，V 不指定动作；本章 V 的训练会偏重较高 Q，但没有显式调用 actor 来搜索新动作。
@@ -171,3 +176,7 @@ TensorBoard 看 `loss/value`、`loss/critic`、`loss/actor`、`train/weight` 与
 2. $`A=-1`$ 是否意味着 actor loss 的样本权重为负？**不是，指数权重始终非负。**
 3. 只保存 actor 能否精确继续全部 IQL 优化？**不能，还需要 Q、V、目标 Q、优化器及随机状态；继续在线环境还需额外环境/replay 状态。**
 4. 这个实现与原论文的所有 benchmark 设置完全相同吗？**不是；这是自己采集 FetchReach 数据的教学实验，策略分布、网络和超参数均在本地明示。**
+
+<!-- NAV:BOTTOM:BEGIN -->
+[← 上一章：19 HER：目标条件经验重标记](../15-her/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/05-control-offline.md) · [课程回顾与独立实验 →](../docs/NEXT_STEPS.md)
+<!-- NAV:BOTTOM:END -->

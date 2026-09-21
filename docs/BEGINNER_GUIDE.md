@@ -1,11 +1,11 @@
 # 从零读懂这个仓库：先认清数据，再认清梯度
 
-> **新读者请先看 [开始入口 START_HERE](START_HERE.md) 与 [学习路线 LEARNING_PATH](LEARNING_PATH.md)。**
-> 本页保留术语表、符号表与深入阅读说明，不再兼任唯一入口。
+> **新读者请先看 [开始入口 START_HERE](START_HERE.md) 与 [全书目录 CHAPTERS](CHAPTERS.md)。**  
+> 专题捷径见 [LEARNING_PATH](LEARNING_PATH.md)。本页负责**术语、符号与阅读方法**，不再维护另一份课程顺序表。
 
 你不需要先学会分布式训练。读完这组教程，首先应该能回答三个问题：模型这一次看见了什么？哪个信号在告诉它好坏？这个信号最后改变了哪些参数？
 
-第一章请直接阅读：[损失函数详解](../preliminary/TUTORIAL.md)；L0 实验见 [examples/math](../examples/math/README.md)。
+第一章请直接阅读：[损失函数与策略梯度基础](../preliminary/TUTORIAL.md)；L0 实验见 [examples/math](../examples/math/README.md)。
 
 每章 README 开头都有 **“直接阅读本章新手教程：TUTORIAL.md”** 链接，根目录表格也可直接进入各章教程。`TUTORIAL.md` 负责概念、动机、推导、手算和自测，README 保留安装与运行说明。
 

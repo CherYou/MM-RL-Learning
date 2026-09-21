@@ -1,4 +1,8 @@
-# HER：没完成原目标，也能诚实地利用这段经历
+# 19｜HER：目标条件经验重标记
+
+<!-- NAV:TOP:BEGIN -->
+[← 上一章：18 SAC：随机策略与最大熵目标](../13-sac/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/05-control-offline.md) · [下一章：20 IQL：固定数据、expectile 与加权模仿 →](../16-iql/TUTORIAL.md)
+<!-- NAV:TOP:END -->
 
 [学习路线](../docs/LEARNING_PATH.md) · [FOUNDATIONS：回放与 episode](../preliminary/FOUNDATIONS.md#foundations-map) · [TD3（底层 loss）](../14-td3/TUTORIAL.md) · [运行说明](README.md)
 
@@ -143,3 +147,7 @@ copy["reward"] = float(reward_function(copy["next_achieved_goal"], goal, {}))
 2. HER 能否改变 recorded action，让轨迹看起来更合理？**不能，那会伪造动力学数据。**
 3. 稀疏奖励仍为 -1 的 hindsight 样本是否一定无用？**不是，未来价值可通过 bootstrap 传播回来。**
 4. 能否用重标记后的成功率汇报原任务性能？**不能，评估必须使用原始任务目标。**
+
+<!-- NAV:BOTTOM:BEGIN -->
+[← 上一章：18 SAC：随机策略与最大熵目标](../13-sac/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/05-control-offline.md) · [下一章：20 IQL：固定数据、expectile 与加权模仿 →](../16-iql/TUTORIAL.md)
+<!-- NAV:BOTTOM:END -->

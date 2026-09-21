@@ -1,0 +1,55 @@
+{
+  "book": [
+    "loss-basics",
+    "ppo",
+    "grpo",
+    "dapo",
+    "gspo",
+    "dpo",
+    "search-r1",
+    "retool",
+    "alfworld",
+    "vision-grpo",
+    "general-opd",
+    "opsd",
+    "medical-sar-idt",
+    "agentopsd",
+    "tempo",
+    "harness-rl",
+    "td3",
+    "sac",
+    "her",
+    "iql"
+  ],
+  "routes": {
+    "full-foundations": {
+      "title": "完整基础",
+      "ids": ["loss-basics", "ppo", "grpo", "dapo", "gspo"]
+    },
+    "llm-fast": {
+      "title": "快速 LLM 实践",
+      "ids": ["loss-basics", "grpo", "search-r1", "retool", "vision-grpo"]
+    },
+    "offline-preference": {
+      "title": "离线偏好",
+      "ids": ["loss-basics", "dpo"]
+    },
+    "distillation": {
+      "title": "基础蒸馏与领域案例",
+      "ids": ["loss-basics", "general-opd", "opsd", "medical-sar-idt"]
+    },
+    "agent-distillation": {
+      "title": "Agent 自蒸馏",
+      "ids": ["loss-basics", "grpo", "alfworld", "general-opd", "opsd", "agentopsd"]
+    },
+    "long-horizon": {
+      "title": "长程 Agent",
+      "ids": ["loss-basics", "ppo", "grpo", "search-r1", "retool", "alfworld", "tempo", "harness-rl"]
+    },
+    "control-offline": {
+      "title": "连续控制与离线",
+      "ids": ["loss-basics", "td3", "sac", "her", "iql"]
+    }
+  },
+  "note": "Display chapter numbers, prev/next, and route order are derived from routes.book. Do not hand-edit parallel order fields."
+}

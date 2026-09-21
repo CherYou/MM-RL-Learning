@@ -1,4 +1,8 @@
-# AgentOPSD｜整段成功了，但每一轮不该分到完全一样的信用
+# 14｜AgentOPSD：自教师辅助的轮次信用
+
+<!-- NAV:TOP:BEGIN -->
+[← 上一章：13 Medical OPD / SAR / IDT：领域调度案例](../02-opd/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/03-distillation.md) · [下一章：15 TEMPO：短分支、估值与状态恢复 →](../09-tempo/TUTORIAL.md)
+<!-- NAV:TOP:END -->
 
 [学习路线](../docs/LEARNING_PATH.md) · [ALFWorld](../08-alfworld/TUTORIAL.md) · [General OPD / OPSD 角色](../02-opd/general-opd/TUTORIAL.md) · [运行入口](README.md)
 
@@ -22,15 +26,15 @@
 
 ## 一张表串起五个中间量
 
-设终局 GRPO 优势 $`A=2`$，$`b_0=0.5`$，$`\gamma=0.95`$，$`\rho=0.2`$，$`\lambda=0.5`$（与下文公式一致的构造例）：
+设同题奖励 `[1,1,0,0]`，取一条**成功**轨迹；组优势 $`A=0.5/(0.5+10^{-4})\approx0.999800`$，$`b_0=0.5`$，$`\gamma=0.95`$，$`\rho=0.2`$，$`\lambda=0.5`$。三轮证据指定为 $`[\log 3,\ 0,\ -1]`$（构造例，可复算）：
 
-| 轮次 k | e_k | u_k | b_k | Δb_k | c_k=sign(A)Δb | w_k 方向 | Ã_k 方向 |
-| ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
-| 1 | log3≈1.0986 | 1.0986 | 0.750 | +0.250 | +0.250 | 上界附近（1.1） | 高于 A（约 2.2） |
-| 2 | 0 | 1.0437 | 0.740 | −0.010 | −0.010 | 略低于 1 | 略低于 A |
-| 3 | 负证据（构造） | 衰减后更低 | 更低 | 负 | 负 | 低于 1 | 低于 A 但保持正号 |
+| 轮次 k | e_k | u_k | b_k | credit Δb | 标准化 z | **w**（clip 后） | **倍率 m** | 最终优势 Ã |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1.098612 | 1.098612 | 0.750000 | 0.250000 | 1.247631 | **1.200000** | 1.100000 | 1.099780 |
+| 2 | 0.000000 | 1.043682 | 0.739560 | −0.010440 | −0.048429 | 0.990314 | 0.995157 | 0.994958 |
+| 3 | −1.000000 | −0.008502 | 0.497874 | −0.241685 | −1.199202 | **0.800000** | 0.900000 | 0.899820 |
 
-阅读顺序：e 是教师−old 的 token gap 之和；b 是有记忆的内部信念；c 只改变力度、保留 sign(A)；w 有界；Ã 才进入 token loss。**belief 不是校准成功概率；重加权不是因果贡献证明。**
+本地公式：$`w_k=\mathrm{clip}(1+\rho z_k,\,1-\rho,\,1+\rho)`$（范围 **[0.8, 1.2]**），$`m_k=(1-\lambda)+\lambda w_k`$（范围 **[0.9, 1.1]**），$`\widetilde A_k=A\,m_k`$。**不要把 w 的上界写成 1.1。** belief 不是校准成功概率；重加权不是因果贡献证明；A=0 时倍率不能凭空造出监督。
 
 ## 为什么终局对错不足以解释每一轮
 
@@ -139,3 +143,7 @@ turn_advantages = bounded_rescale(outcome_advantage, credits)
 练习：第二轮 evidence=0，belief 为什么仍可能下降？因为前一轮的累计证据会按 gamma 衰减。再问：失败轨迹里的好动作能否通过当前重加权变成正优势？不能，该实现只减轻或加重原来的负向力度。这同时说明方法的保护作用与局限：它不会完全恢复每一步的真实因果贡献。
 
 阅读 [AgentOPSD 作者论文](https://arxiv.org/html/2608.05987v1) 时可对照 recursive belief 与 advantage reshaping 两部分；本章的具体边界、零方差处理和变量由本地 `reshape_turn_advantages` 决定。
+
+<!-- NAV:BOTTOM:BEGIN -->
+[← 上一章：13 Medical OPD / SAR / IDT：领域调度案例](../02-opd/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/03-distillation.md) · [下一章：15 TEMPO：短分支、估值与状态恢复 →](../09-tempo/TUTORIAL.md)
+<!-- NAV:BOTTOM:END -->
