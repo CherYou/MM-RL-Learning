@@ -22,6 +22,18 @@ def group_advantages(rewards, group_size, scale=True):
     return centered.flatten().detach()
 
 
+ALLOWED_POLICY_LOSS_KINDS = {
+    "grpo",
+    "ppo",
+    "clipped_pg",
+    "importance_sampling",
+    "cispo",
+    "gspo",
+    "dapo",
+    "dr_grpo",
+}
+
+
 def policy_loss(
     logp,
     old_logp,
@@ -34,7 +46,14 @@ def policy_loss(
     ref_logp=None,
     beta=0.0,
     max_length=None,
+    reduction="auto",
 ):
+    if kind not in ALLOWED_POLICY_LOSS_KINDS:
+        raise ValueError(
+            f"Unknown policy loss kind: {kind!r}. Allowed: {sorted(ALLOWED_POLICY_LOSS_KINDS)}"
+        )
+    if reduction not in {"auto", "token_mean", "sequence_mean", "fixed_length"}:
+        raise ValueError(f"Unknown reduction: {reduction!r}")
     old_logp = old_logp.detach()
     if advantage.ndim == 1:
         advantage = advantage[:, None]
@@ -48,7 +67,10 @@ def policy_loss(
     elif kind == "cispo":
         objective = ratio.clamp(1 - clip_low, 1 + clip_high).detach() * advantage * logp
     else:
-        objective = torch.minimum(ratio * advantage, ratio.clamp(1 - clip_low, 1 + clip_high) * advantage)
+        objective = torch.minimum(
+            ratio * advantage,
+            ratio.clamp(1 - clip_low, 1 + clip_high) * advantage,
+        )
     per_token = -objective
     kl = torch.zeros_like(logp)
     if beta:
@@ -57,21 +79,33 @@ def policy_loss(
         gap = ref_logp.detach() - logp
         kl = gap.exp() - gap - 1
         per_token = per_token + beta * kl
-    if kind in {"dapo", "cispo"}:
+    if reduction == "auto":
+        reduction = "token_mean" if kind in {"dapo", "cispo"} else "sequence_mean"
+    if reduction == "token_mean":
         loss = masked_mean(per_token, mask)
-    elif kind == "dr_grpo":
+    elif reduction == "fixed_length":
         if not max_length:
-            raise ValueError("dr_grpo requires a fixed max_length")
+            raise ValueError("fixed_length reduction requires max_length")
         loss = (per_token * mask).sum() / (logp.shape[0] * max_length)
     else:
         lengths = mask.sum(-1)
         active = lengths > 0
         seq_loss = (per_token * mask).sum(-1) / lengths.clamp_min(1)
         loss = (seq_loss * active).sum() / active.sum().clamp_min(1)
+    outside = (ratio < 1 - clip_low) | (ratio > 1 + clip_high)
+    # Clipped surrogate activity also depends on advantage sign, not only ratio bounds.
+    unclipped = ratio * advantage
+    clipped = ratio.clamp(1 - clip_low, 1 + clip_high) * advantage
+    surrogate_clipped = torch.minimum(unclipped, clipped) != unclipped
     stats = {
         "policy/ratio": masked_mean(ratio.expand_as(mask), mask).detach(),
-        "policy/clip_fraction": masked_mean(
-            ((ratio < 1 - clip_low) | (ratio > 1 + clip_high)).float().expand_as(mask), mask
+        # Historical name: fraction of ratios outside the clip interval.
+        "policy/clip_fraction": masked_mean(outside.float().expand_as(mask), mask).detach(),
+        "policy/ratio_outside_fraction": masked_mean(
+            outside.float().expand_as(mask), mask
+        ).detach(),
+        "policy/surrogate_clipped_fraction": masked_mean(
+            surrogate_clipped.float().expand_as(mask), mask
         ).detach(),
         "policy/kl": masked_mean(kl, mask).detach(),
     }
@@ -111,7 +145,16 @@ def gae(rewards, values, mask, gamma=1.0, lam=0.95, bootstrap=None):
 def ppo_loss(
     logp, old_logp, values, old_values, advantages, returns, mask, clip=0.2, value_clip=0.2, value_coef=0.5
 ):
-    pg, stats = policy_loss(logp, old_logp, advantages, mask, kind="dapo", clip_low=clip, clip_high=clip)
+    pg, stats = policy_loss(
+        logp,
+        old_logp,
+        advantages,
+        mask,
+        kind="clipped_pg",
+        clip_low=clip,
+        clip_high=clip,
+        reduction="token_mean",
+    )
     clipped = old_values.detach() + (values - old_values.detach()).clamp(-value_clip, value_clip)
     vl = 0.5 * masked_mean(
         torch.maximum((values - returns.detach()).square(), (clipped - returns.detach()).square()), mask

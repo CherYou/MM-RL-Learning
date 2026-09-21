@@ -1,6 +1,28 @@
 # 从零读强化学习：先弄清数据、概率与时间
 
-这份前置课补足“知道一个 loss，却不知道它为什么这样写”的空白。先读这里，再读[损失函数实验](TUTORIAL.md)。需要快速查符号时看[全仓库学习导航](../docs/BEGINNER_GUIDE.md)。示例数值均为手算构造，不是训练结果。
+这份前置课补足“知道一个 loss，却不知道它为什么这样写”的空白。它是**按需查阅与补课材料**，不是所有路线必须从头读完的强制关卡。
+
+- 第一次学习语言模型策略梯度：先读 [损失函数详解](TUTORIAL.md)
+- 需要符号与路线：见 [学习路线](../docs/LEARNING_PATH.md)、[开始入口](../docs/START_HERE.md)
+- 快速查符号：[零基础学习导航](../docs/BEGINNER_GUIDE.md)
+
+示例数值均为手算构造，不是训练结果。
+
+<a id="foundations-map"></a>
+## 阅读地图：现在必须学 vs 按需查阅
+
+| 单元 | 本文章节 | LLM 路线 | 连续控制路线 |
+| --- | --- | --- | --- |
+| 概率、预测、梯度与常见损失 | 以 [TUTORIAL](TUTORIAL.md) 为主 | 必读（TUTORIAL） | 必读（TUTORIAL） |
+| MDP、观察与状态 | §1 | 首次用环境/多轮时 | 进控制章前建议读 |
+| 回报、V/Q、优势、Bellman | §2–3 | 读 PPO / critic 前 | 读 SAC/TD3/IQL 前 |
+| 终止与截断 | §4 | 多轮 Agent / 环境章前 | 必读 |
+| 连续动作密度、tanh、Jacobian | §5 | 可后置 | 读 SAC 前 |
+| autograd、detach、重参数化 | §6 | 必读核心概念 | 读 SAC 前 |
+| Mask、统计单位、回放与离线 | §7–8 | Agent/蒸馏/离线前 | HER/IQL 前 |
+| VLA 表示与数据覆盖 | §9 | 选读 | 选读（边界说明） |
+| 评估、种子与来源 | §10 | 任何实跑前扫一眼 | 任何实跑前扫一眼 |
+| IS、PPO clipping、CISPO | [TUTORIAL](TUTORIAL.md) | 必读（TUTORIAL） | 通常不需要 |
 
 ## 1. 先把一次交互说完整：MDP 与部分可观察环境
 

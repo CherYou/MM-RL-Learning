@@ -1,6 +1,11 @@
 # 从零读懂这个仓库：先认清数据，再认清梯度
 
+> **新读者请先看 [开始入口 START_HERE](START_HERE.md) 与 [学习路线 LEARNING_PATH](LEARNING_PATH.md)。**
+> 本页保留术语表、符号表与深入阅读说明，不再兼任唯一入口。
+
 你不需要先学会分布式训练。读完这组教程，首先应该能回答三个问题：模型这一次看见了什么？哪个信号在告诉它好坏？这个信号最后改变了哪些参数？
+
+第一章请直接阅读：[损失函数详解](../preliminary/TUTORIAL.md)；L0 实验见 [examples/math](../examples/math/README.md)。
 
 每章 README 开头都有 **“直接阅读本章新手教程：TUTORIAL.md”** 链接，根目录表格也可直接进入各章教程。`TUTORIAL.md` 负责概念、动机、推导、手算和自测，README 保留安装与运行说明。
 
@@ -27,9 +32,11 @@
 
 ## 一条适合第一次学习的路线
 
+完整三条路线与前置图见 [LEARNING_PATH.md](LEARNING_PATH.md)。下表是同一信息的紧凑版。
+
 | 阶段 | 详解 | 读完应能解释 |
 | --- | --- | --- |
-| 先补基础 | [基础知识](../preliminary/FOUNDATIONS.md)、[损失函数](../preliminary/TUTORIAL.md) | MDP、Bellman、概率、梯度、mask 与统计单位 |
+| 先补基础 | [损失函数](../preliminary/TUTORIAL.md)；MDP/价值按需读 [基础知识](../preliminary/FOUNDATIONS.md) | 常见损失、策略梯度、ratio/裁剪；需要时再补 MDP、Bellman、mask |
 | 理解评价与更新 | [001 PPO](../001-ppo/TUTORIAL.md) | actor、critic、奖励、优势分别做什么 |
 | 理解离线偏好 | [002 DPO](../002-dpo/TUTORIAL.md) | 为什么可以只用好坏回答对训练 |
 | 不使用 value critic | [01 GRPO](../01-grpo/TUTORIAL.md) | 同一道题的回答如何互相比较 |

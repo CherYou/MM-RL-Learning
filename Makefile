@@ -21,6 +21,7 @@ portability:
 	$(PY) scripts/check_portability.py
 docs:
 	$(PY) scripts/check_markdown_math.py
+	$(PY) scripts/audit_tutorials.py
 smoke:
 	$(PY) scripts/smoke_all.py
 logs:

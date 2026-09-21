@@ -1,0 +1,92 @@
+{
+  "scope": "Constructed CPU mathematical checks only; not repository training or its full test suite",
+  "torch_version": "2.10.0+cpu",
+  "dtype": "float64",
+  "device": "cpu",
+  "cross_entropy": {
+    "loss": 0.5108256237659907,
+    "logit_gradient": [
+      -0.4,
+      0.3,
+      0.10000000000000002
+    ]
+  },
+  "value_regression": {
+    "loss": 0.48999999999999994,
+    "gradient": -1.4
+  },
+  "pairwise_logistic": {
+    "loss": 0.6931471805599453,
+    "margin_gradient": -0.5
+  },
+  "one_policy_update": {
+    "probabilities_before": [
+      0.2,
+      0.8
+    ],
+    "logit_gradient": [
+      -0.8,
+      0.7999999999999999
+    ],
+    "probabilities_after": [
+      0.2268306572180523,
+      0.7731693427819477
+    ]
+  },
+  "old_snapshot": {
+    "ratio": 1.0,
+    "current_logp_gradient": 1.0,
+    "wrong_shared_graph_gradient": 0.0
+  },
+  "ppo_four_cases": [
+    {
+      "advantage": 1.0,
+      "ratio": 0.5,
+      "loss": -0.5000000000000001,
+      "d_loss_d_logp": -0.5000000000000001
+    },
+    {
+      "advantage": 1.0,
+      "ratio": 1.5,
+      "loss": -1.2,
+      "d_loss_d_logp": 0.0
+    },
+    {
+      "advantage": -1.0,
+      "ratio": 0.5,
+      "loss": 0.8,
+      "d_loss_d_logp": 0.0
+    },
+    {
+      "advantage": -1.0,
+      "ratio": 1.5,
+      "loss": 1.5,
+      "d_loss_d_logp": 1.5
+    }
+  ],
+  "cispo_teaching_variant": {
+    "ratio": 1.4999999999999998,
+    "d_loss_d_logp": -1.2
+  },
+  "masked_nonfinite_leaf": {
+    "naive_mean_is_nan": true,
+    "safe_mean": 1.0,
+    "direct_leaf_gradient": [
+      1.0,
+      0.0
+    ]
+  },
+  "reductions": {
+    "sequence_mean": 1.5,
+    "token_mean": 1.2,
+    "fixed_length_mean": 0.75
+  },
+  "kl": {
+    "sample_log_ratios": [
+      0.47000362924573563,
+      -0.916290731874155
+    ],
+    "full_distribution_kl": 0.19274475702175753
+  },
+  "status": "passed"
+}

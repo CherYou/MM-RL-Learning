@@ -1,26 +1,28 @@
-# Preliminary：读算法之前的基础课
+# Preliminary：读算法之前的损失与更新基础
 
 **[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
 
-先理解概率、梯度和停止梯度，再比较 IS、PPO、CISPO。术语陌生时，可先读下方的基础知识详解。
+本章回答：模型训练到底在改变什么？有示范答案、数值目标、偏好标签和只有奖励时，反馈怎样分别进入损失？为什么需要 old、概率比率和 PPO 裁剪？
 
-[基础知识详解](FOUNDATIONS.md) · [损失函数详解](TUTORIAL.md) · [总目录](../README.md)
-
-建议先学“数据是怎么来的、模型在预测什么、梯度改变了谁”，再比较各章 loss。
-
-| 前置内容 | 阅读入口 | 练习目标 |
+| 阅读入口 | 什么时候读 | 读完应能 |
 | --- | --- | --- |
-| MDP、观察与状态、部分可观察性 | [FOUNDATIONS](FOUNDATIONS.md) 第 1 节 | 区分环境状态与模型能看到的观察 |
-| 回报、V/Q、优势与 Bellman 方程 | 同文第 2–3 节 | 手算一步 bootstrap |
-| 真实终止与时间截断 | 同文第 4 节 | 理解同样结束 episode 为何 target 不同 |
-| 概率、连续动作密度、tanh 变换 | 同文第 5 节 | 分清概率和密度，理解 Jacobian |
-| autograd、detach、重参数化 | 同文第 6 节 | 运行小例子检查梯度 |
-| Mask、统计单位、回放与离线学习 | 同文第 7–8 节 | 知道哪些位置和数据参与训练 |
-| VLA 的表示、动作约定与数据覆盖 | 同文第 9 节 | 明白低维机械臂与 VLA 的距离 |
-| 基线、独立评估、种子和数据来源 | 同文第 10 节 | 避免将执行成功当能力结论 |
-| IS、PPO clipping、CISPO | [TUTORIAL](TUTORIAL.md) | 比较同一 ratio 下的梯度 |
+| [TUTORIAL.md](TUTORIAL.md) | 第一时间 | 解释 CE/MSE/BCE、策略梯度、old/current 与 PPO 四种裁剪方向 |
+| [examples/math/README.md](../examples/math/README.md) | 读完或读到第 5–8 节时 | 运行 L0 数值与梯度检查 |
+| [FOUNDATIONS.md](FOUNDATIONS.md) | 进入 PPO/GRPO/连续控制前按需查阅 | MDP、回报、V/Q、mask、离线与评估边界 |
+| [学习路线](../docs/LEARNING_PATH.md) | 选分支时 | 知道下一站去哪、哪些可以跳过 |
 
-损失实验可以直接运行：
+## 唯一默认实验（L0）
+
+```bash
+# 仓库根目录；只需 PyTorch，不下载模型
+python examples/math/loss_walkthrough.py
+```
+
+参考结果见 [examples/math/reference/numerical_checks.json](../examples/math/reference/numerical_checks.json)。这是构造数学检查，不是训练结果。
+
+## 进阶：仓库 loss-demo（使用共享实现）
+
+完整环境准备后：
 
 ```bash
 .venv/bin/python preliminary/train.py
@@ -28,6 +30,12 @@
 .venv/bin/arl loss-demo
 ```
 
-它计算 PyTorch autograd 梯度并保存真实数值图、CSV 和 TensorBoard 事件。这里不训练语言模型，不需要 `--smoke`、模型下载或 GPU。输出路径由 [loss_demo.py](../src/agentic_rl/loss_demo.py) 创建。
+它调用 [loss_demo.py](../src/agentic_rl/loss_demo.py) 与 [losses.py](../src/agentic_rl/losses.py)，生成梯度曲线、CSV 与 TensorBoard 事件。这里不训练语言模型，不需要 `--smoke` 或 GPU。
 
-核心实现是 [losses.py](../src/agentic_rl/losses.py)。CISPO 演示使用显式双侧裁剪教学式，原论文的具体裁剪设置与它的区别在详解中说明。接着读 [001 PPO](../001-ppo/TUTORIAL.md) 和 [002 DPO](../002-dpo/TUTORIAL.md)。
+CISPO 演示使用显式双侧裁剪教学式，与原论文完整配方的差异在 TUTORIAL 中说明。
+
+## 前置知识按需查阅
+
+不必先读完 [FOUNDATIONS.md](FOUNDATIONS.md) 全文再进入第一章。语言模型主线优先 TUTORIAL；连续控制或需要正式 MDP / bootstrap 时，再按 FOUNDATIONS 小节补课。完整导航见 [FOUNDATIONS 阅读地图](FOUNDATIONS.md#foundations-map)。
+
+下一步按路线选择：[PPO](../001-ppo/TUTORIAL.md)（完整 actor-critic）或 [GRPO](../01-grpo/TUTORIAL.md)（同题组内优势）。DPO 不必成为 GRPO 的强制前置。

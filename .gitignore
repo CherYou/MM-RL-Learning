@@ -17,4 +17,5 @@ Basic LLM/**/build/
 
 # Local diagnostics and development logs
 /reports/
+/examples/math/results/
 *.log
