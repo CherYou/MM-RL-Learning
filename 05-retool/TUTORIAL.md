@@ -1,12 +1,25 @@
 # ReTool｜学会何时计算，而不只是学会写出像代码的文字
 
-[学习路线](../docs/BEGINNER_GUIDE.md) · [运行入口](README.md) · [Search-R1 的 mask](../03-search-r1/TUTORIAL.md)
+[学习路线](../docs/LEARNING_PATH.md) · [GRPO 基础](../01-grpo/TUTORIAL.md) · [Search-R1 的 mask 与轨迹字段](../03-search-r1/TUTORIAL.md) · [运行入口](README.md)
+
+**本章默认教学后端：verl（`verl.yaml`）。** 先单独跑工具，再跑训练链路。
+
+**相对 GRPO / Search-R1，改变了什么？**
+
+| 组件 | 基础 GRPO | ReTool（本章） |
+| --- | --- | --- |
+| 外部反馈 | 判分器 | **真实执行**的受限数值 Python |
+| 轨迹结构 | 单段生成 | 模型代码 ↔ 工具观察交替 |
+| 训练对象 | 生成 token | 仍是模型生成段；观察 mask=0 |
+| 新增风险 | — | 代码对但答案抄错；工具成功 ≠ 策略成功 |
 
 面对需要多步算术的问题，模型可以自己推导，也可以写一小段程序，请工具执行后继续思考。ReTool 研究这种自然语言与实际代码执行交替的学习过程。工具必须真的运行；把模型预测的“执行结果”直接当事实，会失去这个机制。
 
 ![模型思考、写代码、工具执行返回结果，再继续生成最终答案](../docs/assets/algorithms/retool.png)
 
 图是调用流程示意，不是某次实验测量。[ReTool 原论文](https://arxiv.org/abs/2504.11536)讨论战略性工具使用；本地学习实现选用 GRPO 信号与受限数值 Python，不覆盖论文训练规模和全部工程配置。
+
+轨迹字段与 Search-R1 相同（`source / raw_tokens / train_mask / old_logp / tool_return / end_reason`）；本章 `tool_return` 换成 Python 执行输出或 `ToolError`。三类对照实验：执行失败、执行成功但答案抄错、无需调用直接答对。
 
 ## 为什么会写代码还不等于会用工具
 
@@ -84,6 +97,7 @@ mask += [1] * len(model_tokens) + [0] * len(encode(observation))
 from agentic_rl.environments import python_tool
 print(python_tool('print(sum(range(1, 101)))'))
 PY
+# 默认教学入口：与本章 verl.yaml 一致
 .venv/bin/arl train 05-retool/verl.yaml --smoke --verl-workers 2
 ```
 

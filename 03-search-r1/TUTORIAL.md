@@ -1,12 +1,36 @@
 # Search-R1｜把“去查一下”变成模型学会的行动
 
-[学习路线](../docs/BEGINNER_GUIDE.md) · [运行入口](README.md) · [GRPO 基础](../01-grpo/TUTORIAL.md)
+[学习路线](../docs/LEARNING_PATH.md) · [GRPO 基础](../01-grpo/TUTORIAL.md) · [运行入口](README.md)
+
+**本章默认教学后端：verl（`verl.yaml`）。** 检索观察 mask 与轨迹来源是本章重点；组内优势与裁剪目标见 GRPO，不必在这里重学整条 loss。
+
+**相对 GRPO，改变了什么？**
+
+| 组件 | 基础 GRPO | Search-R1（本章） |
+| --- | --- | --- |
+| 一次 rollout 内容 | 一段连续回答 | 查询 / 观察 / 再查询 / 答案交织 |
+| 奖励来源 | 最终答案（或任务分） | 仍可只给最终答案；检索器本身不反传 |
+| 训练 mask | 仅回答生成 token | 模型生成的查询与答案 =1；检索文档 =0 |
+| 新增难点 | — | 两跳条件决策；观察归属；查询质量与答案正确分离 |
 
 普通问答模型看到问题后直接作答。Search-R1 允许它在回答中途提出检索请求，读到材料后继续推理。训练要学习的包括：什么时候需要查、查什么、拿到材料后如何使用。搜索引擎返回的文章并不是模型自己说的话。
 
 ![查询进入检索器，文档成为观察，模型再生成答案；下方只有模型生成段落带训练标记](../docs/assets/algorithms/search-r1.png)
 
 图中几台机器人表示同一模型在不同时间点的工作；图书馆代表固定检索器。方法背景与 retrieved-token masking 见 [Search-R1 原论文](https://arxiv.org/abs/2503.09516)。本地实现用 BM25 检索已准备的语料，不调用实时互联网搜索。
+
+## 轨迹字段账本（与 ReTool 共用的最小格式）
+
+无论观察来自检索还是代码执行，一条轨迹至少应能还原下列字段。工具返回文字即使与最终答案字面相同，**来源身份仍不同**。
+
+| 字段 | 含义 | 是否进 policy loss |
+| --- | --- | --- |
+| `source` | model / tool / env | 仅 model |
+| `raw_tokens` | 实际 token ID（不要先 decode 再 re-encode） | 模型段参与 |
+| `train_mask` | 与 token 对齐的 0/1 | 定义直接训练位置 |
+| `old_logp` | 采样时保存的 logprob | 比率分母，批内固定 |
+| `tool_return` | 检索文档或错误信息 | 否（但是后续生成的条件） |
+| `end_reason` | answer / budget / invalid | 解释为何停止 |
 
 ## 先区分检索管线与学习检索的策略
 
@@ -99,6 +123,7 @@ mask.extend([0.0] * len(obs_ids))
 链路正确后再判断策略是否改进。一次零奖励可能来自语料缺资料、查询不好、检索排序不佳或最终阅读错误，不能只根据最后答案把责任全部归给策略优化器。
 
 ```bash
+# 默认教学入口：与本章 verl.yaml 一致
 .venv/bin/arl train 03-search-r1/verl.yaml --smoke --verl-workers 2
 ```
 

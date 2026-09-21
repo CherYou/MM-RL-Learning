@@ -1,10 +1,10 @@
-# Harness-RL：接口轨迹树与 CAPO
+# Harness-RL：调用记录与参数分区
 
 **[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
 
-先认清调用与字段，再理解轨迹记录和 CAPO 参数分区。建议先读教程完成手算和自测，再回到本页运行代码。
+**本章默认教学后端：verl（`verl.yaml`）。** 教程命令与此一致。本章重点：最小 action/args 调用；token mask≠参数 mask。裁剪与组内优势见 [GRPO](../01-grpo/TUTORIAL.md) / [preliminary](../preliminary/TUTORIAL.md)。
 
-这是本地新增章节。 · [总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
+[学习路线](../docs/LEARNING_PATH.md) · [总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
 
 ## 本地实现
 
@@ -21,12 +21,12 @@
 ## 从代码入口开始
 
 ```bash
-# 从仓库根目录运行
+# 从仓库根目录运行；默认与本章 verl 后端一致
 source .venv/bin/activate
+.venv/bin/arl train 12-harness-rl/verl.yaml --smoke --verl-workers 2
+# 等价薄入口
 python 12-harness-rl/train.py --smoke
-# 正式学习配置（CPU 默认；较大模型可能较慢）
-python 12-harness-rl/train.py
-# 每次运行自动生成唯一 runs/ 子目录；把 RUN_NAME 改为终端输出的目录名
+# 每次运行自动生成唯一 runs/ 子目录
 RUN_DIR="runs/RUN_NAME"
 python 12-harness-rl/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
 ```
@@ -51,15 +51,6 @@ python 12-harness-rl/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
 
 - [资料 1](https://arxiv.org/html/2608.29641v1)
 
-## verl 训练路径
+## 后端说明
 
-本章提供 `verl.yaml`（CPU）和 `verl-gpu.yaml`（显式 CUDA）。默认 config.yaml 已切换为 verl；`--backend native` 可读取原生参考实现。根环境 CLI 会自动切换到独立 verl 环境。
-
-```bash
-# 在项目根目录运行；两个实际 CPU worker
-.venv/bin/arl train 12-harness-rl/verl.yaml --smoke --verl-workers 2
-# GPU 配置供后续实验使用，本次未运行 GPU 验证
-# .venv/bin/arl train 12-harness-rl/verl-gpu.yaml --verl-workers 2
-```
-
-真实更新代码在 `src/agentic_rl/verl_backend/`，本章机制对应关系、安装和恢复方式见 [verl 指南](../docs/VERL.md)。轨迹通过 DataProto 传递，参数更新调用官方 verl actor。verl 与原生均保存 token、mask、旧概率和轮次日志。
+本章默认入口即 `verl.yaml`。完整安装、恢复与 GPU 说明见 [VERL.md](../docs/VERL.md)；不要在第一次运行时同时学习算法与后端切换。

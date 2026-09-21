@@ -1,10 +1,10 @@
-# Vision GRPO：图片真正参与策略
+# Vision-GRPO：图像条件与 VLM logprob
 
 **[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
 
-追踪图片怎样成为模型条件，再理解 GRPO 与视觉梯度。建议先读教程完成手算和自测，再回到本页运行代码。
+**本章默认教学后端：verl（`verl.yaml`）。** 教程命令与此一致。本章重点：两层检查：输入链路 vs 能力。裁剪与组内优势见 [GRPO](../01-grpo/TUTORIAL.md) / [preliminary](../preliminary/TUTORIAL.md)。
 
-[总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
+[学习路线](../docs/LEARNING_PATH.md) · [总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
 
 ## 本地实现
 
@@ -17,12 +17,12 @@ GeoQA 原始字段 subject/choices/label 被转换为题目、A-D 选项和标�
 ## 从代码入口开始
 
 ```bash
-# 从仓库根目录运行
+# 从仓库根目录运行；默认与本章 verl 后端一致
 source .venv/bin/activate
+.venv/bin/arl train 09-vision-grpo/verl.yaml --smoke --verl-workers 2
+# 等价薄入口
 python 09-vision-grpo/train.py --smoke
-# 正式学习配置（CPU 默认；较大模型可能较慢）
-python 09-vision-grpo/train.py
-# 每次运行自动生成唯一 runs/ 子目录；把 RUN_NAME 改为终端输出的目录名
+# 每次运行自动生成唯一 runs/ 子目录
 RUN_DIR="runs/RUN_NAME"
 python 09-vision-grpo/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
 ```
@@ -48,15 +48,6 @@ python 09-vision-grpo/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 3
 - [资料 1](https://huggingface.co/datasets/hz2475/geoQA)
 - [资料 2](https://huggingface.co/docs/transformers/v4.57.1/en/model_doc/llava)
 
-## verl 训练路径
+## 后端说明
 
-本章提供 `verl.yaml`（CPU）和 `verl-gpu.yaml`（显式 CUDA）。默认 config.yaml 已切换为 verl；`--backend native` 可读取原生参考实现。根环境 CLI 会自动切换到独立 verl 环境。
-
-```bash
-# 在项目根目录运行；两个实际 CPU worker
-.venv/bin/arl train 09-vision-grpo/verl.yaml --smoke --verl-workers 2
-# GPU 配置供后续实验使用，本次未运行 GPU 验证
-# .venv/bin/arl train 09-vision-grpo/verl-gpu.yaml --verl-workers 2
-```
-
-真实更新代码在 `src/agentic_rl/verl_backend/`，本章机制对应关系、安装和恢复方式见 [verl 指南](../docs/VERL.md)。轨迹通过 DataProto 传递，参数更新调用官方 verl actor。verl 与原生均保存 token、mask、旧概率和轮次日志。
+本章默认入口即 `verl.yaml`。完整安装、恢复与 GPU 说明见 [VERL.md](../docs/VERL.md)；不要在第一次运行时同时学习算法与后端切换。

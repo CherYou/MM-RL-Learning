@@ -1,12 +1,35 @@
 # TEMPO｜不必每次走到结局，先学会评价下一段路
 
-[学习路线](../docs/BEGINNER_GUIDE.md) · [PPO/GAE](../001-ppo/TUTORIAL.md) · [运行入口](README.md)
+> **定位：进阶实现研读。** 官方博客正文在审阅时未能稳定读取；本章公式与数值以**本地学习实现**为准，不补写未经核对的缩写全称或论文效果数字。新手可先完成 GRPO 与 ALFWorld，再读本章。
+
+[学习路线](../docs/LEARNING_PATH.md) · [PPO/GAE（价值与 bootstrap）](../001-ppo/TUTORIAL.md) · [ALFWorld 环境](../08-alfworld/TUTORIAL.md) · [运行入口](README.md)
+
+**本章默认教学后端：verl（`verl.yaml`）；native 与 verl 的 replay 语义不完全等价。**
+
+**相对 GRPO / ALFWorld，改变了什么？**
+
+| 组件 | GRPO 整条 rollout | TEMPO（本地实现） |
+| --- | --- | --- |
+| 采样单位 | 一次走到终局 | macro-step 短分支 |
+| 优势 | 终局组统计 | 段内奖励 + 段末 bootstrap |
+| Critic | 无学习式 critic | **生成式**数值字符串 + 外部解析 |
+| 起点 | 总是从 reset | 可从保存的**非终局**边界恢复 |
+| 风险 | 信用粗 | 估值噪声、状态未真正恢复、前缀分布偏移 |
+
+## 恢复旧状态 ≠ 用旧数据更新
+
+| 概念 | 在做什么 | 不是什么 |
+| --- | --- | --- |
+| 状态恢复 replay | reset 环境并**重放动作**，核对观察后从边界继续采**新**段 | 把旧对话文本塞回模型就结束 |
+| 用旧数据更新 | 直接用历史轨迹算 loss | 本章 replay 主路径不是这个 |
+| 旧前缀进 loss | 否；历史只作条件 | 新段模型 token 才训练 |
+| 前缀权重 w_prefix | 对历史 log-ratio 停止梯度后加权新段 | 不改变环境恢复流程 |
 
 长任务可能要交互几十轮才成功。每个候选都从头走到结尾，既昂贵，也很难给早期决策信号。TEMPO 把若干轮交互合成一个 macro-step，在段末估计未来价值，并把部分非终局边界保存为以后继续采样的起点。
 
 ![从保存的边界展开短分支，在非终局估值，并回到保存状态继续采样](../docs/assets/algorithms/tempo.png)
 
-图中 REPLAY 表示恢复先前保存的非终局状态；并不表示可以从成功终局继续行动。方法出处是 [Dots 团队 TEMPO 博客](https://studio.dots.ai/dots/tempo-blog.html)。该站当前页面抓取可能返回站点脚本；以下公式和数值明确以仓库学习实现为依据，不冒充已核验的最新论文全部细节。
+图中 REPLAY 表示恢复先前保存的非终局状态；并不表示可以从成功终局继续行动。方法出处是 [Dots 团队 TEMPO 博客](https://studio.dots.ai/dots/tempo-blog.html)。
 
 ## 为什么先切短轨迹，再学习估计未来
 

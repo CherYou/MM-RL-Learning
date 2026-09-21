@@ -1,12 +1,36 @@
 # AgentOPSD｜整段成功了，但每一轮不该分到完全一样的信用
 
-[学习路线](../docs/BEGINNER_GUIDE.md) · [ALFWorld](../08-alfworld/TUTORIAL.md) · [运行入口](README.md)
+[学习路线](../docs/LEARNING_PATH.md) · [ALFWorld](../08-alfworld/TUTORIAL.md) · [General OPD / OPSD 角色](../02-opd/general-opd/TUTORIAL.md) · [运行入口](README.md)
+
+**本章默认教学后端：verl（`verl.yaml`）。** Loss 仍是裁剪 policy gradient；真正新增的是**轮次信用重加权**。
+
+**相对 GRPO / ALFWorld，改变了什么？**
+
+| 组件 | GRPO 终局广播 | AgentOPSD（本章） |
+| --- | --- | --- |
+| 优势粒度 | 整条轨迹一个 A | 每轮 $`\widetilde A_k`$ |
+| Teacher | 通常无 / 冻结 ref | **当前批次、更新前**策略 + Skill 文本 |
+| 中间量 | 组均值/方差 | evidence → belief → credit → weight |
+| 边界 | — | 有界乘数；**不翻转**终局方向 |
+| A=0 组 | 无信号 | 仍为 0，Skill 不能凭空造监督 |
 
 一个家庭任务用了十轮才成功，决定成败的可能只有“发现物体在另一个房间”那一轮。GRPO 把整段优势广播给所有轮次，无法表达这种差别。AgentOPSD 增加一个带 Skill 的自教师视角，给每轮提供证据，再有界地重新分配终局优势。
 
 ![带 Skill 的额外评价视角检查每轮，整段正向结果被分配成不同强度的正向信用](../docs/assets/algorithms/agentopsd.png)
 
 图中大小不同的绿色标记表示重加权；不能据此认定某一步在真实因果意义上必然最重要。方法源自 [AgentOPSD 论文](https://arxiv.org/html/2608.05987v1)。本章按本地代码逐步解释计算，不复用论文图或原文段落。
+
+## 一张表串起五个中间量
+
+设终局 GRPO 优势 $`A=2`$，$`b_0=0.5`$，$`\gamma=0.95`$，$`\rho=0.2`$，$`\lambda=0.5`$（与下文公式一致的构造例）：
+
+| 轮次 k | e_k | u_k | b_k | Δb_k | c_k=sign(A)Δb | w_k 方向 | Ã_k 方向 |
+| ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
+| 1 | log3≈1.0986 | 1.0986 | 0.750 | +0.250 | +0.250 | 上界附近（1.1） | 高于 A（约 2.2） |
+| 2 | 0 | 1.0437 | 0.740 | −0.010 | −0.010 | 略低于 1 | 略低于 A |
+| 3 | 负证据（构造） | 衰减后更低 | 更低 | 负 | 负 | 低于 1 | 低于 A 但保持正号 |
+
+阅读顺序：e 是教师−old 的 token gap 之和；b 是有记忆的内部信念；c 只改变力度、保留 sign(A)；w 有界；Ã 才进入 token loss。**belief 不是校准成功概率；重加权不是因果贡献证明。**
 
 ## 为什么终局对错不足以解释每一轮
 

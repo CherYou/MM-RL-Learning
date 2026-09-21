@@ -31,10 +31,19 @@ DPO、OPD 不是这条路线的强制前置。
 
 1. 损失基础中的 CE / logprob / 策略梯度 / 比率与裁剪
 2. [最小 GRPO](../01-grpo/TUTORIAL.md)（默认命令 = TRL `config.yaml`）
-3. 工具与环境：[Search-R1](../03-search-r1/TUTORIAL.md) → [ReTool](../05-retool/TUTORIAL.md)
-4. 进阶：[ALFWorld](../08-alfworld/TUTORIAL.md)、[Vision-GRPO](../09-vision-grpo/TUTORIAL.md)、[Harness-RL](../12-harness-rl/TUTORIAL.md)
+3. 工具与环境（这些章默认 **verl**，先读章首「相对 GRPO 改变了什么」）：
+   - [Search-R1](../03-search-r1/TUTORIAL.md)：检索观察与 mask
+   - [ReTool](../05-retool/TUTORIAL.md)：真实 Python 执行；共用轨迹字段账本
+   - [ALFWorld](../08-alfworld/TUTORIAL.md)：有状态环境；独立 env 实例
+4. 进阶 Agent / 多模态：
+   - [AgentOPSD](../09-AgentOPSD/TUTORIAL.md)：轮次信用（不翻转终局方向）
+   - [TEMPO](../09-tempo/TUTORIAL.md)：**进阶研读**；恢复状态 ≠ 用旧数据更新
+   - [Vision-GRPO](../09-vision-grpo/TUTORIAL.md)：先 L1 输入链路，再 L2 能力
+   - [Harness-RL](../12-harness-rl/TUTORIAL.md)：action/args 字段与参数分区
 
-PPO 的 GAE 细节可以后补；不要把它设成 GRPO 的必经关卡。离线偏好走 [DPO](../002-dpo/TUTORIAL.md)（BCE 桥 → margin → reference 校正）。
+PPO 的 GAE 细节可以后补；不要把它设成 GRPO 的必经关卡。离线偏好走 [DPO](../002-dpo/TUTORIAL.md)。
+
+Agent 章不要再从零展开完整 `min(rA, clip(r)A)`：先问“相对已学 GRPO，现在改的是轨迹来源、观察 mask、轮次信用、条件输入，还是参数更新规则？”
 
 ## 路线三：连续控制与离线
 
@@ -102,8 +111,8 @@ flowchart TD
 | 章节类型 | 默认教学入口 | 跨后端对照 |
 | --- | --- | --- |
 | preliminary 数学 | PyTorch 脚本 / `examples/math` | 不需要后端 |
-| PPO / DPO / GRPO / GSPO | TRL 与各章 `config.yaml`（教程命令已对齐 `--backend trl`） | native / verl 放进阶区，不要第一次就切 |
-| Agent / 蒸馏 / 在线复杂机制 | verl WorkerGroup | 见 [VERL.md](VERL.md) |
+| PPO / DPO / GRPO / GSPO | TRL 与各章 `config.yaml`（教程命令已对齐 `--backend trl`） | native / verl 放进阶区 |
+| Search-R1 / ReTool / ALFWorld / AgentOPSD / TEMPO / Vision / Harness | **verl**（各章 `verl.yaml` + `--verl-workers 2`） | native/TRL 对照仅个别章提供 |
 | 连续控制 | PyTorch embodied | 见 [EMBODIED.md](EMBODIED.md) |
 
 每章 README 的命令应与该章默认后端一致；跨后端示例放在进阶区。

@@ -1,12 +1,41 @@
 # Harness-RL｜既要选对工具，也要把参数写对，梯度该交给谁
 
-[学习路线](../docs/BEGINNER_GUIDE.md) · [工具交互基础](../05-retool/TUTORIAL.md) · [运行入口](README.md)
+[学习路线](../docs/LEARNING_PATH.md) · [ReTool：工具执行与 mask](../05-retool/TUTORIAL.md) · [运行入口](README.md)
+
+**本章默认教学后端：verl（`verl.yaml`）；实现为 central-only，worker 不联合训练。** FSDP 分片布局是进阶工程细节，先掌握最小调用与字段归属。
+
+**相对 ReTool / GRPO，改变了什么？**
+
+| 组件 | ReTool 型工具 GRPO | Harness-RL（本章） |
+| --- | --- | --- |
+| 动作粒度 | 一段代码/文本 | **action** 字段 + **args** 字段 |
+| 记录 | 单轨迹 token 序列 | session / call / parent / prefix tree |
+| 训练 mask | 模型生成 vs 观察 | 再分 action / args token mask |
+| 参数更新 | 共享参数统一反传 | CAPO：按激活选区分别路由梯度 |
+| 易混点 | 观察不训练 | token mask（数据轴）≠ parameter mask（参数轴） |
+
+## 最小合法调用（先读懂这个）
+
+中央 Agent 一次输出：
+
+```text
+{"action":"Calculate","args":"print(6*3)"}
+```
+
+| 片段 | 归属 | 训练含义 |
+| --- | --- | --- |
+| `Calculate` | action token | 选对工具的决策 |
+| `print(6*3)` | args token | 参数是否写对 |
+| 键名与标点 | 不自动属于任一类 | 由 `structured_masks` 按字符覆盖处理 |
+| 工具返回 18 | observation | mask=0，但是后续条件 |
+
+**失败例子：** action 正确、args 写成 `print(6+3)`。若整条轨迹统一负优势，可能同时压低“选 Calculate”这一正确决策——这正是字段分区与 CAPO 要处理的问题。
 
 一个中央 Agent 输出 `{"action":"Calculate","args":"print(6*3)"}`。选 Calculate 是一种决定，写出正确程序是另一种能力。Harness-RL 既记录复杂调用怎样连接，也考虑 action 与 args 两类训练信号在共享参数中的影响。[原论文](https://arxiv.org/html/2608.29641v1)提出接口轨迹构造与 CAPO。
 
 ![中央调用拆成 action 与 args，沿 session 调用树记录结果，再把两类梯度投影到对应参数子集](../docs/assets/algorithms/harness-rl.png)
 
-插图表示局部结构。仓库实现 central-only：检索和计算 worker 固定，不进行全部子 Agent 联合训练。它也不是常见的语言模型评测工具 lm-evaluation-harness。
+插图表示局部结构。仓库实现 central-only。它也不是常见的语言模型评测工具 lm-evaluation-harness。
 
 ## 先认识 harness，再谈两类决策的冲突
 
