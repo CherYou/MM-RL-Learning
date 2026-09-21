@@ -1,5 +1,22 @@
 # HER：没完成原目标，也能诚实地利用这段经历
 
+[学习路线](../docs/LEARNING_PATH.md) · [FOUNDATIONS：回放与 episode](../preliminary/FOUNDATIONS.md#foundations-map) · [TD3（底层 loss）](../14-td3/TUTORIAL.md) · [运行说明](README.md)
+
+**本章默认教学入口：PyTorch embodied + TD3。** HER **不是**又一个 actor loss；它改变的是**进入 replay 的数据标签**。
+
+**定位：数据重标记章**
+
+| 字段 | 原 transition | hindsight（future strategy） |
+| --- | --- | --- |
+| state / next state | s_t, s_{t+1} | **不变** |
+| action | a_t | **不变** |
+| goal | 原 desired g | 换成同轨迹未来 achieved g' |
+| reward | r(s',g) | **按 g' 重算** |
+| done / truncated | 环境真实标记 | FetchReach 成功不强制改终止则保留 |
+| 训练 loss | TD3 L_Q / L_π | **仍是 TD3** |
+
+评估永远用**原任务**目标；重标记样本只进训练。原始与重标记 transition 分开计数，避免把 HER 副本当额外环境交互。
+
 先读[目标、回放与 episode 边界](../preliminary/FOUNDATIONS.md)和 [TD3](../14-td3/TUTORIAL.md)。HER（Hindsight Experience Replay）不是独立的 actor loss，而是适用于目标条件任务的经验重标记方法。本仓库用 **TD3 + HER**，所以训练中的策略/critic 公式继承 TD3，区别发生在数据进入 replay 时。[原论文](https://arxiv.org/abs/1707.01495)提出了这一机制。
 
 ![HER 保持实际路径，重新指定已达到的目标](../docs/assets/algorithms/her.png)

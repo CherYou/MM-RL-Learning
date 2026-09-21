@@ -1,10 +1,37 @@
 # SAC：一边提高回报，一边保留可用的动作选择
 
+[学习路线](../docs/LEARNING_PATH.md) · [MSE 与价值回归](../preliminary/TUTORIAL.md) · [连续动作密度（FOUNDATIONS §5）](../preliminary/FOUNDATIONS.md#foundations-map) · [运行说明](README.md)
+
+**本章默认教学入口：PyTorch embodied（FetchReach）。** 不需要先读完 PPO/GRPO；但应先分清：critic 用 **MSE/回归** 拟合 Q 目标，actor 用 **对动作可导的 Q** 回传，而不是语言模型的 logprob 比率。
+
+**相对语言模型 GRPO / PPO，本分支改变了什么？**
+
+| 组件 | LLM 策略学习 | SAC（连续控制） |
+| --- | --- | --- |
+| 动作 | 离散 token | 连续向量（本仓 FetchReach 为 4 维） |
+| 策略输出 | logits → 概率 | 高斯密度 + tanh 挤压 |
+| 优势/反馈 | 终局分或 critic+GAE | replay 中的 (s,a,r,s',d) |
+| Critic | V 或组内统计 | **Q(s,a)**；目标用 bootstrap + 熵 |
+| 可导路径 | 重新打分已生成 token | **冻结 critic 权重，保留 ∂Q/∂a** |
+| 前置数学 | CE / logprob / ratio | **MSE**、重参数化、tanh Jacobian |
+
+**先走一条 transition（再谈网络）：** 环境给出 `s, a, r, s', d`。例如 `s`=末端位置，`a`=`[0.1,-0.05,0,0]`，`r`=-1（未到目标），`s'`=执行后位置，`d`=False。这条记录进 replay；critic 用 MSE 把 `Q(s,a)` 拉向 `y`；actor 在**同一个 s** 上重新采样 `ã`，不是回放里的旧 `a`。
+
 先读 [MDP、Q 值与连续动作密度](../preliminary/FOUNDATIONS.md)，再读这一章。SAC（Soft Actor-Critic）是连续控制的经典 off-policy 方法；这里采用后续常见的双 Q、无独立 V 网络、自动温度版本。它为机器人 RL 提供基础，不是一个视觉语言动作模型。[原始论文](https://arxiv.org/abs/1801.01290)与[算法及应用论文](https://arxiv.org/abs/1812.05905)给出方法依据；以下例子、推导组织和代码讲解按本仓库实现独立撰写。
 
 ![SAC 的动作采样、双 critic、回放与熵示意](../docs/assets/algorithms/sac.png)
 
 图中多根箭头表示同一个策略可以采出不同连续动作，双表盘表示两个 Q 估计，天平表示奖励与熵之间的权衡。表盘和天平没有数值刻度，是概念图，不是实验曲线。
+
+**Actor 更新时参数是否冻结（必看清）：**
+
+| 更新步 | Critic 权重 | Actor 权重 | 梯度能否从 Q 流到 actor |
+| --- | --- | --- | --- |
+| Critic 更新 | 训练（MSE→y） | 不更新 | 不需要 actor 路径 |
+| Actor 更新 | **冻结（不 step）** | 训练 | **能**：`Q(s,ã(θ))` 对 θ 可导 |
+| 目标网络 | Polyak 慢跟 | Polyak 慢跟 | target 中 `y` 停止梯度 |
+
+Jacobian 推导在后文；第一次阅读可先接受“`corrected_log_prob` 已含修正”，不影响走通一条 transition。
 
 ## 0. 读公式之前，先认识连续动作 actor-critic
 

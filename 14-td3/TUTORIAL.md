@@ -1,5 +1,30 @@
 # TD3：让连续控制的 critic 少犯错，再让 actor 跟上
 
+[学习路线](../docs/LEARNING_PATH.md) · [FOUNDATIONS：MDP/Q/回放](../preliminary/FOUNDATIONS.md#foundations-map) · [SAC（可对照）](../13-sac/TUTORIAL.md) · [运行说明](README.md)
+
+**本章默认教学入口：PyTorch embodied（FetchReach）。** DDPG 只作短前导，不必另开大型独立复现项目。
+
+**相对 SAC / 语言模型策略更新：**
+
+| 组件 | SAC（软策略） | TD3（确定性策略） | LLM GRPO |
+| --- | --- | --- | --- |
+| Actor 输出 | 随机密度 + tanh | **确定性** `a=μ(s)` + 探索噪声 | token 分布 |
+| 熵目标 | 有（α 自动温度） | 无 | 通常无（或 KL ref） |
+| Critic | 双 Q 取小 | 双 Q 取小 + **目标动作平滑** | 组优势 / V |
+| Actor 节奏 | 通常每步 | **延迟**：每 K 次 critic 后更新 | 每次策略 step |
+| 可导性 | 重参数化采样 | **∂Q/∂a** 链式到 μ | 重新打分 logprob |
+
+**延迟更新示意（参数变化表，构造例）：** 设 K=2，记录 `critic_step` 与 `actor_step`：
+
+| 循环步 | Critic 更新？ | Actor 更新？ | 目标网络 Soft-update？ |
+| ---: | --- | --- | --- |
+| 1 | 是 | 否 | 否 |
+| 2 | 是 | **是** | **是**（actor+critic 目标） |
+| 3 | 是 | 否 | 否 |
+| 4 | 是 | **是** | **是** |
+
+不要用 `.grad=0` 单独证明“没更新”；应比较更新前后参数差值。
+
 先读[前置知识](../preliminary/FOUNDATIONS.md)。TD3（Twin Delayed Deep Deterministic Policy Gradient）解决连续动作 actor-critic 中价值高估与误差放大的问题，核心是双 critic、延迟策略更新、目标动作平滑。[原论文](https://arxiv.org/abs/1802.09477)是机制来源，本章用独立的机械臂例子解释对应代码。
 
 ![TD3 的双 critic、延迟更新和目标平滑](../docs/assets/algorithms/td3.png)

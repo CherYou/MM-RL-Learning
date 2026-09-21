@@ -1,6 +1,20 @@
 # 04｜OPSD：同一个起点的模型，看到解题过程后能否教会只看题目的自己
 
-[学习路线](../docs/BEGINNER_GUIDE.md) · [OPD 基础](../02-opd/general-opd/TUTORIAL.md) · [运行说明](README.md)
+[学习路线](../docs/LEARNING_PATH.md) · [General OPD 基础](../02-opd/general-opd/TUTORIAL.md) · [运行说明](README.md)
+
+**本章默认教学后端：verl（`verl.yaml`）。** 先读 General OPD 的“谁生成、谁反馈”；本章只改**教师的信息条件与权重生命周期**。
+
+**蒸馏分支对照：训练/评估时谁能看到什么**
+
+| 方法 | 训练轨迹来自 | Student 训练时可见 | Teacher 复评时可见 | Teacher 权重 |
+| --- | --- | --- | --- | --- |
+| SFT | 固定示范 y* | 题目（示范作条件） | （无单独 teacher） | — |
+| 离线教师蒸馏 | 教师生成 | 教师轨迹 | — | 冻结教师 |
+| General OPD | **学生自采样** | 题目 + 自己前缀 | 相同学生 token（无 solution） | 外部/冻结教师 |
+| **OPSD（本章）** | **学生自采样** | 题目 + 自己前缀 | 题目 + **solution z** + 学生前缀 | **固定 step-0** θ₀ |
+| AgentOPSD | 学生 + 环境 | 环境观察历史 | **Skill 文本** + 学生动作 | **当前批更新前**策略 |
+
+评估 Student 时**不得**保留 solution/Skill，否则测的是另一任务。
 
 一个学生独立做题可能卡住，但看过参考解后能解释“这一行为什么应该这样写”。OPSD 将这种信息差用于蒸馏：Student 只看题目；Self-Teacher 看题目加训练期参考 solution，再评价 Student 自己生成的 token。
 

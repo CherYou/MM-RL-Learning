@@ -2,9 +2,9 @@
 
 **[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
 
-从连续动作与 Q 值开始，理解熵、双 Q、重参数化和温度。建议先读教程完成手算和自测，再回到本页运行代码。
+**本章默认教学入口：PyTorch embodied + FetchReach（CPU）。** 先分清 MSE 回归目标与“冻结 critic 但保留 ∂Q/∂a”。VLA 边界见 [学习路线](../docs/LEARNING_PATH.md)，不在本章重复展开。
 
-[总目录](../README.md) · [前置知识](../preliminary/FOUNDATIONS.md) · [共享环境与验证说明](../docs/EMBODIED.md)
+[学习路线](../docs/LEARNING_PATH.md) · [总目录](../README.md) · [MSE 前置](../preliminary/TUTORIAL.md) · [FOUNDATIONS](../preliminary/FOUNDATIONS.md) · [共享环境说明](../docs/EMBODIED.md)
 
 本章重点是最大熵随机策略、双 Q、温度自动调整。使用真实 `FetchReach-v4` / MuJoCo，策略输入是 10 维机械观察与 3 维目标，输出 4 维归一化连续动作。它是理解机器人/VLA 强化学习的基础实验，没有训练视觉语言编码器。
 

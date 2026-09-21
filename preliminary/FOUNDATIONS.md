@@ -20,7 +20,9 @@
 | 连续动作密度、tanh、Jacobian | §5 | 可后置 | 读 SAC 前 |
 | autograd、detach、重参数化 | §6 | 必读核心概念 | 读 SAC 前 |
 | Mask、统计单位、回放与离线 | §7–8 | Agent/蒸馏/离线前 | HER/IQL 前 |
-| VLA 表示与数据覆盖 | §9 | 选读 | 选读（边界说明） |
+| 连续动作密度、tanh、Jacobian | §5 | 可后置 | 读 SAC 前（SAC 章可先接受修正 logprob） |
+| expectile（非 quantile） | 见 [IQL](../16-iql/TUTORIAL.md) | 不需要 | 读 IQL 前必读 |
+| VLA 表示与数据覆盖 | §9 + [LEARNING_PATH 边界表](../docs/LEARNING_PATH.md#低维控制--还差什么vla-边界集中说明) | 选读 | 选读 |
 | 评估、种子与来源 | §10 | 任何实跑前扫一眼 | 任何实跑前扫一眼 |
 | IS、PPO clipping、CISPO | [TUTORIAL](TUTORIAL.md) | 必读（TUTORIAL） | 通常不需要 |
 

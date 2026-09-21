@@ -49,21 +49,32 @@ Agent 章不要再从零展开完整 `min(rA, clip(r)A)`：先问“相对已学
 
 适合关心机械臂、稀疏奖励和固定数据学习的读者。
 
-1. 损失与 RL 基础（FOUNDATIONS 中 MDP / 价值 / 回放按需阅读）
-2. [SAC](../13-sac/TUTORIAL.md) 或先读 [TD3](../14-td3/TUTORIAL.md)（DDPG 思路作短前导）
-3. [HER](../15-her/TUTORIAL.md)：同轨迹目标重标记
-4. [IQL](../16-iql/TUTORIAL.md)：固定数据、expectile 与优势加权
+1. 损失与 RL 基础：先掌握 [MSE / 价值回归](../preliminary/TUTORIAL.md)；MDP / 密度 / 回放按需读 [FOUNDATIONS](../preliminary/FOUNDATIONS.md#foundations-map)
+2. [TD3](../14-td3/TUTORIAL.md)（DDPG 作短前导）→ 可对照 [SAC](../13-sac/TUTORIAL.md)
+3. [HER](../15-her/TUTORIAL.md)：数据重标记，底层仍是 TD3
+4. [IQL](../16-iql/TUTORIAL.md)：固定数据；先 BC，再 expectile 与优势加权
 
-安装与数据见 [具身说明](EMBODIED.md)。PPO / DPO 不是这条路线的强制前置。
+安装与数据见 [具身说明](EMBODIED.md)。PPO / DPO **不是**这条路线的强制前置。
+
+### 低维控制 → 还差什么（VLA 边界，集中说明）
+
+| 已有 | 完整 VLA 还需要 |
+| --- | --- |
+| 低维状态/目标 + 连续动作 | 高维视觉/语言条件与对齐 |
+| FetchReach 成功等环境奖励 | 更丰富任务规范与安全约束 |
+| 离线/在线控制算法基础 | 大规模机器人数据与动作表示 |
+| 图文条件策略（Vision-GRPO） | 动作头、控制频率、真机/高保真仿真 |
+
+各控制章**不再**重复展开 VLA 展望；有问题时回到本表。
 
 ## 旁支：偏好与蒸馏
 
 ```text
 SFT / 常见损失
   ├─ DPO（偏好分差）
-  └─ General OPD（学生采样 + 教师复评）
-        ├─ OPSD
-        ├─ 医学 SAR / IDT 配方（领域案例）
+  └─ General OPD（学生采样 + 教师复评）← 概念入口
+        ├─ OPSD（固定 step-0 + solution 条件）
+        ├─ 医学 SAR / IDT（领域调度案例）
         └─ AgentOPSD（多轮交互 + 蒸馏汇合）
 ```
 
@@ -111,9 +122,10 @@ flowchart TD
 | 章节类型 | 默认教学入口 | 跨后端对照 |
 | --- | --- | --- |
 | preliminary 数学 | PyTorch 脚本 / `examples/math` | 不需要后端 |
-| PPO / DPO / GRPO / GSPO | TRL 与各章 `config.yaml`（教程命令已对齐 `--backend trl`） | native / verl 放进阶区 |
-| Search-R1 / ReTool / ALFWorld / AgentOPSD / TEMPO / Vision / Harness | **verl**（各章 `verl.yaml` + `--verl-workers 2`） | native/TRL 对照仅个别章提供 |
-| 连续控制 | PyTorch embodied | 见 [EMBODIED.md](EMBODIED.md) |
+| PPO / DPO / GRPO / GSPO | TRL 与各章 `config.yaml` | native / verl 进阶 |
+| Search-R1 … Harness 等 Agent/多模态 | **verl**（各章 `verl.yaml`） | 见章 README |
+| General OPD / OPSD / 医学案例 | verl（医学含 TRL SFT 阶段） | 见章 README |
+| SAC / TD3 / HER / IQL | **PyTorch embodied**（FetchReach） | 不需要 LLM 后端 |
 
 每章 README 的命令应与该章默认后端一致；跨后端示例放在进阶区。
 

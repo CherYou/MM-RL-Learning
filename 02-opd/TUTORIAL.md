@@ -1,12 +1,26 @@
-# 02｜Medical OPD、SAR 与 IDT：先学专长，再设计怎样保留通用能力
+# 02｜Medical OPD、SAR 与 IDT：领域训练案例——先学专长，再设计怎样保留通用能力
 
-[学习路线](../docs/BEGINNER_GUIDE.md) · [General OPD 基础](general-opd/TUTORIAL.md) · [运行说明](README.md)
+> **定位：领域训练案例，不是“更完整的 OPD 算法”。** 概念与采样监督先读 [General OPD](general-opd/TUTORIAL.md)。SAR / IDT 是本仓库的**实验调度标签**，不是未经核对的通用论文标准缩写。医学数据与例子**不构成诊疗建议**，也不说明临床能力。
+
+[学习路线](../docs/LEARNING_PATH.md) · [General OPD 基础](general-opd/TUTORIAL.md) · [运行说明](README.md)
+
+**本章默认教学后端：TRL SFT + verl OPD（见章节配置）。** 实验问题是调度与教师切换，不是发明新的 token loss。
+
+**六步调度示意（M=3 的 SAR）：**
+
+| 更新步 k | 数据池 | 教师 | 更新对象 |
+| ---: | --- | --- | --- |
+| 0–2 | 医疗 D_M | Medical Teacher T_M | Student |
+| 3–5 | 通用 D_G | Base Teacher T_B | Student |
+| 全程 | — | T_M、T_B **冻结** | 仅 Student |
+
+IDT 为交替插入通用/医疗阶段；无论哪种调度，**都要分别报告**医学侧与通用侧评估，不能只报一个平均分。
 
 本章研究模型训练日程。假设一个通用学生跟随专科教师学习，专科能力可能改善，也可能改变原来的通用回答习惯。我们需要同时问“向谁学习”和“什么时候向谁学习”，不能只看最后一步用了哪种 loss。
 
 ![冻结的医疗和通用教师辅导同一学生；SAR 先后分段，IDT 交替出现](../docs/assets/algorithms/medical-opd.png)
 
-青色代表医疗题与医疗教师，紫色代表通用题与 Base 教师。两条时间线都更新同一个学生。医学只是这里的数据领域，图和例子不构成诊疗建议，也不说明模型已经具有临床能力。
+青色代表医疗题与医疗教师，紫色代表通用题与 Base 教师。两条时间线都更新同一个学生。
 
 ## 本章的重点为什么是训练顺序
 

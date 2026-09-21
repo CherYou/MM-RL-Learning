@@ -2,9 +2,9 @@
 
 **[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
 
-从额外解答信息出发，理解自教师条件、蒸馏与 token 对齐。建议先读教程完成手算和自测，再回到本页运行代码。
+**本章默认教学后端：verl（`verl.yaml`）。** 概念入口是 [General OPD](../02-opd/general-opd/TUTORIAL.md)；本章差在 **solution 信息条件 + step-0 教师**。评估时不得保留 solution。
 
-[总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
+[学习路线](../docs/LEARNING_PATH.md) · [总目录](../README.md) · [General OPD](../02-opd/general-opd/TUTORIAL.md) · [框架设计](../docs/ARCHITECTURE.md)
 
 ## 本地实现
 

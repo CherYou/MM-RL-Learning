@@ -2,9 +2,9 @@
 
 **[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
 
-先理解为什么学生自己采样，再推导教师概率反馈怎样更新学生。建议先读教程完成手算和自测，再回到本页运行代码。
+**蒸馏分支概念入口；默认后端：verl（`verl.yaml`）。** 先回答“谁生成动作、谁给反馈”，再读 reverse KL 采样 surrogate。
 
-[总目录](../../README.md) · [框架设计](../../docs/ARCHITECTURE.md)
+[学习路线](../../docs/LEARNING_PATH.md) · [总目录](../../README.md) · [医学案例](../README.md) · [框架设计](../../docs/ARCHITECTURE.md)
 
 ## 本地实现
 

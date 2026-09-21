@@ -1,5 +1,29 @@
 # IQL：从固定数据学价值，再有重点地模仿
 
+[学习路线](../docs/LEARNING_PATH.md) · [FOUNDATIONS：离线与分布偏移](../preliminary/FOUNDATIONS.md#foundations-map) · [MSE 与回归](../preliminary/TUTORIAL.md) · [运行说明](README.md)
+
+**本章默认教学入口：PyTorch embodied，固定 FetchReach 数据。** 建议阅读顺序：**先 BC（等权模仿）→ 再 expectile V → 再优势加权 BC**。
+
+**相对在线 TD3 / SAC：**
+
+| 组件 | 在线 TD3/SAC | IQL（离线） |
+| --- | --- | --- |
+| 训练数据 | replay + 持续交互 | **固定**数据集 D |
+| Actor 是否查询未见动作 | 是（找高 Q） | **否**；只模仿记录动作 |
+| V / Q | 可由 bootstrap+策略 | V 用 **expectile**；Q 用 V 补全 |
+| 评估交互 | 训练中可用 | 可交互评估，但**不回流**训练 |
+| 步语义 | 环境步 ≈ 可混入训练 | **离线训练步 ≠ 环境步** |
+
+**Expectile ≠ 分位数（quantile）：** η=0.7 时，对残差 `u=Q−V` 做不对称**平方**损失，使 V 偏向数据中较高的 Q；它不是“第 70 百分位”。η=0.5 回到对称 MSE。
+
+**三次优化的 stop-gradient（必查）：**
+
+| 更新 | 拟合对象 | 目标是否 stopgrad |
+| --- | --- | --- |
+| V | expectile(Q̄−V) | Q̄ 用目标网 / detach |
+| Q | (Q−y)²，y=r+γ(1−d)V(s') | **y 中的 V 停止梯度** |
+| Actor | −w·logπ(a\|s)，w=exp(βA) | **w 与 A 停止梯度** |
+
 先读 [offline RL 与分布偏移](../preliminary/FOUNDATIONS.md)。IQL（Implicit Q-Learning）适合学习机器人离线 RL 的基本问题：训练时只能使用已有经历，不能随时让机器人试一个新动作来纠正 critic。[原论文](https://arxiv.org/abs/2110.06169)给出 expectile 价值学习和优势加权策略提取；本章独立实现低维 FetchReach 示例。
 
 ![IQL 固定数据训练 Q、V 和策略，评估与训练数据分开](../docs/assets/algorithms/iql.png)

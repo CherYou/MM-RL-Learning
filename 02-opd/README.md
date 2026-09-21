@@ -1,10 +1,12 @@
 # Medical OPD、SAR-OPD、IDT-OPD
 
+> **领域训练案例。** 概念请先读 [General OPD](general-opd/README.md)。SAR/IDT 是调度标签；医学结果不构成临床能力声明。
+
 **[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
 
-分清 SFT、学生与两位教师，再比较先后训练和交替训练。建议先读教程完成手算和自测，再回到本页运行代码。
+**默认链路：医疗 SFT → 冻结 Medical Teacher → Student OPD（TRL + verl，见配置）。** 分别报告医学侧与通用侧评估。
 
-[总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
+[学习路线](../docs/LEARNING_PATH.md) · [总目录](../README.md) · [General OPD](general-opd/README.md) · [框架设计](../docs/ARCHITECTURE.md)
 
 ## 本地实现
 
