@@ -46,10 +46,10 @@ python examples/math/loss_walkthrough.py
 | --- | --- | --- |
 | L0 数学演示 | 人工张量核对 loss / 梯度 | `examples/math/loss_walkthrough.py`、`arl loss-demo` |
 | L1 机制 smoke | tiny 模型与真实代码链路可执行 | `python 01-grpo/train.py --smoke` |
-| L2 小任务学习 | 可控任务上训练前后有变化 | 教学 bandit（规划中）/ 具身短程实验 |
+| L2 小任务学习 | 可控任务上训练前后有变化 | 具身短程实验（需独立评估） |
 | L3 方法复现 | 与论文/基准可比 | 需固定预算与设备，逐项验证 |
 
-看到命令输出时，先确认它属于哪一层。
+完整定义与“不能声称什么”见 [EVIDENCE.md](EVIDENCE.md)。贡献与检查见 [CONTRIBUTING](../CONTRIBUTING.md)。
 
 ## 完整环境安装
 

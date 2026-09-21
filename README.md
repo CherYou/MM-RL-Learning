@@ -152,20 +152,25 @@ python scripts/verify_data.py
 bash scripts/setup.sh
 bash scripts/setup_verl.sh --cpu
 make data
-make check
-make docs
+make docs          # Markdown 链接/数学 + 教程结构审计
+make check-math    # L0 数值实验与单测（需 PyTorch）
+make check         # 完整检查（.venv、数据、pytest、ruff）
 make smoke
 ```
 
-`make docs` 覆盖 Markdown 数学/链接检查与教程结构审计。检查报告写入 `reports/`，训练输出写入 `runs/`；两者不纳入版本控制。
+检查报告写入 `reports/`，训练输出写入 `runs/`；两者默认不纳入版本控制。
+
+分层 CI 见 [.github/workflows](.github/workflows)：文档与 L0 数学适合普通 PR；机制 / 环境 / GPU 需自备环境，不作为文档改动的默认阻塞。贡献前请读 [CONTRIBUTING](CONTRIBUTING.md) 与 [证据层级](docs/EVIDENCE.md)。
 
 ## 复现范围
 
 这是一套学习规模的实现：原生 PyTorch 用于公式对照，TRL 提供标准训练器，verl 提供复杂在线算法的分布式接口。Harness-RL 使用 central-only MLP 分区，ReTool 使用受限数值 Python 工具。模型效果需针对具体数据、预算和设备独立评估。
 
+**L0–L3 验证层级见 [docs/EVIDENCE.md](docs/EVIDENCE.md)。** 后端安装与恢复见 [docs/VERL.md](docs/VERL.md)。
+
 ## 许可证与来源
 
-参考代码遵循 Apache-2.0。归属与修改见 [NOTICE](NOTICE)、[LICENSE](LICENSE)、[来源说明](docs/CODE_PROVENANCE.md)。公开数据与论文分别遵循其来源条款。
+参考代码遵循 Apache-2.0。归属与修改见 [NOTICE](NOTICE)、[LICENSE](LICENSE)、[来源说明](docs/CODE_PROVENANCE.md)。公开数据与论文分别遵循其来源条款。贡献规范见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ## 参考与感谢
 

@@ -1,0 +1,44 @@
+name: loss-math
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "examples/math/**"
+      - "src/agentic_rl/losses.py"
+      - "src/agentic_rl/loss_demo.py"
+      - "tests/test_loss_math_walkthrough.py"
+      - "preliminary/TUTORIAL.md"
+      - ".github/workflows/loss-math.yml"
+  pull_request:
+    paths:
+      - "examples/math/**"
+      - "src/agentic_rl/losses.py"
+      - "tests/test_loss_math_walkthrough.py"
+      - ".github/workflows/loss-math.yml"
+
+jobs:
+  l0-checks:
+    name: L0 numerical walkthrough + unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install CPU PyTorch and pytest
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+          python -m pip install pytest
+      - name: Run standalone loss walkthrough
+        run: python examples/math/loss_walkthrough.py --output examples/math/results/ci_checks.json
+      - name: Unit tests (loss math + registry metadata)
+        run: python -m pytest -q tests/test_loss_math_walkthrough.py
+      - name: Upload numerical result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: loss-walkthrough-ci
+          path: examples/math/results/ci_checks.json
+          if-no-files-found: ignore

@@ -1,4 +1,4 @@
-.PHONY: setup setup-verl check-verl smoke-verl data check portability docs smoke logs status stop
+.PHONY: setup setup-verl check-verl smoke-verl data check portability docs check-docs check-math smoke logs status stop
 PY := .venv/bin/python
 setup:
 	bash scripts/setup.sh
@@ -14,14 +14,18 @@ data:
 check:
 	$(PY) scripts/check_portability.py
 	$(PY) scripts/check_markdown_math.py
+	$(PY) scripts/audit_tutorials.py
 	CUDA_VISIBLE_DEVICES='' HF_HUB_OFFLINE=1 $(PY) -m pytest -q
 	$(PY) scripts/verify_data.py
 	.venv/bin/ruff check src scripts tests
 portability:
 	$(PY) scripts/check_portability.py
-docs:
+docs check-docs:
 	$(PY) scripts/check_markdown_math.py
 	$(PY) scripts/audit_tutorials.py
+check-math:
+	$(PY) examples/math/loss_walkthrough.py
+	CUDA_VISIBLE_DEVICES='' HF_HUB_OFFLINE=1 $(PY) -m pytest -q tests/test_loss_math_walkthrough.py
 smoke:
 	$(PY) scripts/smoke_all.py
 logs:
