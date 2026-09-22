@@ -54,7 +54,7 @@ python examples/math/loss_walkthrough.py
 | 图文条件 | Vision-GRPO | `09-vision-grpo` |
 | 长程 Agent | TEMPO、Harness-RL | `09-tempo`、`12-harness-rl` |
 | 连续控制与离线 | TD3、SAC、HER、IQL | `14-td3`…`16-iql`、`13-sac` |
-| 技术报告阅读 | 模型系列报告与中文资料 | [Basic LLM](Basic%20LLM/README.md) |
+| 技术报告阅读 | 模型系列报告与中文资料 | [Basic LLM](Basic%20LLM/README.md)（含 [MiMo-V2.6](Basic%20LLM/MiMo/MiMo%20V2.6/README.md)） |
 
 导航元数据：[configs/learning_paths.json](configs/learning_paths.json) · [configs/concepts.json](configs/concepts.json)。重新生成页首页尾：`python scripts/sync_navigation.py --write`；检查：`python scripts/check_navigation.py`。
 
