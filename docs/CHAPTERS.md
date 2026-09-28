@@ -50,15 +50,15 @@ flowchart TD
 | 04 | DAPO：动态采样、裁剪与长度处理 | [04-dapo/TUTORIAL.md](../04-dapo/TUTORIAL.md) |
 | 05 | GSPO：序列级比率与裁剪 | [05-gspo/TUTORIAL.md](../05-gspo/TUTORIAL.md) |
 | 06 | DPO：从偏好对直接优化策略（离线旁支） | [06-dpo/TUTORIAL.md](../06-dpo/TUTORIAL.md) |
-| 07 | ARPO：工具后高熵分支与步级信用 | [07-arpo/TUTORIAL.md](../07-arpo/TUTORIAL.md) |
-| 08 | AEPO：熵平衡智能体策略优化 | [08-aepo/TUTORIAL.md](../08-aepo/TUTORIAL.md) |
 
-本篇导读：[families/01-policy-preference.md](families/01-policy-preference.md) · 工具交叉：[families/02-tools-multimodal.md](families/02-tools-multimodal.md)
+本篇导读：[families/01-policy-preference.md](families/01-policy-preference.md)
 
 ## 第三篇 工具、环境与多模态
 
 | 章号 | 教程 | 实际正文 |
 | ---: | --- | --- |
+| 07 | ARPO：工具后高熵分支与步级信用 | [07-arpo/TUTORIAL.md](../07-arpo/TUTORIAL.md) |
+| 08 | AEPO：熵平衡智能体策略优化 | [08-aepo/TUTORIAL.md](../08-aepo/TUTORIAL.md) |
 | 09 | Search-R1：学习检索与观察 mask | [09-search-r1/TUTORIAL.md](../09-search-r1/TUTORIAL.md) |
 | 10 | ReTool：真实执行与工具决策 | [10-retool/TUTORIAL.md](../10-retool/TUTORIAL.md) |
 | 11 | ALFWorld：有状态环境中的策略学习 | [11-alfworld/TUTORIAL.md](../11-alfworld/TUTORIAL.md) |

@@ -11,8 +11,6 @@
 | 04 | [DAPO](../../04-dapo/TUTORIAL.md) | verl `04-dapo/verl.yaml` |
 | 05 | [GSPO](../../05-gspo/TUTORIAL.md) | TRL `05-gspo/config.yaml` |
 | 06 | [DPO](../../06-dpo/TUTORIAL.md) | TRL `06-dpo/config.yaml` |
-| 07 | [ARPO](../../07-arpo/TUTORIAL.md) | verl `07-arpo/verl.yaml` |
-| 08 | [AEPO](../../08-aepo/TUTORIAL.md) | verl `08-aepo/verl.yaml` |
 
 ## 方法联系（非继承链）
 
