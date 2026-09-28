@@ -1,4 +1,4 @@
-# 01｜损失函数与策略梯度基础
+# 01｜智能体强化学习基础
 
 <!-- NAV:TOP:BEGIN -->
 [← 开始学习](../docs/START_HERE.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/00-foundations.md) · [下一章：02 PPO：actor-critic、GAE 与裁剪更新 →](../001-ppo/TUTORIAL.md)

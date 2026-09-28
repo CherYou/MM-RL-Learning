@@ -97,7 +97,7 @@ class LabAgentLoop(AgentLoopBase):
             if not records:
                 raise ValueError("Harness context budget leaves no interface call")
             sample = records[-1].sample
-        elif self.lab_config["algorithm"] in {"search-r1", "retool", "alfworld", "agentopsd", "tempo"}:
+        elif self.lab_config["algorithm"] in {"search-r1", "retool", "alfworld", "agentopsd", "tempo", "arpo", "aepo"}:
             sample = await asyncio.to_thread(
                 agent_rollout,
                 bridge,

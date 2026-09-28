@@ -1,7 +1,7 @@
 # 02｜PPO：actor-critic、GAE 与裁剪更新
 
 <!-- NAV:TOP:BEGIN -->
-[← 上一章：01 损失函数与策略梯度基础](../preliminary/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/01-policy-preference.md) · [下一章：03 GRPO：同题采样与组内优势 →](../01-grpo/TUTORIAL.md)
+[← 上一章：01 智能体强化学习基础](../preliminary/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/01-policy-preference.md) · [下一章：03 GRPO：同题采样与组内优势 →](../01-grpo/TUTORIAL.md)
 <!-- NAV:TOP:END -->
 
 [学习路线](../docs/LEARNING_PATH.md) · [损失与裁剪基础](../preliminary/TUTORIAL.md) · [运行说明](README.md)
@@ -314,5 +314,5 @@ Smoke 是少量步骤的管线检查，使用随机微型模型，不证明数�
 这些资料用于机制核对和深入阅读。本章数字例子、角色表、流程图和代码阅读顺序为本仓库重新组织，执行细节以本地配置与代码为准。
 
 <!-- NAV:BOTTOM:BEGIN -->
-[← 上一章：01 损失函数与策略梯度基础](../preliminary/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/01-policy-preference.md) · [下一章：03 GRPO：同题采样与组内优势 →](../01-grpo/TUTORIAL.md)
+[← 上一章：01 智能体强化学习基础](../preliminary/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/01-policy-preference.md) · [下一章：03 GRPO：同题采样与组内优势 →](../01-grpo/TUTORIAL.md)
 <!-- NAV:BOTTOM:END -->

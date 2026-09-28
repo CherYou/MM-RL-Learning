@@ -1,7 +1,7 @@
-# 20｜IQL：固定数据、expectile 与加权模仿
+# 22｜IQL：固定数据、expectile 与加权模仿
 
 <!-- NAV:TOP:BEGIN -->
-[← 上一章：19 HER：目标条件经验重标记](../15-her/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/05-control-offline.md) · [课程回顾与独立实验 →](../docs/NEXT_STEPS.md)
+[← 上一章：21 HER：目标条件经验重标记](../15-her/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/05-control-offline.md) · [课程回顾与独立实验 →](../docs/NEXT_STEPS.md)
 <!-- NAV:TOP:END -->
 
 [学习路线](../docs/LEARNING_PATH.md) · [FOUNDATIONS：离线与分布偏移](../preliminary/FOUNDATIONS.md#foundations-map) · [MSE 与回归](../preliminary/TUTORIAL.md) · [运行说明](README.md)
@@ -178,5 +178,5 @@ TensorBoard 看 `loss/value`、`loss/critic`、`loss/actor`、`train/weight` 与
 4. 这个实现与原论文的所有 benchmark 设置完全相同吗？**不是；这是自己采集 FetchReach 数据的教学实验，策略分布、网络和超参数均在本地明示。**
 
 <!-- NAV:BOTTOM:BEGIN -->
-[← 上一章：19 HER：目标条件经验重标记](../15-her/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/05-control-offline.md) · [课程回顾与独立实验 →](../docs/NEXT_STEPS.md)
+[← 上一章：21 HER：目标条件经验重标记](../15-her/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/05-control-offline.md) · [课程回顾与独立实验 →](../docs/NEXT_STEPS.md)
 <!-- NAV:BOTTOM:END -->

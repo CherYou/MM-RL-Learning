@@ -49,7 +49,7 @@ def evaluate(config, checkpoint, limit=32, output=None):
             else:
                 sampler = (
                     agent_rollout
-                    if config["algorithm"] in {"search-r1", "retool", "alfworld", "tempo", "agentopsd"}
+                    if config["algorithm"] in {"search-r1", "retool", "alfworld", "tempo", "agentopsd", "arpo", "aepo"}
                     else single_rollout
                 )
                 sample = sampler(policy, row, config, greedy=True)

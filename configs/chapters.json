@@ -5,7 +5,7 @@
     "algorithm": "loss-functions",
     "dataset": "fixtures",
     "backend": "native",
-    "title": "损失函数与策略梯度基础",
+    "title": "智能体强化学习基础",
     "family": "foundations",
     "reading_kind": "foundations",
     "tutorial": "preliminary/TUTORIAL.md",
@@ -162,6 +162,62 @@
     "display_number": 6
   },
   {
+    "id": "arpo",
+    "chapter": "17-arpo",
+    "algorithm": "arpo",
+    "dataset": "dapo",
+    "backend": "verl",
+    "title": "ARPO：工具后的高熵分支采样与步级信用",
+    "family": "tools-multimodal",
+    "reading_kind": "algorithm",
+    "tutorial": "17-arpo/TUTORIAL.md",
+    "prerequisites": [
+      "grpo"
+    ],
+    "recommended_prerequisites": [
+      "retool"
+    ],
+    "concept_prerequisites": [
+      "mask-and-reduction"
+    ],
+    "entry": {
+      "type": "yaml",
+      "path": "17-arpo/verl.yaml"
+    },
+    "runnable": true,
+    "intended_level": "L1",
+    "verified_level": "L1",
+    "verified_note": "Teaching core of ARPO (arXiv:2507.19849); not full paper stack",
+    "display_number": 7
+  },
+  {
+    "id": "aepo",
+    "chapter": "18-aepo",
+    "algorithm": "aepo",
+    "dataset": "dapo",
+    "backend": "verl",
+    "title": "AEPO：熵平衡的智能体策略优化",
+    "family": "tools-multimodal",
+    "reading_kind": "algorithm",
+    "tutorial": "18-aepo/TUTORIAL.md",
+    "prerequisites": [
+      "arpo"
+    ],
+    "recommended_prerequisites": [],
+    "concept_prerequisites": [
+      "mask-and-reduction"
+    ],
+    "entry": {
+      "type": "yaml",
+      "path": "18-aepo/verl.yaml"
+    },
+    "runnable": true,
+    "intended_level": "L1",
+    "verified_level": "L1",
+    "verified_note": "Teaching core of AEPO (arXiv:2510.14545)",
+    "display_number": 8
+  },
+  {
     "id": "search-r1",
     "chapter": "03-search-r1",
     "algorithm": "search-r1",
@@ -186,7 +242,7 @@
     "intended_level": "L1",
     "verified_level": "L1",
     "verified_note": "Local BM25 corpus, not live web search",
-    "display_number": 7
+    "display_number": 9
   },
   {
     "id": "retool",
@@ -215,7 +271,7 @@
     "intended_level": "L1",
     "verified_level": "L1",
     "verified_note": "Restricted numeric Python tool",
-    "display_number": 8
+    "display_number": 10
   },
   {
     "id": "alfworld",
@@ -245,7 +301,7 @@
     "intended_level": "L1",
     "verified_level": "L1",
     "verified_note": "TextWorld interface; not robot success rate",
-    "display_number": 9
+    "display_number": 11
   },
   {
     "id": "vision-grpo",
@@ -270,7 +326,7 @@
     "intended_level": "L1",
     "verified_level": "L1",
     "verified_note": "Input plumbing vs capability must stay separate",
-    "display_number": 10
+    "display_number": 12
   },
   {
     "id": "general-opd",
@@ -300,7 +356,7 @@
     "intended_level": "L1",
     "verified_level": "L1",
     "verified_note": "Sampled reverse-KL surrogate, not all OPD definitions",
-    "display_number": 11
+    "display_number": 13
   },
   {
     "id": "opsd",
@@ -327,7 +383,7 @@
     "intended_level": "L1",
     "verified_level": "L1",
     "verified_note": "Fixed step-0 teacher is local setting",
-    "display_number": 12
+    "display_number": 14
   },
   {
     "id": "medical-sar-idt",
@@ -354,7 +410,7 @@
     "intended_level": "L1",
     "verified_level": "L1",
     "verified_note": "Domain schedule labels; not clinical capability",
-    "display_number": 13
+    "display_number": 15
   },
   {
     "id": "agentopsd",
@@ -381,7 +437,7 @@
     "intended_level": "L1",
     "verified_level": "L1",
     "verified_note": "Cross-listed under tools/long-horizon in family pages",
-    "display_number": 14
+    "display_number": 16
   },
   {
     "id": "tempo",
@@ -410,7 +466,7 @@
     "intended_level": "L1",
     "verified_level": "L1",
     "verified_note": "Local implementation study; official page incomplete at review",
-    "display_number": 15
+    "display_number": 17
   },
   {
     "id": "harness-rl",
@@ -439,7 +495,7 @@
     "intended_level": "L1",
     "verified_level": "L1",
     "verified_note": "central-only MLP partition",
-    "display_number": 16
+    "display_number": 18
   },
   {
     "id": "td3",
@@ -468,7 +524,7 @@
     "intended_level": "L2",
     "verified_level": "L1",
     "verified_note": "CPU smoke + FetchReach physics; stable gain not published here",
-    "display_number": 17
+    "display_number": 19
   },
   {
     "id": "sac",
@@ -498,7 +554,7 @@
     "intended_level": "L2",
     "verified_level": "L1",
     "verified_note": "Target actions from current actor in local SAC path",
-    "display_number": 18
+    "display_number": 20
   },
   {
     "id": "her",
@@ -525,7 +581,7 @@
     "intended_level": "L2",
     "verified_level": "L1",
     "verified_note": "Local TD3+HER; not a separate her_loss",
-    "display_number": 19
+    "display_number": 21
   },
   {
     "id": "iql",
@@ -555,6 +611,6 @@
     "intended_level": "L2",
     "verified_level": "L1",
     "verified_note": "Offline training steps are not environment interaction steps",
-    "display_number": 20
+    "display_number": 22
   }
 ]

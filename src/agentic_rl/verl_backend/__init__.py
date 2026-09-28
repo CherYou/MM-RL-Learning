@@ -17,6 +17,8 @@ SUPPORTED = frozenset(
         "tempo",
         "vision-grpo",
         "harness-rl",
+        "aepo",
+        "arpo",
     }
 )
 

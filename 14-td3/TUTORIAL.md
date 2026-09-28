@@ -1,7 +1,7 @@
-# 17｜TD3：确定性策略与双 Q 稳定化
+# 19｜TD3：确定性策略与双 Q 稳定化
 
 <!-- NAV:TOP:BEGIN -->
-[← 上一章：16 Harness-RL：调用记录与参数分区](../12-harness-rl/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/05-control-offline.md) · [下一章：18 SAC：随机策略与最大熵目标 →](../13-sac/TUTORIAL.md)
+[← 上一章：18 Harness-RL：调用记录与参数分区](../12-harness-rl/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/05-control-offline.md) · [下一章：20 SAC：随机策略与最大熵目标 →](../13-sac/TUTORIAL.md)
 <!-- NAV:TOP:END -->
 
 [学习路线](../docs/LEARNING_PATH.md) · [FOUNDATIONS：MDP/Q/回放](../preliminary/FOUNDATIONS.md#foundations-map) · [SAC（可对照）](../13-sac/TUTORIAL.md) · [运行说明](README.md)
@@ -170,5 +170,5 @@ SAC 学随机策略并显式优化熵；TD3 学确定性策略，在交互时外
 4. 一个 episode 超时，是否要将该 transition 的 bootstrap 清零？**本 FetchReach 约定不清零，只在 terminated 时清零。**
 
 <!-- NAV:BOTTOM:BEGIN -->
-[← 上一章：16 Harness-RL：调用记录与参数分区](../12-harness-rl/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/05-control-offline.md) · [下一章：18 SAC：随机策略与最大熵目标 →](../13-sac/TUTORIAL.md)
+[← 上一章：18 Harness-RL：调用记录与参数分区](../12-harness-rl/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/05-control-offline.md) · [下一章：20 SAC：随机策略与最大熵目标 →](../13-sac/TUTORIAL.md)
 <!-- NAV:BOTTOM:END -->

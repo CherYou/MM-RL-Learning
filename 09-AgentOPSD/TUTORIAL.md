@@ -1,7 +1,7 @@
-# 14｜AgentOPSD：自教师辅助的轮次信用
+# 16｜AgentOPSD：自教师辅助的轮次信用
 
 <!-- NAV:TOP:BEGIN -->
-[← 上一章：13 Medical OPD / SAR / IDT：领域调度案例](../02-opd/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/03-distillation.md) · [下一章：15 TEMPO：短分支、估值与状态恢复 →](../09-tempo/TUTORIAL.md)
+[← 上一章：15 Medical OPD / SAR / IDT：领域调度案例](../02-opd/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/03-distillation.md) · [下一章：17 TEMPO：短分支、估值与状态恢复 →](../09-tempo/TUTORIAL.md)
 <!-- NAV:TOP:END -->
 
 [学习路线](../docs/LEARNING_PATH.md) · [ALFWorld](../08-alfworld/TUTORIAL.md) · [General OPD / OPSD 角色](../02-opd/general-opd/TUTORIAL.md) · [运行入口](README.md)
@@ -145,5 +145,5 @@ turn_advantages = bounded_rescale(outcome_advantage, credits)
 阅读 [AgentOPSD 作者论文](https://arxiv.org/html/2608.05987v1) 时可对照 recursive belief 与 advantage reshaping 两部分；本章的具体边界、零方差处理和变量由本地 `reshape_turn_advantages` 决定。
 
 <!-- NAV:BOTTOM:BEGIN -->
-[← 上一章：13 Medical OPD / SAR / IDT：领域调度案例](../02-opd/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/03-distillation.md) · [下一章：15 TEMPO：短分支、估值与状态恢复 →](../09-tempo/TUTORIAL.md)
+[← 上一章：15 Medical OPD / SAR / IDT：领域调度案例](../02-opd/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/03-distillation.md) · [下一章：17 TEMPO：短分支、估值与状态恢复 →](../09-tempo/TUTORIAL.md)
 <!-- NAV:BOTTOM:END -->

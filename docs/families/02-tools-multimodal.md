@@ -2,16 +2,31 @@
 
 这些章节在**策略更新之外**改变了交互与条件：检索观察、真实代码执行、有状态文字环境、图像条件。本地多数组内更新仍可复用 GRPO 结构，但不能据此宣称与原论文完整方法相同。
 
+> **ARPO / AEPO** 在全书主线中紧接 **06 DPO**（见 [CHAPTERS](../CHAPTERS.md)），因它们是智能体策略优化算法；本篇仍提供工具轨迹背景与交叉入口。
+
 ## 本篇章节
 
 | 章号 | 教程 | 与基础 GRPO 相比 |
 | ---: | --- | --- |
-| 07 | [Search-R1](../../03-search-r1/TUTORIAL.md) | 检索观察 + mask；轨迹字段 |
-| 08 | [ReTool](../../05-retool/TUTORIAL.md) | 真实 Python 执行；观察≠奖励 |
-| 09 | [ALFWorld](../../08-alfworld/TUTORIAL.md) | 环境状态账本；独立 env 实例 |
-| 10 | [Vision-GRPO](../../09-vision-grpo/TUTORIAL.md) | 图文条件；L1 链路 vs L2 能力 |
+| 07 | [ARPO](../../17-arpo/TUTORIAL.md) | 工具后高熵分支采样 + 步级信用归因 |
+| 08 | [AEPO](../../18-aepo/TUTORIAL.md) | 熵平衡 rollout / 裁剪 / 优势 |
+| 09 | [Search-R1](../../03-search-r1/TUTORIAL.md) | 检索观察 + mask；轨迹字段 |
+| 10 | [ReTool](../../05-retool/TUTORIAL.md) | 真实 Python 执行；观察≠奖励 |
+| 11 | [ALFWorld](../../08-alfworld/TUTORIAL.md) | 环境状态账本；独立 env 实例 |
+| 12 | [Vision-GRPO](../../09-vision-grpo/TUTORIAL.md) | 图文条件；L1 链路 vs L2 能力 |
 
 默认后端均为 **verl**（各章 `verl.yaml`）。
+
+## 智能体策略优化：ARPO 与 AEPO
+
+| 方法 | 核心改动 | 原文 |
+| --- | --- | --- |
+| **ARPO** | 工具反馈后熵↑ → 自适应分支；终局优势按工具步归因 | [arXiv:2507.19849](https://arxiv.org/abs/2507.19849) |
+| **AEPO** | 熵预监测预算 + 连续高熵分支惩罚；高熵 clip stop-grad；熵感知优势 | [arXiv:2510.14545](https://arxiv.org/abs/2510.14545) |
+
+官方实现（同仓，基于 verl）：[RUC-NLPIR/ARPO](https://github.com/RUC-NLPIR/ARPO)。本地教学核心：`src/agentic_rl/{arpo,aepo}.py`。
+
+完整非工具 DAPO 见 [06-dapo](../../06-dapo/TUTORIAL.md)（策略优化篇）。
 
 ## 实现字段提示
 

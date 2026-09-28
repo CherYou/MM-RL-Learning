@@ -91,6 +91,8 @@ Vision-GRPO 是图文问答策略学习；ALFWorld 主要使用文字接口；SA
 | [09-AgentOPSD](09-AgentOPSD/README.md) | [TUTORIAL.md](09-AgentOPSD/TUTORIAL.md) | 当前快照 + Skill，turn-level credit | verl WorkerGroup |
 | [09-tempo](09-tempo/README.md) | [TUTORIAL.md](09-tempo/TUTORIAL.md) | 状态重放、macro-step、生成式 critic（进阶研读） | verl WorkerGroup |
 | [09-vision-grpo](09-vision-grpo/README.md) | [TUTORIAL.md](09-vision-grpo/TUTORIAL.md) | 实际图片输入、VLM logprob 与反传 | verl + Transformers VLM |
+| [17-arpo](17-arpo/README.md) | [TUTORIAL.md](17-arpo/TUTORIAL.md) | 工具后高熵分支、步级优势归因 | verl WorkerGroup |
+| [18-aepo](18-aepo/README.md) | [TUTORIAL.md](18-aepo/TUTORIAL.md) | 熵平衡 rollout/裁剪/优势 | verl WorkerGroup |
 | [12-harness-rl](12-harness-rl/README.md) | [TUTORIAL.md](12-harness-rl/TUTORIAL.md) | 接口记录、session prefix trees、CAPO | verl WorkerGroup |
 | [13-sac](13-sac/README.md) | [TUTORIAL.md](13-sac/TUTORIAL.md) | 连续策略、最大熵、双 Q 与自动温度 | PyTorch embodied |
 | [14-td3](14-td3/README.md) | [TUTORIAL.md](14-td3/TUTORIAL.md) | 双 Q、延迟 actor、目标动作平滑 | PyTorch embodied |

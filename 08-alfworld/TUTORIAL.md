@@ -1,7 +1,7 @@
-# 09｜ALFWorld：有状态环境中的策略学习
+# 11｜ALFWorld：有状态环境中的策略学习
 
 <!-- NAV:TOP:BEGIN -->
-[← 上一章：08 ReTool：真实执行与工具决策](../05-retool/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/02-tools-multimodal.md) · [下一章：10 Vision-GRPO：图像条件下的策略学习 →](../09-vision-grpo/TUTORIAL.md)
+[← 上一章：10 ReTool：真实执行与工具决策](../05-retool/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/02-tools-multimodal.md) · [下一章：12 Vision-GRPO：图像条件下的策略学习 →](../09-vision-grpo/TUTORIAL.md)
 <!-- NAV:TOP:END -->
 
 [学习路线](../docs/LEARNING_PATH.md) · [GRPO 基础](../01-grpo/TUTORIAL.md) · [运行入口](README.md)
@@ -126,5 +126,5 @@ observation, reward, done = env.step(action)
 方法背景见 [ALFWorld 作者论文](https://arxiv.org/abs/2010.03768)。本章苹果故事用于解释状态与观察，不是论文轨迹的转载，也不是本仓库正式评测结果。
 
 <!-- NAV:BOTTOM:BEGIN -->
-[← 上一章：08 ReTool：真实执行与工具决策](../05-retool/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/02-tools-multimodal.md) · [下一章：10 Vision-GRPO：图像条件下的策略学习 →](../09-vision-grpo/TUTORIAL.md)
+[← 上一章：10 ReTool：真实执行与工具决策](../05-retool/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/02-tools-multimodal.md) · [下一章：12 Vision-GRPO：图像条件下的策略学习 →](../09-vision-grpo/TUTORIAL.md)
 <!-- NAV:BOTTOM:END -->

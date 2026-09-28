@@ -101,7 +101,7 @@ class AlgorithmBatchBuilder:
         metrics["reward/mean"] = float(rewards.mean())
         if self.reference:
             batch["ref_log_prob"] = self.reference.score(samples)[0]
-        kind = "gspo" if algo == "gspo" else "dapo" if algo in {"dapo", "ppo", "harness-rl"} else "grpo"
+        kind = "gspo" if algo == "gspo" else "dapo" if algo in {"dapo", "ppo", "harness-rl", "arpo", "aepo"} else "grpo"
         if algo in {"opd", "sar-opd", "idt-opd", "opsd"}:
             teacher = self.reference if general_phase else self.teacher
             tlp = teacher_logprobs(

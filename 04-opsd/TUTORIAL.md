@@ -1,7 +1,7 @@
-# 12｜OPSD：特权信息与自教师
+# 14｜OPSD：特权信息与自教师
 
 <!-- NAV:TOP:BEGIN -->
-[← 上一章：11 General OPD：学生采样与教师反馈](../02-opd/general-opd/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/03-distillation.md) · [下一章：13 Medical OPD / SAR / IDT：领域调度案例 →](../02-opd/TUTORIAL.md)
+[← 上一章：13 General OPD：学生采样与教师反馈](../02-opd/general-opd/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/03-distillation.md) · [下一章：15 Medical OPD / SAR / IDT：领域调度案例 →](../02-opd/TUTORIAL.md)
 <!-- NAV:TOP:END -->
 
 [学习路线](../docs/LEARNING_PATH.md) · [General OPD 基础](../02-opd/general-opd/TUTORIAL.md) · [运行说明](README.md)
@@ -128,5 +128,5 @@ aligned[s.prompt_length - 1 :] = lp[0, len(ids) - 1 :].to(student.device)
 阅读 [Self-Distilled Reasoner](https://arxiv.org/html/2601.18734v1) 时重点看“学生生成”和“特权教师条件”两部分；固定 step-0 教师、采样 token 的 reverse-KL surrogate 和数值设置是本仓库明示的选择，不代表论文所有变体。
 
 <!-- NAV:BOTTOM:BEGIN -->
-[← 上一章：11 General OPD：学生采样与教师反馈](../02-opd/general-opd/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/03-distillation.md) · [下一章：13 Medical OPD / SAR / IDT：领域调度案例 →](../02-opd/TUTORIAL.md)
+[← 上一章：13 General OPD：学生采样与教师反馈](../02-opd/general-opd/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/03-distillation.md) · [下一章：15 Medical OPD / SAR / IDT：领域调度案例 →](../02-opd/TUTORIAL.md)
 <!-- NAV:BOTTOM:END -->

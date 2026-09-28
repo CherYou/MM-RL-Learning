@@ -25,6 +25,8 @@ CHAPTERS = [
     ("09-tempo", "tempo", "alfworld-manifests", "verl"),
     ("09-vision-grpo", "vision-grpo", "geoqa", "verl"),
     ("12-harness-rl", "harness-rl", "hotpot", "verl"),
+    ("17-arpo", "arpo", "dapo", "verl"),
+    ("18-aepo", "aepo", "dapo", "verl"),
 ]
 
 EMBODIED_CHAPTERS = [

@@ -217,7 +217,7 @@ def run_native(config):
                 else:
                     sampler = (
                         agent_rollout
-                        if algo in {"search-r1", "retool", "alfworld", "agentopsd"}
+                        if algo in {"search-r1", "retool", "alfworld", "agentopsd", "arpo", "aepo"}
                         else single_rollout
                     )
                     active = selected

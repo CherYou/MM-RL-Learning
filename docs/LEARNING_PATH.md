@@ -4,17 +4,18 @@
 
 权威路线列表：[configs/learning_paths.json](../configs/learning_paths.json)。
 
-## 七条专题捷径
+## 专题捷径
 
-| 路线 | 完整章节 ID 顺序（显示号） | 适合谁 |
+| 路线 | 完整章节顺序（显示号） | 适合谁 |
 | --- | --- | --- |
-| 完整基础 | 01 loss-basics → 02 ppo → 03 grpo → 04 dapo → 05 gspo | 想走通反馈→更新整条链 |
-| 快速 LLM 实践 | 01 → 03 grpo → 07 search-r1 → 08 retool → 10 vision-grpo | 工具型后训练 |
+| 完整基础 | 01 → 02 ppo → 03 grpo → 04 dapo → 05 gspo | 反馈→更新整条链 |
+| 快速 LLM 实践 | 01 → 03 grpo → 07 search-r1 → 08 retool → 10 vision-grpo → 11–13 工具 RL | 工具型后训练 |
 | 离线偏好 | 01 → 06 dpo | 只有偏好对 |
-| 基础蒸馏与领域案例 | 01 → 11 general-opd → 12 opsd → 13 medical-sar-idt | 教师反馈与调度 |
-| Agent 自蒸馏 | 01 → 03 → 09 alfworld → 11 → 12 → 14 agentopsd | 轮次信用 |
-| 长程 Agent | 01 → 02 → 03 → 07 → 08 → 09 → 15 tempo → 16 harness-rl | 短分支与调用分区 |
-| 连续控制与离线 | 01 → 17 td3 → 18 sac → 19 her → 20 iql | 机械臂 / 离线数据 |
+| **智能体工具 RL** | 01 → 03 grpo → 08 retool → 11 dapo-agent → 12 arpo → 13 aepo | DAPO/ARPO/AEPO |
+| 基础蒸馏与领域案例 | 01 → 14 general-opd → 15 opsd → 16 medical | 教师反馈与调度 |
+| Agent 自蒸馏 | 01 → 03 → 09 alfworld → 14 → 15 → 17 agentopsd | 轮次信用 |
+| 长程 Agent | 01 → 02 → 03 → 07 → 08 → 09 → 18 tempo → 19 harness-rl | 短分支与调用分区 |
+| 连续控制与离线 | 01 → 20 td3 → 21 sac → 22 her → 23 iql | 机械臂 / 离线数据 |
 
 每条路线的硬前置都位于同一条路线之前。控制路线把连续密度、价值、replay 作为**概念补课**，不强迫读 PPO/DPO。
 
@@ -34,9 +35,10 @@
 | 章节类型 | 默认入口 |
 | --- | --- |
 | 01 / examples/math | PyTorch 轻量脚本 |
-| 02 PPO / 03 GRPO / 05 GSPO / 06 DPO | TRL + 各章 `config.yaml` |
-| 04 DAPO / 07–10 工具多模态 / 11–16 蒸馏与长程 | verl + 各章 `verl.yaml` |
-| 17–20 控制 | PyTorch embodied + FetchReach |
+| 02–06 策略与偏好 | TRL + 各章 `config.yaml` |
+| 07–13 工具多模态与智能体工具 RL | verl + 各章 `verl.yaml` |
+| 14–19 蒸馏与长程 | verl + 各章 `verl.yaml` |
+| 20–23 控制 | PyTorch embodied + FetchReach |
 
 跨后端命令放在章节 README 进阶区。
 

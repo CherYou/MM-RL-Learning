@@ -1,7 +1,7 @@
-# 18｜SAC：随机策略与最大熵目标
+# 20｜SAC：随机策略与最大熵目标
 
 <!-- NAV:TOP:BEGIN -->
-[← 上一章：17 TD3：确定性策略与双 Q 稳定化](../14-td3/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/05-control-offline.md) · [下一章：19 HER：目标条件经验重标记 →](../15-her/TUTORIAL.md)
+[← 上一章：19 TD3：确定性策略与双 Q 稳定化](../14-td3/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/05-control-offline.md) · [下一章：21 HER：目标条件经验重标记 →](../15-her/TUTORIAL.md)
 <!-- NAV:TOP:END -->
 
 [学习路线](../docs/LEARNING_PATH.md) · [MSE 与价值回归](../preliminary/TUTORIAL.md) · [连续动作密度（FOUNDATIONS §5）](../preliminary/FOUNDATIONS.md#foundations-map) · [运行说明](README.md)
@@ -181,5 +181,5 @@ actor_loss = (alpha * log_prob - self.critic.minimum(states, proposed)).mean()
 4. 回放数据来自旧策略，是否需要在这里直接加 PPO ratio？**不需要；这不是 PPO 的重要性采样 surrogate。**
 
 <!-- NAV:BOTTOM:BEGIN -->
-[← 上一章：17 TD3：确定性策略与双 Q 稳定化](../14-td3/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/05-control-offline.md) · [下一章：19 HER：目标条件经验重标记 →](../15-her/TUTORIAL.md)
+[← 上一章：19 TD3：确定性策略与双 Q 稳定化](../14-td3/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/05-control-offline.md) · [下一章：21 HER：目标条件经验重标记 →](../15-her/TUTORIAL.md)
 <!-- NAV:BOTTOM:END -->

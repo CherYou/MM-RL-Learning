@@ -1,12 +1,12 @@
 # 第一篇：共同基础
 
-本篇只有一章正式主线：**01 损失函数与策略梯度基础**（`preliminary/TUTORIAL.md`）。目标是分清 reward、loss、梯度，建立 CE/MSE/BCE → 策略梯度 → old/ratio → PPO 裁剪的连续叙事。
+本篇只有一章正式主线：**01 智能体强化学习基础**（`preliminary/TUTORIAL.md`）。目标是分清 reward、loss、梯度，建立 CE/MSE/BCE → 策略梯度 → old/ratio → PPO 裁剪的连续叙事，并衔接智能体工具 RL 所需的熵、mask 与信用分配直觉。
 
 ## 本篇页面
 
 | 页面 | 作用 |
 | --- | --- |
-| [01 损失函数与策略梯度基础](../../preliminary/TUTORIAL.md) | 主线第 1 章 |
+| [01 智能体强化学习基础](../../preliminary/TUTORIAL.md) | 主线第 1 章 |
 | [FOUNDATIONS](../../preliminary/FOUNDATIONS.md) | MDP、价值、密度、离线等**按需**查阅 |
 | [数学实验 README](../../examples/math/README.md) | L0 数值检查 |
 | [全书目录](../CHAPTERS.md) | 20 章编号 |
