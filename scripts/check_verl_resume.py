@@ -35,12 +35,12 @@ def main():
     initial = f"runs/verl-resume-{stamp}-tempo"
     resumed = initial + "-continued"
     medical = f"runs/verl-resume-{stamp}-medical"
-    command("tempo", ["train", "17-tempo/config.yaml", "--smoke", "--verl-workers", "2", "--output", initial])
+    command("tempo", ["train", "16-tempo/config.yaml", "--smoke", "--verl-workers", "2", "--output", initial])
     command(
         "continue",
         [
             "train",
-            "17-tempo/config.yaml",
+            "16-tempo/config.yaml",
             "--smoke",
             "--verl-workers",
             "2",
@@ -63,7 +63,7 @@ def main():
         "evaluate",
         [
             "eval",
-            "17-tempo/config.yaml",
+            "16-tempo/config.yaml",
             "--smoke",
             "--checkpoint",
             resumed + "/checkpoint-final",

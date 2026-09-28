@@ -4,7 +4,7 @@
 [← 上一章：12 Vision-GRPO：图像条件下的策略学习](../12-vision-grpo/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/03-distillation.md) · [下一章：14 OPSD：特权信息与自教师 →](../14-opsd/TUTORIAL.md)
 <!-- NAV:TOP:END -->
 
-[学习路线](../docs/LEARNING_PATH.md) · [运行说明](README.md) · [医疗调度案例](../15-medical-opd/TUTORIAL.md) · [OPSD](../14-opsd/TUTORIAL.md)
+[学习路线](../docs/LEARNING_PATH.md) · [运行说明](README.md) · [医疗调度案例](../13-general-opd/TUTORIAL.md) · [OPSD](../14-opsd/TUTORIAL.md)
 
 **本章是蒸馏分支的概念入口**（先于医学配方）。默认后端：verl。
 

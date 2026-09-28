@@ -62,7 +62,7 @@
     },
     "expectile": {
       "title": "expectile（非 quantile）",
-      "path": "22-iql/TUTORIAL.md",
+      "path": "21-iql/TUTORIAL.md",
       "anchor": "expectile-not-quantile"
     }
   }

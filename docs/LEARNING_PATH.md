@@ -12,7 +12,6 @@
 | 快速 LLM 实践 | 01 → 03 grpo → 07 search-r1 → 08 retool → 10 vision-grpo → 11–13 工具 RL | 工具型后训练 |
 | 离线偏好 | 01 → 06 dpo | 只有偏好对 |
 | **智能体工具 RL** | 01 → 03 grpo → 08 retool → 11 dapo-agent → 12 arpo → 13 aepo | DAPO/ARPO/AEPO |
-| 基础蒸馏与领域案例 | 01 → 14 general-opd → 15 opsd → 16 medical | 教师反馈与调度 |
 | Agent 自蒸馏 | 01 → 03 → 09 alfworld → 14 → 15 → 17 agentopsd | 轮次信用 |
 | 长程 Agent | 01 → 02 → 03 → 07 → 08 → 09 → 18 tempo → 19 harness-rl | 短分支与调用分区 |
 | 连续控制与离线 | 01 → 20 td3 → 21 sac → 22 her → 23 iql | 机械臂 / 离线数据 |

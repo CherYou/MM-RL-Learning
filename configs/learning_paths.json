@@ -14,7 +14,6 @@
     "vision-grpo",
     "general-opd",
     "opsd",
-    "medical-sar-idt",
     "agentopsd",
     "tempo",
     "harness-rl",
@@ -58,8 +57,7 @@
       "ids": [
         "loss-basics",
         "general-opd",
-        "opsd",
-        "medical-sar-idt"
+        "opsd"
       ]
     },
     "agent-distillation": {

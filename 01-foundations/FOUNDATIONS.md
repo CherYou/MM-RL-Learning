@@ -20,7 +20,7 @@
 | 连续动作密度、tanh、Jacobian | §5 [`#continuous-density`](#continuous-density) | 可后置 | 读 SAC 前 |
 | autograd、detach、重参数化 | §6 | 必读核心概念 | 读 SAC 前 |
 | Mask、统计单位、回放与离线 | §7–8 [`#replay-and-offline`](#replay-and-offline) | Agent/蒸馏/离线前 | HER/IQL 前 |
-| expectile（非 quantile） | 见 [IQL](../22-iql/TUTORIAL.md) | 不需要 | 读 IQL 前必读 |
+| expectile（非 quantile） | 见 [IQL](../21-iql/TUTORIAL.md) | 不需要 | 读 IQL 前必读 |
 | VLA 表示与数据覆盖 | §9 + [LEARNING_PATH VLA 边界](../docs/LEARNING_PATH.md) | 选读 | 选读 |
 | 评估、种子与来源 | §10 | 任何实跑前扫一眼 | 任何实跑前扫一眼 |
 

@@ -6,10 +6,10 @@
 
 | 章号 | 教程 | 默认入口 |
 | ---: | --- | --- |
-| 17 | [TD3](../../19-td3/TUTORIAL.md)（含 DDPG 短前导） | `19-td3/train.py` |
-| 18 | [SAC](../../20-sac/TUTORIAL.md) | `20-sac/train.py` |
-| 19 | [HER](../../21-her/TUTORIAL.md)（TD3 + 重标记） | `21-her/train.py` |
-| 20 | [IQL](../../22-iql/TUTORIAL.md) | `22-iql/train.py` |
+| 17 | [TD3](../../18-td3/TUTORIAL.md)（含 DDPG 短前导） | `18-td3/train.py` |
+| 18 | [SAC](../../19-sac/TUTORIAL.md) | `19-sac/train.py` |
+| 19 | [HER](../../20-her/TUTORIAL.md)（TD3 + 重标记） | `20-her/train.py` |
+| 20 | [IQL](../../21-iql/TUTORIAL.md) | `21-iql/train.py` |
 
 顺序 TD3→SAC→HER→IQL 是**教学阅读顺序**，不是断言四者严格逐代演化。
 

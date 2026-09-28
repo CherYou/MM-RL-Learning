@@ -22,11 +22,11 @@ ENTRIES = {
     "dapo": "04-dapo/config.yaml",
     "gspo": "05-gspo/config.yaml",
     "alfworld": "11-alfworld/config.yaml",
-    "agentopsd": "16-agentopsd/config.yaml",
-    "tempo": "17-tempo/config.yaml",
+    "agentopsd": "15-agentopsd/config.yaml",
+    "tempo": "16-tempo/config.yaml",
     "vision-grpo": "12-vision-grpo/config.yaml",
     "ppo": "02-ppo/config.yaml",
-    "harness-rl": "18-harness-rl/config.yaml",
+    "harness-rl": "17-harness-rl/config.yaml",
 }
 
 

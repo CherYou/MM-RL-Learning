@@ -94,18 +94,18 @@ GPU 生成通过官方异步 Replica、负载均衡器和 AsyncLLMServerManager 
 .venv/bin/arl train 03-grpo/config.yaml --smoke --backend trl
 
 # 复杂算法默认 verl；TEMPO smoke 跑三步覆盖重放
-.venv/bin/python 17-tempo/train.py --smoke --verl-workers 2
-.venv/bin/python 18-harness-rl/train.py --smoke --verl-workers 2
+.venv/bin/python 16-tempo/train.py --smoke --verl-workers 2
+.venv/bin/python 17-harness-rl/train.py --smoke --verl-workers 2
 
 # SFT Teacher → SAR 两阶段
 .venv/bin/arl train 15-medical-opd/config.yaml --smoke --teacher-model medical_sft --verl-workers 2
 
 # steps 是累计目标步数；输出用新目录，worker 数须保持一致
 TEMPO_RUN="runs/TEMPO_RUN_NAME"
-.venv/bin/arl train 17-tempo/config.yaml --smoke --verl-workers 2 \
+.venv/bin/arl train 16-tempo/config.yaml --smoke --verl-workers 2 \
   --resume "$TEMPO_RUN/checkpoint-final" --steps 4 --output runs/tempo-continued
 
-.venv/bin/arl eval 17-tempo/config.yaml --smoke \
+.venv/bin/arl eval 16-tempo/config.yaml --smoke \
   --checkpoint runs/tempo-continued/checkpoint-final --limit 1
 ```
 
@@ -133,7 +133,7 @@ TEMPO 的修正为 `exp(sum(log π_current − log π_behavior))`，求和只覆
 
 # 多节点要求已经由用户准备好的 Ray 集群、共享项目/数据/模型路径和一致环境
 RAY_ADDRESS="ray://ray-head.example.com:10001"
-.venv/bin/arl train 17-tempo/verl-gpu.yaml \
+.venv/bin/arl train 16-tempo/verl-gpu.yaml \
   --verl-workers 8 --verl-nodes 2 --ray-address "$RAY_ADDRESS"
 ```
 

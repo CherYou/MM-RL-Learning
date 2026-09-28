@@ -117,7 +117,7 @@ observation, reward, done = env.step(action)
 
 练习：同一条任务，模型先执行无效动作三次再成功，终局 GRPO 会自动惩罚前三次吗？答案：不会。除非另定义过程/长度奖励或更细信用分配，整个成功轨迹仍共享优势。
 
-我的判断：这一章最值得建立的习惯是把环境状态与模型上下文分别记账。后续 [AgentOPSD](../16-agentopsd/TUTORIAL.md) 改轮次信用，[TEMPO](../17-tempo/TUTORIAL.md) 改分段采样；它们都建立在状态隔离、观察对齐与正确终局判断之上。
+我的判断：这一章最值得建立的习惯是把环境状态与模型上下文分别记账。后续 [AgentOPSD](../15-agentopsd/TUTORIAL.md) 改轮次信用，[TEMPO](../16-tempo/TUTORIAL.md) 改分段采样；它们都建立在状态隔离、观察对齐与正确终局判断之上。
 
 ## 新手自测
 

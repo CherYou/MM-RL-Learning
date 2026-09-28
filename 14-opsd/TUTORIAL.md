@@ -1,7 +1,7 @@
 # 14｜OPSD：特权信息与自教师
 
 <!-- NAV:TOP:BEGIN -->
-[← 上一章：13 General OPD：学生采样与教师反馈](../13-general-opd/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/03-distillation.md) · [下一章：15 Medical OPD / SAR / IDT：领域调度案例 →](../15-medical-opd/TUTORIAL.md)
+[← 上一章：13 General OPD：学生采样与教师反馈](../13-general-opd/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/03-distillation.md) · [下一章：15 AgentOPSD：自教师辅助的轮次信用 →](../15-agentopsd/TUTORIAL.md)
 <!-- NAV:TOP:END -->
 
 [学习路线](../docs/LEARNING_PATH.md) · [General OPD 基础](../13-general-opd/TUTORIAL.md) · [运行说明](README.md)
@@ -103,7 +103,7 @@ aligned[s.prompt_length - 1 :] = lp[0, len(ids) - 1 :].to(student.device)
 
 [worker.py](../src/agentic_rl/verl_backend/worker.py)负责角色模型，OPSD Teacher 固定为 step-0 副本；[algorithms.py](../src/agentic_rl/verl_backend/algorithms.py)在 build 中选择 solution 特权复评并构造 `teacher_log_probs - old`；[verl losses.py](../src/agentic_rl/verl_backend/losses.py)通过 `lab_opd` 更新 Student。
 
-与 AgentOPSD 区分：本章用固定 step-0 Teacher 并直接给逐 token 蒸馏信号；[AgentOPSD](../16-agentopsd/TUTORIAL.md)在每批使用当前策略的额外 Skill 视角来调整轮次信用，还保留终局 GRPO 优势的方向。两者不应只因为名字接近就写成同一算法。
+与 AgentOPSD 区分：本章用固定 step-0 Teacher 并直接给逐 token 蒸馏信号；[AgentOPSD](../15-agentopsd/TUTORIAL.md)在每批使用当前策略的额外 Skill 视角来调整轮次信用，还保留终局 GRPO 优势的方向。两者不应只因为名字接近就写成同一算法。
 
 ## 自己验证什么
 
@@ -128,5 +128,5 @@ aligned[s.prompt_length - 1 :] = lp[0, len(ids) - 1 :].to(student.device)
 阅读 [Self-Distilled Reasoner](https://arxiv.org/html/2601.18734v1) 时重点看“学生生成”和“特权教师条件”两部分；固定 step-0 教师、采样 token 的 reverse-KL surrogate 和数值设置是本仓库明示的选择，不代表论文所有变体。
 
 <!-- NAV:BOTTOM:BEGIN -->
-[← 上一章：13 General OPD：学生采样与教师反馈](../13-general-opd/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/03-distillation.md) · [下一章：15 Medical OPD / SAR / IDT：领域调度案例 →](../15-medical-opd/TUTORIAL.md)
+[← 上一章：13 General OPD：学生采样与教师反馈](../13-general-opd/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/03-distillation.md) · [下一章：15 AgentOPSD：自教师辅助的轮次信用 →](../15-agentopsd/TUTORIAL.md)
 <!-- NAV:BOTTOM:END -->

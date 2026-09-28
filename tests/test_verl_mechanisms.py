@@ -184,11 +184,11 @@ def test_replay_preserves_behavior_across_multiple_policy_versions(tmp_path):
         "04-dapo",
         "05-gspo",
         "11-alfworld",
-        "16-agentopsd",
-        "17-tempo",
+        "15-agentopsd",
+        "16-tempo",
         "12-vision-grpo",
         "02-ppo",
-        "18-harness-rl",
+        "17-harness-rl",
     ],
 )
 def test_gpu_config_composes_installed_schema_without_device_execution(chapter):

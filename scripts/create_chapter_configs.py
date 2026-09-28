@@ -13,7 +13,6 @@ CHAPTERS = [
     ("02-ppo", "ppo", "gsm8k", "trl"),
     ("06-dpo", "dpo", "dpo", "trl"),
     ("03-grpo", "grpo", "gsm8k", "trl"),
-    ("15-medical-opd", "sar-opd", "medical", "verl"),
     ("13-general-opd", "opd", "deepmath", "verl"),
     ("09-search-r1", "search-r1", "hotpot", "verl"),
     ("14-opsd", "opsd", "opsd", "verl"),
@@ -21,10 +20,10 @@ CHAPTERS = [
     ("04-dapo", "dapo", "dapo", "verl"),
     ("05-gspo", "gspo", "dapo", "trl"),
     ("11-alfworld", "alfworld", "alfworld-manifests", "verl"),
-    ("16-agentopsd", "agentopsd", "alfworld-manifests", "verl"),
-    ("17-tempo", "tempo", "alfworld-manifests", "verl"),
+    ("15-agentopsd", "agentopsd", "alfworld-manifests", "verl"),
+    ("16-tempo", "tempo", "alfworld-manifests", "verl"),
     ("12-vision-grpo", "vision-grpo", "geoqa", "verl"),
-    ("18-harness-rl", "harness-rl", "hotpot", "verl"),
+    ("17-harness-rl", "harness-rl", "hotpot", "verl"),
     ("07-arpo", "arpo", "dapo", "verl"),
     ("08-aepo", "aepo", "dapo", "verl"),
 ]
@@ -78,7 +77,6 @@ def main():
             config.update(
                 general_dataset="data/ceval/train.jsonl",
                 eval_dataset="data/medqa/eval.jsonl",
-                teacher_model="medical_sft",
             )
         if algorithm in {"alfworld", "agentopsd", "tempo"}:
             config.update(
@@ -135,16 +133,11 @@ ROOT=Path(__file__).resolve().parents[{levels}]
 if __name__ == "__main__":
     subprocess.run([sys.executable, str(ROOT/"scripts/prepare_all.py"), *sys.argv[1:]],check=True,cwd=ROOT)
 ''')
-    base = yaml.safe_load((ROOT / "15-medical-opd/config.yaml").read_text())
     for name, changes in [
-        ("sft", {"algorithm": "sft", "backend": "trl", "eval_dataset": "data/medical/eval.jsonl"}),
-        ("medical-opd", {"algorithm": "opd"}),
         ("idt-opd", {"algorithm": "idt-opd"}),
     ]:
         variant = {**base, **changes}
-        (ROOT / f"15-medical-opd/{name}.yaml").write_text(yaml.safe_dump(variant, sort_keys=False))
         if name != "sft":
-            write_verl_configs(ROOT / "15-medical-opd", variant, f"{name}-verl")
     # Preserve extended reading/navigation metadata; never overwrite with bare runtime rows.
     existing_path = ROOT / "configs/chapters.json"
     try:

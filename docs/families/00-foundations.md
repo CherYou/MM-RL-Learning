@@ -21,7 +21,7 @@
 - 完整基础路线 → [02 PPO](../../02-ppo/TUTORIAL.md)
 - 只想 LLM 组内优势 → [03 GRPO](../../03-grpo/TUTORIAL.md)（PPO 推荐非强制）
 - 离线偏好 → [06 DPO](../../06-dpo/TUTORIAL.md)
-- 连续控制 → [17 TD3](../../19-td3/TUTORIAL.md)（不强制读 GRPO）
+- 连续控制 → [17 TD3](../../18-td3/TUTORIAL.md)（不强制读 GRPO）
 
 ---
 

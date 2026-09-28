@@ -34,8 +34,8 @@
 
 ## 交叉入口
 
-- [AgentOPSD](../../16-agentopsd/TUTORIAL.md) 主归属在[蒸馏篇](03-distillation.md)，但需要本篇 ALFWorld 与 GRPO 背景。
-- [Harness-RL](../../18-harness-rl/TUTORIAL.md) / [TEMPO](../../17-tempo/TUTORIAL.md) 在[长程篇](04-long-horizon.md)。
+- [AgentOPSD](../../15-agentopsd/TUTORIAL.md) 主归属在[蒸馏篇](03-distillation.md)，但需要本篇 ALFWorld 与 GRPO 背景。
+- [Harness-RL](../../17-harness-rl/TUTORIAL.md) / [TEMPO](../../16-tempo/TUTORIAL.md) 在[长程篇](04-long-horizon.md)。
 
 ---
 

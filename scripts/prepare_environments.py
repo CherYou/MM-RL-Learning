@@ -173,7 +173,7 @@ def alfworld(download=False):
     )
     skills = ROOT / "data/skills"
     skills.mkdir(exist_ok=True)
-    original = ROOT / "references/upstream/16-agentopsd/skills/alfworld"
+    original = ROOT / "references/upstream/15-agentopsd/skills/alfworld"
     for p in original.rglob("*.md"):
         shutil.copy2(p, skills / p.name)
     if not (skills / "general.md").exists():

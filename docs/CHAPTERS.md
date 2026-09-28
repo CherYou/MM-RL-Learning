@@ -72,8 +72,7 @@ flowchart TD
 | ---: | --- | --- |
 | 13 | General OPD：学生采样与教师反馈 | [13-general-opd/TUTORIAL.md](../13-general-opd/TUTORIAL.md) |
 | 14 | OPSD：特权信息与自教师 | [14-opsd/TUTORIAL.md](../14-opsd/TUTORIAL.md) |
-| 15 | Medical OPD / SAR / IDT：领域调度案例 | [15-medical-opd/TUTORIAL.md](../15-medical-opd/TUTORIAL.md) |
-| 16 | AgentOPSD：自教师辅助的轮次信用 | [16-agentopsd/TUTORIAL.md](../16-agentopsd/TUTORIAL.md) |
+| 16 | AgentOPSD：自教师辅助的轮次信用 | [15-agentopsd/TUTORIAL.md](../15-agentopsd/TUTORIAL.md) |
 
 本篇导读：[families/03-distillation.md](families/03-distillation.md)
 
@@ -81,8 +80,8 @@ flowchart TD
 
 | 章号 | 教程 | 实际正文 |
 | ---: | --- | --- |
-| 17 | TEMPO：短分支、估值与状态恢复 | [17-tempo/TUTORIAL.md](../17-tempo/TUTORIAL.md) |
-| 18 | Harness-RL：调用记录与参数分区 | [18-harness-rl/TUTORIAL.md](../18-harness-rl/TUTORIAL.md) |
+| 17 | TEMPO：短分支、估值与状态恢复 | [16-tempo/TUTORIAL.md](../16-tempo/TUTORIAL.md) |
+| 18 | Harness-RL：调用记录与参数分区 | [17-harness-rl/TUTORIAL.md](../17-harness-rl/TUTORIAL.md) |
 
 本篇导读：[families/04-long-horizon.md](families/04-long-horizon.md)
 
@@ -90,10 +89,10 @@ flowchart TD
 
 | 章号 | 教程 | 实际正文 |
 | ---: | --- | --- |
-| 19 | TD3：确定性策略与双 Q 稳定化 | [19-td3/TUTORIAL.md](../19-td3/TUTORIAL.md) |
-| 20 | SAC：随机策略与最大熵目标 | [20-sac/TUTORIAL.md](../20-sac/TUTORIAL.md) |
-| 21 | HER：目标条件经验重标记 | [21-her/TUTORIAL.md](../21-her/TUTORIAL.md) |
-| 22 | IQL：固定数据、expectile 与加权模仿 | [22-iql/TUTORIAL.md](../22-iql/TUTORIAL.md) |
+| 19 | TD3：确定性策略与双 Q 稳定化 | [18-td3/TUTORIAL.md](../18-td3/TUTORIAL.md) |
+| 20 | SAC：随机策略与最大熵目标 | [19-sac/TUTORIAL.md](../19-sac/TUTORIAL.md) |
+| 21 | HER：目标条件经验重标记 | [20-her/TUTORIAL.md](../20-her/TUTORIAL.md) |
+| 22 | IQL：固定数据、expectile 与加权模仿 | [21-iql/TUTORIAL.md](../21-iql/TUTORIAL.md) |
 
 本篇导读：[families/05-control-offline.md](families/05-control-offline.md)
 

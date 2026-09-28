@@ -68,7 +68,7 @@ Vision-GRPO 是图文问答策略学习；ALFWorld 主要使用文字接口；SA
 | 快速 LLM 实践 | 比率与裁剪 → 最小 GRPO → ReTool / Vision-GRPO | [同上](docs/LEARNING_PATH.md#路线二快速-llm-实践) |
 | 连续控制 | 基础 → SAC/TD3 → HER / IQL | [同上](docs/LEARNING_PATH.md#路线三连续控制与离线) |
 
-偏好与蒸馏是旁支：General OPD 入口在概念上先于医学配方，不必嵌在应用案例之后才能学习。
+偏好与蒸馏是旁支：从 [General OPD](13-general-opd/TUTORIAL.md) 进入即可。
 
 ## 章节目录与推荐顺序
 
@@ -76,28 +76,27 @@ Vision-GRPO 是图文问答策略学习；ALFWorld 主要使用文字接口；SA
 
 | 目录与运行说明 | 算法教程 | 本地重点 | 默认后端 |
 | --- | --- | --- | --- |
-| [preliminary](01-foundations/README.md) | [TUTORIAL.md](01-foundations/TUTORIAL.md) | 常见损失→PG→ratio/PPO；L0 数值实验 | PyTorch math |
-| [001-ppo](02-ppo/README.md) | [TUTORIAL.md](02-ppo/TUTORIAL.md) | Actor、value model、GAE、KL、PPO epochs | TRL PPOTrainer |
-| [002-dpo](06-dpo/README.md) | [TUTORIAL.md](06-dpo/TUTORIAL.md) | chosen/rejected 与 reference 校正 | TRL DPOTrainer |
-| [01-grpo](03-grpo/README.md) | [TUTORIAL.md](03-grpo/TUTORIAL.md) | GSM8K、组内 advantage、KL | TRL GRPOTrainer |
-| [15-medical-opd/general-opd](13-general-opd/README.md) | [TUTORIAL.md](13-general-opd/TUTORIAL.md) | 学生采样、教师复评、sampled reverse KL | verl WorkerGroup |
-| [02-opd](15-medical-opd/README.md) | [TUTORIAL.md](15-medical-opd/TUTORIAL.md) | 医疗 SFT、SAR 分阶段恢复、IDT 交替 Teacher（领域案例） | TRL SFT + verl OPD |
-| [03-search-r1](09-search-r1/README.md) | [TUTORIAL.md](09-search-r1/TUTORIAL.md) | 本地真实文档检索、多轮 observation mask | verl WorkerGroup |
-| [04-opsd](14-opsd/README.md) | [TUTORIAL.md](14-opsd/TUTORIAL.md) | 固定 step-0 Teacher，特权 solution 条件 | verl WorkerGroup |
-| [05-retool](10-retool/README.md) | [TUTORIAL.md](10-retool/TUTORIAL.md) | 实际数值 Python 执行、代码/观察交织 | verl WorkerGroup |
-| [06-dapo](04-dapo/README.md) | [TUTORIAL.md](04-dapo/TUTORIAL.md) | Clip-Higher、补采、token reduction、长度处理 | verl WorkerGroup |
-| [07-gspo](05-gspo/README.md) | [TUTORIAL.md](05-gspo/TUTORIAL.md) | 序列级几何平均 ratio 与 clipping | TRL GRPOTrainer |
-| [08-alfworld](11-alfworld/README.md) | [TUTORIAL.md](11-alfworld/TUTORIAL.md) | 真实 TextWorld 游戏，独立 rollout 组 | verl WorkerGroup |
-| [09-AgentOPSD](16-agentopsd/README.md) | [TUTORIAL.md](16-agentopsd/TUTORIAL.md) | 当前快照 + Skill，turn-level credit | verl WorkerGroup |
-| [09-tempo](17-tempo/README.md) | [TUTORIAL.md](17-tempo/TUTORIAL.md) | 状态重放、macro-step、生成式 critic（进阶研读） | verl WorkerGroup |
-| [09-vision-grpo](12-vision-grpo/README.md) | [TUTORIAL.md](12-vision-grpo/TUTORIAL.md) | 实际图片输入、VLM logprob 与反传 | verl + Transformers VLM |
-| [17-arpo](07-arpo/README.md) | [TUTORIAL.md](07-arpo/TUTORIAL.md) | 工具后高熵分支、步级优势归因 | verl WorkerGroup |
-| [18-aepo](08-aepo/README.md) | [TUTORIAL.md](08-aepo/TUTORIAL.md) | 熵平衡 rollout/裁剪/优势 | verl WorkerGroup |
-| [12-harness-rl](18-harness-rl/README.md) | [TUTORIAL.md](18-harness-rl/TUTORIAL.md) | 接口记录、session prefix trees、CAPO | verl WorkerGroup |
-| [13-sac](20-sac/README.md) | [TUTORIAL.md](20-sac/TUTORIAL.md) | 连续策略、最大熵、双 Q 与自动温度 | PyTorch embodied |
-| [14-td3](19-td3/README.md) | [TUTORIAL.md](19-td3/TUTORIAL.md) | 双 Q、延迟 actor、目标动作平滑 | PyTorch embodied |
-| [15-her](21-her/README.md) | [TUTORIAL.md](21-her/TUTORIAL.md) | 同轨迹 future goal 重标记 + TD3 | PyTorch embodied |
-| [16-iql](22-iql/README.md) | [TUTORIAL.md](22-iql/TUTORIAL.md) | 固定数据、expectile V、优势加权模仿 | PyTorch embodied |
+| [01-foundations](01-foundations/README.md) | [TUTORIAL.md](01-foundations/TUTORIAL.md) | 常见损失→PG→ratio/PPO；L0 数值实验 | PyTorch math |
+| [02-ppo](02-ppo/README.md) | [TUTORIAL.md](02-ppo/TUTORIAL.md) | Actor、value model、GAE、KL、PPO epochs | TRL PPOTrainer |
+| [03-grpo](03-grpo/README.md) | [TUTORIAL.md](03-grpo/TUTORIAL.md) | GSM8K、组内 advantage、KL | TRL GRPOTrainer |
+| [04-dapo](04-dapo/README.md) | [TUTORIAL.md](04-dapo/TUTORIAL.md) | Clip-Higher、补采、token reduction、长度处理 | verl WorkerGroup |
+| [05-gspo](05-gspo/README.md) | [TUTORIAL.md](05-gspo/TUTORIAL.md) | 序列级几何平均 ratio 与 clipping | TRL GRPOTrainer |
+| [06-dpo](06-dpo/README.md) | [TUTORIAL.md](06-dpo/TUTORIAL.md) | chosen/rejected 与 reference 校正 | TRL DPOTrainer |
+| [07-arpo](07-arpo/README.md) | [TUTORIAL.md](07-arpo/TUTORIAL.md) | 工具后高熵分支、步级优势归因 | verl WorkerGroup |
+| [08-aepo](08-aepo/README.md) | [TUTORIAL.md](08-aepo/TUTORIAL.md) | 熵平衡 rollout/裁剪/优势 | verl WorkerGroup |
+| [09-search-r1](09-search-r1/README.md) | [TUTORIAL.md](09-search-r1/TUTORIAL.md) | 本地真实文档检索、多轮 observation mask | verl WorkerGroup |
+| [10-retool](10-retool/README.md) | [TUTORIAL.md](10-retool/TUTORIAL.md) | 实际数值 Python 执行、代码/观察交织 | verl WorkerGroup |
+| [11-alfworld](11-alfworld/README.md) | [TUTORIAL.md](11-alfworld/TUTORIAL.md) | 真实 TextWorld 游戏，独立 rollout 组 | verl WorkerGroup |
+| [12-vision-grpo](12-vision-grpo/README.md) | [TUTORIAL.md](12-vision-grpo/TUTORIAL.md) | 实际图片输入、VLM logprob 与反传 | verl + Transformers VLM |
+| [13-general-opd](13-general-opd/README.md) | [TUTORIAL.md](13-general-opd/TUTORIAL.md) | 学生采样、教师复评、sampled reverse KL | verl WorkerGroup |
+| [14-opsd](14-opsd/README.md) | [TUTORIAL.md](14-opsd/TUTORIAL.md) | 固定 step-0 Teacher，特权 solution 条件 | verl WorkerGroup |
+| [15-agentopsd](15-agentopsd/README.md) | [TUTORIAL.md](15-agentopsd/TUTORIAL.md) | 当前快照 + Skill，turn-level credit | verl WorkerGroup |
+| [16-tempo](16-tempo/README.md) | [TUTORIAL.md](16-tempo/TUTORIAL.md) | 状态重放、macro-step、生成式 critic（进阶研读） | verl WorkerGroup |
+| [17-harness-rl](17-harness-rl/README.md) | [TUTORIAL.md](17-harness-rl/TUTORIAL.md) | 接口记录、session prefix trees、CAPO | verl WorkerGroup |
+| [18-td3](18-td3/README.md) | [TUTORIAL.md](18-td3/TUTORIAL.md) | 双 Q、延迟 actor、目标动作平滑 | PyTorch embodied |
+| [19-sac](19-sac/README.md) | [TUTORIAL.md](19-sac/TUTORIAL.md) | 连续策略、最大熵、双 Q 与自动温度 | PyTorch embodied |
+| [20-her](20-her/README.md) | [TUTORIAL.md](20-her/TUTORIAL.md) | 同轨迹 future goal 重标记 + TD3 | PyTorch embodied |
+| [21-iql](21-iql/README.md) | [TUTORIAL.md](21-iql/TUTORIAL.md) | 固定数据、expectile V、优势加权模仿 | PyTorch embodied |
 
 逻辑前置、路线次序与稳定 ID 见 [configs/chapters.json](configs/chapters.json) 与 [学习路线](docs/LEARNING_PATH.md)。
 

@@ -386,42 +386,15 @@
     "display_number": 14
   },
   {
-    "id": "medical-sar-idt",
-    "chapter": "15-medical-opd",
-    "algorithm": "sar-opd",
-    "dataset": "medical",
-    "backend": "verl",
-    "title": "Medical OPD / SAR / IDT：领域调度案例",
-    "family": "distillation",
-    "reading_kind": "case-study",
-    "tutorial": "15-medical-opd/TUTORIAL.md",
-    "prerequisites": [
-      "general-opd"
-    ],
-    "recommended_prerequisites": [
-      "opsd"
-    ],
-    "concept_prerequisites": [],
-    "entry": {
-      "type": "yaml",
-      "path": "15-medical-opd/config.yaml"
-    },
-    "runnable": true,
-    "intended_level": "L1",
-    "verified_level": "L1",
-    "verified_note": "Domain schedule labels; not clinical capability",
-    "display_number": 15
-  },
-  {
     "id": "agentopsd",
-    "chapter": "16-agentopsd",
+    "chapter": "15-agentopsd",
     "algorithm": "agentopsd",
     "dataset": "alfworld-manifests",
     "backend": "verl",
     "title": "AgentOPSD：自教师辅助的轮次信用",
     "family": "distillation",
     "reading_kind": "algorithm",
-    "tutorial": "16-agentopsd/TUTORIAL.md",
+    "tutorial": "15-agentopsd/TUTORIAL.md",
     "prerequisites": [
       "alfworld",
       "opsd",
@@ -431,24 +404,24 @@
     "concept_prerequisites": [],
     "entry": {
       "type": "yaml",
-      "path": "16-agentopsd/verl.yaml"
+      "path": "15-agentopsd/verl.yaml"
     },
     "runnable": true,
     "intended_level": "L1",
     "verified_level": "L1",
     "verified_note": "Cross-listed under tools/long-horizon in family pages",
-    "display_number": 16
+    "display_number": 15
   },
   {
     "id": "tempo",
-    "chapter": "17-tempo",
+    "chapter": "16-tempo",
     "algorithm": "tempo",
     "dataset": "alfworld-manifests",
     "backend": "verl",
     "title": "TEMPO：短分支、估值与状态恢复",
     "family": "long-horizon",
     "reading_kind": "advanced-implementation",
-    "tutorial": "17-tempo/TUTORIAL.md",
+    "tutorial": "16-tempo/TUTORIAL.md",
     "prerequisites": [
       "alfworld",
       "ppo"
@@ -460,24 +433,24 @@
     ],
     "entry": {
       "type": "yaml",
-      "path": "17-tempo/verl.yaml"
+      "path": "16-tempo/verl.yaml"
     },
     "runnable": true,
     "intended_level": "L1",
     "verified_level": "L1",
     "verified_note": "Local implementation study; official page incomplete at review",
-    "display_number": 17
+    "display_number": 16
   },
   {
     "id": "harness-rl",
-    "chapter": "18-harness-rl",
+    "chapter": "17-harness-rl",
     "algorithm": "harness-rl",
     "dataset": "hotpot",
     "backend": "verl",
     "title": "Harness-RL：调用记录与参数分区",
     "family": "long-horizon",
     "reading_kind": "system",
-    "tutorial": "18-harness-rl/TUTORIAL.md",
+    "tutorial": "17-harness-rl/TUTORIAL.md",
     "prerequisites": [
       "retool"
     ],
@@ -489,24 +462,24 @@
     ],
     "entry": {
       "type": "yaml",
-      "path": "18-harness-rl/verl.yaml"
+      "path": "17-harness-rl/verl.yaml"
     },
     "runnable": true,
     "intended_level": "L1",
     "verified_level": "L1",
     "verified_note": "central-only MLP partition",
-    "display_number": 18
+    "display_number": 17
   },
   {
     "id": "td3",
-    "chapter": "19-td3",
+    "chapter": "18-td3",
     "algorithm": "td3",
     "dataset": "embodied/fetch-reach",
     "backend": "embodied",
     "title": "TD3：确定性策略与双 Q 稳定化",
     "family": "control-offline",
     "reading_kind": "algorithm",
-    "tutorial": "19-td3/TUTORIAL.md",
+    "tutorial": "18-td3/TUTORIAL.md",
     "prerequisites": [
       "loss-basics"
     ],
@@ -518,24 +491,24 @@
     ],
     "entry": {
       "type": "python",
-      "path": "19-td3/train.py"
+      "path": "18-td3/train.py"
     },
     "runnable": true,
     "intended_level": "L2",
     "verified_level": "L1",
     "verified_note": "CPU smoke + FetchReach physics; stable gain not published here",
-    "display_number": 19
+    "display_number": 18
   },
   {
     "id": "sac",
-    "chapter": "20-sac",
+    "chapter": "19-sac",
     "algorithm": "sac",
     "dataset": "embodied/fetch-reach",
     "backend": "embodied",
     "title": "SAC：随机策略与最大熵目标",
     "family": "control-offline",
     "reading_kind": "algorithm",
-    "tutorial": "20-sac/TUTORIAL.md",
+    "tutorial": "19-sac/TUTORIAL.md",
     "prerequisites": [
       "loss-basics"
     ],
@@ -548,24 +521,24 @@
     ],
     "entry": {
       "type": "python",
-      "path": "20-sac/train.py"
+      "path": "19-sac/train.py"
     },
     "runnable": true,
     "intended_level": "L2",
     "verified_level": "L1",
     "verified_note": "Target actions from current actor in local SAC path",
-    "display_number": 20
+    "display_number": 19
   },
   {
     "id": "her",
-    "chapter": "21-her",
+    "chapter": "20-her",
     "algorithm": "her",
     "dataset": "embodied/fetch-reach",
     "backend": "embodied",
     "title": "HER：目标条件经验重标记",
     "family": "control-offline",
     "reading_kind": "data-relabel",
-    "tutorial": "21-her/TUTORIAL.md",
+    "tutorial": "20-her/TUTORIAL.md",
     "prerequisites": [
       "td3"
     ],
@@ -575,24 +548,24 @@
     ],
     "entry": {
       "type": "python",
-      "path": "21-her/train.py"
+      "path": "20-her/train.py"
     },
     "runnable": true,
     "intended_level": "L2",
     "verified_level": "L1",
     "verified_note": "Local TD3+HER; not a separate her_loss",
-    "display_number": 21
+    "display_number": 20
   },
   {
     "id": "iql",
-    "chapter": "22-iql",
+    "chapter": "21-iql",
     "algorithm": "iql",
     "dataset": "embodied/fetch-reach",
     "backend": "embodied",
     "title": "IQL：固定数据、expectile 与加权模仿",
     "family": "control-offline",
     "reading_kind": "algorithm",
-    "tutorial": "22-iql/TUTORIAL.md",
+    "tutorial": "21-iql/TUTORIAL.md",
     "prerequisites": [
       "loss-basics"
     ],
@@ -605,12 +578,12 @@
     ],
     "entry": {
       "type": "python",
-      "path": "22-iql/train.py"
+      "path": "21-iql/train.py"
     },
     "runnable": true,
     "intended_level": "L2",
     "verified_level": "L1",
     "verified_note": "Offline training steps are not environment interaction steps",
-    "display_number": 22
+    "display_number": 21
   }
 ]
