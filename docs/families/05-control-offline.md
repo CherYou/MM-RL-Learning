@@ -1,15 +1,15 @@
 # 第六篇：连续控制与离线强化学习
 
-动作是连续向量；训练信号来自环境转移与固定数据。**不要求**先学完 DPO/GRPO。概念补课走 [FOUNDATIONS](../../preliminary/FOUNDATIONS.md) 锚点（价值、密度、replay/离线）。
+动作是连续向量；训练信号来自环境转移与固定数据。**不要求**先学完 DPO/GRPO。概念补课走 [FOUNDATIONS](../../01-foundations/FOUNDATIONS.md) 锚点（价值、密度、replay/离线）。
 
 ## 本篇章节（阅读顺序）
 
 | 章号 | 教程 | 默认入口 |
 | ---: | --- | --- |
-| 17 | [TD3](../../14-td3/TUTORIAL.md)（含 DDPG 短前导） | `14-td3/train.py` |
-| 18 | [SAC](../../13-sac/TUTORIAL.md) | `13-sac/train.py` |
-| 19 | [HER](../../15-her/TUTORIAL.md)（TD3 + 重标记） | `15-her/train.py` |
-| 20 | [IQL](../../16-iql/TUTORIAL.md) | `16-iql/train.py` |
+| 17 | [TD3](../../19-td3/TUTORIAL.md)（含 DDPG 短前导） | `19-td3/train.py` |
+| 18 | [SAC](../../20-sac/TUTORIAL.md) | `20-sac/train.py` |
+| 19 | [HER](../../21-her/TUTORIAL.md)（TD3 + 重标记） | `21-her/train.py` |
+| 20 | [IQL](../../22-iql/TUTORIAL.md) | `22-iql/train.py` |
 
 顺序 TD3→SAC→HER→IQL 是**教学阅读顺序**，不是断言四者严格逐代演化。
 

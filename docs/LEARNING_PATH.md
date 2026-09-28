@@ -58,7 +58,7 @@
 | 20 章全书顺序 | [CHAPTERS.md](CHAPTERS.md) |
 | 术语与符号 | [BEGINNER_GUIDE](BEGINNER_GUIDE.md) |
 | 概念锚点注册 | [configs/concepts.json](../configs/concepts.json) |
-| MDP / 价值 / 离线 | [FOUNDATIONS](../preliminary/FOUNDATIONS.md) |
+| MDP / 价值 / 离线 | [FOUNDATIONS](../01-foundations/FOUNDATIONS.md) |
 | 证据层级 | [EVIDENCE.md](EVIDENCE.md) |
 | 末章之后 | [NEXT_STEPS.md](NEXT_STEPS.md) |
 

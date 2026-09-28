@@ -60,7 +60,7 @@ def main():
     command = [
         str(ROOT / ".venv-verl-gpu/bin/arl"),
         "train",
-        "01-grpo/verify-gpu.yaml",
+        "03-grpo/verify-gpu.yaml",
         "--output",
         output,
     ]

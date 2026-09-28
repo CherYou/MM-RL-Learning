@@ -1,0 +1,130 @@
+# 11｜ALFWorld：有状态环境中的策略学习
+
+<!-- NAV:TOP:BEGIN -->
+[← 上一章：10 ReTool：真实执行与工具决策](../10-retool/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/02-tools-multimodal.md) · [下一章：12 Vision-GRPO：图像条件下的策略学习 →](../12-vision-grpo/TUTORIAL.md)
+<!-- NAV:TOP:END -->
+
+[学习路线](../docs/LEARNING_PATH.md) · [GRPO 基础](../03-grpo/TUTORIAL.md) · [运行入口](README.md)
+
+**本章默认教学后端：verl（`verl.yaml`）。** ALFWorld 是**环境**，不是一种新的 loss；训练仍可用 GRPO 型组内优势。
+
+**相对 GRPO，改变了什么？**
+
+| 组件 | 基础 GRPO | ALFWorld（本章） |
+| --- | --- | --- |
+| 经历来源 | 模型一次生成 | 环境 `reset/step` 的多轮交互 |
+| 状态 | 基本无外部状态 | **真实环境状态**随动作改变 |
+| 奖励 | 终局答案对错 | 环境 `won` 等；`done≠won` |
+| 并行采样 | 同题多回答 | **每个候选独立 env 实例** |
+| 训练 token | 回答 | 动作文字；观察与 admissible actions 为条件 |
+
+ALFWorld 是环境，不是一个独立的 loss 名称。模型收到家庭任务，例如把某物体放到指定容器，读取当前观察，生成动作，再看到环境变化。这一章用它学习如何把语言模型接入一个有状态的交互任务。
+
+![机器人从有限观察中寻找物体，执行动作，再读取变化后的场景](../docs/assets/algorithms/alfworld.png)
+
+插图帮助理解家庭任务。本仓库实际训练连接的是文字接口与 TextWorld 游戏，并未由这幅图驱动视觉控制。[ALFWorld 论文](https://arxiv.org/abs/2010.03768)讨论文本与具身环境的关联；不要把文字环境的成功率当真实机器人成功率。
+
+## 环境状态账本 vs 模型聊天历史
+
+**保存聊天记录 ≠ 保存环境状态。** 两本账要并排看：
+
+| 位置 | 环境状态账本 | 模型历史（上下文） |
+| --- | --- | --- |
+| 手中物体 | 环境内部：apple in hand | 仅当观察文字写明时才知道 |
+| 容器开合 | 环境内部：fridge open | 可能已从历史推断 |
+| 任务是否 won | 环境 `won` 标志 | 模型自称“完成”无效 |
+| 并行两条候选 | **必须各自 env** | 共享历史文本也不够 |
+
+最小检查：两步 transcript——`open cabinet` → 观察含 apple；再 `take apple`。若第二步后环境账本没有“手持苹果”，则状态未真正更新。
+
+## 从一次问答，进入会被行动改变的环境
+
+普通问答中，回答一个词不会真的移动桌上的杯子；在 ALFWorld 中，执行“拿起杯子”会改变后续状态。因此需要一个持续存在的环境实例来记住物体在哪里、容器是否打开、任务是否完成。ALFWorld 将家务任务与文字交互联系起来，本章用其文字接口学习决策过程。
+
+一个 **episode（回合）** 从环境初始化开始，到成功、失败终局或预算结束停止。**Reset** 创建一个起点，**step** 接收动作并返回新观察、奖励和结束信息。**Observation（观察）** 是你被允许看见的描述，不等于环境完整状态；**admissible actions（可用动作）** 是当前环境给出的可行动作提示，不保证其中每个动作都对任务有帮助。
+
+例如任务是把苹果放进冰箱。观察只说厨房里有柜子和冰箱，并没有说苹果在哪。你可能先打开柜子，读到“里面有苹果”，再拿起苹果、打开冰箱、放进去。开柜子本身没有成功奖励，却为后续选择带来信息。这就是多轮环境比一次答案判分更难的地方：行动同时改变物理情况和掌握的信息。
+
+## 从 MDP 到部分可观测历史
+
+MDP 是 Markov Decision Process（马尔可夫决策过程），用当前完整状态描述下一步转移。POMDP 是 Partially Observable Markov Decision Process（部分可观测马尔可夫决策过程），智能体只能得到部分观察。先给这两个名字，是为了说明为什么模型需要保留历史：刚拿起的苹果可能不再出现在当前房间文字里，但仍在手中。
+
+环境真实状态 s 包括物体位置、容器状态等；模型通常只看到观察 o。打开柜子之前，不一定知道里面有什么。因此策略依据的是历史 $`h_k=(o_0,a_0,o_1,\ldots,o_k)`$：
+
+```math
+a_k\sim\pi_\theta(\cdot\mid h_k),\quad s_{k+1}\sim P(\cdot\mid s_k,a_k),\quad o_{k+1}\sim O(\cdot\mid s_{k+1}).
+```
+
+式中的波浪号表示“从分布采样”，pi 是策略，P 是环境状态转移规则，O 是从状态产生观察的规则。MDP/POMDP 的基础定义见 [preliminary](../01-foundations/FOUNDATIONS.md)。本章把一个动作编码成一段文字，例如 `<action>open cabinet 1</action>`，不是直接输出电机控制量。
+
+## 一个回合有哪些停止方式
+
+历史说明模型知道什么，结束标记说明还应不应该继续。接下来必须把“成功”和“只是停了”分开，否则训练会把超时误当完成，或在真实终局之后继续行动。
+
+| 情况 | 含义 | 是否能当作成功 |
+| --- | --- | --- |
+| 环境 `won=True` | 环境任务判定成功 | 可以 |
+| 环境 `done=True` 但未 won | 回合结束但不一定成功 | 不可以 |
+| 达到 `max_turns` | 学习程序的步数预算耗尽 | 不可以 |
+| 达到上下文限制 | 模型再无足够输入空间 | 不可以 |
+
+本地每步 reward 由环境 `won` 转为 0/1，轨迹保存获得的成功信号。模型自己写“任务完成”不能替代环境验证。
+
+## 本章的 GRPO 更新
+
+环境已经能执行并判成功，接下来才谈怎么学习。本章选用 GRPO（组相对策略优化）：同一任务从相同起点做多个独立尝试，比较结果。它是训练规则；ALFWorld 是产生经历和反馈的环境，两者在系统中是不同层。
+
+从同一任务初始化 G 份独立环境，得到完整轨迹奖励 $`R_i`$。计算 $`A_i=(R_i-\bar R)/(\sigma_R+10^{-4})`$，动作生成 token 共用轨迹优势：
+
+```math
+L=-\frac1B\sum_i\frac1{T_i}\sum_tm_{i,t}
+\min(r_{i,t}A_i,\mathrm{clip}(r_{i,t},1-\epsilon_l,1+\epsilon_h)A_i).
+```
+
+B 是有效轨迹数，T 是该轨迹模型生成 token 数，m 是 mask；r 比较当前与采样时对相同动作 token 的概率，epsilon-l/h 是裁剪幅度。每轮环境观察和 admissible actions 是输入条件，mask=0；模型生成的动作文本 mask=1。环境不给梯度，训练只重新计算已生成动作文字的概率。
+
+例如四条轨迹成功情况 `[1,0,0,0]`，成功轨迹优势约 1.7317，其余约 -0.5772。成功轨迹里每个动作都收到正向信号，哪怕包含多余动作；失败轨迹里也可能有正确的早期步骤。这说明终局广播的信用分配局限，而不是证明每一步都真正造成了结果。
+
+## 代码阅读路线
+
+下面按环境构造、一次动作、轨迹收尾来读。你可以用“开柜子 → 看见苹果”这个两步故事检查状态是否真的更新、观察是否接入历史，而不必先理解所有并发代码。
+
+[environments.py](../src/agentic_rl/environments.py) 的 `make_household` 根据配置选择真实 ALFWorld 或显式命名的 toy fixture。`ALFWorld.reset/step` 转接 [alfworld_env.py](../src/agentic_rl/alfworld_env.py)；[alfworld_data.py](../src/agentic_rl/alfworld_data.py)负责游戏清单。正常配置使用真实游戏文件。
+
+在 [rollout.py](../src/agentic_rl/rollout.py) 中追踪：
+
+```python
+parsed_action = extract_tag(text, "action")
+action = canonical_action(parsed_action or "invalid action")
+observation, reward, done = env.step(action)
+```
+
+这是核心摘录，变量名 reward 为便于阅读展开。格式解析失败不会凭空变成一个正确动作；它被明确记录。函数的 `finally` 关闭本条轨迹的环境，避免并发任务互相污染。
+
+并行采样中不能让多条候选轨迹轮流操作同一个环境实例。否则第 2 个候选的起点已经被第 1 个候选改变，同组比较不再公平。即使所有 token mask 都正确，也无法弥补环境起点不一致。
+
+## 从小检查走向实验
+
+当单条轨迹能保持状态，再检查多条轨迹是否隔离，最后才测成功率。测试环境与正式环境的任务难度不同，因此这几级证据也要分别记录。
+
+```bash
+.venv/bin/arl train 11-alfworld/verl.yaml --smoke --verl-workers 2
+```
+
+`--smoke` 使用显式 toy 环境检查快速路径。切换到真实 ALFWorld 前，可运行 `tests/test_mechanisms.py` 中的 reset/step 检查，确认游戏资产和环境接口可用；任务成功率应在真实游戏中单独评估。
+
+真实实验要看合法动作率、任务成功率、平均轮数以及失败的停止原因。评估应使用 `eval-unseen` 等隔离游戏，而不是只改训练游戏的采样种子。当前配置在 [config.yaml](config.yaml) 中明确给出训练和评估清单。
+
+练习：同一条任务，模型先执行无效动作三次再成功，终局 GRPO 会自动惩罚前三次吗？答案：不会。除非另定义过程/长度奖励或更细信用分配，整个成功轨迹仍共享优势。
+
+我的判断：这一章最值得建立的习惯是把环境状态与模型上下文分别记账。后续 [AgentOPSD](../16-agentopsd/TUTORIAL.md) 改轮次信用，[TEMPO](../17-tempo/TUTORIAL.md) 改分段采样；它们都建立在状态隔离、观察对齐与正确终局判断之上。
+
+## 新手自测
+
+练习：模型文字里写“已经把苹果放进冰箱”，但环境没有执行对应动作，任务算完成吗？不算，成功由环境状态判断。恢复一份旧聊天记录是否同时恢复柜门状态？不会，文本与环境状态必须分别恢复。若忘掉过去观察导致重复搜同一个空柜子，首先检查历史管理与可观测性，而不是立即修改 clipping 系数。
+
+方法背景见 [ALFWorld 作者论文](https://arxiv.org/abs/2010.03768)。本章苹果故事用于解释状态与观察，不是论文轨迹的转载，也不是本仓库正式评测结果。
+
+<!-- NAV:BOTTOM:BEGIN -->
+[← 上一章：10 ReTool：真实执行与工具决策](../10-retool/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/02-tools-multimodal.md) · [下一章：12 Vision-GRPO：图像条件下的策略学习 →](../12-vision-grpo/TUTORIAL.md)
+<!-- NAV:BOTTOM:END -->

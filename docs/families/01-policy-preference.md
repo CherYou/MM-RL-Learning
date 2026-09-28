@@ -6,13 +6,13 @@
 
 | 章号 | 教程 | 默认后端 |
 | ---: | --- | --- |
-| 02 | [PPO](../../001-ppo/TUTORIAL.md) | TRL `001-ppo/config.yaml` |
-| 03 | [GRPO](../../01-grpo/TUTORIAL.md) | TRL `01-grpo/config.yaml` |
-| 04 | [DAPO](../../06-dapo/TUTORIAL.md) | verl `06-dapo/verl.yaml` |
-| 05 | [GSPO](../../07-gspo/TUTORIAL.md) | TRL `07-gspo/config.yaml` |
-| 06 | [DPO](../../002-dpo/TUTORIAL.md) | TRL `002-dpo/config.yaml` |
-| 07 | [ARPO](../../17-arpo/TUTORIAL.md) | verl `17-arpo/verl.yaml` |
-| 08 | [AEPO](../../18-aepo/TUTORIAL.md) | verl `18-aepo/verl.yaml` |
+| 02 | [PPO](../../02-ppo/TUTORIAL.md) | TRL `02-ppo/config.yaml` |
+| 03 | [GRPO](../../03-grpo/TUTORIAL.md) | TRL `03-grpo/config.yaml` |
+| 04 | [DAPO](../../04-dapo/TUTORIAL.md) | verl `04-dapo/verl.yaml` |
+| 05 | [GSPO](../../05-gspo/TUTORIAL.md) | TRL `05-gspo/config.yaml` |
+| 06 | [DPO](../../06-dpo/TUTORIAL.md) | TRL `06-dpo/config.yaml` |
+| 07 | [ARPO](../../07-arpo/TUTORIAL.md) | verl `07-arpo/verl.yaml` |
+| 08 | [AEPO](../../08-aepo/TUTORIAL.md) | verl `08-aepo/verl.yaml` |
 
 ## 方法联系（非继承链）
 

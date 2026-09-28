@@ -13,7 +13,7 @@ python examples/math/loss_walkthrough.py
 
 读完并跑通后，进入：
 
-1. [损失函数详解：从预测一个答案，到用奖励更新模型](../preliminary/TUTORIAL.md)
+1. [损失函数详解：从预测一个答案，到用奖励更新模型](../01-foundations/TUTORIAL.md)
 2. 按 [学习路线](LEARNING_PATH.md) 选择一条分支，不要同时打开所有算法。
 
 ## 这个仓库教什么
@@ -47,7 +47,7 @@ python examples/math/loss_walkthrough.py
 | 层级 | 含义 | 本仓库示例 |
 | --- | --- | --- |
 | L0 数学演示 | 人工张量核对 loss / 梯度 | `examples/math/loss_walkthrough.py`、`arl loss-demo` |
-| L1 机制 smoke | tiny 模型与真实代码链路可执行 | `python 01-grpo/train.py --smoke` |
+| L1 机制 smoke | tiny 模型与真实代码链路可执行 | `python 03-grpo/train.py --smoke` |
 | L2 小任务学习 | 可控任务上训练前后有变化 | 具身短程实验（需独立评估） |
 | L3 方法复现 | 与论文/基准可比 | 需固定预算与设备，逐项验证 |
 
@@ -60,6 +60,6 @@ python examples/math/loss_walkthrough.py
 ## 相关入口
 
 - [零基础学习导航与符号表](BEGINNER_GUIDE.md)
-- [基础知识查阅](../preliminary/FOUNDATIONS.md)
+- [基础知识查阅](../01-foundations/FOUNDATIONS.md)
 - [章节目录](../README.md#章节目录与推荐顺序)
 - [数据说明](DATA.md) · [后端指南](VERL.md) · [故障排查](TROUBLESHOOTING.md)

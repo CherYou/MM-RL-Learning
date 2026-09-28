@@ -125,7 +125,7 @@ def train(config):
     os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
     if config["algorithm"] in {"opd", "sar-opd", "idt-opd"} and config.get("teacher_model") == "medical_sft":
         teacher = load_config(
-            "02-opd/sft.yaml",
+            "15-medical-opd/sft.yaml",
             {
                 "model": config["model"],
                 "device": config["device"],

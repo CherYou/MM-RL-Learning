@@ -9,24 +9,24 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 
 CHAPTERS = [
-    ("preliminary", "loss-functions", "fixtures", "native"),
-    ("001-ppo", "ppo", "gsm8k", "trl"),
-    ("002-dpo", "dpo", "dpo", "trl"),
-    ("01-grpo", "grpo", "gsm8k", "trl"),
-    ("02-opd", "sar-opd", "medical", "verl"),
-    ("02-opd/general-opd", "opd", "deepmath", "verl"),
-    ("03-search-r1", "search-r1", "hotpot", "verl"),
-    ("04-opsd", "opsd", "opsd", "verl"),
-    ("05-retool", "retool", "dapo", "verl"),
-    ("06-dapo", "dapo", "dapo", "verl"),
-    ("07-gspo", "gspo", "dapo", "trl"),
-    ("08-alfworld", "alfworld", "alfworld-manifests", "verl"),
-    ("09-AgentOPSD", "agentopsd", "alfworld-manifests", "verl"),
-    ("09-tempo", "tempo", "alfworld-manifests", "verl"),
-    ("09-vision-grpo", "vision-grpo", "geoqa", "verl"),
-    ("12-harness-rl", "harness-rl", "hotpot", "verl"),
-    ("17-arpo", "arpo", "dapo", "verl"),
-    ("18-aepo", "aepo", "dapo", "verl"),
+    ("01-foundations", "loss-functions", "fixtures", "native"),
+    ("02-ppo", "ppo", "gsm8k", "trl"),
+    ("06-dpo", "dpo", "dpo", "trl"),
+    ("03-grpo", "grpo", "gsm8k", "trl"),
+    ("15-medical-opd", "sar-opd", "medical", "verl"),
+    ("13-general-opd", "opd", "deepmath", "verl"),
+    ("09-search-r1", "search-r1", "hotpot", "verl"),
+    ("14-opsd", "opsd", "opsd", "verl"),
+    ("10-retool", "retool", "dapo", "verl"),
+    ("04-dapo", "dapo", "dapo", "verl"),
+    ("05-gspo", "gspo", "dapo", "trl"),
+    ("11-alfworld", "alfworld", "alfworld-manifests", "verl"),
+    ("16-agentopsd", "agentopsd", "alfworld-manifests", "verl"),
+    ("17-tempo", "tempo", "alfworld-manifests", "verl"),
+    ("12-vision-grpo", "vision-grpo", "geoqa", "verl"),
+    ("18-harness-rl", "harness-rl", "hotpot", "verl"),
+    ("07-arpo", "arpo", "dapo", "verl"),
+    ("08-aepo", "aepo", "dapo", "verl"),
 ]
 
 EMBODIED_CHAPTERS = [
@@ -135,16 +135,16 @@ ROOT=Path(__file__).resolve().parents[{levels}]
 if __name__ == "__main__":
     subprocess.run([sys.executable, str(ROOT/"scripts/prepare_all.py"), *sys.argv[1:]],check=True,cwd=ROOT)
 ''')
-    base = yaml.safe_load((ROOT / "02-opd/config.yaml").read_text())
+    base = yaml.safe_load((ROOT / "15-medical-opd/config.yaml").read_text())
     for name, changes in [
         ("sft", {"algorithm": "sft", "backend": "trl", "eval_dataset": "data/medical/eval.jsonl"}),
         ("medical-opd", {"algorithm": "opd"}),
         ("idt-opd", {"algorithm": "idt-opd"}),
     ]:
         variant = {**base, **changes}
-        (ROOT / f"02-opd/{name}.yaml").write_text(yaml.safe_dump(variant, sort_keys=False))
+        (ROOT / f"15-medical-opd/{name}.yaml").write_text(yaml.safe_dump(variant, sort_keys=False))
         if name != "sft":
-            write_verl_configs(ROOT / "02-opd", variant, f"{name}-verl")
+            write_verl_configs(ROOT / "15-medical-opd", variant, f"{name}-verl")
     # Preserve extended reading/navigation metadata; never overwrite with bare runtime rows.
     existing_path = ROOT / "configs/chapters.json"
     try:

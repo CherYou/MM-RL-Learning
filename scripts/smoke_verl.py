@@ -11,22 +11,22 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 ENTRIES = {
-    "grpo": "01-grpo/config.yaml",
-    "sar-opd": "02-opd/config.yaml",
-    "opd": "02-opd/general-opd/config.yaml",
-    "medical-opd": "02-opd/medical-opd.yaml",
-    "idt-opd": "02-opd/idt-opd.yaml",
-    "search-r1": "03-search-r1/config.yaml",
-    "opsd": "04-opsd/config.yaml",
-    "retool": "05-retool/config.yaml",
-    "dapo": "06-dapo/config.yaml",
-    "gspo": "07-gspo/config.yaml",
-    "alfworld": "08-alfworld/config.yaml",
-    "agentopsd": "09-AgentOPSD/config.yaml",
-    "tempo": "09-tempo/config.yaml",
-    "vision-grpo": "09-vision-grpo/config.yaml",
-    "ppo": "001-ppo/config.yaml",
-    "harness-rl": "12-harness-rl/config.yaml",
+    "grpo": "03-grpo/config.yaml",
+    "sar-opd": "15-medical-opd/config.yaml",
+    "opd": "13-general-opd/config.yaml",
+    "medical-opd": "15-medical-opd/medical-opd.yaml",
+    "idt-opd": "15-medical-opd/idt-opd.yaml",
+    "search-r1": "09-search-r1/config.yaml",
+    "opsd": "14-opsd/config.yaml",
+    "retool": "10-retool/config.yaml",
+    "dapo": "04-dapo/config.yaml",
+    "gspo": "05-gspo/config.yaml",
+    "alfworld": "11-alfworld/config.yaml",
+    "agentopsd": "16-agentopsd/config.yaml",
+    "tempo": "17-tempo/config.yaml",
+    "vision-grpo": "12-vision-grpo/config.yaml",
+    "ppo": "02-ppo/config.yaml",
+    "harness-rl": "18-harness-rl/config.yaml",
 }
 
 

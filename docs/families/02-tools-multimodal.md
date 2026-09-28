@@ -8,12 +8,12 @@
 
 | 章号 | 教程 | 与基础 GRPO 相比 |
 | ---: | --- | --- |
-| 07 | [ARPO](../../17-arpo/TUTORIAL.md) | 工具后高熵分支采样 + 步级信用归因 |
-| 08 | [AEPO](../../18-aepo/TUTORIAL.md) | 熵平衡 rollout / 裁剪 / 优势 |
-| 09 | [Search-R1](../../03-search-r1/TUTORIAL.md) | 检索观察 + mask；轨迹字段 |
-| 10 | [ReTool](../../05-retool/TUTORIAL.md) | 真实 Python 执行；观察≠奖励 |
-| 11 | [ALFWorld](../../08-alfworld/TUTORIAL.md) | 环境状态账本；独立 env 实例 |
-| 12 | [Vision-GRPO](../../09-vision-grpo/TUTORIAL.md) | 图文条件；L1 链路 vs L2 能力 |
+| 07 | [ARPO](../../07-arpo/TUTORIAL.md) | 工具后高熵分支采样 + 步级信用归因 |
+| 08 | [AEPO](../../08-aepo/TUTORIAL.md) | 熵平衡 rollout / 裁剪 / 优势 |
+| 09 | [Search-R1](../../09-search-r1/TUTORIAL.md) | 检索观察 + mask；轨迹字段 |
+| 10 | [ReTool](../../10-retool/TUTORIAL.md) | 真实 Python 执行；观察≠奖励 |
+| 11 | [ALFWorld](../../11-alfworld/TUTORIAL.md) | 环境状态账本；独立 env 实例 |
+| 12 | [Vision-GRPO](../../12-vision-grpo/TUTORIAL.md) | 图文条件；L1 链路 vs L2 能力 |
 
 默认后端均为 **verl**（各章 `verl.yaml`）。
 
@@ -26,7 +26,7 @@
 
 官方实现（同仓，基于 verl）：[RUC-NLPIR/ARPO](https://github.com/RUC-NLPIR/ARPO)。本地教学核心：`src/agentic_rl/{arpo,aepo}.py`。
 
-完整非工具 DAPO 见 [06-dapo](../../06-dapo/TUTORIAL.md)（策略优化篇）。
+完整非工具 DAPO 见 [06-dapo](../../04-dapo/TUTORIAL.md)（策略优化篇）。
 
 ## 实现字段提示
 
@@ -34,8 +34,8 @@
 
 ## 交叉入口
 
-- [AgentOPSD](../../09-AgentOPSD/TUTORIAL.md) 主归属在[蒸馏篇](03-distillation.md)，但需要本篇 ALFWorld 与 GRPO 背景。
-- [Harness-RL](../../12-harness-rl/TUTORIAL.md) / [TEMPO](../../09-tempo/TUTORIAL.md) 在[长程篇](04-long-horizon.md)。
+- [AgentOPSD](../../16-agentopsd/TUTORIAL.md) 主归属在[蒸馏篇](03-distillation.md)，但需要本篇 ALFWorld 与 GRPO 背景。
+- [Harness-RL](../../18-harness-rl/TUTORIAL.md) / [TEMPO](../../17-tempo/TUTORIAL.md) 在[长程篇](04-long-horizon.md)。
 
 ---
 

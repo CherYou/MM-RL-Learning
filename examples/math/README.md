@@ -39,10 +39,10 @@ python examples/math/loss_walkthrough.py --output examples/math/results/numerica
 | 入口 | 层级 | 说明 |
 | --- | --- | --- |
 | `python examples/math/loss_walkthrough.py` | L0 | 纯数学，适合第一章 |
-| `.venv/bin/arl loss-demo` / `preliminary/train.py` | L0/L1 | 使用仓库 `policy_loss`，生成曲线与 CSV |
-| `python 01-grpo/train.py --smoke` | L1 | tiny 模型与真实 Trainer 链路 |
+| `.venv/bin/arl loss-demo` / `01-foundations/train.py` | L0/L1 | 使用仓库 `policy_loss`，生成曲线与 CSV |
+| `python 03-grpo/train.py --smoke` | L1 | tiny 模型与真实 Trainer 链路 |
 
-阅读顺序建议：先跑通本目录脚本，再读 [preliminary/TUTORIAL.md](../../preliminary/TUTORIAL.md)，然后按需运行仓库 smoke。
+阅读顺序建议：先跑通本目录脚本，再读 [01-foundations/TUTORIAL.md](../../01-foundations/TUTORIAL.md)，然后按需运行仓库 smoke。
 
 ## 源码
 

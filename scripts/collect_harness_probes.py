@@ -20,7 +20,7 @@ if __name__ == "__main__":
     p.add_argument("--output", default="data/harness/onpolicy-probes.jsonl")
     a = p.parse_args()
     torch.set_num_threads(2)
-    c = load_config("12-harness-rl/config.yaml", {"model": a.model})
+    c = load_config("18-harness-rl/config.yaml", {"model": a.model})
     policy = Policy(a.model, "cpu", c["seed"])
     probes = []
     for row in read_jsonl(c["dataset"])[: a.limit]:

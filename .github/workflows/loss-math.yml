@@ -8,7 +8,7 @@ on:
       - "src/agentic_rl/losses.py"
       - "src/agentic_rl/loss_demo.py"
       - "tests/test_loss_math_walkthrough.py"
-      - "preliminary/TUTORIAL.md"
+      - "01-foundations/TUTORIAL.md"
       - ".github/workflows/loss-math.yml"
   pull_request:
     paths:

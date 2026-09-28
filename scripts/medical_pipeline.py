@@ -18,12 +18,12 @@ if __name__ == "__main__":
     p.add_argument("--steps", type=int, default=20)
     a = p.parse_args()
     stamp = time.strftime("%Y%m%d-%H%M%S")
-    teacher = load_config("02-opd/sft.yaml", {"model": a.model, "steps": a.steps})
+    teacher = load_config("15-medical-opd/sft.yaml", {"model": a.model, "steps": a.steps})
     if a.smoke:
         teacher = smoke_config(teacher)
     teacher["output"] = f"runs/medical-pipeline-{stamp}/teacher-sft"
     teacher_run = train(teacher)
-    student = load_config("02-opd/config.yaml", {"model": a.model, "algorithm": a.variant, "steps": a.steps})
+    student = load_config("15-medical-opd/config.yaml", {"model": a.model, "algorithm": a.variant, "steps": a.steps})
     if a.smoke:
         student = smoke_config(student)
     student["teacher_model"] = str(teacher_run / "checkpoint-final/model")

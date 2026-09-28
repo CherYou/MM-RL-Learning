@@ -9,7 +9,7 @@ on:
       - "docs/**"
       - "scripts/audit_tutorials.py"
       - "scripts/check_markdown_math.py"
-      - "preliminary/**"
+      - "01-foundations/**"
       - "examples/**"
       - "0*/**"
       - "1*/**"

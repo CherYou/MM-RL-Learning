@@ -37,21 +37,21 @@ flowchart TD
 
 | 章号 | 教程 | 实际正文 |
 | ---: | --- | --- |
-| 01 | **智能体强化学习基础** | [preliminary/TUTORIAL.md](../preliminary/TUTORIAL.md) |
+| 01 | **智能体强化学习基础** | [01-foundations/TUTORIAL.md](../01-foundations/TUTORIAL.md) |
 
-按需查阅：[FOUNDATIONS](../preliminary/FOUNDATIONS.md) · [数学实验](../examples/math/README.md) · [术语与符号](BEGINNER_GUIDE.md)
+按需查阅：[FOUNDATIONS](../01-foundations/FOUNDATIONS.md) · [数学实验](../examples/math/README.md) · [术语与符号](BEGINNER_GUIDE.md)
 
 ## 第二篇 策略优化与偏好学习
 
 | 章号 | 教程 | 实际正文 |
 | ---: | --- | --- |
-| 02 | PPO：actor-critic、GAE 与裁剪更新 | [001-ppo/TUTORIAL.md](../001-ppo/TUTORIAL.md) |
-| 03 | GRPO：同题采样与组内优势 | [01-grpo/TUTORIAL.md](../01-grpo/TUTORIAL.md) |
-| 04 | DAPO：动态采样、裁剪与长度处理 | [06-dapo/TUTORIAL.md](../06-dapo/TUTORIAL.md) |
-| 05 | GSPO：序列级比率与裁剪 | [07-gspo/TUTORIAL.md](../07-gspo/TUTORIAL.md) |
-| 06 | DPO：从偏好对直接优化策略（离线旁支） | [002-dpo/TUTORIAL.md](../002-dpo/TUTORIAL.md) |
-| 07 | ARPO：工具后高熵分支与步级信用 | [17-arpo/TUTORIAL.md](../17-arpo/TUTORIAL.md) |
-| 08 | AEPO：熵平衡智能体策略优化 | [18-aepo/TUTORIAL.md](../18-aepo/TUTORIAL.md) |
+| 02 | PPO：actor-critic、GAE 与裁剪更新 | [02-ppo/TUTORIAL.md](../02-ppo/TUTORIAL.md) |
+| 03 | GRPO：同题采样与组内优势 | [03-grpo/TUTORIAL.md](../03-grpo/TUTORIAL.md) |
+| 04 | DAPO：动态采样、裁剪与长度处理 | [04-dapo/TUTORIAL.md](../04-dapo/TUTORIAL.md) |
+| 05 | GSPO：序列级比率与裁剪 | [05-gspo/TUTORIAL.md](../05-gspo/TUTORIAL.md) |
+| 06 | DPO：从偏好对直接优化策略（离线旁支） | [06-dpo/TUTORIAL.md](../06-dpo/TUTORIAL.md) |
+| 07 | ARPO：工具后高熵分支与步级信用 | [07-arpo/TUTORIAL.md](../07-arpo/TUTORIAL.md) |
+| 08 | AEPO：熵平衡智能体策略优化 | [08-aepo/TUTORIAL.md](../08-aepo/TUTORIAL.md) |
 
 本篇导读：[families/01-policy-preference.md](families/01-policy-preference.md) · 工具交叉：[families/02-tools-multimodal.md](families/02-tools-multimodal.md)
 
@@ -59,10 +59,10 @@ flowchart TD
 
 | 章号 | 教程 | 实际正文 |
 | ---: | --- | --- |
-| 09 | Search-R1：学习检索与观察 mask | [03-search-r1/TUTORIAL.md](../03-search-r1/TUTORIAL.md) |
-| 10 | ReTool：真实执行与工具决策 | [05-retool/TUTORIAL.md](../05-retool/TUTORIAL.md) |
-| 11 | ALFWorld：有状态环境中的策略学习 | [08-alfworld/TUTORIAL.md](../08-alfworld/TUTORIAL.md) |
-| 12 | Vision-GRPO：图像条件下的策略学习 | [09-vision-grpo/TUTORIAL.md](../09-vision-grpo/TUTORIAL.md) |
+| 09 | Search-R1：学习检索与观察 mask | [09-search-r1/TUTORIAL.md](../09-search-r1/TUTORIAL.md) |
+| 10 | ReTool：真实执行与工具决策 | [10-retool/TUTORIAL.md](../10-retool/TUTORIAL.md) |
+| 11 | ALFWorld：有状态环境中的策略学习 | [11-alfworld/TUTORIAL.md](../11-alfworld/TUTORIAL.md) |
+| 12 | Vision-GRPO：图像条件下的策略学习 | [12-vision-grpo/TUTORIAL.md](../12-vision-grpo/TUTORIAL.md) |
 
 本篇导读：[families/02-tools-multimodal.md](families/02-tools-multimodal.md)
 
@@ -70,10 +70,10 @@ flowchart TD
 
 | 章号 | 教程 | 实际正文 |
 | ---: | --- | --- |
-| 13 | General OPD：学生采样与教师反馈 | [02-opd/general-opd/TUTORIAL.md](../02-opd/general-opd/TUTORIAL.md) |
-| 14 | OPSD：特权信息与自教师 | [04-opsd/TUTORIAL.md](../04-opsd/TUTORIAL.md) |
-| 15 | Medical OPD / SAR / IDT：领域调度案例 | [02-opd/TUTORIAL.md](../02-opd/TUTORIAL.md) |
-| 16 | AgentOPSD：自教师辅助的轮次信用 | [09-AgentOPSD/TUTORIAL.md](../09-AgentOPSD/TUTORIAL.md) |
+| 13 | General OPD：学生采样与教师反馈 | [13-general-opd/TUTORIAL.md](../13-general-opd/TUTORIAL.md) |
+| 14 | OPSD：特权信息与自教师 | [14-opsd/TUTORIAL.md](../14-opsd/TUTORIAL.md) |
+| 15 | Medical OPD / SAR / IDT：领域调度案例 | [15-medical-opd/TUTORIAL.md](../15-medical-opd/TUTORIAL.md) |
+| 16 | AgentOPSD：自教师辅助的轮次信用 | [16-agentopsd/TUTORIAL.md](../16-agentopsd/TUTORIAL.md) |
 
 本篇导读：[families/03-distillation.md](families/03-distillation.md)
 
@@ -81,8 +81,8 @@ flowchart TD
 
 | 章号 | 教程 | 实际正文 |
 | ---: | --- | --- |
-| 17 | TEMPO：短分支、估值与状态恢复 | [09-tempo/TUTORIAL.md](../09-tempo/TUTORIAL.md) |
-| 18 | Harness-RL：调用记录与参数分区 | [12-harness-rl/TUTORIAL.md](../12-harness-rl/TUTORIAL.md) |
+| 17 | TEMPO：短分支、估值与状态恢复 | [17-tempo/TUTORIAL.md](../17-tempo/TUTORIAL.md) |
+| 18 | Harness-RL：调用记录与参数分区 | [18-harness-rl/TUTORIAL.md](../18-harness-rl/TUTORIAL.md) |
 
 本篇导读：[families/04-long-horizon.md](families/04-long-horizon.md)
 
@@ -90,10 +90,10 @@ flowchart TD
 
 | 章号 | 教程 | 实际正文 |
 | ---: | --- | --- |
-| 19 | TD3：确定性策略与双 Q 稳定化 | [14-td3/TUTORIAL.md](../14-td3/TUTORIAL.md) |
-| 20 | SAC：随机策略与最大熵目标 | [13-sac/TUTORIAL.md](../13-sac/TUTORIAL.md) |
-| 21 | HER：目标条件经验重标记 | [15-her/TUTORIAL.md](../15-her/TUTORIAL.md) |
-| 22 | IQL：固定数据、expectile 与加权模仿 | [16-iql/TUTORIAL.md](../16-iql/TUTORIAL.md) |
+| 19 | TD3：确定性策略与双 Q 稳定化 | [19-td3/TUTORIAL.md](../19-td3/TUTORIAL.md) |
+| 20 | SAC：随机策略与最大熵目标 | [20-sac/TUTORIAL.md](../20-sac/TUTORIAL.md) |
+| 21 | HER：目标条件经验重标记 | [21-her/TUTORIAL.md](../21-her/TUTORIAL.md) |
+| 22 | IQL：固定数据、expectile 与加权模仿 | [22-iql/TUTORIAL.md](../22-iql/TUTORIAL.md) |
 
 本篇导读：[families/05-control-offline.md](families/05-control-offline.md)
 

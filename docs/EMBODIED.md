@@ -14,15 +14,15 @@
 
 ```bash
 uv sync --frozen --extra dev --extra cpu --extra embodied
-.venv/bin/python 13-sac/train.py --smoke --output runs/my-sac
-.venv/bin/python 14-td3/train.py --smoke --output runs/my-td3
-.venv/bin/python 15-her/train.py --smoke --output runs/my-her
-.venv/bin/python 16-iql/train.py --smoke --output runs/my-iql
+.venv/bin/python 20-sac/train.py --smoke --output runs/my-sac
+.venv/bin/python 19-td3/train.py --smoke --output runs/my-td3
+.venv/bin/python 21-her/train.py --smoke --output runs/my-her
+.venv/bin/python 22-iql/train.py --smoke --output runs/my-iql
 ```
 
 `--smoke` 运行 300 步、小 MLP、真实物理与奖励。它不同于 LLM 的随机 GPT-2/debug reward smoke。去掉该选项，SAC/TD3/HER 为 5000 环境步（1000 步预热），IQL 为 5000 梯度更新。
 
-根 CLI 也可执行 `arl train 13-sac/config.yaml --smoke`。`backend: embodied` 会分派到连续控制 runner；无需安装 verl 来运行这些章节。LLM 入口由 `scripts/smoke_all.py` 批量检查，具身章节可分别运行上面的命令。
+根 CLI 也可执行 `arl train 20-sac/config.yaml --smoke`。`backend: embodied` 会分派到连续控制 runner；无需安装 verl 来运行这些章节。LLM 入口由 `scripts/smoke_all.py` 批量检查，具身章节可分别运行上面的命令。
 
 ## 数据是什么，怎样准备
 
@@ -45,8 +45,8 @@ IQL 读取 [train.npz](../data/embodied/fetch-reach/train.npz) 与 [train.json](
 
 ```bash
 # 可选重新采集；选新路径，不覆盖随仓库提供的数据
-.venv/bin/python 16-iql/prepare_data.py --output data/embodied/fetch-reach/my-train.npz --episodes 40
-.venv/bin/python 16-iql/train.py --dataset data/embodied/fetch-reach/my-train.npz --output runs/my-iql-new-data
+.venv/bin/python 22-iql/prepare_data.py --output data/embodied/fetch-reach/my-train.npz --episodes 40
+.venv/bin/python 22-iql/train.py --dataset data/embodied/fetch-reach/my-train.npz --output runs/my-iql-new-data
 ```
 
 IQL 的训练循环没有在线环境对象，评估经历也不会写回 replay。数据 loader 检查内容 hash、字段、动作范围、reward 类型及评估种子隔离。
@@ -60,7 +60,7 @@ SAC、TD3 和 HER 的预算以环境交互步计，IQL 的预算以固定数据�
 ## 保存、评估与 TensorBoard
 
 ```bash
-.venv/bin/python 16-iql/eval.py \
+.venv/bin/python 22-iql/eval.py \
   --checkpoint runs/my-iql/checkpoint-final \
   --episodes 10 --seed 20000 --output reports/my-iql-evaluation.json
 .venv/bin/tensorboard --logdir runs --host 127.0.0.1 --port 6006

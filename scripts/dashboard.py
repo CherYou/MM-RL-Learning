@@ -11,7 +11,7 @@ st.title("Agentic RL Lab · 本地实验")
 st.caption("PyTorch · Transformers · TRL | 指标和轨迹均从本地 runs/ 读取")
 files = sorted((ROOT / "runs").rglob("metrics.jsonl"), key=lambda p: p.stat().st_mtime, reverse=True)
 if not files:
-    st.info("运行一个章节后，这里会显示训练曲线。命令：arl train 01-grpo/config.yaml --smoke")
+    st.info("运行一个章节后，这里会显示训练曲线。命令：arl train 03-grpo/config.yaml --smoke")
     st.stop()
 options = {p.parent.relative_to(ROOT / "runs").as_posix(): p for p in files}
 selected = st.sidebar.selectbox("选择实验", list(options))
@@ -61,7 +61,7 @@ with tabs[1]:
 with tabs[2]:
     st.json(config)
     st.write("从仓库根目录运行：")
-    st.code("source .venv/bin/activate\narl train 01-grpo/config.yaml --smoke", language="bash")
+    st.code("source .venv/bin/activate\narl train 03-grpo/config.yaml --smoke", language="bash")
     status = run / "status.json"
     if status.exists():
         st.json(json.loads(status.read_text()))

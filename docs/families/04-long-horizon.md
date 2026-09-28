@@ -6,8 +6,8 @@
 
 | 章号 | 教程 | 定位 |
 | ---: | --- | --- |
-| 15 | [TEMPO](../../09-tempo/TUTORIAL.md) | 本地实现研读：短分支、bootstrap、状态恢复 |
-| 16 | [Harness-RL](../../12-harness-rl/TUTORIAL.md) | 调用账本、action/args 字段、参数分区 |
+| 15 | [TEMPO](../../17-tempo/TUTORIAL.md) | 本地实现研读：短分支、bootstrap、状态恢复 |
+| 16 | [Harness-RL](../../18-harness-rl/TUTORIAL.md) | 调用账本、action/args 字段、参数分区 |
 
 ## 必须分清
 

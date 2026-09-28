@@ -29,7 +29,7 @@ def collect_markdown_documents(chapters: list[dict]) -> list[Path]:
         "docs/CHAPTERS.md",
         "docs/NEXT_STEPS.md",
         "docs/BEGINNER_GUIDE.md",
-        "preliminary/FOUNDATIONS.md",
+        "01-foundations/FOUNDATIONS.md",
         "examples/math/README.md",
         "CONTRIBUTING.md",
     ):
@@ -182,7 +182,7 @@ def main() -> None:
             "docs/CHAPTERS.md",
             "docs/NEXT_STEPS.md",
             "configs/learning_paths.json",
-            "preliminary/TUTORIAL.md",
+            "01-foundations/TUTORIAL.md",
         )
     )
 

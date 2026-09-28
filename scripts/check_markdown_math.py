@@ -40,7 +40,7 @@ def is_beginner_material(relative):
     return (
         relative.endswith("/TUTORIAL.md")
         or relative == "TUTORIAL.md"
-        or relative in {"docs/BEGINNER_GUIDE.md", "preliminary/FOUNDATIONS.md"}
+        or relative in {"docs/BEGINNER_GUIDE.md", "01-foundations/FOUNDATIONS.md"}
     )
 
 

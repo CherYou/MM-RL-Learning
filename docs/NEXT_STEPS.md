@@ -6,9 +6,9 @@
 
 | 主题 | 应能解释 | 若仍卡住 |
 | --- | --- | --- |
-| 损失与更新 | reward 与 loss 的差别；old/current；PPO 四种裁剪 | 回到 [01](../preliminary/TUTORIAL.md) 与 [L0 实验](../examples/math/README.md) |
+| 损失与更新 | reward 与 loss 的差别；old/current；PPO 四种裁剪 | 回到 [01](../01-foundations/TUTORIAL.md) 与 [L0 实验](../examples/math/README.md) |
 | 策略优化 | PPO 的 critic/GAE；GRPO 组内优势；DAPO/GSPO 改的是哪一层 | [02–05](CHAPTERS.md#第二篇-策略优化与偏好学习) |
-| 偏好分支 | DPO 是离线偏好，不是 GRPO 前置 | [06](../002-dpo/TUTORIAL.md) |
+| 偏好分支 | DPO 是离线偏好，不是 GRPO 前置 | [06](../06-dpo/TUTORIAL.md) |
 | 工具与环境 | 观察 mask；环境状态 ≠ 聊天记录；图是条件 | [07–10](CHAPTERS.md#第三篇-工具环境与多模态) |
 | 蒸馏 | 谁生成、谁打分；step-0 / Skill 不同教师生命周期 | [11–14](CHAPTERS.md#第四篇-opd自蒸馏与应用) |
 | 长程 | 恢复状态 ≠ 用旧数据更新；字段与参数分区 | [15–16](CHAPTERS.md#第五篇-长程-agent-进阶) |

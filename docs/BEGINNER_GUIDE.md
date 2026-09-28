@@ -5,7 +5,7 @@
 
 你不需要先学会分布式训练。读完这组教程，首先应该能回答三个问题：模型这一次看见了什么？哪个信号在告诉它好坏？这个信号最后改变了哪些参数？
 
-第一章请直接阅读：[损失函数与策略梯度基础](../preliminary/TUTORIAL.md)；L0 实验见 [examples/math](../examples/math/README.md)。
+第一章请直接阅读：[损失函数与策略梯度基础](../01-foundations/TUTORIAL.md)；L0 实验见 [examples/math](../examples/math/README.md)。
 
 每章 README 开头都有 **“直接阅读本章新手教程：TUTORIAL.md”** 链接，根目录表格也可直接进入各章教程。`TUTORIAL.md` 负责概念、动机、推导、手算和自测，README 保留安装与运行说明。
 
@@ -36,22 +36,22 @@
 
 | 阶段 | 详解 | 读完应能解释 |
 | --- | --- | --- |
-| 先补基础 | [损失函数](../preliminary/TUTORIAL.md)；MDP/价值按需读 [基础知识](../preliminary/FOUNDATIONS.md) | 常见损失、策略梯度、ratio/裁剪；需要时再补 MDP、Bellman、mask |
-| 理解评价与更新 | [001 PPO](../001-ppo/TUTORIAL.md) | actor、critic、奖励、优势分别做什么 |
-| 理解离线偏好 | [002 DPO](../002-dpo/TUTORIAL.md) | 为什么可以只用好坏回答对训练 |
-| 不使用 value critic | [01 GRPO](../01-grpo/TUTORIAL.md) | 同一道题的回答如何互相比较 |
-| 改采样与统计单位 | [06 DAPO](../06-dapo/TUTORIAL.md)、[07 GSPO](../07-gspo/TUTORIAL.md) | 采样、归一化和裁剪粒度各自改变什么 |
-| 学生向教师学习 | [General OPD](../02-opd/general-opd/TUTORIAL.md)、[Medical/SAR/IDT](../02-opd/TUTORIAL.md) | 谁生成答案、谁给概率、教师怎样切换 |
-| 使用训练期额外信息 | [04 OPSD](../04-opsd/TUTORIAL.md) | 同样权重为何能产生不同监督 |
-| 开始使用工具 | [03 Search-R1](../03-search-r1/TUTORIAL.md)、[05 ReTool](../05-retool/TUTORIAL.md) | 为什么检索结果和执行结果不直接进入 policy loss |
-| 连续与环境交互 | [08 ALFWorld](../08-alfworld/TUTORIAL.md) | 观察、行动、终局、截断如何衔接 |
-| 处理多轮信用 | [09 AgentOPSD](../09-AgentOPSD/TUTORIAL.md)、[09 TEMPO](../09-tempo/TUTORIAL.md) | 轮次重加权和分段 bootstrap 有何区别 |
-| 增加图像条件 | [09 Vision-GRPO](../09-vision-grpo/TUTORIAL.md) | 图像如何进入模型，文字奖励如何反传 |
-| 训练调用与编排 | [12 Harness-RL](../12-harness-rl/TUTORIAL.md) | 调用树、字段 mask 与参数分区是什么 |
-| 连续动作与最大熵 | [13 SAC](../13-sac/TUTORIAL.md) | 连续策略密度、双 Q 与温度怎样配合 |
-| 稳定连续控制更新 | [14 TD3](../14-td3/TUTORIAL.md) | 延迟 actor 和目标动作平滑防止什么问题 |
-| 利用稀疏奖励经历 | [15 HER](../15-her/TUTORIAL.md) | 只改目标、不改动作历史怎样产生训练信息 |
-| 从固定机器人数据学习 | [16 IQL](../16-iql/TUTORIAL.md) | expectile 价值学习与优势加权模仿 |
+| 先补基础 | [损失函数](../01-foundations/TUTORIAL.md)；MDP/价值按需读 [基础知识](../01-foundations/FOUNDATIONS.md) | 常见损失、策略梯度、ratio/裁剪；需要时再补 MDP、Bellman、mask |
+| 理解评价与更新 | [001 PPO](../02-ppo/TUTORIAL.md) | actor、critic、奖励、优势分别做什么 |
+| 理解离线偏好 | [002 DPO](../06-dpo/TUTORIAL.md) | 为什么可以只用好坏回答对训练 |
+| 不使用 value critic | [01 GRPO](../03-grpo/TUTORIAL.md) | 同一道题的回答如何互相比较 |
+| 改采样与统计单位 | [06 DAPO](../04-dapo/TUTORIAL.md)、[07 GSPO](../05-gspo/TUTORIAL.md) | 采样、归一化和裁剪粒度各自改变什么 |
+| 学生向教师学习 | [General OPD](../13-general-opd/TUTORIAL.md)、[Medical/SAR/IDT](../15-medical-opd/TUTORIAL.md) | 谁生成答案、谁给概率、教师怎样切换 |
+| 使用训练期额外信息 | [04 OPSD](../14-opsd/TUTORIAL.md) | 同样权重为何能产生不同监督 |
+| 开始使用工具 | [03 Search-R1](../09-search-r1/TUTORIAL.md)、[05 ReTool](../10-retool/TUTORIAL.md) | 为什么检索结果和执行结果不直接进入 policy loss |
+| 连续与环境交互 | [08 ALFWorld](../11-alfworld/TUTORIAL.md) | 观察、行动、终局、截断如何衔接 |
+| 处理多轮信用 | [09 AgentOPSD](../16-agentopsd/TUTORIAL.md)、[09 TEMPO](../17-tempo/TUTORIAL.md) | 轮次重加权和分段 bootstrap 有何区别 |
+| 增加图像条件 | [09 Vision-GRPO](../12-vision-grpo/TUTORIAL.md) | 图像如何进入模型，文字奖励如何反传 |
+| 训练调用与编排 | [12 Harness-RL](../18-harness-rl/TUTORIAL.md) | 调用树、字段 mask 与参数分区是什么 |
+| 连续动作与最大熵 | [13 SAC](../20-sac/TUTORIAL.md) | 连续策略密度、双 Q 与温度怎样配合 |
+| 稳定连续控制更新 | [14 TD3](../19-td3/TUTORIAL.md) | 延迟 actor 和目标动作平滑防止什么问题 |
+| 利用稀疏奖励经历 | [15 HER](../21-her/TUTORIAL.md) | 只改目标、不改动作历史怎样产生训练信息 |
+| 从固定机器人数据学习 | [16 IQL](../22-iql/TUTORIAL.md) | expectile 价值学习与优势加权模仿 |
 
 Medical 章节包含 SFT、Medical OPD、SAR-OPD、IDT-OPD；preliminary 损失教程包含 IS、PPO clipping、CISPO，并补充固定长度归一化的区别。HER 则修改经验数据，底层使用 TD3 的 loss；目录与独立 loss 不一一对应。
 

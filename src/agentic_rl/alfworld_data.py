@@ -2,7 +2,7 @@
 # Modified: package-relative imports; shared local data root. No remote training.
 """发现并按固定顺序读取 ALFWorld 的 text-only 游戏。
 
-在 08-alfworld/ 目录下载数据：
+在 11-alfworld/ 目录下载数据：
 
 uv run --extra alfworld alfworld-download \
     --data-dir "datasets/alfworld"

@@ -90,22 +90,22 @@ GPU 生成通过官方异步 Replica、负载均衡器和 AsyncLLMServerManager 
 
 ```bash
 # 两个真实 CPU worker，标准算法跨后端对照
-.venv/bin/arl train 01-grpo/verl.yaml --smoke --verl-workers 2
-.venv/bin/arl train 01-grpo/config.yaml --smoke --backend trl
+.venv/bin/arl train 03-grpo/verl.yaml --smoke --verl-workers 2
+.venv/bin/arl train 03-grpo/config.yaml --smoke --backend trl
 
 # 复杂算法默认 verl；TEMPO smoke 跑三步覆盖重放
-.venv/bin/python 09-tempo/train.py --smoke --verl-workers 2
-.venv/bin/python 12-harness-rl/train.py --smoke --verl-workers 2
+.venv/bin/python 17-tempo/train.py --smoke --verl-workers 2
+.venv/bin/python 18-harness-rl/train.py --smoke --verl-workers 2
 
 # SFT Teacher → SAR 两阶段
-.venv/bin/arl train 02-opd/config.yaml --smoke --teacher-model medical_sft --verl-workers 2
+.venv/bin/arl train 15-medical-opd/config.yaml --smoke --teacher-model medical_sft --verl-workers 2
 
 # steps 是累计目标步数；输出用新目录，worker 数须保持一致
 TEMPO_RUN="runs/TEMPO_RUN_NAME"
-.venv/bin/arl train 09-tempo/config.yaml --smoke --verl-workers 2 \
+.venv/bin/arl train 17-tempo/config.yaml --smoke --verl-workers 2 \
   --resume "$TEMPO_RUN/checkpoint-final" --steps 4 --output runs/tempo-continued
 
-.venv/bin/arl eval 09-tempo/config.yaml --smoke \
+.venv/bin/arl eval 17-tempo/config.yaml --smoke \
   --checkpoint runs/tempo-continued/checkpoint-final --limit 1
 ```
 
@@ -123,17 +123,17 @@ TEMPO 的修正为 `exp(sum(log π_current − log π_behavior))`，求和只覆
   --report reports/verl-grpo-gpu-repeat-verification.json
 ```
 
-运行配置为 `01-grpo/verify-gpu.yaml`。`--gpu-index` 通过 `CUDA_VISIBLE_DEVICES` 将所选物理设备映射成进程内 `cuda:0`；vLLM 0.12 的设备解析要求数字索引。`TORCHDYNAMO_DISABLE=1` 避免 logprob 辅助函数依赖额外的主机编译工具链，不影响实际 CUDA 采样和优化器更新。
+运行配置为 `03-grpo/verify-gpu.yaml`。`--gpu-index` 通过 `CUDA_VISIBLE_DEVICES` 将所选物理设备映射成进程内 `cuda:0`；vLLM 0.12 的设备解析要求数字索引。`TORCHDYNAMO_DISABLE=1` 避免 logprob 辅助函数依赖额外的主机编译工具链，不影响实际 CUDA 采样和优化器更新。
 
 运行下面的命令前，先确认模型权重存在、卡数与显存满足模型/teacher/critic 配置，再按可用设备调整 worker 数和模型路径。
 
 ```bash
-.venv/bin/arl train 06-dapo/verl-gpu.yaml \
+.venv/bin/arl train 04-dapo/verl-gpu.yaml \
   --model models/Qwen--Qwen2.5-0.5B-Instruct --verl-workers 2 --steps 20
 
 # 多节点要求已经由用户准备好的 Ray 集群、共享项目/数据/模型路径和一致环境
 RAY_ADDRESS="ray://ray-head.example.com:10001"
-.venv/bin/arl train 09-tempo/verl-gpu.yaml \
+.venv/bin/arl train 17-tempo/verl-gpu.yaml \
   --verl-workers 8 --verl-nodes 2 --ray-address "$RAY_ADDRESS"
 ```
 

@@ -105,7 +105,7 @@ def main():
     }
     text_matches = []
     guides = sorted(ROOT.glob("*/TUTORIAL.md")) + sorted(ROOT.glob("*/*/TUTORIAL.md"))
-    guides += [ROOT / "preliminary/FOUNDATIONS.md"]
+    guides += [ROOT / "01-foundations/FOUNDATIONS.md"]
     for guide in guides:
         for paragraph in guide.read_text(encoding="utf-8").split("\n\n"):
             if sum("\u4e00" <= char <= "\u9fff" for char in paragraph) < 50:

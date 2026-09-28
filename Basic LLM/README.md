@@ -13,6 +13,6 @@
 2. 对照原文 PDF 与中文译稿；实验数字以原文为准；
 3. 结合仓库中 GRPO / OPD 等章节，理解报告中的后训练与 RL 组件（本仓库为教学实现，不等于论文完整复现）。
 
-技术报告为扩展阅读，**不是**开始学习策略梯度（[preliminary](../preliminary/TUTORIAL.md)）的前置。
+技术报告为扩展阅读，**不是**开始学习策略梯度（[preliminary](../01-foundations/TUTORIAL.md)）的前置。
 
 [← 总目录](../README.md) · [全书 20 章](../docs/CHAPTERS.md)

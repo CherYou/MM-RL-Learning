@@ -6,10 +6,10 @@
 
 | 章号 | 教程 | 层次 |
 | ---: | --- | --- |
-| 11 | [General OPD](../../02-opd/general-opd/TUTORIAL.md) | 概念入口：谁生成、谁打分 |
-| 12 | [OPSD](../../04-opsd/TUTORIAL.md) | 特权 solution + 固定 step-0 教师（本地） |
-| 13 | [Medical SAR/IDT](../../02-opd/TUTORIAL.md) | 领域**调度案例** |
-| 14 | [AgentOPSD](../../09-AgentOPSD/TUTORIAL.md) | 环境轨迹 + 轮次信用（与 Agent 交汇） |
+| 11 | [General OPD](../../13-general-opd/TUTORIAL.md) | 概念入口：谁生成、谁打分 |
+| 12 | [OPSD](../../14-opsd/TUTORIAL.md) | 特权 solution + 固定 step-0 教师（本地） |
+| 13 | [Medical SAR/IDT](../../15-medical-opd/TUTORIAL.md) | 领域**调度案例** |
+| 14 | [AgentOPSD](../../16-agentopsd/TUTORIAL.md) | 环境轨迹 + 轮次信用（与 Agent 交汇） |
 
 ## 硬前置提醒
 

@@ -23,13 +23,13 @@ def main():
         if r["algorithm"] != "loss-functions" and r["backend"] != "embodied"
     ]
     trials += [
-        ("sft", "02-opd/sft.yaml", "trl"),
-        ("idt-opd", "02-opd/idt-opd.yaml", "native"),
-        ("grpo-native", "01-grpo/config.yaml", "native"),
-        ("gspo-native", "07-gspo/config.yaml", "native"),
-        ("dpo-native", "002-dpo/config.yaml", "native"),
-        ("ppo-native", "001-ppo/config.yaml", "native"),
-        ("dapo-trl-loss", "06-dapo/config.yaml", "trl"),
+        ("sft", "15-medical-opd/sft.yaml", "trl"),
+        ("idt-opd", "15-medical-opd/idt-opd.yaml", "native"),
+        ("grpo-native", "03-grpo/config.yaml", "native"),
+        ("gspo-native", "05-gspo/config.yaml", "native"),
+        ("dpo-native", "06-dpo/config.yaml", "native"),
+        ("ppo-native", "02-ppo/config.yaml", "native"),
+        ("dapo-trl-loss", "04-dapo/config.yaml", "trl"),
     ]
     env = {
         **os.environ,

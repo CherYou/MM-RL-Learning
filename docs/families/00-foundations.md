@@ -1,13 +1,13 @@
 # 第一篇：共同基础
 
-本篇只有一章正式主线：**01 智能体强化学习基础**（`preliminary/TUTORIAL.md`）。目标是分清 reward、loss、梯度，建立 CE/MSE/BCE → 策略梯度 → old/ratio → PPO 裁剪的连续叙事，并衔接智能体工具 RL 所需的熵、mask 与信用分配直觉。
+本篇只有一章正式主线：**01 智能体强化学习基础**（`01-foundations/TUTORIAL.md`）。目标是分清 reward、loss、梯度，建立 CE/MSE/BCE → 策略梯度 → old/ratio → PPO 裁剪的连续叙事，并衔接智能体工具 RL 所需的熵、mask 与信用分配直觉。
 
 ## 本篇页面
 
 | 页面 | 作用 |
 | --- | --- |
-| [01 智能体强化学习基础](../../preliminary/TUTORIAL.md) | 主线第 1 章 |
-| [FOUNDATIONS](../../preliminary/FOUNDATIONS.md) | MDP、价值、密度、离线等**按需**查阅 |
+| [01 智能体强化学习基础](../../01-foundations/TUTORIAL.md) | 主线第 1 章 |
+| [FOUNDATIONS](../../01-foundations/FOUNDATIONS.md) | MDP、价值、密度、离线等**按需**查阅 |
 | [数学实验 README](../../examples/math/README.md) | L0 数值检查 |
 | [全书目录](../CHAPTERS.md) | 20 章编号 |
 | [开始入口](../START_HERE.md) | 唯一第一步 |
@@ -18,10 +18,10 @@
 
 ## 读完本篇后
 
-- 完整基础路线 → [02 PPO](../../001-ppo/TUTORIAL.md)
-- 只想 LLM 组内优势 → [03 GRPO](../../01-grpo/TUTORIAL.md)（PPO 推荐非强制）
-- 离线偏好 → [06 DPO](../../002-dpo/TUTORIAL.md)
-- 连续控制 → [17 TD3](../../14-td3/TUTORIAL.md)（不强制读 GRPO）
+- 完整基础路线 → [02 PPO](../../02-ppo/TUTORIAL.md)
+- 只想 LLM 组内优势 → [03 GRPO](../../03-grpo/TUTORIAL.md)（PPO 推荐非强制）
+- 离线偏好 → [06 DPO](../../06-dpo/TUTORIAL.md)
+- 连续控制 → [17 TD3](../../19-td3/TUTORIAL.md)（不强制读 GRPO）
 
 ---
 
