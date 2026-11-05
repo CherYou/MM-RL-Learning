@@ -4,14 +4,6 @@
 
 你可以沿 [学习路线](docs/LEARNING_PATH.md) 顺序阅读，也可以通过术语、公式和代码索引查找问题。
 
-## 适合谁
-
-- 会读基础 Python，希望从概念、公式走到可运行实验
-- 关心 LLM 后训练（PPO / GRPO / 工具 Agent）或具身控制基础
-- 需要中文教程 + 可核对数值例子 + 本地训练入口
-
-**不自动等于：** 论文完整复现、临床/生产可靠性结论，或“安装后所有 benchmark 立刻可比”。
-
 ## 从这里开始
 
 **唯一第一步（不需要下载大模型，也不需要 verl）：**
@@ -37,13 +29,13 @@ python examples/math/loss_walkthrough.py
 | [共同基础](docs/families/00-foundations.md) | 01 | 损失与策略梯度 |
 | [策略与偏好](docs/families/01-policy-preference.md) | 02–06 | PPO、GRPO、DAPO、GSPO、DPO |
 | [工具与多模态](docs/families/02-tools-multimodal.md) | 07–10 | Search-R1、ReTool、ALFWorld、Vision-GRPO |
-| [蒸馏与应用](docs/families/03-distillation.md) | 11–14 | General OPD、OPSD、医学案例、AgentOPSD |
+| [蒸馏与应用](docs/families/03-distillation.md) | 11–14 | General OPD、OPSD、AgentOPSD |
 | [长程 Agent](docs/families/04-long-horizon.md) | 15–16 | TEMPO、Harness-RL |
 | [控制与离线](docs/families/05-control-offline.md) | 17–20 | TD3、SAC、HER、IQL |
 
 完整链接表见 [docs/CHAPTERS.md](docs/CHAPTERS.md)。**运行路径**仍为 `01-foundations/`、`02-ppo/`、`13-general-opd/` 等，与显示编号的映射写在章节注册表 [configs/chapters.json](configs/chapters.json)。
 
-## 仓库教什么
+## 仓库内容
 
 | 分支 | 内容 | 运行目录（兼容） |
 | --- | --- | --- |
@@ -193,7 +185,7 @@ make smoke
 
 ### 大模型技术报告
 
-[Basic LLM](Basic%20LLM/README.md) 按“模型系列 → 模型版本”组织技术报告、中文翻译与解读。它是扩展阅读，不是开始策略梯度的前置。
+[Basic LLM](Basic%20LLM/README.md) 按“模型系列 → 模型版本”组织技术报告、中文翻译与解读。它是扩展阅读。
 
 | 模型 | 内容 | 阅读与下载 |
 | --- | --- | --- |
