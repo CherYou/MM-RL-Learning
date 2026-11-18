@@ -117,7 +117,7 @@ aligned[s.prompt_length - 1 :] = lp[0, len(ids) - 1 :].to(student.device)
 
 练习：Teacher prompt 从 30 token 增长为 35，Student 已生成 4 个 token，需要重新生成 Student 回答吗？答案：不需要。应保留这 4 个 token，在新 Teacher 上下文复评并重新对齐。若重生成，就换了被评价对象。
 
-我的判断：OPSD 的有效性依赖“看到答案后更会评价”，这不是所有模型都天然具备的能力。参考解错误、过长或模型无法利用参考解时，监督也可能差。必须在不含 solution 的独立评估上检查 Student，而不能用 Teacher 看到解答时的得分代替学生效果。本地尚无本章 GPU 能力实验。
+教师多看一份参考解，能否据此更好地评价学生？参考解若有错、过长或被模型忽略，教师就可能给出误导信号。比较两种教师条件时，用同一组独立问题评估学生，并从学生输入中移除 solution。
 
 参考解数据来自 [Openthoughts_math_30k_opsd 发布页](https://huggingface.co/datasets/siyanzhao/Openthoughts_math_30k_opsd)，取样与来源版本见 [DATA.md](../docs/DATA.md)。
 
@@ -125,7 +125,7 @@ aligned[s.prompt_length - 1 :] = lp[0, len(ids) - 1 :].to(student.device)
 
 练习：学生偶然写出另一种同样正确的解法，与 solution 用词不同，是否必须逐字改成 solution？不是，本章训练目标由教师在学生实际前缀下给的概率决定，不是直接对 solution 做逐字交叉熵。不过教师是否能认可等价解法需要评估，不能由这种设计自动保证。
 
-阅读 [Self-Distilled Reasoner](https://arxiv.org/html/2601.18734v1) 时重点看“学生生成”和“特权教师条件”两部分；固定 step-0 教师、采样 token 的 reverse-KL surrogate 和数值设置是本仓库明示的选择，不代表论文所有变体。
+阅读原论文时可以跟踪两份输入。本章固定训练开始时的教师，用额外的参考解复评学生实际采到的 token，再根据两份概率之差更新学生。[Self-Distilled Reasoner](https://arxiv.org/html/2601.18734v1)
 
 <!-- NAV:BOTTOM:BEGIN -->
 [← 上一章：13 General OPD：学生采样与教师反馈](../13-general-opd/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/03-distillation.md) · [下一章：15 AgentOPSD：自教师辅助的轮次信用 →](../15-agentopsd/TUTORIAL.md)

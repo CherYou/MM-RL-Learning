@@ -6,9 +6,9 @@
 
 ## 从这里开始读
 
-- **在线阅读：[中文翻译与深度解读合订稿](report.zh.md)**。包含导读和正文翻译，配图已接入对应图注，公式使用 GitHub 数学块。
-- **离线阅读：[PDF，58 页](documents/translation.zh.pdf)**；编辑或批注可使用 [Word 文档](documents/translation.zh.docx)。两者保留导入时的成品内容。
-- **分章阅读：**按下面四部分逐步展开。
+- [中文合订稿](report.zh.md)包含导读、正文翻译与配图。
+- 离线阅读可用 [58 页 PDF](documents/translation.zh.pdf)，编辑或批注可用 [Word 文档](documents/translation.zh.docx)。
+- 按主题查阅时，可以从下面四份分章稿中选择。
 
 | 顺序 | 阅读稿 | 覆盖范围 |
 | --- | --- | --- |
@@ -16,8 +16,6 @@
 | 02 | [摘要、引言与模型架构](chapters/02-architecture.zh.md) | CED、CSA2、mHC、Engram、DSpark、FP4 与优化 |
 | 03 | [基础设施与预训练](chapters/03-infrastructure-pretraining.zh.md) | 训练、推理、缓存管理、数据与基座评估 |
 | 04 | [后训练、评估与附录](chapters/04-post-training-appendices.zh.md) | 智能体 RL、异步训练、OPD、推理努力与术语表 |
-
-合订稿与四份分章稿来自同一批资料，是完整阅读和按主题阅读的两个入口。更新正文时请同步对应分章。
 
 ## 文件怎么组织
 
@@ -38,20 +36,18 @@ DeepSeek-V4.1-Flash/
 └── manifest.json             # 原文件名、目标路径、SHA256 与整理说明
 ```
 
-[英文提取文本](source/report.en.txt) 便于检索和对照，原始版式请看作者 PDF。[制作大纲](source/outline.md) 是历史过程文件。[配图与页面索引](assets/README.md) 将论文配图、英文原页、中文预览分开；制作阶段截图的页码可能与最终 PDF 不同。
+查术语时可搜索[英文提取文本](source/report.en.txt)。查图时可按论文图号和页码打开[配图与页面索引](assets/README.md)。
 
-[KV 缓存机制示意](visualizations/kv-cache.html) 是导入的静态 HTML 图解，下载后用浏览器打开；GitHub 文件页主要展示其源码。它不是实验数据面板。
+想看压缩前后缓存结构的示意，可下载 [KV 缓存图解](visualizations/kv-cache.html)，用浏览器打开。
 
-## 来源与整理范围
+## 作者与来源
 
 - [DeepSeek 官方发布说明](https://api-docs.deepseek.com/news/news260910/)
 - [作者技术报告 PDF](https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/blob/main/DeepSeek_V41_Tech_Report.pdf)
 - [作者模型与代码发布页](https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash)
 
-本次归档日期为 **2026-09-16**。提供的 52 个文件映射为 51 份独立文件：两份 Word 经 SHA256 确认完全相同，合并保留为 `documents/translation.zh.docx`。原文件名和所有映射均记录在 [manifest.json](manifest.json)，源目录未改动。
-
-整理包括分类命名、阅读导航、Markdown 公式与图片链接，以及导出脚本的相对路径适配。本次未进行全文逐式校译；中文解读与翻译以作者报告为对照。报告原文与配图归原作者所有，译稿并非官方中文版本，原论文成绩不代表本仓库复现结果。
+报告和配图来自 DeepSeek-AI。中文材料为非官方学习译稿，引用方法或实验数字时请对照上方作者报告。原文件与目录的对应关系见[文件清单](manifest.json)。
 
 ## 文档导出工具
 
-直接阅读已有 PDF/Word 不需要安装依赖。需要重新导出时，见 [工具说明](tools/README.md)。默认新产物写入本目录的 `build/`，与归档成品分开；该目录已从 Git 跟踪中排除。
+重新导出 Word 或 PDF 时，工具默认将文件写入 `build/`。[文档导出工具](tools/README.md)

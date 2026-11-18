@@ -4,9 +4,6 @@
 [← 开始学习](../docs/START_HERE.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/00-foundations.md) · [下一章：02 PPO：actor-critic、GAE 与裁剪更新 →](../02-ppo/TUTORIAL.md)
 <!-- NAV:TOP:END -->
 
-[← 开始学习](../docs/START_HERE.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/00-foundations.md) · [下一章：02 PPO →](../02-ppo/TUTORIAL.md)
-
-
 [学习路线](../docs/LEARNING_PATH.md) · [本章运行说明](README.md) · [基础知识查阅](FOUNDATIONS.md) · [本章数值实验](../examples/math/README.md)
 
 一道题是：“每盒有 6 支笔，买 3 盒，一共有多少支？”
@@ -17,11 +14,11 @@
 
 本章先解释交叉熵、均方误差等常见损失，再把“答对得分”接到策略梯度，最后解释为什么 PPO 需要旧策略、概率比率和裁剪。你不必预先认识 PPO、GRPO 或 GAE。数学推导旁边都有数值例子；第一次阅读可以先跟着数值走，再回看推导。
 
-> 所有数字都是为讲解构造的小例子，不是模型能力实验。为便于手算，有时把“18”“9”“其他”当成三个完整候选动作；这不意味着真实 tokenizer 一定把“18”编码成一个 token。
+> 为了方便手算，下面有时把“18”“9”“其他”当成三个候选动作。在真实模型里，一个数字可能由多个 token 组成，具体取决于分词器。
 
 ![概念示意：常见损失、策略梯度与比率裁剪处在同一学习链上](../docs/assets/algorithms/loss.png)
 
-图为概念示意，不是训练测量结果。具体数值以正文和 `examples/math/loss_walkthrough.py` 为准。
+图中的箭头表示从模型输出到损失，再到参数更新的顺序。想看每一步的具体数值，可运行[损失与梯度示例](../examples/math/loss_walkthrough.py)。
 
 
 <a id="gradient-and-detach"></a>
@@ -182,7 +179,7 @@ L_\delta(e)=\delta\left(|e|-\frac12\delta\right)\quad\mathrm{if}\ |e|\gt\delta.
 
 它在误差小时像平方损失，误差大时按绝对误差线性增长。取 $`\delta=1`$，残差为 0.5 时损失是 0.125；残差为 3 时损失是 2.5，而对应的半平方误差是 4.5。后者的导数会继续随误差增长，Huber 大误差区间的导数幅度则由阈值控制。[接口及定义][torch-huber]
 
-这是一种可选回归目标，不代表仓库每个 critic 已经使用了 Huber。还要注意，PyTorch 的 `HuberLoss` 与 `SmoothL1Loss` 在一般阈值下有缩放差别，不能只因为名字接近就无条件互换。
+选择回归目标时还需留意损失的尺度。PyTorch 的 `HuberLoss` 与 `SmoothL1Loss` 在阈值不等于 1 时有缩放差别，同一预测误差可能产生不同大小的梯度。
 
 <a id="preference-loss"></a>
 ## 4. 只有“哪个更好”时：二元交叉熵与偏好损失
@@ -499,7 +496,7 @@ for _ in range(update_epochs):
     # 根据 ratio 与固定优势计算 loss，再更新 current model。
 ```
 
-这是说明时间关系的伪代码，不是可直接调用的仓库 API。可执行的小实验见`examples/math/loss_walkthrough.py`。
+这段伪代码突出采样与更新的先后顺序。可直接运行的代码在[梯度示例](../examples/math/loss_walkthrough.py)中。
 
 若写成 `exp(current_logp - current_logp)`，两条可导路径会相互抵消，比率恒为 1，梯度也为 0。若每次都重算 `old = current.detach()`，虽然当前这次梯度不必为零，但数值参照会被不断重置，PPO 就看不到相对原采样策略累积了多少变化。
 
@@ -674,7 +671,7 @@ L_{\mathrm{token}}=\frac{2\times2+8\times1}{2+8}=1.2.
 
 前者让每条回答整体占同样的权重；后者让每个有效 token 占同样的权重。它们不是同一项计算的两种写法。阅读 GRPO、DAPO 或分布式实现时，应把**优势来源、比率粒度、裁剪规则、损失聚合方式**分别记录。
 
-还要注意浮点计算中的 `0 * (-inf)` 会产生 NaN。有 mask 不等于中间计算一定安全。对无效位置应在危险运算之前处理；有效位置出现 NaN 或无穷值则应报错或明确跳过，不能默默伪装成正常样本。`examples/math/loss_walkthrough.py`只演示最小边界例子，不声称仓库正常训练路径一定会发生该问题。
+浮点运算中 `0 * (-inf)` 会产生 NaN。无效位置应在取对数等可能产生无穷值的操作之前处理。有效位置出现非有限值时，应检查对应输入。可以用[数值例子](../examples/math/loss_walkthrough.py)观察这一点。
 
 <a id="mask-and-reduction"></a>
 ## 11. 限制偏离与保留多样性：KL 和熵
@@ -803,8 +800,6 @@ L_{\mathrm{CISPO\text{-}demo}}
 ---
 
 ## 公式与实现来源
-
-本文的解释、数值例子和练习为重新组织的教学内容。框架/API 说明以以下官方资料及审阅时固定的仓库版本为依据；“教学简化”与“完整算法”在正文中分别注明。
 
 - [PyTorch 2.9：CrossEntropyLoss][torch-ce]：核对 logits 输入、类别标签与 NLL 的关系。
 - [PyTorch 2.9：HuberLoss][torch-huber]、[BCEWithLogitsLoss][torch-bce]：核对公式、缩放与数值稳定接口。

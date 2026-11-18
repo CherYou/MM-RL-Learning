@@ -1,8 +1,6 @@
-# 全书目录（20 章）
+# 全书目录（21 章）
 
-**唯一显示编号来源：** 本页与 [configs/learning_paths.json](../configs/learning_paths.json) 的 `book` 列表一致。物理运行目录（`001-ppo`、`09-AgentOPSD` 等）保持不变，编号是阅读导航，不是文件夹重命名。
-
-上一章 / 下一章固定指**全书主线**；专题捷径见 [LEARNING_PATH](LEARNING_PATH.md)。
+每章开头和结尾都可以前往相邻章节。若想从一个具体问题入手，可以按[学习路线](LEARNING_PATH.md)选读。
 
 ```mermaid
 flowchart TD
@@ -17,7 +15,8 @@ flowchart TD
   G -->|图文条件应用| VG[Vision-GRPO]
   F -->|KL 与教师反馈基础| O[General OPD]
   O -->|本地特权信息设置| OS[OPSD]
-  O -->|数据与教师调度| MED[Medical / SAR / IDT]
+  G -->|工具反馈后的熵与分支| AR[ARPO]
+  AR -->|分支预算与熵感知优势| AE[AEPO]
   OS -->|教师视角联系| AO[AgentOPSD]
   AL -->|环境前置| AO
   G -->|本地终局优势| AO
@@ -31,7 +30,7 @@ flowchart TD
   C -->|固定数据与价值学习| IQ[IQL]
 ```
 
-箭头表示方法联系或教学衔接，**不等于**算法继承，也不都是硬前置。硬前置见 [configs/chapters.json](../configs/chapters.json)。
+箭头表示方法之间的联系。各章需要预先掌握的概念见[学习路线](LEARNING_PATH.md)。
 
 ## 第一篇 共同基础
 
@@ -72,7 +71,7 @@ flowchart TD
 | ---: | --- | --- |
 | 13 | General OPD：学生采样与教师反馈 | [13-general-opd/TUTORIAL.md](../13-general-opd/TUTORIAL.md) |
 | 14 | OPSD：特权信息与自教师 | [14-opsd/TUTORIAL.md](../14-opsd/TUTORIAL.md) |
-| 16 | AgentOPSD：自教师辅助的轮次信用 | [15-agentopsd/TUTORIAL.md](../15-agentopsd/TUTORIAL.md) |
+| 15 | AgentOPSD：自教师辅助的轮次信用 | [15-agentopsd/TUTORIAL.md](../15-agentopsd/TUTORIAL.md) |
 
 本篇导读：[families/03-distillation.md](families/03-distillation.md)
 
@@ -80,8 +79,8 @@ flowchart TD
 
 | 章号 | 教程 | 实际正文 |
 | ---: | --- | --- |
-| 17 | TEMPO：短分支、估值与状态恢复 | [16-tempo/TUTORIAL.md](../16-tempo/TUTORIAL.md) |
-| 18 | Harness-RL：调用记录与参数分区 | [17-harness-rl/TUTORIAL.md](../17-harness-rl/TUTORIAL.md) |
+| 16 | TEMPO：短分支、估值与状态恢复 | [16-tempo/TUTORIAL.md](../16-tempo/TUTORIAL.md) |
+| 17 | Harness-RL：调用记录与参数分区 | [17-harness-rl/TUTORIAL.md](../17-harness-rl/TUTORIAL.md) |
 
 本篇导读：[families/04-long-horizon.md](families/04-long-horizon.md)
 
@@ -89,14 +88,14 @@ flowchart TD
 
 | 章号 | 教程 | 实际正文 |
 | ---: | --- | --- |
-| 19 | TD3：确定性策略与双 Q 稳定化 | [18-td3/TUTORIAL.md](../18-td3/TUTORIAL.md) |
-| 20 | SAC：随机策略与最大熵目标 | [19-sac/TUTORIAL.md](../19-sac/TUTORIAL.md) |
-| 21 | HER：目标条件经验重标记 | [20-her/TUTORIAL.md](../20-her/TUTORIAL.md) |
-| 22 | IQL：固定数据、expectile 与加权模仿 | [21-iql/TUTORIAL.md](../21-iql/TUTORIAL.md) |
+| 18 | TD3：确定性策略与双 Q 稳定化 | [18-td3/TUTORIAL.md](../18-td3/TUTORIAL.md) |
+| 19 | SAC：随机策略与最大熵目标 | [19-sac/TUTORIAL.md](../19-sac/TUTORIAL.md) |
+| 20 | HER：目标条件经验重标记 | [20-her/TUTORIAL.md](../20-her/TUTORIAL.md) |
+| 21 | IQL：固定数据、expectile 与加权模仿 | [21-iql/TUTORIAL.md](../21-iql/TUTORIAL.md) |
 
 本篇导读：[families/05-control-offline.md](families/05-control-offline.md)
 
-## 独立资料架（不计入 20 章主线）
+## 配套资料
 
 - [Basic LLM 技术报告](../Basic%20LLM/README.md)
 - [后端安装 VERL](VERL.md) · [数据 DATA](DATA.md) · [具身 EMBODIED](EMBODIED.md)

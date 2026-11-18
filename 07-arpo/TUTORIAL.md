@@ -4,7 +4,7 @@
 [← 上一章：06 DPO：从偏好对直接优化策略](../06-dpo/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/02-tools-multimodal.md) · [下一章：08 AEPO：熵平衡的智能体策略优化 →](../08-aepo/TUTORIAL.md)
 <!-- NAV:TOP:END -->
 
-[← 上一章：06 DPO](../06-dpo/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/02-tools-multimodal.md) · [运行说明](README.md)
+[运行说明](README.md)
 
 **本章默认教学后端：verl（`verl.yaml`）。** 建议先掌握 [GRPO](../03-grpo/TUTORIAL.md) 的组内优势，以及 [ReTool](../10-retool/TUTORIAL.md) 中「工具观察 mask=0」的约定。
 
@@ -19,7 +19,7 @@
 | 工具观察 | mask=0 | **仍是 mask=0** |
 | 主要风险 | 工具步探索不足 | 分支过多浪费预算；归因≠因果真值 |
 
-来源：[ARPO 原文](https://arxiv.org/abs/2507.19849)（ICLR 2026）· [官方代码 RUC-NLPIR/ARPO](https://github.com/RUC-NLPIR/ARPO)（基于 verl + 工具搜索栈）。以下机制为**本地教学最小实现**，超参与完整工程以原文为准。
+ARPO 提出在工具返回之后识别高熵步骤，并为这些步骤分配额外采样预算。[ARPO 原论文](https://arxiv.org/abs/2507.19849) · [作者实现](https://github.com/RUC-NLPIR/ARPO)
 
 ---
 
@@ -176,8 +176,7 @@ python 07-arpo/train.py --smoke
 
 ## 7. 边界与下一步
 
-- 本地只验证机制与数值方向，**不等于** GAIA / HLE / 13 个 benchmark 的论文复现。  
-- 工具预算、缓存、多线程执行等工程优化不在本章展开。  
+- 想观察分支概率和每步优势，运行 `python -m agentic_rl.arpo`。章节训练命令演示 verl 共用的工具采样与组内更新。
 - **下一篇：** [08 AEPO：熵平衡的智能体策略优化](../08-aepo/TUTORIAL.md)——在熵分支之上防止过分支与高熵梯度被裁掉。  
 - 需要先补工具轨迹字段时：[Search-R1](../09-search-r1/TUTORIAL.md) / [ReTool](../10-retool/TUTORIAL.md)。
 

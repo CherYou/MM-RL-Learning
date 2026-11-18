@@ -24,15 +24,9 @@ python examples/math/loss_walkthrough.py --output examples/math/results/numerica
 
 脚本拒绝覆盖已存在的输出文件。
 
-## 证据边界
+## 怎样读输出
 
-| 可以说明 | 不能说明 |
-| --- | --- |
-| 构造例子中的 loss 数值与梯度方向 | 语言模型任务能力提升 |
-| PPO 四象限符号与导数结构 | 论文 benchmark 复现 |
-| mask/reduction 的算术含义 | 分布式训练或 GPU 性能 |
-
-仓库内 `reference/numerical_checks.json` 是审阅时的一次参考运行结果，不是能力实验报告。
+在 `cross_entropy` 中找到 `logit_gradient`。目标类别的梯度为负，按梯度下降做一步更新会提高该类的 logit。在 `value_regression` 中，预测值 0.3 离目标 1 还差 0.7，所以平方误差是 0.49，梯度是 −1.4。其余输入与输出可以逐项对照[参考数值](reference/numerical_checks.json)。
 
 ## 与仓库其他入口的关系
 

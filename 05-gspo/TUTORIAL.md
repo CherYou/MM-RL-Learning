@@ -101,7 +101,7 @@ CPU smoke 验证管线。机制测试应至少包含“[2,0.5] 的几何平均�
 
 我的阅读建议是每次遇到“平均”都写清平均对象：对 token log-ratio 平均、对 token loss 平均、对回答 loss 平均是三个不同步骤。GSPO 的核心是第一步，DAPO 主要涉及后两步和采样调度。只比较训练曲线中的 loss 数值，很容易把这些差别混在一起。
 
-论文性能结果属于作者实验；本仓库本章目前只有机制与 CPU 执行证据，未完成 GPU 吞吐或能力对照。可进一步阅读 [GSPO 正文](https://arxiv.org/html/2507.18071v2)及 [固定版本 TRL GRPO 文档](https://huggingface.co/docs/trl/v0.25.1/en/grpo_trainer)。
+想比较两种粒度，可以固定同一批回答，分别计算 token 比率和序列比率，再观察哪些回答受到裁剪。[GSPO 原论文](https://arxiv.org/html/2507.18071v2) · [TRL 的 GRPOTrainer 参数](https://huggingface.co/docs/trl/v0.25.1/en/grpo_trainer)
 
 ## 新手自测
 

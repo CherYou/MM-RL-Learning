@@ -2,7 +2,7 @@
 
 **[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
 
-**本章默认教学后端：verl（`verl.yaml`）。** 教程命令与此一致。本章重点：环境状态账本；won/done 区分；独立 env。裁剪与组内优势见 [GRPO](../03-grpo/TUTORIAL.md) / [preliminary](../01-foundations/TUTORIAL.md)。
+**本章默认教学后端：verl（`verl.yaml`）。** 本章重点：环境状态账本；won/done 区分；独立 env。裁剪与组内优势见 [GRPO](../03-grpo/TUTORIAL.md) / [损失与策略梯度基础](../01-foundations/TUTORIAL.md)。
 
 [学习路线](../docs/LEARNING_PATH.md) · [总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
 
@@ -10,9 +10,9 @@
 
 本章使用官方 ALFWorld + TextWorld 的文本环境。按 game.tw-pddl 找到可解游戏，实例化独立环境，reset 后获得目标和可行动作；模型每轮输出 `<action>动作</action>`，环境返回观察、done 与 won。
 
-每道游戏采样 G 条独立轨迹，终局 reward 是环境 won 的 0/1。动作 token 学习、观察 token 只作上下文。环境和数据加载工具由原仓库迁移，文件头保留来源与修改说明，模型采样与更新已改为本地 Transformers/PyTorch。
+每道游戏采样 G 条独立轨迹，终局奖励由环境的 `won` 给出。动作 token 参与策略更新，环境观察留作下一步的上下文。[环境实现与来源](../docs/CODE_PROVENANCE.md)
 
-已准备全部支持的可解文本游戏：train、valid_seen、valid_unseen；seen 与 unseen 必须分别汇报。`--smoke` 切换到明确命名的 toy fixture；真实 TextWorld reset/step 在专项测试中单独执行。
+文本游戏分为 `train`、`valid_seen` 和 `valid_unseen`。`--smoke` 使用小型玩具环境。评估策略时应在两种验证划分上分别运行 TextWorld。
 
 ## 从代码入口开始
 
@@ -27,26 +27,24 @@ RUN_DIR="runs/RUN_NAME"
 python 11-alfworld/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
 ```
 
-本章 `config.yaml` 保存实验配置，`train.py`、`eval.py` 是直接可运行入口。共用实现见 `alfworld_data.py / alfworld_env.py / rollout.py`，位于 `../src/agentic_rl/`；薄入口让修复 token 对齐、设备或日志问题时可以统一维护各章训练逻辑。
+从上面的命令跟读代码时，可以打开[alfworld_data.py](../src/agentic_rl/alfworld_data.py)、[alfworld_env.py](../src/agentic_rl/alfworld_env.py)、[rollout.py](../src/agentic_rl/rollout.py)。
 
-`--smoke` 强制 CPU、随机微型模型、两次更新，并使用标明的学习 fixture。普通配置读取 `data/` 的公开实验数据；没有远程训练服务调用。修改输出路径可用 `--output runs/my-08-alfworld`，已存在的目录会拒绝覆盖。
+`--smoke` 在 CPU 上用微型模型和样例数据运行一个短训练示例。常规配置从 `data/` 读取数据。若要指定输出位置，请用新目录，例如 `--output runs/my-11-alfworld`。
 
-## 验证思路与消融
+## 指标与对照实验
 
 先检查同一游戏 reset 可复现；采样组之间状态独立；game_id 不跨 train/eval。后续评测分别汇报 seen/unseen 成功率、平均步数、无效动作数。
 
-建议读 `tests/test_mechanisms.py` 中相应检查，再打开 `runs/<实验>/metrics.jsonl` 与 TensorBoard。Native 运行还保留 `trajectories.jsonl`，其中有 token IDs、mask、旧 logprob、turn spans 和 reward，可逐段检查信用分配。
+在 `runs/<实验>/metrics.jsonl` 或 TensorBoard 查看指标。 在 native 后端，`trajectories.jsonl` 还保存 token、mask、旧 logprob 和轮次范围，可以定位某条轨迹上参与更新的位置。 [机制测试](../tests/test_mechanisms.py)
 
-## 复现边界
+## 使用范围
 
-这里只使用文本环境，不下载或启动 THOR 视觉模拟器，也不需要 GPU detector。真实环境已通过 CPU 交互检查，但大模型家务成功率没有训练验证。
-
-上游原文中的 GPU、耗时、付费服务和准确率是参考作者报告；本地复现完成的是代码、数据、依赖和 CPU 执行检查，尚未声称得到相同训练效果。
+本章使用 ALFWorld 的 TextWorld 文字接口。完整实验需要文本游戏数据，可以在 CPU 上运行环境。
 
 ## 一手资料
 
-- [资料 2](https://arxiv.org/abs/2010.03768)
+- [ALFWorld 原论文](https://arxiv.org/abs/2010.03768)
 
 ## 后端说明
 
-本章默认入口即 `verl.yaml`。完整安装、恢复与 GPU 说明见 [VERL.md](../docs/VERL.md)；不要在第一次运行时同时学习算法与后端切换。
+CPU 和 CUDA 环境的安装、训练中断后的恢复步骤见 [verl 指南](../docs/VERL.md)。

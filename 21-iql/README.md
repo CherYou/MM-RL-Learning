@@ -6,7 +6,7 @@
 
 [学习路线](../docs/LEARNING_PATH.md) · [总目录](../README.md) · [FOUNDATIONS：离线](../01-foundations/FOUNDATIONS.md) · [共享数据说明](../docs/EMBODIED.md)
 
-本章重点是expectile V、数据内 Q 估计、优势加权模仿。使用真实 `FetchReach-v4` / MuJoCo，策略输入是 10 维机械观察与 3 维目标，输出 4 维归一化连续动作。它是理解机器人/VLA 强化学习的基础实验，没有训练视觉语言编码器。
+本章重点是 expectile V、数据内 Q 估计、优势加权模仿。使用真实 `FetchReach-v4` / MuJoCo，策略输入是 10 维机械观察与 3 维目标，输出 4 维归一化连续动作。
 
 ## 安装与执行
 
@@ -20,7 +20,7 @@ uv sync --frozen --extra dev --extra cpu --extra embodied
 
 训练读取已提供的 `data/embodied/fetch-reach/train.npz`，不执行在线训练交互。去掉 `--smoke` 使用 5000 次梯度更新。数据来自本地带噪声程序控制器和随机策略的真实仿真轨迹。
 
-`--smoke` 使用真实物理环境和小网络（64 隐藏维、batch 32），运行 300 次梯度更新。正式默认隐藏维为 128、batch 128。每次输出必须用新目录。
+`--smoke` 从固定数据做 300 次梯度更新，隐藏维为 64、batch 为 32。评估时才与 FetchReach 交互。常规配置的隐藏维和 batch 均为 128。每次运行使用新的输出目录。
 
 可选重新采集共享数据（写到新路径，四章的准备入口等价）：
 

@@ -27,36 +27,34 @@ RUN_DIR="runs/RUN_NAME"
 python 05-gspo/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
 ```
 
-本章 `config.yaml` 保存实验配置，`train.py`、`eval.py` 是直接可运行入口。共用实现见 `losses.py / trl_backend.py`，位于 `../src/agentic_rl/`；薄入口让修复 token 对齐、设备或日志问题时可以统一维护各章训练逻辑。
+从上面的命令跟读代码时，可以打开[losses.py](../src/agentic_rl/losses.py)、[trl_backend.py](../src/agentic_rl/trl_backend.py)。
 
-`--smoke` 强制 CPU、随机微型模型、两次更新，并使用标明的学习 fixture。普通配置读取 `data/` 的公开实验数据；没有远程训练服务调用。修改输出路径可用 `--output runs/my-07-gspo`，已存在的目录会拒绝覆盖。
+`--smoke` 在 CPU 上用微型模型和样例数据运行一个短训练示例。常规配置从 `data/` 读取数据。若要指定输出位置，请用新目录，例如 `--output runs/my-05-gspo`。
 
-## 验证思路与消融
+## 指标与对照实验
 
 构造两个 token 的比率 2 和 0.5，应得到 sequence ratio=1。再固定采样预算比较 GRPO 与 GSPO 的 clip fraction、长度敏感性和训练稳定性。
 
-建议读 `tests/test_mechanisms.py` 中相应检查，再打开 `runs/<实验>/metrics.jsonl` 与 TensorBoard。Native 运行还保留 `trajectories.jsonl`，其中有 token IDs、mask、旧 logprob、turn spans 和 reward，可逐段检查信用分配。
+在 `runs/<实验>/metrics.jsonl` 或 TensorBoard 查看指标。 在 native 后端，`trajectories.jsonl` 还保存 token、mask、旧 logprob 和轮次范围，可以定位某条轨迹上参与更新的位置。 [机制测试](../tests/test_mechanisms.py)
 
-## 复现边界
+## 使用范围
 
-把 GRPO 配置文件中的 loss 改成字符串 gspo 不是 TRL API；需要改 importance_sampling_level。本项目已经分别处理两种后端的字段。
-
-上游原文中的 GPU、耗时、付费服务和准确率是参考作者报告；本地复现完成的是代码、数据、依赖和 CPU 执行检查，尚未声称得到相同训练效果。
+使用 TRL 时，`importance_sampling_level="sequence"` 决定按回答聚合概率比，`loss_type` 取 `"grpo"`。比较 GRPO 与 GSPO 时应核对这两个字段。
 
 ## 一手资料
 
-- [资料 1](https://arxiv.org/abs/2507.18071)
-- [资料 2](https://huggingface.co/docs/trl/v0.25.1/en/grpo_trainer)
+- [GSPO 原论文](https://arxiv.org/abs/2507.18071)
+- [TRL GRPOTrainer](https://huggingface.co/docs/trl/v0.25.1/en/grpo_trainer)
 
 ## verl 训练路径
 
-本章提供 `verl.yaml`（CPU）和 `verl-gpu.yaml`（显式 CUDA）。默认 config.yaml 保留 TRL，verl 作为并列入口；`--backend native` 可读取原生参考实现。根环境 CLI 会自动切换到独立 verl 环境。
+本章提供 `verl.yaml`（CPU）和 `verl-gpu.yaml`（显式 CUDA）。`config.yaml` 默认使用 TRL，verl 作为并列入口；`--backend native` 可读取原生参考实现。根环境 CLI 会自动切换到独立 verl 环境。
 
 ```bash
 # 在项目根目录运行；两个实际 CPU worker
 .venv/bin/arl train 05-gspo/verl.yaml --smoke --verl-workers 2
-# GPU 配置供后续实验使用，本次未运行 GPU 验证
+# 使用 GPU 配置前先安装 CUDA 版 verl 环境
 # .venv/bin/arl train 05-gspo/verl-gpu.yaml --verl-workers 2
 ```
 
-真实更新代码在 `src/agentic_rl/verl_backend/`，本章机制对应关系、安装和恢复方式见 [verl 指南](../docs/VERL.md)。轨迹通过 DataProto 传递，参数更新调用官方 verl actor。verl 与原生均保存 token、mask、旧概率和轮次日志。
+verl 用 `DataProto` 传递轨迹，由 actor 执行更新。在轨迹中可以查看 token、mask、旧概率和轮次记录。[verl 后端代码](../src/agentic_rl/verl_backend/) · [安装与恢复](../docs/VERL.md)

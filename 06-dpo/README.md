@@ -2,7 +2,7 @@
 
 **[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
 
-**本章默认教学后端：TRL（`config.yaml` → `backend: trl`）。** 建议先读 [preliminary §4：BCE 与偏好分差](../01-foundations/TUTORIAL.md)；PPO/GRPO 不是强制前置。
+**本章默认教学后端：TRL（`config.yaml` → `backend: trl`）。** 建议先读 [第 01 章的 BCE 与偏好分差](../01-foundations/TUTORIAL.md)；PPO/GRPO 不是强制前置。
 
 [学习路线](../docs/LEARNING_PATH.md) · [总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
 
@@ -12,7 +12,7 @@
 
 completion logprob 先在有效回答 token 上求和，prompt/pad 不参与比较。与 PPO 不同，DPO 不在训练时在线采样、不构造 GAE，也不训练 value model。默认入口直接使用 TRL DPOTrainer，同时保留原生 loss 方便观察 chosen 上升、rejected 下降的梯度。
 
-本地偏好数据由 GSM8K 正确推理解答作为 chosen，数值答案加 1 的错误回答作为 rejected；分别从独立 train/test 派生，明确标注 synthetic negatives。它适合验证流程，不能代表真实人类偏好数据。
+偏好对分别从 GSM8K 的训练集和测试集生成。chosen 保留正确解答，rejected 使用数值答案加 1 的合成错误回答。
 
 ## 从代码入口开始
 
@@ -29,23 +29,21 @@ RUN_DIR="runs/RUN_NAME"
 python 06-dpo/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
 ```
 
-本章 `config.yaml` 保存实验配置，`train.py`、`eval.py` 是直接可运行入口。共用实现见 `trl_backend.py / trainers.py / losses.py`，位于 `../src/agentic_rl/`。
+从上面的命令跟读代码时，可以打开[trl_backend.py](../src/agentic_rl/trl_backend.py)、[trainers.py](../src/agentic_rl/trainers.py)、[losses.py](../src/agentic_rl/losses.py)。
 
-`--smoke` 强制 CPU、随机微型模型、两次更新，并使用标明的学习 fixture。普通配置读取 `data/` 的公开实验数据；没有远程训练服务调用。修改输出路径可用 `--output runs/my-002-dpo`，已存在的目录会拒绝覆盖。
+`--smoke` 在 CPU 上用微型模型和样例数据运行一个短训练示例。常规配置从 `data/` 读取数据。若要指定输出位置，请用新目录，例如 `--output runs/my-06-dpo`。
 
-## 验证思路与消融
+## 指标与对照实验
 
 检查初始 policy=reference 时 loss≈log(2)，一步反传应鼓励 chosen、压低 rejected。比较 beta、回答长度和 synthetic-negative 策略，记录 reward margin。评测附带 chosen/rejected 原始 logprob 偏好率，注意长度偏差。
 
-建议读 `tests/test_mechanisms.py` 中相应检查，再打开 `runs/<实验>/metrics.jsonl` 与 TensorBoard。
+在 `runs/<实验>/metrics.jsonl` 或 TensorBoard 查看指标。 [机制测试](../tests/test_mechanisms.py)
 
-## 复现边界
+## 使用范围
 
-这些错误回答比正确长解更短、更简单，存在明显风格捷径；正式偏好实验应换成经审查的难负例。准备和验证本学习数据不等于完成 RLHF 效果复现。
-
-上游原文中的 GPU、耗时、付费服务和准确率是参考作者报告；本地复现完成的是代码、数据、依赖和 CPU 执行检查，尚未声称得到相同训练效果。
+错误回答通常比正确解答短，模型可能仅凭长度判断哪条更受偏好。比较偏好学习效果时，可以加入长度相近、推理中有错误的回答，并检查模型能否区分它们。
 
 ## 一手资料
 
-- [资料 1](https://arxiv.org/abs/2305.18290)
-- [资料 2](https://huggingface.co/docs/trl/v0.25.1/en/dpo_trainer)
+- [DPO 原论文](https://arxiv.org/abs/2305.18290)
+- [TRL DPOTrainer](https://huggingface.co/docs/trl/v0.25.1/en/dpo_trainer)

@@ -2,7 +2,7 @@
 
 **[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
 
-**本章默认教学后端：verl（`verl.yaml`）。** 教程命令与此一致。本章重点：两层检查：输入链路 vs 能力。裁剪与组内优势见 [GRPO](../03-grpo/TUTORIAL.md) / [preliminary](../01-foundations/TUTORIAL.md)。
+**本章默认教学后端：verl（`verl.yaml`）。** 本章重点：两层检查：输入链路 vs 能力。裁剪与组内优势见 [GRPO](../03-grpo/TUTORIAL.md) / [损失与策略梯度基础](../01-foundations/TUTORIAL.md)。
 
 [学习路线](../docs/LEARNING_PATH.md) · [总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
 
@@ -10,7 +10,7 @@
 
 算法目标仍是 GRPO，但 prompt 包含真实图片。生产入口使用 Transformers AutoProcessor 与 AutoModelForImageTextToText，配置为 Qwen2.5-VL。图片处理后的 pixel_values 和网格信息与 token sample 绑定，采样和打分都使用同一份视觉输入。
 
-离线 CPU 检查构造标准 Transformers 微型 LLaVA（CLIP vision encoder + Llama text decoder），并使用真实 GeoQA 图片。它没有预训练能力，但图片特征确实进入模型：替换图片会改变 logprob，视觉投影层会收到非零梯度。不是把文件名或标准答案转成文字来替代图片。
+CPU 示例使用随机初始化的微型 LLaVA（CLIP 视觉编码器和 Llama 文本解码器）读取 GeoQA 图片。固定题目、替换图片，再比较生成 token 的 logprob，可以观察图像是否影响预测。
 
 GeoQA 原始字段 subject/choices/label 被转换为题目、A-D 选项和标签，原始 answer 推理解答只存为 solution。保留官方 original_split，train=3503，test=759；dev 图片保留在下载资产中，未混入训练或测试。
 
@@ -27,27 +27,25 @@ RUN_DIR="runs/RUN_NAME"
 python 12-vision-grpo/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
 ```
 
-本章 `config.yaml` 保存实验配置，`train.py`、`eval.py` 是直接可运行入口。共用实现见 `models.py / rollout.py / losses.py`，位于 `../src/agentic_rl/`；薄入口让修复 token 对齐、设备或日志问题时可以统一维护各章训练逻辑。
+从上面的命令跟读代码时，可以打开[models.py](../src/agentic_rl/models.py)、[rollout.py](../src/agentic_rl/rollout.py)、[losses.py](../src/agentic_rl/losses.py)。
 
-`--smoke` 强制 CPU、随机微型模型、两次更新，并使用标明的学习 fixture。普通配置读取 `data/` 的公开实验数据；没有远程训练服务调用。修改输出路径可用 `--output runs/my-09-vision-grpo`，已存在的目录会拒绝覆盖。
+`--smoke` 在 CPU 上用微型模型和样例数据运行一个短训练示例。常规配置从 `data/` 读取数据。若要指定输出位置，请用新目录，例如 `--output runs/my-12-vision-grpo`。
 
-## 验证思路与消融
+## 指标与对照实验
 
 做图片置零/换图消融；确认 processor 和模型的视觉 token 数一致；检查训练 token 的图像条件与 rollout 一致；数学奖励必须看正确选项或正确表达式。
 
-建议读 `tests/test_mechanisms.py` 中相应检查，再打开 `runs/<实验>/metrics.jsonl` 与 TensorBoard。Native 运行还保留 `trajectories.jsonl`，其中有 token IDs、mask、旧 logprob、turn spans 和 reward，可逐段检查信用分配。
+在 `runs/<实验>/metrics.jsonl` 或 TensorBoard 查看指标。 在 native 后端，`trajectories.jsonl` 还保存 token、mask、旧 logprob 和轮次范围，可以定位某条轨迹上参与更新的位置。 [机制测试](../tests/test_mechanisms.py)
 
-## 复现边界
+## 使用范围
 
-完整 Qwen2.5-VL 模型权重不属于本次 CPU 验证；默认不会加载大型 VLM 做训练。微型 LLaVA 只验证多模态数据与梯度链路，不能证明 GeoQA 能力。
-
-上游原文中的 GPU、耗时、付费服务和准确率是参考作者报告；本地复现完成的是代码、数据、依赖和 CPU 执行检查，尚未声称得到相同训练效果。
+常规配置使用 Qwen2.5-VL，需要相应的预训练权重和容纳模型的设备。评估时在相同的 GeoQA 题目上对照原图、换图和置零图。
 
 ## 一手资料
 
-- [资料 1](https://huggingface.co/datasets/hz2475/geoQA)
-- [资料 2](https://huggingface.co/docs/transformers/v4.57.1/en/model_doc/llava)
+- [GeoQA 数据集](https://huggingface.co/datasets/hz2475/geoQA)
+- [Transformers LLaVA 接口](https://huggingface.co/docs/transformers/v4.57.1/en/model_doc/llava)
 
 ## 后端说明
 
-本章默认入口即 `verl.yaml`。完整安装、恢复与 GPU 说明见 [VERL.md](../docs/VERL.md)；不要在第一次运行时同时学习算法与后端切换。
+CPU 和 CUDA 环境的安装、训练中断后的恢复步骤见 [verl 指南](../docs/VERL.md)。

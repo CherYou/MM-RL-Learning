@@ -11,6 +11,6 @@
 ## 正式来源
 
 - 模型与报告 PDF：[HuggingFace XiaomiMiMo](https://huggingface.co/XiaomiMiMo)
-- 本仓库仅作中文学习整理；原文、图表与实验结论归小米 LLM-Core 及原作者。
+- 原文与图表作者为小米 LLM-Core。
 
 [← 返回 Basic LLM](../README.md)

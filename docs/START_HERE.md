@@ -2,14 +2,14 @@
 
 这是一个面向 RL 初学者的中文学习与实验仓库。你不需要先读完全部章节，也不需要在第一天安装所有训练后端。
 
-**唯一第一步（不下载大模型、不装 verl）：**
+**先跑一个只需 PyTorch 的数值例子。**
 
 ```bash
 # 任意已安装 PyTorch 的 Python 环境
 python examples/math/loss_walkthrough.py
 ```
 
-终端应打印 JSON，结尾出现 `"status": "passed"`。这一步只核对损失数值、梯度方向和一次小参数更新，不能说明语言模型学会了任务。
+终端打印的 JSON 包含损失、梯度和一次参数更新前后的概率。结尾出现 `"status": "passed"` 时，可以回看每个数为什么增大或减小。
 
 读完并跑通后，进入：
 
@@ -23,12 +23,7 @@ python examples/math/loss_walkthrough.py
 - 图文条件策略学习（Vision-GRPO）
 - 连续控制与离线学习基础（SAC / TD3 / HER / IQL）
 
-## 这个仓库不自动等于什么
-
-- 不是论文 benchmark 的完整复现报告
-- `--smoke` / tiny 模型 / debug reward 只验证机制可运行
-- Vision-GRPO 与 FetchReach 控制提供理解 VLA 的基础，但不等于完整 VLA 训练管线
-- 技术报告阅读资料在 [Basic LLM](../Basic%20LLM/README.md)，不是学习策略梯度的门槛
+想把某种算法与大模型训练中的实际用法对照起来，可以查阅[模型技术报告](../Basic%20LLM/README.md)。
 
 ## 三条阅读路线（摘要）
 
@@ -38,20 +33,9 @@ python examples/math/loss_walkthrough.py
 | --- | --- |
 | 完整基础 | 01 → 02 PPO → 03 GRPO →（04 DAPO / 05 GSPO） |
 | 快速 LLM | 01 → 03 GRPO → 工具/检索 → Vision-GRPO |
-| 连续控制 | 01 → 17 TD3 → 18 SAC → 19 HER / 20 IQL |
+| 连续控制 | 01 → 18 TD3 → 19 SAC → 20 HER / 21 IQL |
 
-偏好与蒸馏是旁支：General OPD（11）是概念入口，医学案例（13）不是 AgentOPSD 的硬前置。
-
-## 验证层级
-
-| 层级 | 含义 | 本仓库示例 |
-| --- | --- | --- |
-| L0 数学演示 | 人工张量核对 loss / 梯度 | `examples/math/loss_walkthrough.py`、`arl loss-demo` |
-| L1 机制 smoke | tiny 模型与真实代码链路可执行 | `python 03-grpo/train.py --smoke` |
-| L2 小任务学习 | 可控任务上训练前后有变化 | 具身短程实验（需独立评估） |
-| L3 方法复现 | 与论文/基准可比 | 需固定预算与设备，逐项验证 |
-
-完整定义与“不能声称什么”见 [EVIDENCE.md](EVIDENCE.md)。贡献与检查见 [CONTRIBUTING](../CONTRIBUTING.md)。
+如果手头有成对的偏好数据，从[第 06 章 DPO](../06-dpo/TUTORIAL.md)开始。如果想学习如何用教师指导学生自己生成的回答，读[第 13 章 General OPD](../13-general-opd/TUTORIAL.md)。
 
 ## 完整环境安装
 

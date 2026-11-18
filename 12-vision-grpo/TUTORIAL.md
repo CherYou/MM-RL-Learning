@@ -114,11 +114,11 @@ return inputs.pop("input_ids")[0].tolist(), {
 .venv/bin/arl train 12-vision-grpo/verl.yaml --smoke --verl-workers 2
 ```
 
-CPU smoke 使用随机微型视觉模型，只检查像素影响、梯度与保存重载。正常配置指向 Qwen2.5-VL，数据是 [GeoQA](https://huggingface.co/datasets/hz2475/geoQA)；模型规模与数据来源见 [config.yaml](config.yaml) 和 [DATA.md](../docs/DATA.md)。本章尚未完成真实 GPU VLM 训练。
+`--smoke` 使用随机微型视觉模型，便于检查像素输入、视觉分支梯度与检查点重载。常规配置使用 Qwen2.5-VL，按独立题目的答案评估模型。[模型配置](config.yaml) · [GeoQA 数据](https://huggingface.co/datasets/hz2475/geoQA) · [数据准备](../docs/DATA.md)
 
 练习：文本和图片都相同，只在 DataProto 传输时漏掉 `pixel_values`，保存下来的 old logprob 还能与训练时 current logprob 比吗？答案：不能，它们对应的条件分布不同。
 
-我的判断：视觉 RL 的首要问题常是“模型确实获得了视觉条件吗”，而不是先换一个更复杂的 loss。通过图像替换、视觉分支梯度与 checkpoint 重载三个检查后，再讨论准确率提升才有依据。
+如果准确率一直不变，固定问题和回答，只替换图片，比较同一 token 的 logprob。再检查视觉分支是否收到梯度，可以区分“模型没有读到图”和“模型读到了图但答错了”。
 
 ## 新手自测与资料
 

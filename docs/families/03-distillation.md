@@ -6,13 +6,13 @@
 
 | 章号 | 教程 | 层次 |
 | ---: | --- | --- |
-| 11 | [General OPD](../../13-general-opd/TUTORIAL.md) | 概念入口：谁生成、谁打分 |
-| 12 | [OPSD](../../14-opsd/TUTORIAL.md) | 特权 solution + 固定 step-0 教师（本地） |
-| 14 | [AgentOPSD](../../15-agentopsd/TUTORIAL.md) | 环境轨迹 + 轮次信用（与 Agent 交汇） |
+| 13 | [General OPD](../../13-general-opd/TUTORIAL.md) | 概念入口：谁生成、谁打分 |
+| 14 | [OPSD](../../14-opsd/TUTORIAL.md) | 特权 solution + 固定 step-0 教师（本地） |
+| 15 | [AgentOPSD](../../15-agentopsd/TUTORIAL.md) | 环境轨迹 + 轮次信用（与 Agent 交汇） |
 
 ## 硬前置提醒
 
-AgentOPSD 路线显式包含：01 loss-basics → 03 grpo → 09 alfworld → 11 general-opd → 12 opsd → 14 agentopsd。纯蒸馏读者可 01 → 11 直达，不必先读工具篇全文。
+AgentOPSD 会用到 GRPO 的组内优势、ALFWorld 的动作轨迹和 OPSD 的教师条件。想先学习纯蒸馏，可从第 01 章直接读第 13 章 General OPD。[完整路线](../LEARNING_PATH.md#专题捷径)
 
 ## 教师角色对照
 

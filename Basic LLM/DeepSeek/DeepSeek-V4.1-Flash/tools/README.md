@@ -2,7 +2,7 @@
 
 [返回资料目录](../README.md)
 
-这些工具随原阅读资料导入，已移除本机绝对路径。默认读取本版本目录下的 `report.zh.md` 和 `assets/figures/`，新文件输出到 `build/`，不覆盖已归档的 `documents/`。
+脚本默认从本版本目录读取 `report.zh.md` 和 `assets/figures/`，生成的 Word 和 PDF 写入 `build/`。
 
 ## Markdown 转 Word
 
@@ -15,7 +15,7 @@ python "Basic LLM/DeepSeek/DeepSeek-V4.1-Flash/tools/md2docx.py"
 
 生成 `Basic LLM/DeepSeek/DeepSeek-V4.1-Flash/build/translation.zh.docx`。可用 `--source`、`--output`、`--figures` 指定输入、输出及配图目录；显式相对参数以调用时的工作目录为准。
 
-`mathml2omml.py` 将公式转换为 Word 的 OMML。该导出器针对这份报告的标题、表格和图注编写，按图号自动插图，不是通用 Markdown 排版引擎。更换系统字体或 Word 版本可能改变分页，重新导出后应检查版式。
+`mathml2omml.py` 将公式转换为 Word 的 OMML。导出器识别本报告的标题、表格和图注，按图号插图。系统字体或 Word 版本改变时，重新导出后请检查分页。
 
 ## Word 转 PDF
 

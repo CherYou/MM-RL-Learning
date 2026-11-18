@@ -2,7 +2,7 @@
 
 **[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
 
-**本章默认教学后端：verl（`verl.yaml`）。** 教程命令与此一致。本章重点：检索观察 mask 与轨迹字段。裁剪与组内优势见 [GRPO](../03-grpo/TUTORIAL.md) / [preliminary](../01-foundations/TUTORIAL.md)。
+**本章默认教学后端：verl（`verl.yaml`）。** 本章重点：检索观察 mask 与轨迹字段。裁剪与组内优势见 [GRPO](../03-grpo/TUTORIAL.md) / [损失与策略梯度基础](../01-foundations/TUTORIAL.md)。
 
 [学习路线](../docs/LEARNING_PATH.md) · [总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
 
@@ -12,7 +12,7 @@
 
 最关键的工程约束是 token 前缀：只追加模型实际生成的 IDs，工具输出编码后追加为 observation；不重渲染旧历史。模型自己的 token mask=1，检索返回内容和模板 mask=0。否则模型会被训练去模仿检索系统的文档。
 
-已准备原 Search-R1 的 NQ/Hotpot 混合问答学习子集；快速离线配置使用 HotpotQA train/validation 子集及其公开 distractor 文档构成的本地检索库，不需要 API key。检索库不存 question/answer 标签或 gold supporting-facts 注释。
+数据包含 Search-R1 的 NQ/Hotpot 混合问答子集。离线示例用 HotpotQA 的训练和验证问题，从本地文档检索证据。索引只包含文档文本，问答标签和 gold supporting facts 不进入索引。
 
 ## 从代码入口开始
 
@@ -27,26 +27,24 @@ RUN_DIR="runs/RUN_NAME"
 python 09-search-r1/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
 ```
 
-本章 `config.yaml` 保存实验配置，`train.py`、`eval.py` 是直接可运行入口。共用实现见 `rollout.py / environments.py / losses.py`，位于 `../src/agentic_rl/`；薄入口让修复 token 对齐、设备或日志问题时可以统一维护各章训练逻辑。
+从上面的命令跟读代码时，可以打开[rollout.py](../src/agentic_rl/rollout.py)、[environments.py](../src/agentic_rl/environments.py)、[losses.py](../src/agentic_rl/losses.py)。
 
-`--smoke` 强制 CPU、随机微型模型、两次更新，并使用标明的学习 fixture。普通配置读取 `data/` 的公开实验数据；没有远程训练服务调用。修改输出路径可用 `--output runs/my-03-search-r1`，已存在的目录会拒绝覆盖。
+`--smoke` 在 CPU 上用微型模型和样例数据运行一个短训练示例。常规配置从 `data/` 读取数据。若要指定输出位置，请用新目录，例如 `--output runs/my-09-search-r1`。
 
-## 验证思路与消融
+## 指标与对照实验
 
 比较不调用检索、一次检索、最多多轮检索；看 EM/F1、工具调用数和失败次数。先用已知文档标题检查检索能返回证据，再检查 observation token 的梯度确实为零。
 
-建议读 `tests/test_mechanisms.py` 中相应检查，再打开 `runs/<实验>/metrics.jsonl` 与 TensorBoard。Native 运行还保留 `trajectories.jsonl`，其中有 token IDs、mask、旧 logprob、turn spans 和 reward，可逐段检查信用分配。
+在 `runs/<实验>/metrics.jsonl` 或 TensorBoard 查看指标。 在 native 后端，`trajectories.jsonl` 还保存 token、mask、旧 logprob 和轮次范围，可以定位某条轨迹上参与更新的位置。 [机制测试](../tests/test_mechanisms.py)
 
-## 复现边界
+## 使用范围
 
-5 千余篇本地片段构成的是小型离线检索任务，检索覆盖率与全 Wikipedia 环境不同，不可把这个结果写成原论文 Search-R1 benchmark。
-
-上游原文中的 GPU、耗时、付费服务和准确率是参考作者报告；本地复现完成的是代码、数据、依赖和 CPU 执行检查，尚未声称得到相同训练效果。
+检索范围限于本地的五千余个文档片段。如果一直答错，先看返回的片段是否覆盖答案所需的证据，再检查模型有没有使用它。
 
 ## 一手资料
 
-- [资料 2](https://huggingface.co/datasets/hotpotqa/hotpot_qa)
+- [HotpotQA 数据集](https://huggingface.co/datasets/hotpotqa/hotpot_qa)
 
 ## 后端说明
 
-本章默认入口即 `verl.yaml`。完整安装、恢复与 GPU 说明见 [VERL.md](../docs/VERL.md)；不要在第一次运行时同时学习算法与后端切换。
+CPU 和 CUDA 环境的安装、训练中断后的恢复步骤见 [verl 指南](../docs/VERL.md)。

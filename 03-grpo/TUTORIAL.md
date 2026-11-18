@@ -107,7 +107,7 @@ B 是本次更新有效回答数，完整保留时为题目数乘 G；m 是有�
 d=\ell^{ref}-\ell,\qquad k=e^d-d-1.
 ```
 
-它是 KL 的采样估计形式，不是“将整个词表的 KL 精确求和”。本次 GPU 检查设置 `beta=0`，未启用此正则。
+这个量使用采到的 token 估计 KL。若配置中 `beta=0`，KL 项对本次策略更新的贡献为零。
 
 重要区分：ratio 的 old 是生成该批数据的策略；KL 的 ref 通常从开训时冻结。二者不是同一件事。裁剪的正负优势行为先读 [第 01 章 PPO 裁剪基础](../01-foundations/TUTORIAL.md#ppo-clipping)。
 
@@ -150,14 +150,14 @@ optimizer.step()
 
 少量步骤的奖励波动很难说明趋势：每步题目可能不同，样本也可能很少。`loss/total` 接近零也不代表没有更新，因为正负优势项可能在标量值上抵消，而参数梯度方向仍不同。应一起看 `update/grad_norm`、`update/skipped`、策略版本与独立评估。
 
-## 练习与自己的判断
+## 练习与调参
 
 现在可以在运行前预测两种特殊情况：全同奖励使任务优势为零；正负优势平均为零却不一定使参数梯度为零，因为各回答的 token 与梯度方向不同。带着预测看日志，比只寻找一个下降的 loss 更可靠。
 
 在项目根目录运行。**默认教学入口与本章 `config.yaml`（backend: trl）一致：**
 
 ```bash
-# 默认：TRL GRPOTrainer，与本章正文介绍的后端一致
+# 使用 TRL 的 GRPOTrainer
 .venv/bin/arl train 03-grpo/config.yaml --smoke --backend trl
 # 等价薄入口
 python 03-grpo/train.py --smoke
@@ -172,7 +172,7 @@ python 03-grpo/train.py --smoke
 
 手算题：G=4，奖励 `[1,0,0,0]`，优势近似是多少？答案：均值 0.25，标准差 $`\sqrt{0.1875}\approx0.4330`$，正确项约 1.7317，错误项各约 -0.5772，已包含 $`10^{-4}`$。这说明“一次成功”在罕见成功组中的标准化幅度更大。
 
-我的判断：调 GRPO 时，先检查每道题能否产生有差异的回答，再调整 loss 超参数。没有差异时，把学习率调大只会放大其它噪声或正则；增加 G、调整题目难度和改善奖励可观测性才更直接。这个判断来自上面的梯度结构，不是本仓库已经测得的性能结论。
+调 GRPO 前先看同一道题能否得到不同奖励。如果全组同分，所有组内优势都为零，提高学习率也无法恢复这个信号。可以增加每题采样数 G，或者选择当前模型有时能答对的题目。
 
 继续阅读 [DAPO](../04-dapo/TUTORIAL.md)，看它怎样在组内反馈之上改**采样供应与长度处理**（不只是换一条 loss）；对照 [GSPO](../05-gspo/TUTORIAL.md) 时分清比率粒度与平均单位。理论与 API 对照可看 [DeepSeekMath §4](https://arxiv.org/html/2402.03300v2) 和 [固定版本 TRL GRPO 文档](https://huggingface.co/docs/trl/v0.25.1/en/grpo_trainer)。
 

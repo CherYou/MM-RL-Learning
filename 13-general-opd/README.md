@@ -12,7 +12,7 @@ Student 自行采样 y~π_old；Teacher 在相同问题和相同 completion toke
 
 Teacher 不生成训练答案；不是拿 Teacher 自己的轨迹做普通 SFT。采样分母和 teacher 分数只在 optimizer step 前计算一次。不同大小模型可以蒸馏，但 token-level 实现要求相同 tokenizer vocabulary；代码会拒绝不一致的 vocab。
 
-DeepMath 使用公开原始数据的固定 revision，实验子集已下载并保存为 JSONL，不依赖 ModelScope 或远程训练账户。
+运行前按[数据说明](../docs/DATA.md)准备 DeepMath 子集。训练从本地 JSONL 读取题目。
 
 ## 从代码入口开始
 
@@ -27,35 +27,33 @@ RUN_DIR="runs/RUN_NAME"
 python 13-general-opd/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
 ```
 
-本章 `config.yaml` 保存实验配置，`train.py`、`eval.py` 是直接可运行入口。共用实现见 `trainers.py / losses.py`，位于 `../../src/agentic_rl/`；薄入口让修复 token 对齐、设备或日志问题时可以统一维护各章训练逻辑。
+从上面的命令跟读代码时，可以打开[trainers.py](../src/agentic_rl/trainers.py)、[losses.py](../src/agentic_rl/losses.py)。
 
-`--smoke` 强制 CPU、随机微型模型、两次更新，并使用标明的学习 fixture。普通配置读取 `data/` 的公开实验数据；没有远程训练服务调用。修改输出路径可用 `--output runs/my-general-opd`，已存在的目录会拒绝覆盖。
+`--smoke` 在 CPU 上用微型模型和样例数据运行一个短训练示例。常规配置从 `data/` 读取数据。若要指定输出位置，请用新目录，例如 `--output runs/my-13-general-opd`。
 
-## 验证思路与消融
+## 指标与对照实验
 
 先检查 old/teacher logprob 与生成 token 数严格相同；检查 Teacher 无梯度；然后比较更强 Teacher 与同权重 Teacher。采样 reverse-KL 的有限样本估计可能为负，不能因此判断数学定义的 KL 为负。
 
-建议读 `tests/test_mechanisms.py` 中相应检查，再打开 `runs/<实验>/metrics.jsonl` 与 TensorBoard。Native 运行还保留 `trajectories.jsonl`，其中有 token IDs、mask、旧 logprob、turn spans 和 reward，可逐段检查信用分配。
+在 `runs/<实验>/metrics.jsonl` 或 TensorBoard 查看指标。 在 native 后端，`trajectories.jsonl` 还保存 token、mask、旧 logprob 和轮次范围，可以定位某条轨迹上参与更新的位置。 [机制测试](../tests/test_mechanisms.py)
 
-## 复现边界
+## 使用范围
 
-只有 sampled-token reverse KL，不计算全词表 KL。默认较小 Teacher 用来降低后续实验成本，不等同于上游 Qwen3.5 的规模。
-
-上游原文中的 GPU、耗时、付费服务和准确率是参考作者报告；本地复现完成的是代码、数据、依赖和 CPU 执行检查，尚未声称得到相同训练效果。
+蒸馏信号来自学生实际采到的 token。Teacher 和 Student 必须对同一词表中的同一 token、在相应前缀下评分。默认使用较小的 Teacher 以降低显存和采样成本。
 
 ## 一手资料
 
-- [资料 2](https://huggingface.co/datasets/zwhe99/DeepMath-103K)
+- [DeepMath-103K 数据集](https://huggingface.co/datasets/zwhe99/DeepMath-103K)
 
 ## verl 训练路径
 
-本章提供 `verl.yaml`（CPU）和 `verl-gpu.yaml`（显式 CUDA）。默认 config.yaml 已切换为 verl；`--backend native` 可读取原生参考实现。根环境 CLI 会自动切换到独立 verl 环境。
+本章提供 `verl.yaml`（CPU）和 `verl-gpu.yaml`（显式 CUDA）。`config.yaml` 默认使用 verl；`--backend native` 可读取原生参考实现。根环境 CLI 会自动切换到独立 verl 环境。
 
 ```bash
 # 在项目根目录运行；两个实际 CPU worker
 .venv/bin/arl train 13-general-opd/verl.yaml --smoke --verl-workers 2
-# GPU 配置供后续实验使用，本次未运行 GPU 验证
+# 使用 GPU 配置前先安装 CUDA 版 verl 环境
 # .venv/bin/arl train 13-general-opd/verl-gpu.yaml --verl-workers 2
 ```
 
-真实更新代码在 `src/agentic_rl/verl_backend/`，本章机制对应关系、安装和恢复方式见 [verl 指南](../docs/VERL.md)。轨迹通过 DataProto 传递，参数更新调用官方 verl actor。verl 与原生均保存 token、mask、旧概率和轮次日志。
+verl 用 `DataProto` 传递轨迹，由 actor 执行更新。在轨迹中可以查看 token、mask、旧概率和轮次记录。[verl 后端代码](../src/agentic_rl/verl_backend/) · [安装与恢复](../docs/VERL.md)

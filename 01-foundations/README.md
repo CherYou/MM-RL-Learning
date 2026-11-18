@@ -1,4 +1,4 @@
-# Preliminary：读算法之前的损失与更新基础
+# 智能体强化学习基础
 
 **[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
 
@@ -11,14 +11,14 @@
 | [FOUNDATIONS.md](FOUNDATIONS.md) | 进入 PPO/GRPO/连续控制前按需查阅 | MDP、回报、V/Q、mask、离线与评估边界 |
 | [学习路线](../docs/LEARNING_PATH.md) | 选分支时 | 知道下一站去哪、哪些可以跳过 |
 
-## 唯一默认实验（L0）
+## 用 PyTorch 看一次梯度更新
 
 ```bash
 # 仓库根目录；只需 PyTorch，不下载模型
 python examples/math/loss_walkthrough.py
 ```
 
-参考结果见 [examples/math/reference/numerical_checks.json](../examples/math/reference/numerical_checks.json)。这是构造数学检查，不是训练结果。
+把终端输出的损失值和梯度方向与[参考结果](../examples/math/reference/numerical_checks.json)逐项比较。
 
 ## 进阶：仓库 loss-demo（使用共享实现）
 

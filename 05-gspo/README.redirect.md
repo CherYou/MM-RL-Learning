@@ -1,3 +1,3 @@
 # GSPO：序列级重要性比率
 
-请阅读本地版本 [README.md](README.md)。
+[算法教程](TUTORIAL.md) · [运行说明](README.md)

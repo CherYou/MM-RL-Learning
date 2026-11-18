@@ -4,7 +4,7 @@
 [← 上一章：07 ARPO：工具后的高熵分支采样与步级信用](../07-arpo/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/02-tools-multimodal.md) · [下一章：09 Search-R1：学习检索与观察 mask →](../09-search-r1/TUTORIAL.md)
 <!-- NAV:TOP:END -->
 
-[← 上一章：07 ARPO](../07-arpo/TUTORIAL.md) · [全书目录](../docs/CHAPTERS.md) · [本篇目录](../docs/families/02-tools-multimodal.md) · [运行说明](README.md)
+[运行说明](README.md)
 
 **本章默认教学后端：verl（`verl.yaml`）。** 硬前置：[ARPO](../07-arpo/TUTORIAL.md)（熵分支与步级信用）；工具轨迹约定见 [ReTool](../10-retool/TUTORIAL.md)。
 
@@ -19,7 +19,7 @@
 | 优势 | 步级归因（可含熵权重） | **熵感知缩放** $`A(1+w\tanh(H-\bar H))`$ |
 | 目标 | 探索工具步 | 探索与稳定的**折中**，抑制过分支与训练崩溃 |
 
-来源：[AEPO 原文](https://arxiv.org/abs/2510.14545)（WWW 2026 Oral）· [官方代码 AEPO/](https://github.com/RUC-NLPIR/ARPO/tree/main/AEPO)。本地为教学最小实现。
+AEPO 将熵信号同时用于分支预算和策略更新。[AEPO 原论文](https://arxiv.org/abs/2510.14545) · [作者实现](https://github.com/RUC-NLPIR/ARPO/tree/main/AEPO)
 
 ---
 
@@ -160,7 +160,7 @@ python 08-aepo/train.py --smoke
 
 ## 8. 边界与下一步
 
-- 不是 GAIA / HLE / AIME 的论文分数复现；开源模型与数据见 [HF AEPO Collection](https://huggingface.co/collections/dongguanting/aepo-68ef6832c99697ee03d5e1c7)。  
+- 想比较熵预算、裁剪和优势缩放，运行 `python -m agentic_rl.aepo`。章节训练命令演示 verl 共用的工具采样与组内更新。作者发布的模型与数据见 [AEPO Collection](https://huggingface.co/collections/dongguanting/aepo-68ef6832c99697ee03d5e1c7)。
 - 熵是**探索指示**，不是正确率；需独立评估。  
 - **下一篇（工具环境）：** [09 Search-R1](../09-search-r1/TUTORIAL.md) 或 [ALFWorld](../11-alfworld/TUTORIAL.md)；蒸馏分支见 [General OPD](../13-general-opd/TUTORIAL.md)。
 

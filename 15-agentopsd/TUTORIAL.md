@@ -134,9 +134,9 @@ turn_advantages = bounded_rescale(outcome_advantage, credits)
 
 练习：一条失败轨迹 A<0，某轮看起来很有帮助，是否应该把这轮优势改成正数？按本地有界重加权不会。它只改变负向信号的大小，保持整段的结果方向。若你设计允许翻转符号的更新，那已经是另一种信用分配规则。
 
-检查 `turn_evidence` 和 `turn_advantages`，并确认同一轮 token 共用同一个优势、observation 不训练、Student 评估不带 Skill。论文性能数字不属于本地结果；目前本章仅有机制与 CPU 运行证据。
+检查 `turn_evidence` 和 `turn_advantages`，并确认同一轮 token 共用同一个优势、observation 不训练、Student 评估不带 Skill。
 
-我的判断：把这个方法当作“额外信息对结果监督的温和修正”比当作“知道每步真贡献的裁判”更稳妥。单轮 gap 不是因果证据，递推与边界限制是在控制这种辅助信号对更新的影响。
+单轮 gap 表示加上技能提示后，教师对同一个动作改变了多少偏好。这个差值还受提示本身影响，因此用有界乘数修正终局优势，可以限制辅助信号对单轮更新的影响。
 
 ## 新手自测
 

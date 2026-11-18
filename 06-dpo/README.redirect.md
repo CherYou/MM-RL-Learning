@@ -1,3 +1,3 @@
 # DPO：离线偏好优化
 
-请阅读本地版本 [README.md](README.md)。
+[算法教程](TUTORIAL.md) · [运行说明](README.md)

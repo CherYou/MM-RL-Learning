@@ -2,7 +2,7 @@
 
 **[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
 
-**本章默认教学后端：verl（`verl.yaml`）。** 教程命令与此一致。本章重点：恢复状态≠旧数据更新；生成式 critic。裁剪与组内优势见 [GRPO](../03-grpo/TUTORIAL.md) / [preliminary](../01-foundations/TUTORIAL.md)。
+**本章默认教学后端：verl（`verl.yaml`）。** 本章重点：恢复状态≠旧数据更新；生成式 critic。裁剪与组内优势见 [GRPO](../03-grpo/TUTORIAL.md) / [损失与策略梯度基础](../01-foundations/TUTORIAL.md)。
 
 [学习路线](../docs/LEARNING_PATH.md) · [总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
 
@@ -27,25 +27,23 @@ RUN_DIR="runs/RUN_NAME"
 python 16-tempo/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
 ```
 
-本章 `config.yaml` 保存实验配置，`train.py`、`eval.py` 是直接可运行入口。共用实现见 `tempo.py / rollout.py`，位于 `../src/agentic_rl/`；薄入口让修复 token 对齐、设备或日志问题时可以统一维护各章训练逻辑。
+从上面的命令跟读代码时，可以打开[tempo.py](../src/agentic_rl/tempo.py)、[rollout.py](../src/agentic_rl/rollout.py)。
 
-`--smoke` 强制 CPU、随机微型模型、三步（warmup、macro TD、状态重放），并使用标明的学习 fixture。普通配置读取 `data/` 的公开实验数据；没有远程训练服务调用。修改输出路径可用 `--output runs/my-09-tempo`，已存在的目录会拒绝覆盖。
+`--smoke` 在 CPU 上用微型模型和样例数据依次运行预热、宏步更新和状态重放。常规配置从 `data/` 读取数据。若要指定输出位置，请用新目录，例如 `--output runs/my-16-tempo`。
 
-## 验证思路与消融
+## 指标与对照实验
 
 专项测试终局 value 强制为零、G 取分支均值、解析失败有明确惩罚；进一步比较 H、critic_samples 和 warmup_steps。查看解析失败率、endpoint value、state store 大小和实际成功率。
 
-建议读 `tests/test_mechanisms.py` 中相应检查，再打开 `runs/<实验>/metrics.jsonl` 与 TensorBoard。Native 运行还保留 `trajectories.jsonl`，其中有 token IDs、mask、旧 logprob、turn spans 和 reward，可逐段检查信用分配。
+在 `runs/<实验>/metrics.jsonl` 或 TensorBoard 查看指标。 在 native 后端，`trajectories.jsonl` 还保存 token、mask、旧 logprob 和轮次范围，可以定位某条轨迹上参与更新的位置。 [机制测试](../tests/test_mechanisms.py)
 
-## 复现边界
+## 使用范围
 
-这是参考仓库的算法级 TEMPO 教学实现。原生路径未做 prefix importance correction 与跨进程恢复；verl 扩展已实现并验证这两项机制。全解析失败用 0.5 bootstrap 并单独计数。长上下文训练和原文正式实验尚未验证。
-
-上游原文中的 GPU、耗时、付费服务和准确率是参考作者报告；本地复现完成的是代码、数据、依赖和 CPU 执行检查，尚未声称得到相同训练效果。
+需要前缀重要性修正或跨进程恢复时，请使用 verl 后端。native 后端适合观察单进程的分支采样。若同一端点的所有估值都解析失败，使用 0.5 自举并记录失败数。
 
 ## 一手资料
 
 
 ## 后端说明
 
-本章默认入口即 `verl.yaml`。完整安装、恢复与 GPU 说明见 [VERL.md](../docs/VERL.md)；不要在第一次运行时同时学习算法与后端切换。
+CPU 和 CUDA 环境的安装、训练中断后的恢复步骤见 [verl 指南](../docs/VERL.md)。

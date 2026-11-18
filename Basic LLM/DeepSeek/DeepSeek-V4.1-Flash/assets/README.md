@@ -4,7 +4,7 @@
 
 ## 报告配图
 
-配图沿用作者报告图号。中文说明来自导入译稿。
+下表按作者报告的图号排列，配有中文图注。
 
 | 图号 | 配图 | 说明 |
 | --- | --- | --- |
@@ -23,14 +23,10 @@
 
 ## 英文原报告页面
 
-这些是随资料导入的抽页截图，文件名按页号补零排序。
-
 [第 1 页](pages/en/page-001.png) · [第 5 页](pages/en/page-005.png) · [第 7 页](pages/en/page-007.png) · [第 10 页](pages/en/page-010.png) · [第 11 页](pages/en/page-011.png) · [第 25 页](pages/en/page-025.png) · [第 27 页](pages/en/page-027.png) · [第 28 页](pages/en/page-028.png) · [第 35 页](pages/en/page-035.png) · [第 36 页](pages/en/page-036.png) · [第 49 页](pages/en/page-049.png) · [第 50 页](pages/en/page-050.png)
 
 ## 中文制作阶段预览
 
-这些是随资料导入的抽页截图，文件名按页号补零排序。
-
 [第 1 页](pages/zh/page-001.png) · [第 2 页](pages/zh/page-002.png) · [第 3 页](pages/zh/page-003.png) · [第 4 页](pages/zh/page-004.png) · [第 6 页](pages/zh/page-006.png) · [第 13 页](pages/zh/page-013.png) · [第 20 页](pages/zh/page-020.png) · [第 28 页](pages/zh/page-028.png) · [第 36 页](pages/zh/page-036.png) · [第 37 页](pages/zh/page-037.png) · [第 40 页](pages/zh/page-040.png) · [第 45 页](pages/zh/page-045.png) · [第 53 页](pages/zh/page-053.png) · [第 54 页](pages/zh/page-054.png)
 
-中文制作阶段截图不保证与最终 58 页 PDF 逐页一致；完整阅读请使用 [归档 PDF](../documents/translation.zh.pdf)。
+中文预览使用早期排版，页码可能与成稿不同。引用中文页码时请查[完整 PDF](../documents/translation.zh.pdf)。

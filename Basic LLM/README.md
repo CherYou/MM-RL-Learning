@@ -9,10 +9,6 @@
 
 ## 阅读建议
 
-1. 先看系列 README 确认版本与来源链接；
-2. 对照原文 PDF 与中文译稿；实验数字以原文为准；
-3. 结合仓库中 GRPO / OPD 等章节，理解报告中的后训练与 RL 组件（本仓库为教学实现，不等于论文完整复现）。
+先按模型版本找到作者的技术报告，用中文译稿辅助阅读。想了解报告中用到的强化学习方法，可以对照 [GRPO](../03-grpo/TUTORIAL.md) 的组内奖励和 [General OPD](../13-general-opd/TUTORIAL.md) 的教师反馈。
 
-技术报告为扩展阅读，**不是**开始学习策略梯度（[preliminary](../01-foundations/TUTORIAL.md)）的前置。
-
-[← 总目录](../README.md) · [全书 20 章](../docs/CHAPTERS.md)
+[← 总目录](../README.md) · [强化学习章节目录](../docs/CHAPTERS.md)

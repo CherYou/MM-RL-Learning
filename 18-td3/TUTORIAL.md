@@ -6,7 +6,7 @@
 
 [学习路线](../docs/LEARNING_PATH.md) · [FOUNDATIONS：MDP/Q/回放](../01-foundations/FOUNDATIONS.md#foundations-map) · [SAC（可对照）](../19-sac/TUTORIAL.md) · [运行说明](README.md)
 
-**本章默认教学入口：PyTorch embodied（FetchReach）。** DDPG 只作短前导，不必另开大型独立复现项目。
+**本章默认教学入口：PyTorch embodied（FetchReach）。** 先看 DDPG 的确定性策略，再看 TD3 给它加了哪三项稳定机制。
 
 **相对 SAC / 语言模型策略更新：**
 
@@ -33,7 +33,7 @@
 
 ![TD3 的双 critic、延迟更新和目标平滑](../docs/assets/algorithms/td3.png)
 
-图中机械臂泛指连续控制，不表示本实验已经学会抓取。我们的实际任务是 FetchReach 到达目标；双表取小、critic 多更新几次和目标附近加扰动分别对应三个机制。
+在 FetchReach 中，机械臂需要把末端移动到指定坐标。双表盘表示两个价值估计，下面会看到它们怎样和延迟更新、目标动作扰动配合。
 
 ## 0. 先理解 DDPG，才知道 TD3 改了什么
 
@@ -156,9 +156,9 @@ actor_loss = -self.critic(states, self.actor(states))[0].mean()
 
 回到方法选择，TD3 的稳定机制与 SAC 的随机性目标解决的问题有重叠，但并不是只差一个超参数。下面按策略输出、目标项和数据修改来区分它们。
 
-SAC 学随机策略并显式优化熵；TD3 学确定性策略，在交互时外加噪声。两者都复用旧数据、都有双 critic，但 actor loss 和 target 里的项不同。HER 可以在 TD3 外层改变训练经验里的目标，本仓库下一章就这样组合。
+SAC 学随机策略并显式优化熵；TD3 学确定性策略，在交互时外加噪声。两者都复用旧数据、都有双 critic，但 actor loss 和 target 里的项不同。下一章介绍随机策略的 [SAC](../19-sac/TUTORIAL.md)。想看看如何保留 TD3 更新、只改变回放数据里的目标，可以接着读 [HER](../20-her/TUTORIAL.md)。
 
-我认为 TD3 最值得初学者带走的是一个检查习惯：**问清 actor 正在利用 critic 哪一部分误差。** 只加大网络并不自动改善这件事；在大动作空间、长 action chunk 的 VLA 设置下，数据稀疏还可能更严重。
+检查 actor 开始偏爱的动作时，可以同时画出两个 critic 在附近的估值。若只在很窄的动作区间出现孤立高值，策略可能在利用估计误差。在数据稀疏的大动作空间中，这个检查尤其重要。
 
 ## 练习与答案
 

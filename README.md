@@ -1,12 +1,12 @@
 # MM-RL-Learning
 
-这是一个面向 RL 初学者的中文学习与实验仓库。我们从模型概率、常见损失和策略梯度开始，逐步学习语言模型后训练、工具与环境交互、图文条件策略学习和连续控制。每个主题区分原始方法、本地教学实现与已完成验证；数值演示、管线 smoke 和能力实验分别报告。
+这是面向强化学习初学者的中文课程。从一次模型更新出发，你会学到语言模型如何利用奖励、怎样与工具和环境交互，以及怎样在连续控制任务中训练策略。每章都有算法教程和可运行的例子。
 
 你可以沿 [学习路线](docs/LEARNING_PATH.md) 顺序阅读，也可以通过术语、公式和代码索引查找问题。
 
 ## 从这里开始
 
-**唯一第一步（不需要下载大模型，也不需要 verl）：**
+**先用 PyTorch 看一次梯度更新。** 这个例子只在 CPU 上运算。
 
 ```bash
 git clone https://github.com/CherYou/MM-RL-Learning.git
@@ -14,57 +14,44 @@ cd MM-RL-Learning
 python examples/math/loss_walkthrough.py
 ```
 
-需要已安装 PyTorch。终端 JSON 应出现 `"status": "passed"`。这一步只做 L0 数学与梯度核对。
+终端输出包含损失值、梯度方向和更新前后的概率。结尾的 `"status": "passed"` 表示这些数值与脚本中的手算结果一致。
 
 接着阅读：
 
 1. **主线 01** [损失函数与策略梯度基础](01-foundations/TUTORIAL.md)
-2. [全书目录 CHAPTERS](docs/CHAPTERS.md) — 六篇 × 20 章（显示编号；运行目录保持兼容路径）
+2. [全书目录](docs/CHAPTERS.md)按六篇组织 21 章，每章都可以直接打开教程。
 3. 专题捷径：[LEARNING_PATH](docs/LEARNING_PATH.md) · 末章后：[NEXT_STEPS](docs/NEXT_STEPS.md)
 
-## 全书六篇（显示编号）
+## 全书六篇
 
 | 篇 | 章号 | 内容 |
 | --- | ---: | --- |
 | [共同基础](docs/families/00-foundations.md) | 01 | 损失与策略梯度 |
 | [策略与偏好](docs/families/01-policy-preference.md) | 02–06 | PPO、GRPO、DAPO、GSPO、DPO |
-| [工具与多模态](docs/families/02-tools-multimodal.md) | 07–10 | Search-R1、ReTool、ALFWorld、Vision-GRPO |
-| [蒸馏与应用](docs/families/03-distillation.md) | 11–14 | General OPD、OPSD、AgentOPSD |
-| [长程 Agent](docs/families/04-long-horizon.md) | 15–16 | TEMPO、Harness-RL |
-| [控制与离线](docs/families/05-control-offline.md) | 17–20 | TD3、SAC、HER、IQL |
-
-完整链接表见 [docs/CHAPTERS.md](docs/CHAPTERS.md)。**运行路径**仍为 `01-foundations/`、`02-ppo/`、`13-general-opd/` 等，与显示编号的映射写在章节注册表 [configs/chapters.json](configs/chapters.json)。
+| [工具与多模态](docs/families/02-tools-multimodal.md) | 07–12 | ARPO、AEPO、Search-R1、ReTool、ALFWorld、Vision-GRPO |
+| [蒸馏与应用](docs/families/03-distillation.md) | 13–15 | General OPD、OPSD、AgentOPSD |
+| [长程 Agent](docs/families/04-long-horizon.md) | 16–17 | TEMPO、Harness-RL |
+| [控制与离线](docs/families/05-control-offline.md) | 18–21 | TD3、SAC、HER、IQL |
 
 ## 仓库内容
 
-| 分支 | 内容 | 运行目录（兼容） |
-| --- | --- | --- |
-| 损失与策略梯度基础 | CE / MSE / BCE、PG、old/current、PPO 裁剪 | `preliminary`、`examples/math` |
-| 策略优化与偏好 | PPO、GRPO、DAPO、GSPO、DPO | `001-ppo`…`07-gspo`、`002-dpo` |
-| 蒸馏 | General OPD、OPSD、医学 SAR/IDT、AgentOPSD | `02-opd`、`04-opsd`、`09-AgentOPSD` |
-| 工具与环境 | Search-R1、ReTool、ALFWorld | `03-search-r1`、`05-retool`、`08-alfworld` |
-| 图文条件 | Vision-GRPO | `09-vision-grpo` |
-| 长程 Agent | TEMPO、Harness-RL | `09-tempo`、`12-harness-rl` |
-| 连续控制与离线 | TD3、SAC、HER、IQL | `14-td3`…`16-iql`、`13-sac` |
-| 技术报告阅读 | 模型系列报告与中文资料 | [Basic LLM](Basic%20LLM/README.md)（含 [MiMo-V2.6](Basic%20LLM/MiMo/MiMo%20V2.6/README.md)） |
+算法教程配有手算例子、源码入口和运行命令。工具篇里，Search-R1 读取检索结果，ALFWorld 接收文字观察，Vision-GRPO 根据图像回答问题。连续控制篇使用低维状态和目标坐标驱动 FetchReach 机械臂。[路径与环境配置](docs/PORTABILITY.md)
 
-导航元数据：[configs/learning_paths.json](configs/learning_paths.json) · [configs/concepts.json](configs/concepts.json)。重新生成页首页尾：`python scripts/sync_navigation.py --write`；检查：`python scripts/check_navigation.py`。
-
-Vision-GRPO 是图文问答策略学习；ALFWorld 主要使用文字接口；SAC/TD3/HER/IQL 是低维 FetchReach 控制。它们共同提供理解 VLA 的基础，但不等于已覆盖完整视觉—语言—动作训练管线。路径可移植性见 [PORTABILITY](docs/PORTABILITY.md)。
+模型技术报告单独收在 [Basic LLM](Basic%20LLM/README.md)，可以对照算法章节阅读 DeepSeek 和 MiMo 的后训练方法。
 
 ## 三条阅读路线
 
 | 路线 | 顺序概要 | 详见 |
 | --- | --- | --- |
-| 完整基础 | 损失 → PPO → GRPO →（DAPO/GSPO） | [LEARNING_PATH](docs/LEARNING_PATH.md#路线一完整基础) |
-| 快速 LLM 实践 | 比率与裁剪 → 最小 GRPO → ReTool / Vision-GRPO | [同上](docs/LEARNING_PATH.md#路线二快速-llm-实践) |
-| 连续控制 | 基础 → SAC/TD3 → HER / IQL | [同上](docs/LEARNING_PATH.md#路线三连续控制与离线) |
+| 完整基础 | 损失 → PPO → GRPO →（DAPO/GSPO） | [LEARNING_PATH](docs/LEARNING_PATH.md#专题捷径) |
+| 快速 LLM 实践 | 比率与裁剪 → 最小 GRPO → ReTool / Vision-GRPO | [学习路线](docs/LEARNING_PATH.md#专题捷径) |
+| 连续控制 | 基础 → SAC/TD3 → HER / IQL | [学习路线](docs/LEARNING_PATH.md#专题捷径) |
 
 偏好与蒸馏是旁支：从 [General OPD](13-general-opd/TUTORIAL.md) 进入即可。
 
 ## 章节目录与推荐顺序
 
-每章 README 第一条链接指向详细教程。下表的“默认后端”是该章教学命令应对齐的后端；跨后端对照放在进阶说明。
+每章 README 汇集运行命令，开头的链接直达算法教程。下表列出各章示例默认使用的训练后端。
 
 | 目录与运行说明 | 算法教程 | 本地重点 | 默认后端 |
 | --- | --- | --- | --- |
@@ -90,18 +77,11 @@ Vision-GRPO 是图文问答策略学习；ALFWorld 主要使用文字接口；SA
 | [20-her](20-her/README.md) | [TUTORIAL.md](20-her/TUTORIAL.md) | 同轨迹 future goal 重标记 + TD3 | PyTorch embodied |
 | [21-iql](21-iql/README.md) | [TUTORIAL.md](21-iql/TUTORIAL.md) | 固定数据、expectile V、优势加权模仿 | PyTorch embodied |
 
-逻辑前置、路线次序与稳定 ID 见 [configs/chapters.json](configs/chapters.json) 与 [学习路线](docs/LEARNING_PATH.md)。
+## 怎样读实验结果
 
-## 验证层级
+想弄清公式，先比较数值例子中的梯度和更新前后的概率。LLM 章节的 `--smoke` 用微型模型和样例数据，适合跟踪一批回答怎样进入 loss。评估答题能力时，另用独立题目，让模型自由生成，再按答案计分。
 
-| 层级 | 含义 | 典型入口 |
-| --- | --- | --- |
-| L0 | 数学与梯度演示 | `examples/math/loss_walkthrough.py`、`arl loss-demo` |
-| L1 | 机制 / plumbing smoke | `python 03-grpo/train.py --smoke` |
-| L2 | 可控小任务学习 | 具身短程实验；需独立评估 |
-| L3 | 论文/基准可比复现 | 需明确模型、数据、预算与设备 |
-
-`--smoke` 使用本地随机微型模型、fixture 和显式 debug reward，强制 CPU。它验证采样、反传、环境接口、保存与日志，**不代表任务成功率**。具身 smoke 使用真实 FetchReach 物理与奖励，与 LLM fixture 不是同一种实验。
+具身章节的 `--smoke` 运行 FetchReach 短实验。比较控制策略时，固定评估种子，记录机械臂到达原任务目标的比例。
 
 ## 完整环境安装
 
@@ -143,7 +123,7 @@ make data
 python scripts/verify_data.py
 ```
 
-学习子集、合成偏好对、程序示范与官方划分的用途不同，不能互相冒充 benchmark 证据。
+对照实验要使用相同的数据划分。DPO 章的负例由规则生成，IQL 章的示范来自仿真控制器。评估时使用各章单独的测试数据或环境种子。
 
 ## 本地日志
 
@@ -167,13 +147,9 @@ make smoke
 
 检查报告写入 `reports/`，训练输出写入 `runs/`；两者默认不纳入版本控制。
 
-分层 CI 见 [.github/workflows](.github/workflows)：文档与 L0 数学适合普通 PR；机制 / 环境 / GPU 需自备环境，不作为文档改动的默认阻塞。贡献前请读 [CONTRIBUTING](CONTRIBUTING.md) 与 [证据层级](docs/EVIDENCE.md)。
+## 训练后端
 
-## 复现范围
-
-这是一套学习规模的实现：原生 PyTorch 用于公式对照，TRL 提供标准训练器，verl 提供复杂在线算法的分布式接口。Harness-RL 使用 central-only MLP 分区，ReTool 使用受限数值 Python 工具。模型效果需针对具体数据、预算和设备独立评估。
-
-**L0–L3 验证层级见 [docs/EVIDENCE.md](docs/EVIDENCE.md)。** 后端安装与恢复见 [docs/VERL.md](docs/VERL.md)。
+想逐行观察损失，可以从原生 PyTorch 实现入手。TRL 提供 PPO、GRPO 和 DPO 等训练器，verl 用于多轮工具交互和分布式训练。不同后端的检查点和恢复条件见 [verl 指南](docs/VERL.md)。
 
 ## 许可证与来源
 
@@ -185,8 +161,9 @@ make smoke
 
 ### 大模型技术报告
 
-[Basic LLM](Basic%20LLM/README.md) 按“模型系列 → 模型版本”组织技术报告、中文翻译与解读。它是扩展阅读。
+技术报告目录按模型系列和版本整理，提供原文与中文阅读材料。[Basic LLM](Basic%20LLM/README.md)
 
 | 模型 | 内容 | 阅读与下载 |
 | --- | --- | --- |
 | [DeepSeek-V4.1-Flash](Basic%20LLM/DeepSeek/DeepSeek-V4.1-Flash/README.md) | 架构、训练与推理基础设施、后训练和评估 | [原始技术报告](https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/blob/main/DeepSeek_V41_Tech_Report.pdf) · [中文合订稿](Basic%20LLM/DeepSeek/DeepSeek-V4.1-Flash/report.zh.md) · [PDF](Basic%20LLM/DeepSeek/DeepSeek-V4.1-Flash/documents/translation.zh.pdf) · [Word](Basic%20LLM/DeepSeek/DeepSeek-V4.1-Flash/documents/translation.zh.docx) |
+| [MiMo-V2.6](Basic%20LLM/MiMo/MiMo%20V2.6/README.md) | 全模态 MoE、智能体训练与评估 | [原始技术报告](Basic%20LLM/MiMo/MiMo%20V2.6/MiMo_V2_6_technical_report.pdf) · [中文译稿](Basic%20LLM/MiMo/MiMo%20V2.6/report.zh.md) |

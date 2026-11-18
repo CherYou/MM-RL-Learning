@@ -30,35 +30,33 @@ RUN_DIR="runs/RUN_NAME"
 python 04-dapo/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
 ```
 
-本章 `config.yaml` 保存实验配置，`train.py`、`eval.py` 是直接可运行入口。共用实现见 `trainers.py / losses.py`，位于 `../src/agentic_rl/`；薄入口让修复 token 对齐、设备或日志问题时可以统一维护各章训练逻辑。
+从上面的命令跟读代码时，可以打开[trainers.py](../src/agentic_rl/trainers.py)、[losses.py](../src/agentic_rl/losses.py)。
 
-`--smoke` 强制 CPU、随机微型模型、两次更新，并使用标明的学习 fixture。普通配置读取 `data/` 的公开实验数据；没有远程训练服务调用。修改输出路径可用 `--output runs/my-06-dapo`，已存在的目录会拒绝覆盖。
+`--smoke` 在 CPU 上用微型模型和样例数据运行一个短训练示例。常规配置从 `data/` 读取数据。若要指定输出位置，请用新目录，例如 `--output runs/my-04-dapo`。
 
-## 验证思路与消融
+## 指标与对照实验
 
-逐项关闭 dynamic sampling、Clip-Higher、token reduction、长度奖励，比较有效组数、补采次数、采样耗时和正确率。TRL 对照入口只验证 DAPO loss，不宣称它包含完整四项。
+分别改变动态采样、Clip-Higher、token 归约和长度奖励，记录有效组数、补采次数、耗时和正确率。TRL 对照入口提供按有效 token 归一化的 DAPO loss。观察动态补采和长度处理请用本章的 verl 入口。
 
-建议读 `tests/test_mechanisms.py` 中相应检查，再打开 `runs/<实验>/metrics.jsonl` 与 TensorBoard。Native 运行还保留 `trajectories.jsonl`，其中有 token IDs、mask、旧 logprob、turn spans 和 reward，可逐段检查信用分配。
+在 `runs/<实验>/metrics.jsonl` 或 TensorBoard 查看指标。 在 native 后端，`trajectories.jsonl` 还保存 token、mask、旧 logprob 和轮次范围，可以定位某条轨迹上参与更新的位置。 [机制测试](../tests/test_mechanisms.py)
 
-## 复现边界
+## 使用范围
 
-小模型可能连续遇到全错组，动态采样上限触发后没有参数更新是正确行为。CPU smoke 用调试奖励验证补采逻辑，不证明数学训练有效。
-
-上游原文中的 GPU、耗时、付费服务和准确率是参考作者报告；本地复现完成的是代码、数据、依赖和 CPU 执行检查，尚未声称得到相同训练效果。
+小模型可能连续生成全错组。达到补采上限且没有有效组时，本次更新会跳过，可以同时查看 `sampling/attempts` 和 `update/skipped`。
 
 ## 一手资料
 
-- [资料 2](https://huggingface.co/docs/trl/v0.25.1/en/grpo_trainer)
+- [TRL GRPOTrainer](https://huggingface.co/docs/trl/v0.25.1/en/grpo_trainer)
 
 ## verl 训练路径
 
-本章提供 `verl.yaml`（CPU）和 `verl-gpu.yaml`（显式 CUDA）。默认 config.yaml 已切换为 verl；`--backend native` 可读取原生参考实现。根环境 CLI 会自动切换到独立 verl 环境。
+本章提供 `verl.yaml`（CPU）和 `verl-gpu.yaml`（显式 CUDA）。`config.yaml` 默认使用 verl；`--backend native` 可读取原生参考实现。根环境 CLI 会自动切换到独立 verl 环境。
 
 ```bash
 # 在项目根目录运行；两个实际 CPU worker
 .venv/bin/arl train 04-dapo/verl.yaml --smoke --verl-workers 2
-# GPU 配置供后续实验使用，本次未运行 GPU 验证
+# 使用 GPU 配置前先安装 CUDA 版 verl 环境
 # .venv/bin/arl train 04-dapo/verl-gpu.yaml --verl-workers 2
 ```
 
-真实更新代码在 `src/agentic_rl/verl_backend/`，本章机制对应关系、安装和恢复方式见 [verl 指南](../docs/VERL.md)。轨迹通过 DataProto 传递，参数更新调用官方 verl actor。verl 与原生均保存 token、mask、旧概率和轮次日志。
+verl 用 `DataProto` 传递轨迹，由 actor 执行更新。在轨迹中可以查看 token、mask、旧概率和轮次记录。[verl 后端代码](../src/agentic_rl/verl_backend/) · [安装与恢复](../docs/VERL.md)

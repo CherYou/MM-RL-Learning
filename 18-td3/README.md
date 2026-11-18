@@ -6,7 +6,7 @@
 
 [学习路线](../docs/LEARNING_PATH.md) · [总目录](../README.md) · [FOUNDATIONS](../01-foundations/FOUNDATIONS.md) · [共享环境说明](../docs/EMBODIED.md)
 
-本章重点是双 Q 取小、延迟策略更新、目标动作平滑。使用真实 `FetchReach-v4` / MuJoCo，策略输入是 10 维机械观察与 3 维目标，输出 4 维归一化连续动作。它是理解机器人/VLA 强化学习的基础实验，没有训练视觉语言编码器。
+本章重点是双 Q 取小、延迟策略更新、目标动作平滑。使用真实 `FetchReach-v4` / MuJoCo，策略输入是 10 维机械观察与 3 维目标，输出 4 维归一化连续动作。
 
 ## 安装与执行
 

@@ -21,11 +21,11 @@
 
 **先走一条 transition（再谈网络）：** 环境给出 `s, a, r, s', d`。例如 `s`=末端位置，`a`=`[0.1,-0.05,0,0]`，`r`=-1（未到目标），`s'`=执行后位置，`d`=False。这条记录进 replay；critic 用 MSE 把 `Q(s,a)` 拉向 `y`；actor 在**同一个 s** 上重新采样 `ã`，不是回放里的旧 `a`。
 
-先读 [MDP、Q 值与连续动作密度](../01-foundations/FOUNDATIONS.md)，再读这一章。SAC（Soft Actor-Critic）是连续控制的经典 off-policy 方法；这里采用后续常见的双 Q、无独立 V 网络、自动温度版本。它为机器人 RL 提供基础，不是一个视觉语言动作模型。[原始论文](https://arxiv.org/abs/1801.01290)与[算法及应用论文](https://arxiv.org/abs/1812.05905)给出方法依据；以下例子、推导组织和代码讲解按本仓库实现独立撰写。
+如果回放和动作密度还不熟悉，可以先读[连续控制基础](../01-foundations/FOUNDATIONS.md)。SAC（Soft Actor-Critic）是一种离策略算法。本章采用双 Q、自动温度且无独立 V 网络的版本。[SAC 原论文](https://arxiv.org/abs/1801.01290) · [双 Q 与温度调节](https://arxiv.org/abs/1812.05905)
 
 ![SAC 的动作采样、双 critic、回放与熵示意](../docs/assets/algorithms/sac.png)
 
-图中多根箭头表示同一个策略可以采出不同连续动作，双表盘表示两个 Q 估计，天平表示奖励与熵之间的权衡。表盘和天平没有数值刻度，是概念图，不是实验曲线。
+图中多根箭头表示同一个策略可以采出不同的连续动作，双表盘表示两个 Q 估计，天平表示奖励与熵之间的权衡。
 
 **组件生命周期（本地 SAC 实现）：**
 
@@ -117,7 +117,7 @@ L_\alpha=-\mathbb{E}\left[\ell\;\mathrm{stopgrad}(\log\pi(\tilde a\mid s)+\mathc
 
 ## 4. 手算一条 transition
 
-公式里有 reward、两个 Q、熵和终止标记，逐项代入能检查符号。下面数字专门用于算术教学，不是 FetchReach 的实测价值水平。
+假设我们从回放中抽出一条转移，用下面的数字手算 critic 的目标，重点看 logprob 前面的负号。
 
 设 $`r=-1,\gamma=0.98,d=0`$，下一动作的两个目标 Q 是 2 和 3，$`\log\pi(a'\mid s')=-1,\alpha=0.2`$。则：
 
@@ -163,7 +163,7 @@ actor_loss = (alpha * log_prob - self.critic.minimum(states, proposed)).mean()
 
 `--smoke` 是真实 FetchReach 的 300 步短运行。去掉它使用 [config.yaml](config.yaml) 的 5000 个环境步。输出目录需要是新目录，防止覆盖实验。TensorBoard 看 `loss/critic`、`loss/actor`、`train/alpha`、`eval/return`，以及曾经到达目标与末步到达目标两种成功率。评估只在开始、结束记录，不能把两个点画成稠密的学习过程。
 
-## 7. 常见误区与一个自己的判断
+## 7. 怎样解读训练曲线
 
 日志出现正常数值只是开始。回到最初“是否保留有用选择”的问题，需要同时观察动作分布与环境结果，不能拿熵变大替代任务完成。
 

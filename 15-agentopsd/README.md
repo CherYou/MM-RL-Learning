@@ -2,7 +2,7 @@
 
 **[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
 
-**本章默认教学后端：verl（`verl.yaml`）。** 教程命令与此一致。本章重点：evidence→belief→有界重加权；不翻转终局方向。裁剪与组内优势见 [GRPO](../03-grpo/TUTORIAL.md) / [preliminary](../01-foundations/TUTORIAL.md)。
+**本章默认教学后端：verl（`verl.yaml`）。** 本章重点：evidence→belief→有界重加权；不翻转终局方向。裁剪与组内优势见 [GRPO](../03-grpo/TUTORIAL.md) / [损失与策略梯度基础](../01-foundations/TUTORIAL.md)。
 
 [学习路线](../docs/LEARNING_PATH.md) · [总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
 
@@ -27,26 +27,24 @@ RUN_DIR="runs/RUN_NAME"
 python 15-agentopsd/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
 ```
 
-本章 `config.yaml` 保存实验配置，`train.py`、`eval.py` 是直接可运行入口。共用实现见 `agentopsd.py / trainers.py / rollout.py`，位于 `../src/agentic_rl/`；薄入口让修复 token 对齐、设备或日志问题时可以统一维护各章训练逻辑。
+从上面的命令跟读代码时，可以打开[agentopsd.py](../src/agentic_rl/agentopsd.py)、[trainers.py](../src/agentic_rl/trainers.py)、[rollout.py](../src/agentic_rl/rollout.py)。
 
-`--smoke` 强制 CPU、随机微型模型、两次更新，并使用标明的学习 fixture。普通配置读取 `data/` 的公开实验数据；没有远程训练服务调用。修改输出路径可用 `--output runs/my-09-AgentOPSD`，已存在的目录会拒绝覆盖。
+`--smoke` 在 CPU 上用微型模型和样例数据运行一个短训练示例。常规配置从 `data/` 读取数据。若要指定输出位置，请用新目录，例如 `--output runs/my-15-agentopsd`。
 
-## 验证思路与消融
+## 指标与对照实验
 
 消融关闭技能或关闭重塑；检查 Teacher 与 Student 是同一更新前快照；检查 success 轨迹优势不会变负，退化组保持零；评测始终不注入技能。
 
-建议读 `tests/test_mechanisms.py` 中相应检查，再打开 `runs/<实验>/metrics.jsonl` 与 TensorBoard。Native 运行还保留 `trajectories.jsonl`，其中有 token IDs、mask、旧 logprob、turn spans 和 reward，可逐段检查信用分配。
+在 `runs/<实验>/metrics.jsonl` 或 TensorBoard 查看指标。 在 native 后端，`trajectories.jsonl` 还保存 token、mask、旧 logprob 和轮次范围，可以定位某条轨迹上参与更新的位置。 [机制测试](../tests/test_mechanisms.py)
 
-## 复现边界
+## 使用范围
 
-沿用上游的有界 advantage 机制，未逐项实现论文所有熵正则和分布式工程。检查过信用公式及同 token 复评路径，未验证上游成功率。
-
-上游原文中的 GPU、耗时、付费服务和准确率是参考作者报告；本地复现完成的是代码、数据、依赖和 CPU 执行检查，尚未声称得到相同训练效果。
+本章采用有界的轮次优势修正，教师在复评时读入技能提示。评估学生时移除技能提示，比较启用和关闭修正后的任务成功率。论文中的其他熵正则项未接入这条更新路径。
 
 ## 一手资料
 
-- [资料 1](https://arxiv.org/abs/2608.05987)
+- [AgentOPSD 原论文](https://arxiv.org/abs/2608.05987)
 
 ## 后端说明
 
-本章默认入口即 `verl.yaml`。完整安装、恢复与 GPU 说明见 [VERL.md](../docs/VERL.md)；不要在第一次运行时同时学习算法与后端切换。
+CPU 和 CUDA 环境的安装、训练中断后的恢复步骤见 [verl 指南](../docs/VERL.md)。

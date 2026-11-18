@@ -2,7 +2,7 @@
 
 **[直接阅读本章新手教程：TUTORIAL.md](TUTORIAL.md)**
 
-**本章默认教学后端：TRL（`config.yaml` → `backend: trl`）。** 教程命令与此一致；verl / native 是进阶对照。PPO 是推荐前置而非强制；裁剪基础见 [preliminary](../01-foundations/TUTORIAL.md)。
+默认使用 TRL 的 `GRPOTrainer`。先用同一题的多条回答算出组内优势，再看裁剪如何限制策略更新。[损失与策略梯度基础](../01-foundations/TUTORIAL.md)
 
 [学习路线](../docs/LEARNING_PATH.md) · [总目录](../README.md) · [框架设计](../docs/ARCHITECTURE.md)
 
@@ -36,30 +36,28 @@ python 03-grpo/eval.py --checkpoint "$RUN_DIR/checkpoint-final" --limit 32
 .venv/bin/arl train 03-grpo/verl.yaml --smoke --verl-workers 2
 ```
 
-本章 `config.yaml` 保存实验配置，`train.py`、`eval.py` 是直接可运行入口。共用实现见 `losses.py / trl_backend.py`，位于 `../src/agentic_rl/`。
+从上面的命令跟读代码时，可以打开[losses.py](../src/agentic_rl/losses.py)、[trl_backend.py](../src/agentic_rl/trl_backend.py)。
 
-`--smoke` 强制 CPU、随机微型模型、两次更新，并使用标明的学习 fixture。普通配置读取 `data/` 的公开实验数据；没有远程训练服务调用。修改输出路径可用 `--output runs/my-01-grpo`，已存在的目录会拒绝覆盖。
+`--smoke` 在 CPU 上用微型模型和样例数据运行一个短训练示例。常规配置从 `data/` 读取数据。若要指定输出位置，请用新目录，例如 `--output runs/my-03-grpo`。
 
-## 验证思路与消融
+## 指标与对照实验
 
 固定 prompt、模型和种子，比较 group_size=4/8、beta=0/0.02；观察 reward、reward_std、KL、梯度范数和回答长度。比较 native 与 TRL 时统一 reduction 和采样设置。教程中的 `[1,1,0,0]` 完整数据链可用来预测日志方向，而不是只看 loss 是否下降。
 
-建议读 `tests/test_mechanisms.py` 中相应检查，再打开 `runs/<实验>/metrics.jsonl` 与 TensorBoard。
+在 `runs/<实验>/metrics.jsonl` 或 TensorBoard 查看指标。 [机制测试](../tests/test_mechanisms.py)
 
-## 复现边界
+## 使用范围
 
-CPU smoke 使用随机 tiny 模型和明确标记的 debug_token 奖励，只检查优化链路；它不能证明 GSM8K 正确率提高。
-
-上游原文中的 GPU、耗时、付费服务和准确率是参考作者报告。本地已完成 CPU 执行检查，并在物理 1 号 A100 上完成 verl GRPO 三步真实训练和 checkpoint 重载；尚未证明与上游相同的训练效果。
+CPU 示例使用 `debug_token` 奖励，以便观察组内奖励差异。评估数学能力时，使用独立 GSM8K 题目并按最终答案计算正确率。
 
 ## 一手资料
 
-- [资料 1](https://huggingface.co/docs/trl/v0.25.1/en/grpo_trainer)
-- [资料 2](https://arxiv.org/abs/2402.03300)
+- [TRL GRPOTrainer](https://huggingface.co/docs/trl/v0.25.1/en/grpo_trainer)
+- [DeepSeekMath 与 GRPO](https://arxiv.org/abs/2402.03300)
 
 ## verl 训练路径
 
-本章提供 `verl.yaml`（CPU）和 `verl-gpu.yaml`（显式 CUDA）。默认 config.yaml 保留 TRL。安装与恢复见 [verl 指南](../docs/VERL.md)。
+本章提供 `verl.yaml`（CPU）和 `verl-gpu.yaml`（显式 CUDA）。`config.yaml` 默认使用 TRL。安装与恢复见 [verl 指南](../docs/VERL.md)。
 
 ```bash
 .venv/bin/arl train 03-grpo/verl.yaml --smoke --verl-workers 2

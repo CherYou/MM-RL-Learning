@@ -1,3 +1,3 @@
 # OPSD：固定 step-0 Self-Teacher
 
-请阅读本地版本 [README.md](README.md)。
+[算法教程](TUTORIAL.md) · [运行说明](README.md)

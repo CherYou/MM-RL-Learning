@@ -105,7 +105,7 @@ observation, reward, done = env.step(action)
 
 ## 从小检查走向实验
 
-当单条轨迹能保持状态，再检查多条轨迹是否隔离，最后才测成功率。测试环境与正式环境的任务难度不同，因此这几级证据也要分别记录。
+先用一个游戏核对动作前后的环境状态，再用同一关的两条轨迹检查它们能否独立推进。评估时在见过和未见过的任务划分上分别计算成功率。
 
 ```bash
 .venv/bin/arl train 11-alfworld/verl.yaml --smoke --verl-workers 2
@@ -117,7 +117,7 @@ observation, reward, done = env.step(action)
 
 练习：同一条任务，模型先执行无效动作三次再成功，终局 GRPO 会自动惩罚前三次吗？答案：不会。除非另定义过程/长度奖励或更细信用分配，整个成功轨迹仍共享优势。
 
-我的判断：这一章最值得建立的习惯是把环境状态与模型上下文分别记账。后续 [AgentOPSD](../15-agentopsd/TUTORIAL.md) 改轮次信用，[TEMPO](../16-tempo/TUTORIAL.md) 改分段采样；它们都建立在状态隔离、观察对齐与正确终局判断之上。
+把实际环境状态和模型读到的文本并排记下来，才能查出从哪一轮开始错位。这也是学习后两种方法的基础。AgentOPSD 用对齐的动作分配轮次信用，TEMPO 从已保存的状态继续采样。[AgentOPSD](../15-agentopsd/TUTORIAL.md) · [TEMPO](../16-tempo/TUTORIAL.md)
 
 ## 新手自测
 

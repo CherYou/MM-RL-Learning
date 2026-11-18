@@ -6,7 +6,7 @@
 
 [学习路线](../docs/LEARNING_PATH.md) · [总目录](../README.md) · [TD3](../18-td3/TUTORIAL.md) · [共享环境说明](../docs/EMBODIED.md)
 
-本章重点是同一轨迹的 future goal 重标记，底层使用 TD3。使用真实 `FetchReach-v4` / MuJoCo，策略输入是 10 维机械观察与 3 维目标，输出 4 维归一化连续动作。它是理解机器人/VLA 强化学习的基础实验，没有训练视觉语言编码器。
+本章重点是同一轨迹的 future goal 重标记，底层使用 TD3。使用真实 `FetchReach-v4` / MuJoCo，策略输入是 10 维机械观察与 3 维目标，输出 4 维归一化连续动作。
 
 ## 安装与执行
 

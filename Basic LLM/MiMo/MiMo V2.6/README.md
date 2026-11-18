@@ -8,7 +8,7 @@
 
 | 材料 | 本地路径 | 说明 |
 | --- | --- | --- |
-| **英文技术报告 PDF** | [MiMo_V2_6_technical_report.pdf](MiMo_V2_6_technical_report.pdf) | 官方原文（自 HF 模型仓库下载） |
+| **英文技术报告 PDF** | [MiMo_V2_6_technical_report.pdf](MiMo_V2_6_technical_report.pdf) | 作者发布的报告 |
 | **中文翻译** | [report.zh.md](report.zh.md) | 学习用途整理译稿 |
 | 英文抽取文本 | [source/report.en.txt](source/report.en.txt) | 便于全文检索 |
 
@@ -24,8 +24,6 @@
 ## 来源说明
 
 - 原文 PDF 与模型版权：Xiaomi LLM-Core / XiaomiMiMo，许可证以模型卡为准（MIT License on HF）。
-- 中文译稿由本仓库整理，仅供学习对照，**不替代官方报告**；数字若有出入以 PDF 为准。
-- 下载地址（报告文件在模型仓库内）：  
-  `https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL/resolve/main/MiMo_V2_6_technical_report.pdf`
+- 中文译稿供对照阅读，引用实验数字时请查[作者报告 PDF](https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL/resolve/main/MiMo_V2_6_technical_report.pdf)。
 
 [← MiMo 系列](../README.md) · [← Basic LLM](../../README.md)
