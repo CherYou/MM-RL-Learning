@@ -32,7 +32,7 @@
 | `source` | model / tool / env | 仅 model |
 | `raw_tokens` | 实际 token ID（不要先 decode 再 re-encode） | 模型段参与 |
 | `train_mask` | 与 token 对齐的 0/1 | 定义直接训练位置 |
-| `old_logp` | 采样时保存的 logprob | 比率分母，批内固定 |
+| `old_logp` | 生成这些动作的旧策略对实际 token 给出的 logprob | 比率分母，更新时固定 |
 | `tool_return` | 检索文档或错误信息 | 否（但是后续生成的条件） |
 | `end_reason` | answer / budget / invalid | 解释为何停止 |
 
@@ -119,6 +119,8 @@ mask.extend([0.0] * len(obs_ids))
 ```
 
 旧 token IDs 原样保留，仅追加新内容。若每次交互都将整段对话解码再编码，旧 logprob 可能与新的 token 边界错位。
+
+本章默认的 CPU verl 路径中，[worker](../src/agentic_rl/verl_backend/worker.py) 每轮先生成 token ID，再用尚未更新的策略对「本轮前缀 + 本轮生成」做一次前向打分，保留本轮生成 token 的 logprob。[`snapshot`](../src/agentic_rl/verl_backend/runtime.py) 在轨迹结束时按精确 token 前缀取回各轮分数，拼成 `old_logp`，不对整条轨迹重新打分。对上面的 11 个位置，若从 0 开始编号，答案首 token 位于 9，分数取 `old_logp[8]`：它由答案前的 9 个 token 预测，前缀里包含工具返回的文档，但文档位置不进入 policy loss。
 
 [environments.py](../src/agentic_rl/environments.py) 的 `LocalSearch.search` 按词频、逆文档频率和文档长度计算 BM25 风格得分，再取 top-k；它没有可训练参数。多任务并发由 [agent_loop.py](../src/agentic_rl/verl_backend/agent_loop.py) 协调；[algorithms.py](../src/agentic_rl/verl_backend/algorithms.py) 把完整轨迹转成 GRPO 学习信号。
 
