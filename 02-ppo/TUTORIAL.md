@@ -296,6 +296,8 @@ next_value = torch.where(live.bool(), values[:, t], next_value)
 
 `carry` 保存右侧已算出的优势，`live` 标记有效生成位置。每行放一条轨迹，尾部可以补齐。完整回答以零尾值结束。如果在可继续的状态切段，应传入该状态的 `bootstrap` 估值。把多个独立任务拼到一行时，需要在每个终局分开递推。
 
+**本仓库的实现范围：** `gae` 支持显式传入 `bootstrap`，但当前 [Native PPO 训练器](../src/agentic_rl/trainers.py) 调用它时没有传入该参数，因此按零尾值递推，不会为可继续的截断自动补上 critic 估值。本章默认的 `backend: trl` 走另一套实现，这个说明只适用于 Native 路径。
+
 装好项目后，可以直接把 §6 的两步例子交给同一个函数。先猜 λ 改成 0.5 时第一步会得多少，再运行这段 Python。
 
 ```python
